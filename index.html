@@ -366,375 +366,227 @@ body{min-height:-webkit-fill-available;}
 .pmode-btn:hover:not(.on){ background:var(--p2); color:var(--t1); }
 
 /* ── PLAN MODE PAGE ── */
-#pg-plan{ padding:0; display:none; flex-direction:column; }
-#pg-plan.on{ display:flex; }
+#pg-plan{ padding:0; overflow:hidden; }
+#pg-plan.on{ display:flex; flex-direction:column; }
 
+/* Header */
 .plan-header{
-  display:flex; align-items:center; gap:10px;
-  padding:14px 16px 12px;
-  border-bottom:1px solid var(--b0);
+  display:flex; align-items:center; gap:8px;
+  padding:12px 16px 10px; border-bottom:1px solid var(--b0);
   flex-shrink:0; background:var(--p1);
 }
 .plan-back-btn{
   font-family:var(--display); font-size:11px; font-weight:600;
   color:var(--t2); background:none; border:none; cursor:pointer;
-  letter-spacing:0.06em; padding:0; flex-shrink:0;
-  transition:color 0.12s;
+  letter-spacing:0.05em; padding:0; flex-shrink:0; transition:color 0.12s;
 }
 .plan-back-btn:hover{ color:var(--t0); }
 .plan-date{
-  flex:1; font-family:var(--display); font-size:13px; font-weight:600;
-  color:var(--t1); letter-spacing:0.06em; text-align:center;
-  text-transform:uppercase;
+  flex:1; font-family:var(--display); font-size:12px; font-weight:600;
+  color:var(--t1); letter-spacing:0.06em; text-align:center; text-transform:uppercase;
 }
-.plan-header-actions{ display:flex; gap:6px; flex-shrink:0; }
+.plan-header-actions{ display:flex; gap:5px; flex-shrink:0; }
 .plan-action-btn{
-  display:flex; align-items:center; gap:5px;
-  padding:7px 12px; border:var(--bd); background:transparent;
+  padding:6px 11px; border:var(--bd); background:transparent;
   font-family:var(--display); font-size:11px; font-weight:600;
-  letter-spacing:0.06em; text-transform:uppercase; color:var(--t1);
+  letter-spacing:0.05em; text-transform:uppercase; color:var(--t1);
   cursor:pointer; transition:all 0.14s;
 }
 .plan-action-btn:hover{ color:var(--t0); border-color:var(--b2); background:var(--p3); }
-.plan-commit-btn{
-  border-color:var(--ac-bd); color:var(--ac);
-}
+.plan-commit-btn{ border-color:var(--ac-bd); color:var(--ac); }
 .plan-commit-btn:hover{ background:var(--ac-lo); }
 
-/* Cal status + suggest banners */
-.plan-cal-status{
-  display:flex; align-items:center; gap:8px;
-  padding:8px 16px; font-family:var(--display); font-size:11px;
-  color:var(--t2); flex-shrink:0; border-bottom:1px solid var(--b0);
-}
+/* Suggest banner */
 .plan-suggest-banner{
-  padding:10px 16px; background:var(--p2);
+  padding:10px 14px; background:var(--p2);
   border-bottom:1px solid var(--b1);
   font-family:var(--body); font-size:13px; color:var(--t1);
-  line-height:1.5; flex-shrink:0;
+  line-height:1.5; flex-shrink:0; position:relative; padding-right:36px;
+}
+.plan-suggest-close{
+  position:absolute; top:8px; right:10px;
+  background:none; border:none; color:var(--t2); cursor:pointer; font-size:14px;
 }
 
-/* Main board */
-.plan-board{
-  flex:1; display:flex; gap:0; overflow:hidden; min-height:0;
+/* Task pool — horizontal scrollable chips */
+.plan-pool-section{
+  flex-shrink:0; border-bottom:1px solid var(--b0); background:var(--p1);
 }
+.plan-pool-header{
+  display:flex; align-items:center; gap:8px;
+  padding:8px 16px; cursor:pointer; user-select:none;
+}
+.plan-pool-label{
+  font-family:var(--display); font-size:11px; font-weight:700;
+  letter-spacing:0.1em; text-transform:uppercase; color:var(--t2); flex-shrink:0;
+}
+.plan-pool-hint{
+  flex:1; font-family:var(--display); font-size:9px; color:var(--t3);
+  letter-spacing:0.06em; text-transform:uppercase; text-align:center;
+}
+.plan-pool-toggle{
+  font-size:9px; color:var(--t2); flex-shrink:0; transition:transform 0.2s;
+}
+.plan-pool-toggle.open{ transform:rotate(180deg); }
 
-/* Left: unscheduled task pool */
-.plan-unscheduled{
-  width:160px; flex-shrink:0; border-right:1px solid var(--b0);
-  display:flex; flex-direction:column; overflow:hidden;
+.plan-pool-chips{
+  display:flex; gap:6px; padding:0 16px 10px;
+  overflow-x:auto; scrollbar-width:none;
 }
-.plan-col-label{
-  display:flex; justify-content:space-between; align-items:center;
-  padding:8px 10px; font-family:var(--display); font-size:9px;
-  font-weight:700; letter-spacing:0.12em; text-transform:uppercase;
-  color:var(--t2); border-bottom:1px solid var(--b0); flex-shrink:0;
-}
-#plan-task-pool{
-  flex:1; overflow-y:auto; padding:6px; display:flex;
-  flex-direction:column; gap:4px; scrollbar-width:none;
-}
-#plan-task-pool::-webkit-scrollbar{ display:none; }
+.plan-pool-chips::-webkit-scrollbar{ display:none; }
+.plan-pool-collapsed .plan-pool-chips{ display:none; }
 
-/* Unscheduled task chip */
+/* Task chip — tap to select */
 .plan-task-chip{
-  padding:9px 10px; background:var(--p2); border:var(--bd);
+  flex-shrink:0; padding:8px 12px;
+  background:var(--p2); border:var(--bd);
   border-left:3px solid var(--tc,var(--p5));
-  cursor:grab; user-select:none; transition:all 0.12s;
+  cursor:pointer; transition:all 0.14s; min-width:120px; max-width:180px;
+  position:relative;
 }
-.plan-task-chip:hover{ background:var(--p3); border-color:var(--b2); }
-.plan-task-chip.dragging{ opacity:0.4; }
+.plan-task-chip.selected{
+  border-color:var(--ac); background:var(--p3);
+  box-shadow:0 0 0 1px var(--ac-bd);
+}
+.plan-task-chip.scheduled{ opacity:0.4; }
 .plan-chip-title{
   font-family:var(--body); font-size:12px; color:var(--t0);
   line-height:1.3; margin-bottom:4px;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
 }
-.plan-chip-meta{
-  display:flex; align-items:center; gap:5px; flex-wrap:wrap;
-}
-.plan-chip-dur{
-  font-family:var(--mono); font-size:9px; color:var(--t2);
-}
+.plan-chip-meta{ display:flex; align-items:center; gap:5px; }
+.plan-chip-dur{ font-family:var(--mono); font-size:9px; color:var(--t2); }
 .plan-chip-pri{
   font-family:var(--display); font-size:9px; font-weight:600;
-  padding:1px 5px; border:1px solid var(--pc,var(--b1));
-  color:var(--pc,var(--t2)); letter-spacing:0.04em;
+  padding:1px 5px; color:var(--pc,var(--t2));
+  border:1px solid currentColor; opacity:0.7;
 }
-.plan-chip-fit-btn{
-  margin-top:6px; width:100%; padding:4px 6px;
+.plan-chip-fit{
+  margin-top:5px; width:100%; padding:3px 6px;
   border:1px solid var(--b1); background:transparent;
-  font-family:var(--display); font-size:9px; font-weight:600;
-  color:var(--t2); cursor:pointer; letter-spacing:0.06em;
-  text-transform:uppercase; transition:all 0.12s;
+  font-family:var(--display); font-size:9px; font-weight:700;
+  color:var(--t2); cursor:pointer; letter-spacing:0.06em; text-transform:uppercase;
+  transition:all 0.12s;
 }
-.plan-chip-fit-btn:hover{ border-color:var(--ac-bd); color:var(--ac); background:var(--ac-lo); }
+.plan-chip-fit:hover{ border-color:var(--ac-bd); color:var(--ac); }
+.plan-chip-selected-indicator{
+  position:absolute; top:4px; right:6px;
+  font-size:10px; color:var(--ac); display:none;
+}
+.plan-task-chip.selected .plan-chip-selected-indicator{ display:block; }
 
-/* Right: timeline */
-.plan-timeline-wrap{
-  flex:1; display:flex; flex-direction:column; overflow:hidden; min-width:0;
+/* Cal status */
+.plan-cal-status{
+  display:flex; align-items:center; gap:8px; flex-shrink:0;
+  padding:6px 16px; font-family:var(--display); font-size:10px;
+  color:var(--t2); border-bottom:1px solid var(--b0);
+  background:var(--p1);
+}
+
+/* Timeline — full width */
+.plan-timeline-header{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:8px 16px 4px; flex-shrink:0;
+}
+.plan-col-label{
+  font-family:var(--display); font-size:10px; font-weight:700;
+  letter-spacing:0.1em; text-transform:uppercase; color:var(--t2);
 }
 .plan-timeline{
-  flex:1; overflow-y:auto; position:relative;
-  scrollbar-width:none; padding:0;
+  flex:1; overflow-y:auto; scrollbar-width:none;
 }
 .plan-timeline::-webkit-scrollbar{ display:none; }
 
-/* Time slot rows */
+/* Time slots */
 .plan-slot{
-  display:flex; align-items:stretch; min-height:52px;
-  border-bottom:1px solid var(--b0); position:relative;
+  display:flex; align-items:stretch;
+  border-bottom:1px solid var(--b0); position:relative; min-height:56px;
 }
-.plan-slot.half-hour{ border-bottom:1px dashed var(--b0); opacity:0.6; min-height:34px; }
+.plan-slot.half-hour{
+  border-bottom:1px dashed rgba(255,255,255,0.04); min-height:40px;
+}
 .plan-slot-time{
-  width:52px; flex-shrink:0; font-family:var(--mono); font-size:9px;
-  color:var(--t2); padding:6px 8px 0; letter-spacing:0.04em;
+  width:48px; flex-shrink:0; font-family:var(--mono); font-size:9px;
+  color:var(--t2); padding:7px 8px 0; letter-spacing:0.03em;
 }
 .plan-slot-body{
-  flex:1; padding:3px 6px; display:flex; flex-direction:column;
-  gap:3px; position:relative;
+  flex:1; padding:4px 12px 4px 4px; display:flex; flex-direction:column;
+  gap:3px; cursor:pointer; transition:background 0.1s; position:relative;
 }
-.plan-slot.drop-target{ background:var(--ac-lo); }
+.plan-slot-body:hover{ background:var(--ac-lo); }
+.plan-slot-body.tap-target{
+  background:var(--ac-lo);
+  outline:1px dashed var(--ac-bd);
+}
+.plan-slot-body.has-selection{ cursor:crosshair; }
 
-/* Calendar event block — locked */
+/* Cal event block */
 .plan-cal-block{
-  padding:7px 10px; background:var(--p3);
+  padding:6px 10px; background:var(--p3);
   border:var(--bd); border-left:3px solid var(--t2);
-  opacity:0.75;
+  margin-bottom:2px;
 }
-.plan-cal-block-title{
-  font-family:var(--body); font-size:12px; color:var(--t1); line-height:1.3;
-}
-.plan-cal-block-time{
-  font-family:var(--mono); font-size:9px; color:var(--t2); margin-top:2px;
+.plan-cal-title{ font-family:var(--body); font-size:12px; color:var(--t1); line-height:1.3; }
+.plan-cal-time{ font-family:var(--mono); font-size:9px; color:var(--t2); margin-top:2px; }
+.plan-cal-badge{
+  display:inline-block; font-family:var(--display); font-size:8px; font-weight:600;
+  letter-spacing:0.06em; color:var(--t2); margin-left:5px;
 }
 
 /* Lunch block */
 .plan-lunch-block{
-  padding:7px 10px; background:var(--p2);
-  border:1px dashed var(--b1); border-left:3px solid var(--p5);
-  opacity:0.6;
+  padding:6px 10px; border:1px dashed var(--b1); border-left:3px solid var(--p5);
+  opacity:0.5; margin-bottom:2px;
 }
 .plan-lunch-title{
   font-family:var(--display); font-size:11px; font-weight:600;
-  color:var(--t2); letter-spacing:0.06em; text-transform:uppercase;
+  color:var(--t2); letter-spacing:0.05em; text-transform:uppercase;
 }
 
 /* Scheduled task block */
 .plan-block{
-  padding:9px 11px; background:var(--p3);
+  padding:9px 36px 9px 11px; background:var(--p3);
   border:var(--bd); border-left:3px solid var(--bc,var(--p5));
-  cursor:grab; transition:all 0.12s; position:relative;
+  transition:all 0.12s; position:relative; margin-bottom:2px;
 }
-.plan-block:hover{ background:var(--p4); }
-.plan-block.dragging{ opacity:0.35; }
-.plan-block-title{
-  font-family:var(--body); font-size:13px; color:var(--t0);
-  line-height:1.3; margin-bottom:4px; padding-right:24px;
-}
-.plan-block-meta{
-  display:flex; align-items:center; gap:8px;
-}
-.plan-block-time{
-  font-family:var(--mono); font-size:10px; color:var(--t2);
-}
-.plan-block-dur{
-  font-family:var(--mono); font-size:10px; color:var(--t2);
-}
+.plan-block:active{ background:var(--p4); }
+.plan-block-title{ font-family:var(--body); font-size:13px; color:var(--t0); line-height:1.3; margin-bottom:3px; }
+.plan-block-meta{ display:flex; align-items:center; gap:8px; }
+.plan-block-time{ font-family:var(--mono); font-size:10px; color:var(--t2); }
+.plan-block-dur{ font-family:var(--mono); font-size:10px; color:var(--t2); }
 .plan-block-remove{
-  position:absolute; top:7px; right:8px;
-  font-family:var(--display); font-size:12px; color:var(--t2);
-  background:none; border:none; cursor:pointer; padding:0;
-  line-height:1; transition:color 0.12s;
+  position:absolute; top:0; right:0; bottom:0; width:32px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:13px; color:var(--t2); background:none; border:none;
+  cursor:pointer; transition:color 0.12s; border-left:1px solid var(--b0);
 }
-.plan-block-remove:hover{ color:var(--s-blk); }
+.plan-block-remove:hover{ color:var(--s-blk); background:rgba(196,47,32,0.08); }
 
-/* Now indicator */
+/* Now line */
 .plan-now-line{
-  position:absolute; left:0; right:0; height:2px;
-  background:var(--s-blk); opacity:0.7; pointer-events:none; z-index:10;
+  position:absolute; left:48px; right:0; height:1px;
+  background:var(--s-blk); opacity:0.6; pointer-events:none; z-index:5;
+  top:0;
 }
 .plan-now-dot{
-  position:absolute; left:50px; top:-3px; width:8px; height:8px;
+  position:absolute; left:-4px; top:-3px; width:7px; height:7px;
   background:var(--s-blk); border-radius:50%;
 }
 
-/* Plan scope toggle */
-.plan-mode-toggle{
-  display:flex; gap:3px; flex-shrink:0;
+/* Selected task indicator on slots */
+.plan-selected-hint{
+  position:fixed; bottom:calc(72px + env(safe-area-inset-bottom));
+  left:50%; transform:translateX(-50%);
+  background:var(--p3); border:1px solid var(--ac-bd);
+  padding:8px 16px; font-family:var(--display); font-size:11px;
+  font-weight:600; color:var(--ac); letter-spacing:0.06em;
+  pointer-events:none; z-index:200; white-space:nowrap;
+  opacity:0; transition:opacity 0.2s;
 }
-.plan-scope-btn{
-  padding:5px 11px; border:var(--bd); background:transparent;
-  font-family:var(--display); font-size:10px; font-weight:600;
-  letter-spacing:0.08em; text-transform:uppercase; color:var(--t2);
-  cursor:pointer; transition:all 0.12s;
-}
-.plan-scope-btn.on{ background:var(--p3); color:var(--t0); border-color:var(--b2); }
+.plan-selected-hint.show{ opacity:1; }
 
-/* ── WEEK VIEW ── */
-.week-board{
-  display:flex; flex:1; overflow-x:auto; overflow-y:hidden;
-  gap:0; scrollbar-width:none; height:100%;
-}
-.week-board::-webkit-scrollbar{ display:none; }
-.week-col{
-  min-width:140px; flex:1; display:flex; flex-direction:column;
-  border-right:1px solid var(--b0); overflow:hidden;
-}
-.week-col:last-child{ border-right:none; }
-.week-col-header{
-  padding:10px 10px 8px; flex-shrink:0;
-  border-bottom:1px solid var(--b0);
-  display:flex; flex-direction:column; gap:2px;
-}
-.week-col-day{
-  font-family:var(--display); font-size:12px; font-weight:700;
-  letter-spacing:0.08em; text-transform:uppercase; color:var(--t1);
-}
-.week-col-date{
-  font-family:var(--mono); font-size:10px; color:var(--t2);
-}
-.week-col-today .week-col-day{ color:var(--ac); }
-.week-col-today .week-col-date{ color:var(--t1); }
-.week-cal-pills{
-  display:flex; flex-direction:column; gap:2px; margin-top:4px;
-}
-.week-cal-pill{
-  font-family:var(--body); font-size:10px; color:var(--t2);
-  padding:2px 6px; background:var(--p3); border-left:2px solid var(--p6);
-  line-height:1.3; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-}
-.week-tasks{
-  flex:1; overflow-y:auto; padding:6px; display:flex;
-  flex-direction:column; gap:4px; scrollbar-width:none;
-}
-.week-tasks::-webkit-scrollbar{ display:none; }
-.week-task-card{
-  padding:9px 10px; background:var(--p2); border:var(--bd);
-  border-left:3px solid var(--wc,var(--p5));
-  cursor:grab; transition:all 0.12s; user-select:none;
-}
-.week-task-card:hover{ background:var(--p3); }
-.week-task-card.dragging{ opacity:0.3; }
-.week-task-title{
-  font-family:var(--body); font-size:12px; color:var(--t0);
-  line-height:1.3; margin-bottom:3px;
-}
-.week-task-meta{
-  display:flex; align-items:center; gap:5px;
-}
-.week-task-show{
-  font-family:var(--display); font-size:9px; font-weight:600;
-  color:var(--t2); letter-spacing:0.04em; text-transform:uppercase;
-}
-.week-task-pri{
-  font-family:var(--display); font-size:9px; font-weight:600;
-  padding:1px 5px; border:1px solid var(--wp,var(--b1));
-  color:var(--wp,var(--t2));
-}
-.week-drop-zone{
-  min-height:60px; flex:1; border:1px dashed transparent;
-  border-radius:0; transition:all 0.14s; display:flex;
-  align-items:center; justify-content:center;
-}
-.week-drop-zone.drag-over{
-  border-color:var(--b2); background:var(--ac-lo);
-}
-.week-drop-label{
-  font-family:var(--display); font-size:9px; color:var(--t3);
-  letter-spacing:0.1em; text-transform:uppercase; pointer-events:none;
-}
-.week-unscheduled{
-  min-width:130px; max-width:130px; border-right:1px solid var(--b1);
-  display:flex; flex-direction:column; overflow:hidden;
-}
-
-/* ── TEAM PAGE ── */
-.contact-card{
-  background:var(--p2); border:var(--bd);
-  border-left:3px solid var(--cc,var(--p5));
-  padding:14px 16px; margin-bottom:6px;
-  display:flex; align-items:flex-start; gap:12px;
-  cursor:pointer; transition:all 0.14s;
-}
-.contact-card:hover{ background:var(--p3); border-color:var(--b2); }
-.contact-avatar{
-  width:40px; height:40px; flex-shrink:0;
-  background:var(--p4); border:var(--bd);
-  display:flex; align-items:center; justify-content:center;
-  font-family:var(--display); font-size:16px; font-weight:700;
-  color:var(--t1); text-transform:uppercase;
-}
-.contact-info{ flex:1; min-width:0; }
-.contact-name{
-  font-family:var(--body); font-size:15px; font-weight:500;
-  color:var(--t0); margin-bottom:2px;
-}
-.contact-role{
-  font-family:var(--body); font-size:13px; color:var(--t2); margin-bottom:6px;
-}
-.contact-badges{ display:flex; gap:5px; flex-wrap:wrap; }
-.contact-badge{
-  font-family:var(--display); font-size:10px; font-weight:600;
-  padding:2px 8px; border:var(--bd); color:var(--t2);
-  letter-spacing:0.04em; text-transform:uppercase;
-}
-.contact-skill{
-  font-family:var(--body); font-size:11px;
-  padding:2px 7px; background:var(--p3); border:var(--bd); color:var(--t2);
-}
-.contact-actions{
-  display:flex; flex-direction:column; gap:4px; flex-shrink:0;
-}
-.contact-action-btn{
-  padding:5px 10px; border:var(--bd); background:transparent;
-  font-family:var(--display); font-size:10px; font-weight:600;
-  color:var(--t2); cursor:pointer; transition:all 0.12s;
-  letter-spacing:0.04em; white-space:nowrap;
-}
-.contact-action-btn:hover{ color:var(--t0); border-color:var(--b2); background:var(--p3); }
-.contact-action-btn.danger:hover{ color:var(--s-blk); border-color:rgba(196,47,32,0.4); }
-
-/* Crew assignment section */
-.crew-row{
-  display:flex; align-items:center; gap:10px;
-  padding:12px 16px; border-bottom:1px solid var(--b0);
-  transition:background 0.12s;
-}
-.crew-row:hover{ background:var(--p2); }
-.crew-avatar-sm{
-  width:32px; height:32px; flex-shrink:0;
-  background:var(--p4); border:var(--bd);
-  display:flex; align-items:center; justify-content:center;
-  font-family:var(--display); font-size:12px; font-weight:700;
-  color:var(--t1); text-transform:uppercase;
-}
-.crew-info{ flex:1; }
-.crew-name{
-  font-family:var(--body); font-size:14px; color:var(--t0); margin-bottom:1px;
-}
-.crew-role{ font-family:var(--body); font-size:12px; color:var(--t2); }
-.crew-remove{
-  padding:4px 10px; border:var(--bd); background:transparent;
-  font-family:var(--display); font-size:10px; color:var(--t2);
-  cursor:pointer; transition:all 0.12s; letter-spacing:0.04em;
-}
-.crew-remove:hover{ color:var(--s-blk); border-color:rgba(196,47,32,0.4); }
-.crew-add-row{
-  padding:12px 16px;
-}
-.crew-select{
-  width:100%; background:var(--p3); border:var(--bd);
-  font-family:var(--body); font-size:14px; color:var(--t0);
-  padding:10px 12px; outline:none; cursor:pointer;
-}
-.crew-select:focus{ border-color:var(--b2); }
-.team-empty{
-  padding:32px 16px; text-align:center;
-  font-family:var(--display); font-size:13px; font-weight:500;
-  color:var(--t2); letter-spacing:0.06em; line-height:2;
-  text-transform:uppercase;
-}
-
-
+/* Commit status */
+.plan-commit-status{
   display:flex; align-items:center; gap:8px;
   padding:10px 16px; background:var(--p2);
   border-top:1px solid var(--b1); flex-shrink:0;
@@ -1303,70 +1155,52 @@ body{min-height:-webkit-fill-available;}
 
 <!-- ── PLAN MODE (sub-page) ── -->
 <div class="page" id="pg-plan">
-  <!-- Header -->
+
+  <!-- Header bar -->
   <div class="plan-header">
-    <button class="plan-back-btn" onclick="setPayloadMode('execute')">← PAYLOAD</button>
-    <div class="plan-mode-toggle">
-      <button class="plan-scope-btn on" id="plan-scope-today" onclick="setPlanScope('today')">TODAY</button>
-      <button class="plan-scope-btn" id="plan-scope-week" onclick="setPlanScope('week')">WEEK</button>
-    </div>
+    <button class="plan-back-btn" onclick="setPayloadMode('execute')">← BACK</button>
     <div class="plan-date" id="plan-date-label"></div>
     <div class="plan-header-actions">
-      <button class="plan-action-btn" id="plan-suggest-btn" onclick="planSuggest()">
-        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" width="11" height="11"><path d="M7 1v2M7 11v2M1 7h2M11 7h2M3 3l1.5 1.5M9.5 9.5L11 11M3 11l1.5-1.5M9.5 4.5L11 3"/></svg>
-        SUGGEST
-      </button>
-      <button class="plan-action-btn plan-commit-btn" onclick="planCommit()">
-        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" width="11" height="11"><polyline points="2 7 5 10 12 3"/></svg>
-        COMMIT
-      </button>
+      <button class="plan-action-btn" id="plan-suggest-btn" onclick="planSuggest()">SUGGEST</button>
+      <button class="plan-action-btn plan-commit-btn" onclick="planCommit()">COMMIT</button>
     </div>
   </div>
 
-  <!-- Cal loading indicator -->
-  <div class="plan-cal-status" id="plan-cal-status">
-    <div class="think-dot"></div><div class="think-dot"></div><div class="think-dot"></div>
-    <span>Loading calendar…</span>
-  </div>
-
-  <!-- Suggest banner -->
+  <!-- INTEL suggestion banner -->
   <div class="plan-suggest-banner" id="plan-suggest-banner" style="display:none">
     <div class="plan-suggest-txt" id="plan-suggest-txt"></div>
+    <button class="plan-suggest-close" onclick="this.parentElement.style.display='none'">✕</button>
   </div>
 
-  <!-- TODAY board -->
-  <div id="plan-today-board" style="flex:1;display:flex;flex-direction:column;overflow:hidden;min-height:0;">
-  <!-- Main board — two columns -->
-  <div class="plan-board">
-
-    <!-- Left: Unscheduled tasks -->
-    <div class="plan-unscheduled" id="plan-unscheduled">
-      <div class="plan-col-label">UNSCHEDULED</div>
-      <div id="plan-task-pool"></div>
+  <!-- Task pool — horizontal scrollable chips, collapsible -->
+  <div class="plan-pool-section" id="plan-pool-section">
+    <div class="plan-pool-header" onclick="toggleTaskPool()">
+      <span class="plan-pool-label">TASKS <span id="plan-pool-count"></span></span>
+      <span class="plan-pool-hint" id="plan-pool-hint">TAP TO SELECT · TAP SLOT TO PLACE</span>
+      <span class="plan-pool-toggle" id="plan-pool-toggle">▼</span>
     </div>
-
-    <!-- Right: Time-block board -->
-    <div class="plan-timeline-wrap">
-      <div class="plan-col-label">
-        <span>SCHEDULE</span>
-        <span id="plan-total-time" style="color:var(--t2);font-weight:400"></span>
-      </div>
-      <div class="plan-timeline" id="plan-timeline"></div>
-    </div>
-
-  </div>
+    <div class="plan-pool-chips" id="plan-task-pool"></div>
   </div>
 
-  <!-- WEEK board -->
-  <div id="plan-week-board" style="flex:1;display:none;flex-direction:column;overflow:hidden;min-height:0;">
-    <div class="week-board" id="week-board"></div>
+  <!-- Cal status -->
+  <div class="plan-cal-status" id="plan-cal-status" style="display:none">
+    <div class="think-dot"></div><div class="think-dot"></div><div class="think-dot"></div>
+    <span id="plan-cal-txt">Loading calendar…</span>
   </div>
+
+  <!-- Timeline — full width -->
+  <div class="plan-timeline-header">
+    <span class="plan-col-label">TODAY'S SCHEDULE</span>
+    <span id="plan-total-time" style="font-family:var(--mono);font-size:11px;color:var(--t2)"></span>
+  </div>
+  <div class="plan-timeline" id="plan-timeline"></div>
 
   <!-- Commit status -->
   <div class="plan-commit-status" id="plan-commit-status" style="display:none">
     <div class="think-dot"></div><div class="think-dot"></div><div class="think-dot"></div>
-    <span id="plan-commit-txt">Creating calendar events…</span>
+    <span id="plan-commit-txt">Staging schedule…</span>
   </div>
+
 </div>
 
 <!-- ── VAULT ── -->
@@ -1389,87 +1223,6 @@ body{min-height:-webkit-fill-available;}
           <div class="vault-save-info" id="vault-save-info">Unsaved</div>
         </div>
       </div>
-    </div>
-  </div>
-</div>
-
-<!-- ── TEAM ── -->
-<div class="page" id="pg-team">
-
-  <!-- Roster section -->
-  <div class="sec">
-    <span class="sec-l">Roster</span>
-    <span class="sec-r"></span>
-    <button class="sec-a" onclick="openContactSheet(null)">+ ADD</button>
-  </div>
-  <div id="team-roster"></div>
-
-  <!-- Show crew section -->
-  <div class="sec" style="margin-top:20px">
-    <span class="sec-l">Show Crew</span>
-    <span class="sec-r"></span>
-  </div>
-  <!-- Show selector tabs -->
-  <div class="show-tabs" id="team-show-tabs"></div>
-  <div id="team-show-crew"></div>
-
-</div>
-
-<!-- ── CONTACT SHEET ── -->
-<div class="overlay" id="ol-contact" onclick="if(event.target===this)closeSheet('ol-contact')">
-  <div class="sheet">
-    <div class="sh-head">
-      <div class="sh-title" id="contact-sh-title">NEW CONTACT</div>
-      <button class="sh-close" onclick="closeSheet('ol-contact')">✕</button>
-    </div>
-    <div class="sh-body">
-      <div class="f">
-        <div class="f-row">
-          <div style="flex:1"><label class="fl">Name</label><input class="fc" id="c-name" placeholder="Katherine Soares"></div>
-        </div>
-        <div class="f-row">
-          <div style="flex:1"><label class="fl">Role</label><input class="fc" id="c-role" placeholder="VFX Supervisor"></div>
-          <div style="flex:1"><label class="fl">Company</label><input class="fc" id="c-company" placeholder="MPP Features"></div>
-        </div>
-        <div class="f-row">
-          <div style="flex:1"><label class="fl">Email</label><input class="fc" id="c-email" type="email" placeholder="k@studio.com"></div>
-          <div style="flex:1"><label class="fl">Phone</label><input class="fc" id="c-phone" placeholder="+1 555 0100"></div>
-        </div>
-        <div class="f-row">
-          <div style="flex:1">
-            <label class="fl">Availability</label>
-            <select class="fc" id="c-avail">
-              <option value="fulltime">Full-time</option>
-              <option value="parttime">Part-time</option>
-              <option value="freelance" selected>Freelance</option>
-              <option value="vendor">Vendor</option>
-            </select>
-          </div>
-          <div style="flex:1">
-            <label class="fl">Type</label>
-            <select class="fc" id="c-type">
-              <option value="compositor">Compositor</option>
-              <option value="supervisor">Supervisor</option>
-              <option value="producer">Producer</option>
-              <option value="artist">Artist</option>
-              <option value="td">TD</option>
-              <option value="client">Client</option>
-              <option value="other">Other</option>
-            </select>
-          </div>
-        </div>
-        <label class="fl">Skills / Tags</label>
-        <input class="fc" id="c-skills" placeholder="comp, roto, grade, nuke">
-        <label class="fl">Notes</label>
-        <textarea class="fc" id="c-notes" rows="2" placeholder="Any notes…"></textarea>
-        <!-- Color accent -->
-        <label class="fl">Accent Color</label>
-        <div class="color-picker-row" id="c-color-row"></div>
-      </div>
-    </div>
-    <div class="sh-acts">
-      <button class="sh-no" onclick="closeSheet('ol-contact')">CANCEL</button>
-      <button class="sh-ok" onclick="saveContact()">SAVE</button>
     </div>
   </div>
 </div>
@@ -1682,10 +1435,6 @@ body{min-height:-webkit-fill-available;}
   <button class="nb" id="nav-vault" onclick="sw('vault')">
     <svg viewBox="0 0 20 20" fill="none" stroke="currentColor"><path d="M4 2h9l5 5v11a1 1 0 01-1 1H4a1 1 0 01-1-1V3a1 1 0 011-1z"/><path d="M13 2v5h5M7 9h6M7 12h6M7 15h4"/></svg>
     <span class="nl">VAULT</span>
-  </button>
-  <button class="nb" id="nav-team" onclick="sw('team')">
-    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M13 6a3 3 0 11-6 0 3 3 0 016 0z"/><path d="M2 17c0-3.3 2.7-6 6-6h4c3.3 0 6 2.7 6 6"/><path d="M15 2a3 3 0 010 5.3M18 17c0-2-1.2-3.8-3-4.7"/></svg>
-    <span class="nl">TEAM</span>
   </button>
   <button class="nb" id="nav-intel" onclick="sw('intel')">
     <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M10 2a7 7 0 017 7c0 3.5-2.5 6.4-5.8 6.9L10 18l-1.2-2.1C5.5 15.4 3 12.5 3 9a7 7 0 017-7z"/><path d="M7.5 9h5M8.5 12h3"/></svg>
@@ -1903,11 +1652,8 @@ const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per 
 
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
-    {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14,crew:[]},
-    {id:'s2',code:'AIG',name:'An Innocent Girl',client:'Netflix',due:'2025-12-01',teamSize:2,weeksLeft:28,crew:[]},
-  ],
-  contacts:[
-    {id:'c1',name:'Katherine Soares',role:'VFX Supervisor',company:'MPP Features',email:'k.soares@mpp.com',phone:'',type:'supervisor',skills:['supervision','review','client'],avail:'freelance',rate:'',notes:'Key supervisor contact — CRL & AIG',color:'#4a9eff'},
+    {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
+    {id:'s2',code:'AIG',name:'An Innocent Girl',client:'Netflix',due:'2025-12-01',teamSize:2,weeksLeft:28},
   ],
   shots:[
     {id:'sh1',sid:'s1',code:'136_STL_0080',seq:'STL',status:'wip',who:'Ruben',notes:'Drone stabilization — Mocha track needs review',ci:1001,co:1087,bid:2.5},
@@ -1998,14 +1744,12 @@ function getWebhook(){return localStorage.getItem('vtek_webhook')||'';}
 
 function migrateTasks(){
   S.tasks=S.tasks.map(t=>({subtasks:[],tags:[],color:'',notes:t.notes||'',dep:'',expanded:false,dur:t.dur||PRI_DUR[t.pri]||45,...t,pri:['critical','high','med','low'].includes(t.pri)?t.pri:'med'}));
-  if(!S.contacts) S.contacts=[];
-  S.shows=S.shows.map(s=>({crew:[],...s}));
 }
 
 // ═══════════════════════════════
 // NAV
 // ═══════════════════════════════
-const PN={hangar:'HANGAR',shots:'SHOTS',payload:'PAYLOAD',plan:'PLAN',vault:'VAULT',team:'TEAM',intel:'INTEL',settings:'CONFIG'};
+const PN={hangar:'HANGAR',shots:'SHOTS',payload:'PAYLOAD',plan:'PLAN',vault:'VAULT',intel:'INTEL',settings:'CONFIG'};
 function sw(p){
   document.querySelectorAll('.page').forEach(e=>e.classList.remove('on'));
   document.querySelectorAll('.nb').forEach(e=>e.classList.remove('on'));
@@ -2017,7 +1761,6 @@ function sw(p){
   if(p==='shots')   rShots();
   if(p==='payload') rPayload();
   if(p==='vault')   rVault();
-  if(p==='team')    rTeam();
   if(p==='intel')   { checkKeyWarning(); }
   if(p==='plan')    { setPayloadMode('plan'); return; }
 }
@@ -3255,736 +2998,302 @@ function searchKeyNav(e){
 }
 
 // ═══════════════════════════════
-// PLAN MODE ENGINE
+// PLAN MODE ENGINE — Touch-first
 // ═══════════════════════════════
 
-const WORK_START = 10; // 10am
-const WORK_END   = 19; // 7pm
-const LUNCH_START = 13;
-const LUNCH_END   = 14;
-
-let planSchedule  = []; // [{taskId, startH, startM, durMins}]
-let planCalEvents = []; // [{title, startH, startM, durMins, id}]
-let planDragging  = null;
+const WORK_START=10,WORK_END=19,LUNCH_START=13,LUNCH_END=14;
+let planSchedule=[],planCalEvents=[],planSelected=null,planPoolOpen=true;
 
 function setPayloadMode(mode){
-  const execPage = document.getElementById('pg-payload');
-  const planPage = document.getElementById('pg-plan');
-  const execBtn  = document.getElementById('pmode-execute');
-  const planBtn  = document.getElementById('pmode-plan');
+  const ep=document.getElementById('pg-payload'),pp=document.getElementById('pg-plan');
+  const eb=document.getElementById('pmode-execute'),pb=document.getElementById('pmode-plan');
   if(mode==='plan'){
-    execPage.classList.remove('on');
-    planPage.classList.add('on');
-    if(execBtn) execBtn.classList.remove('on');
-    if(planBtn) planBtn.classList.add('on');
+    ep.classList.remove('on');pp.classList.add('on');
+    eb&&eb.classList.remove('on');pb&&pb.classList.add('on');
     document.getElementById('wm-p').textContent='PLAN';
     initPlanMode();
   } else {
-    planPage.classList.remove('on');
-    execPage.classList.add('on');
-    if(planBtn) planBtn.classList.remove('on');
-    if(execBtn) execBtn.classList.add('on');
+    pp.classList.remove('on');ep.classList.add('on');
+    pb&&pb.classList.remove('on');eb&&eb.classList.add('on');
     document.getElementById('wm-p').textContent='PAYLOAD';
     rPayload();
   }
 }
 
 async function initPlanMode(){
-  // Set date label
-  const dl = document.getElementById('plan-date-label');
-  if(dl) dl.textContent = new Date().toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}).toUpperCase();
-
-  // Render timeline first
-  renderTimeline();
-
-  // Pull calendar events
-  await fetchCalendarEvents();
-
-  // Render unscheduled tasks
-  renderTaskPool();
-
-  // Re-render timeline with cal events
-  renderTimeline();
-
-  // Restore any saved schedule for today
+  const dl=document.getElementById('plan-date-label');
+  if(dl) dl.textContent=new Date().toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}).toUpperCase();
+  planSelected=null;
   loadSavedPlan();
+  await fetchCalendarEvents();
+  renderTaskPool();
+  renderTimeline();
 }
 
-function renderTimeline(){
-  const tl = document.getElementById('plan-timeline');
-  if(!tl) return;
-  let html = '';
-  const now = new Date();
-  const nowMins = now.getHours()*60 + now.getMinutes();
-
-  for(let h = WORK_START; h < WORK_END; h++){
-    // Full hour slot
-    html += buildSlot(h, 0, nowMins);
-    // Half hour slot
-    html += buildSlot(h, 30, nowMins);
-  }
-  tl.innerHTML = html;
-
-  // Render calendar conflict blocks
-  planCalEvents.forEach(ev => placeCalBlock(ev));
-
-  // Render lunch
-  placeLunchBlock();
-
-  // Render scheduled tasks
-  planSchedule.forEach(entry => placeBlock(entry));
-
-  // Drop zone listeners
-  tl.querySelectorAll('.plan-slot-body').forEach(body => {
-    body.addEventListener('dragover', e => { e.preventDefault(); body.closest('.plan-slot').classList.add('drop-target'); });
-    body.addEventListener('dragleave', e => { body.closest('.plan-slot').classList.remove('drop-target'); });
-    body.addEventListener('drop', e => {
-      e.preventDefault();
-      body.closest('.plan-slot').classList.remove('drop-target');
-      const slotH = parseInt(body.closest('.plan-slot').dataset.h);
-      const slotM = parseInt(body.closest('.plan-slot').dataset.m);
-      if(!planDragging) return;
-      // Remove from schedule if already there
-      planSchedule = planSchedule.filter(s => s.taskId !== planDragging.id);
-      // Add at new slot
-      planSchedule.push({ taskId: planDragging.id, startH: slotH, startM: slotM, durMins: planDragging.dur||45 });
-      savePlan();
-      renderTimeline();
-      renderTaskPool();
-      updateTotalTime();
-    });
-  });
-}
-
-function buildSlot(h, m, nowMins){
-  const totalMins = h*60+m;
-  const isNow = Math.abs(totalMins - nowMins) < 30;
-  const label = m === 0 ? formatHour(h) : '';
-  const isLunch = (h===LUNCH_START && m===0);
-  return `<div class="plan-slot${m===30?' half-hour':''}" data-h="${h}" data-m="${m}">
-    <div class="plan-slot-time">${label}</div>
-    <div class="plan-slot-body" data-h="${h}" data-m="${m}">
-      ${isNow?`<div class="plan-now-line"><div class="plan-now-dot"></div></div>`:''}
-    </div>
-  </div>`;
-}
-
-function formatHour(h){
-  const ampm = h>=12?'PM':'AM';
-  const h12 = h>12?h-12:h;
-  return `${h12}${ampm}`;
-}
-
-function placeLunchBlock(){
-  const body = slotBody(LUNCH_START, 0);
-  if(!body) return;
-  body.insertAdjacentHTML('beforeend',`<div class="plan-lunch-block">
-    <div class="plan-lunch-title">🍽 Lunch — 1:00–2:00 PM</div>
-  </div>`);
-}
-
-function placeCalBlock(ev){
-  const body = slotBody(ev.startH, ev.startM < 30 ? 0 : 30);
-  if(!body) return;
-  const endH = ev.startH + Math.floor((ev.startM + ev.durMins)/60);
-  const endM = (ev.startM + ev.durMins) % 60;
-  body.insertAdjacentHTML('beforeend',`<div class="plan-cal-block">
-    <div class="plan-cal-block-title">${ev.title}</div>
-    <div class="plan-cal-block-time">${fmtTime(ev.startH,ev.startM)} – ${fmtTime(endH,endM)} · CALENDAR</div>
-  </div>`);
-}
-
-function placeBlock(entry){
-  const task = S.tasks.find(t=>t.id===entry.taskId);
-  if(!task) return;
-  const body = slotBody(entry.startH, entry.startM < 30 ? 0 : 30);
-  if(!body) return;
-  const endH = entry.startH + Math.floor((entry.startM + entry.durMins)/60);
-  const endM = (entry.startM + entry.durMins) % 60;
-  const show = gs(task.sid);
-  const col = task.color || (show?.color||'var(--p5)');
-  body.insertAdjacentHTML('beforeend',`<div class="plan-block" style="--bc:${col}" draggable="true"
-    data-tid="${task.id}"
-    ondragstart="planBlockDragStart(event,'${task.id}')">
-    <button class="plan-block-remove" onclick="removePlanBlock('${task.id}')">✕</button>
-    <div class="plan-block-title">${task.title}</div>
-    <div class="plan-block-meta">
-      <span class="plan-block-time">${fmtTime(entry.startH,entry.startM)} – ${fmtTime(endH,endM)}</span>
-      <span class="plan-block-dur">${entry.durMins}min</span>
-    </div>
-  </div>`);
-}
-
-function slotBody(h, m){
-  const tl = document.getElementById('plan-timeline');
-  if(!tl) return null;
-  return tl.querySelector(`.plan-slot-body[data-h="${h}"][data-m="${m}"]`);
-}
-
-function fmtTime(h, m){
-  const ampm = h>=12?'pm':'am';
-  const h12 = h>12?h-12:(h===0?12:h);
-  return `${h12}:${String(m).padStart(2,'0')}${ampm}`;
+function toggleTaskPool(){
+  const section=document.getElementById('plan-pool-section');
+  const toggle=document.getElementById('plan-pool-toggle');
+  planPoolOpen=!planPoolOpen;
+  section&&section.classList.toggle('plan-pool-collapsed',!planPoolOpen);
+  if(toggle){toggle.textContent=planPoolOpen?'▼':'▶';toggle.classList.toggle('open',planPoolOpen);}
 }
 
 function renderTaskPool(){
-  const pool = document.getElementById('plan-task-pool');
+  const pool=document.getElementById('plan-task-pool');
+  const countEl=document.getElementById('plan-pool-count');
   if(!pool) return;
-  // Show open tasks not yet scheduled today
-  const scheduled = new Set(planSchedule.map(s=>s.taskId));
-  const tasks = S.tasks.filter(t=>!t.done && !scheduled.has(t.id));
-  if(!tasks.length){
-    pool.innerHTML=`<div style="padding:16px 8px;font-family:var(--display);font-size:11px;color:var(--t2);text-align:center;line-height:1.8;">ALL TASKS<br>SCHEDULED</div>`;
-    return;
-  }
-  const priColor = {high:'var(--s-blk)',med:'var(--rs-warn-t)',low:'var(--t2)'};
-  pool.innerHTML = tasks.map(t=>{
-    const show = gs(t.sid);
-    const col = t.color||(show?.color||'var(--p5)');
-    const pc = priColor[t.pri]||'var(--t2)';
-    return `<div class="plan-task-chip" style="--tc:${col}"
-      draggable="true"
-      ondragstart="planChipDragStart(event,'${t.id}',${t.dur||45})">
-      <div class="plan-chip-title">${t.title}</div>
-      <div class="plan-chip-meta">
-        <span class="plan-chip-dur">${t.dur||45}min</span>
-        <span class="plan-chip-pri" style="--pc:${pc}">${t.pri.toUpperCase()}</span>
-      </div>
-      <button class="plan-chip-fit-btn" onclick="makeItFit('${t.id}')">MAKE IT FIT</button>
-    </div>`;
+  const scheduled=new Set(planSchedule.map(s=>s.taskId));
+  const tasks=S.tasks.filter(t=>!t.done);
+  const unscheduled=tasks.filter(t=>!scheduled.has(t.id));
+  if(countEl) countEl.textContent=unscheduled.length?'('+unscheduled.length+')':'';
+  if(!tasks.length){pool.innerHTML='<div style="padding:8px;font-family:var(--display);font-size:11px;color:var(--t2)">NO OPEN TASKS</div>';return;}
+  const priColor={high:'var(--s-blk)',med:'var(--rs-warn-t)',low:'var(--t2)'};
+  pool.innerHTML=tasks.map(t=>{
+    const show=gs(t.sid);
+    const col=t.color||(show?.color||'var(--p5)');
+    const pc=priColor[t.pri]||'var(--t2)';
+    const isSched=scheduled.has(t.id);
+    const isSel=planSelected&&planSelected.id===t.id;
+    const safeTitle=t.title.replace(/'/g,'&apos;').replace(/"/g,'&quot;');
+    return '<div class="plan-task-chip'+(isSched?' scheduled':'')+(isSel?' selected':'')+'" style="--tc:'+col+'" data-tid="'+t.id+'" data-dur="'+(t.dur||45)+'" onclick="planChipClick(this)">'
+      +'<div class="plan-chip-selected-indicator">✓</div>'
+      +'<div class="plan-chip-title">'+t.title+'</div>'
+      +'<div class="plan-chip-meta"><span class="plan-chip-dur">'+(t.dur||45)+'min</span>'
+      +'<span class="plan-chip-pri" style="--pc:'+pc+'">'+t.pri.toUpperCase()+'</span></div>'
+      +(!isSched?'<button class="plan-chip-fit" data-fitid="'+t.id+'" onclick="makeItFitChip(this)">MAKE IT FIT</button>':'')
+      +'</div>';
   }).join('');
 }
 
-function planChipDragStart(e, id, dur){
-  planDragging = {id, dur};
-  e.dataTransfer.effectAllowed='move';
+function planChipClick(el){
+  const id=el.dataset.tid;
+  const dur=parseInt(el.dataset.dur)||45;
+  const task=S.tasks.find(t=>t.id===id);
+  if(!task) return;
+  selectPlanTask(id,task.title,dur);
 }
 
-function planBlockDragStart(e, id){
-  const entry = planSchedule.find(s=>s.taskId===id);
-  if(entry) planDragging = {id, dur:entry.durMins};
-  e.dataTransfer.effectAllowed='move';
+function selectPlanTask(id,title,dur){
+  if(planSelected&&planSelected.id===id){planSelected=null;hideSelectionHint();}
+  else{planSelected={id,title,dur};showSelectionHint(title);}
+  renderTaskPool();
+  document.querySelectorAll('.plan-slot-body').forEach(b=>b.classList.toggle('has-selection',!!planSelected));
+}
+
+function showSelectionHint(title){
+  let hint=document.getElementById('plan-selected-hint');
+  if(!hint){hint=document.createElement('div');hint.id='plan-selected-hint';hint.className='plan-selected-hint';document.body.appendChild(hint);}
+  hint.textContent='TAP A TIME SLOT TO PLACE "'+title.toUpperCase()+'"';
+  hint.classList.add('show');
+}
+function hideSelectionHint(){const h=document.getElementById('plan-selected-hint');if(h)h.classList.remove('show');}
+
+function renderTimeline(){
+  const tl=document.getElementById('plan-timeline');
+  if(!tl) return;
+  const now=new Date();
+  const nowMins=now.getHours()*60+now.getMinutes();
+  let html='';
+  for(let h=WORK_START;h<WORK_END;h++){
+    html+=buildSlotHTML(h,0,nowMins);
+    html+=buildSlotHTML(h,30,nowMins);
+  }
+  tl.innerHTML=html;
+  tl.querySelectorAll('.plan-slot-body').forEach(body=>{
+    body.addEventListener('click',()=>onSlotTap(parseInt(body.dataset.h),parseInt(body.dataset.m)));
+  });
+  placeLunchBlock();
+  planCalEvents.forEach(ev=>placeCalBlock(ev));
+  planSchedule.forEach(entry=>placeBlock(entry));
+  updateTotalTime();
+}
+
+function buildSlotHTML(h,m,nowMins){
+  const totalMins=h*60+m;
+  const isNow=totalMins<=nowMins&&nowMins<totalMins+30;
+  const label=m===0?formatHour(h):'';
+  const nowPct=isNow?Math.round((nowMins-totalMins)/30*100):-1;
+  return '<div class="plan-slot'+(m===30?' half-hour':'')+'" data-h="'+h+'" data-m="'+m+'">'
+    +'<div class="plan-slot-time">'+label+'</div>'
+    +'<div class="plan-slot-body" data-h="'+h+'" data-m="'+m+'">'
+    +(nowPct>=0?'<div class="plan-now-line" style="top:'+nowPct+'%"><div class="plan-now-dot"></div></div>':'')
+    +'</div></div>';
+}
+
+function formatHour(h){const ampm=h>=12?'PM':'AM',h12=h>12?h-12:(h===0?12:h);return h12+ampm;}
+function fmtTime(h,m){const ampm=h>=12?'pm':'am',h12=h>12?h-12:(h===0?12:h);return h12+':'+String(m).padStart(2,'0')+ampm;}
+function slotBody(h,m){const tl=document.getElementById('plan-timeline');if(!tl)return null;return tl.querySelector('.plan-slot-body[data-h="'+h+'"][data-m="'+m+'"]');}
+
+function placeLunchBlock(){
+  const body=slotBody(LUNCH_START,0);
+  if(!body) return;
+  body.insertAdjacentHTML('beforeend','<div class="plan-lunch-block"><div class="plan-lunch-title">LUNCH 1:00–2:00 PM</div></div>');
+}
+
+function placeCalBlock(ev){
+  const m30=ev.startM<30?0:30;
+  const body=slotBody(ev.startH,m30);
+  if(!body) return;
+  const endH=Math.floor((ev.startH*60+ev.startM+ev.durMins)/60);
+  const endM=(ev.startM+ev.durMins)%60;
+  body.insertAdjacentHTML('beforeend','<div class="plan-cal-block"><div class="plan-cal-title">'+ev.title+'<span class="plan-cal-badge">CALENDAR</span></div><div class="plan-cal-time">'+fmtTime(ev.startH,ev.startM)+' – '+fmtTime(endH,endM)+'</div></div>');
+}
+
+function placeBlock(entry){
+  const task=S.tasks.find(t=>t.id===entry.taskId);
+  if(!task) return;
+  const m30=entry.startM<30?0:30;
+  const body=slotBody(entry.startH,m30);
+  if(!body) return;
+  const endH=Math.floor((entry.startH*60+entry.startM+entry.durMins)/60);
+  const endM=(entry.startM+entry.durMins)%60;
+  const show=gs(task.sid);
+  const col=task.color||(show?.color||'var(--p5)');
+  body.insertAdjacentHTML('beforeend','<div class="plan-block" style="--bc:'+col+'" data-bid="'+task.id+'"><button class="plan-block-remove" onclick="removePlanBlockEl(this)">✕</button><div class="plan-block-title">'+task.title+'</div><div class="plan-block-meta"><span class="plan-block-time">'+fmtTime(entry.startH,entry.startM)+'–'+fmtTime(endH,endM)+'</span><span class="plan-block-dur">'+entry.durMins+'min</span></div></div>');
+}
+
+function onSlotTap(h,m){
+  if(!planSelected) return;
+  if(isSlotBlocked(h,m,planSelected.dur)){toast('SLOT BLOCKED');return;}
+  planSchedule=planSchedule.filter(s=>s.taskId!==planSelected.id);
+  planSchedule.push({taskId:planSelected.id,startH:h,startM:m,durMins:planSelected.dur});
+  const placed=planSelected;
+  planSelected=null;
+  hideSelectionHint();
+  savePlan();
+  renderTimeline();
+  renderTaskPool();
+  toast('PLACED — '+fmtTime(placed.startH||h,placed.startM||m));
+}
+
+function isSlotBlocked(h,m,dur){
+  const ns=h*60+m,ne=ns+dur;
+  if(ns<LUNCH_END*60&&ne>LUNCH_START*60) return true;
+  for(const ev of planCalEvents){const es=ev.startH*60+ev.startM,ee=es+ev.durMins;if(ns<ee&&ne>es)return true;}
+  return false;
+}
+
+function removePlanBlockEl(btn){
+  const id=btn.closest('[data-bid]')?.dataset.bid;
+  if(id) removePlanBlock(id);
 }
 
 function removePlanBlock(taskId){
-  planSchedule = planSchedule.filter(s=>s.taskId!==taskId);
-  savePlan();
-  renderTimeline();
-  renderTaskPool();
-  updateTotalTime();
+  planSchedule=planSchedule.filter(s=>s.taskId!==taskId);
+  savePlan();renderTimeline();renderTaskPool();updateTotalTime();
 }
 
 function updateTotalTime(){
-  const el = document.getElementById('plan-total-time');
+  const el=document.getElementById('plan-total-time');
   if(!el) return;
-  const total = planSchedule.reduce((sum,s)=>sum+s.durMins,0);
-  if(!total){ el.textContent=''; return; }
-  const h = Math.floor(total/60), m = total%60;
-  el.textContent = h>0 ? `${h}h ${m>0?m+'m':''}` : `${m}m`;
+  const total=planSchedule.reduce((sum,s)=>sum+s.durMins,0);
+  if(!total){el.textContent='';return;}
+  const h=Math.floor(total/60),m=total%60;
+  el.textContent=h>0?h+'h'+(m?' '+m+'m':''):m+'m';
 }
 
-// ── MAKE IT FIT ──
+function makeItFitChip(el){
+  event.stopPropagation();
+  makeItFit(el.dataset.fitid);
+}
+
 function makeItFit(taskId){
-  const task = S.tasks.find(t=>t.id===taskId);
-  if(!task){ toast('TASK NOT FOUND'); return; }
-  const dur = task.dur||45;
-
-  // Build busy intervals
-  const busy = buildBusyIntervals();
-
-  // Find first gap
-  const gap = findFirstGap(dur, busy);
-  if(!gap){ toast('NO GAP FOUND TODAY — try a shorter duration'); return; }
-
-  // Remove from schedule if already there
-  planSchedule = planSchedule.filter(s=>s.taskId!==taskId);
-  planSchedule.push({ taskId, startH:gap.h, startM:gap.m, durMins:dur });
-  savePlan();
-  renderTimeline();
-  renderTaskPool();
-  updateTotalTime();
-  toast(`FITTED — ${fmtTime(gap.h,gap.m)}`);
+  const task=S.tasks.find(t=>t.id===taskId);
+  if(!task){toast('TASK NOT FOUND');return;}
+  const dur=task.dur||45;
+  const gap=findFirstGap(dur,buildBusyIntervals());
+  if(!gap){toast('NO GAP TODAY');return;}
+  planSchedule=planSchedule.filter(s=>s.taskId!==taskId);
+  planSchedule.push({taskId,startH:gap.h,startM:gap.m,durMins:dur});
+  savePlan();renderTimeline();renderTaskPool();updateTotalTime();
+  toast('FITTED — '+fmtTime(gap.h,gap.m));
 }
 
 function buildBusyIntervals(){
-  const busy = [];
-
-  // Lunch
-  busy.push({start:LUNCH_START*60, end:LUNCH_END*60});
-
-  // Calendar events
-  planCalEvents.forEach(ev=>{
-    busy.push({start:ev.startH*60+ev.startM, end:ev.startH*60+ev.startM+ev.durMins});
-  });
-
-  // Already scheduled tasks
-  planSchedule.forEach(s=>{
-    busy.push({start:s.startH*60+s.startM, end:s.startH*60+s.startM+s.durMins});
-  });
-
-  // Sort
-  busy.sort((a,b)=>a.start-b.start);
-  return busy;
+  const busy=[{start:LUNCH_START*60,end:LUNCH_END*60}];
+  planCalEvents.forEach(ev=>busy.push({start:ev.startH*60+ev.startM,end:ev.startH*60+ev.startM+ev.durMins}));
+  planSchedule.forEach(s=>busy.push({start:s.startH*60+s.startM,end:s.startH*60+s.startM+s.durMins}));
+  return busy.sort((a,b)=>a.start-b.start);
 }
 
-function findFirstGap(durMins, busy){
-  let cursor = WORK_START*60;
-  const end = WORK_END*60;
-
-  for(const b of busy){
-    if(cursor + durMins <= b.start){
-      // Gap found before this busy block
-      return {h:Math.floor(cursor/60), m:cursor%60};
-    }
-    cursor = Math.max(cursor, b.end);
-  }
-  // Check gap after last busy block
-  if(cursor + durMins <= end){
-    return {h:Math.floor(cursor/60), m:cursor%60};
-  }
+function findFirstGap(dur,busy){
+  let cursor=WORK_START*60;
+  for(const b of busy){if(cursor+dur<=b.start)return{h:Math.floor(cursor/60),m:cursor%60};cursor=Math.max(cursor,b.end);}
+  if(cursor+dur<=WORK_END*60)return{h:Math.floor(cursor/60),m:cursor%60};
   return null;
 }
 
-// ── INTEL SUGGEST ──
 async function planSuggest(){
-  const btn = document.getElementById('plan-suggest-btn');
-  if(btn){ btn.style.opacity='0.4'; btn.style.pointerEvents='none'; }
-
-  const banner = document.getElementById('plan-suggest-banner');
-  const txt    = document.getElementById('plan-suggest-txt');
-  if(banner){ banner.style.display='block'; }
-  if(txt){ txt.textContent='INTEL thinking…'; }
-
-  const tasks = S.tasks.filter(t=>!t.done);
-  const calSummary = planCalEvents.map(e=>`${fmtTime(e.startH,e.startM)} ${e.title} (${e.durMins}min)`).join(', ')||'None';
-  const taskSummary = tasks.map(t=>`[${t.pri}] ${t.title} ${t.dur||45}min`).join(', ')||'None';
-
-  const prompt = `You are INTEL, a VFX production assistant. Suggest the optimal schedule for today.
-
-Work window: 10:00 AM – 7:00 PM. Lunch: 1:00 PM – 2:00 PM (locked).
-
-Existing calendar events (LOCKED — do not schedule over): ${calSummary}
-
-Open tasks to schedule: ${taskSummary}
-
-Give a brief 2-3 sentence suggestion on how to order tasks for maximum impact today. Be specific about which tasks to do first and why. Then suggest exact time slots for the top 3 tasks.`;
-
-  const key = getKey();
-  if(!key){
-    if(txt) txt.textContent='Add API key in CONFIG to use INTEL suggestions.';
-    if(btn){ btn.style.opacity=''; btn.style.pointerEvents=''; }
-    return;
-  }
-
+  const btn=document.getElementById('plan-suggest-btn');
+  const banner=document.getElementById('plan-suggest-banner');
+  const txt=document.getElementById('plan-suggest-txt');
+  if(btn){btn.style.opacity='0.4';btn.style.pointerEvents='none';}
+  if(banner) banner.style.display='block';
+  if(txt) txt.textContent='INTEL thinking…';
+  const key=getKey();
+  if(!key){if(txt)txt.textContent='Add API key in CONFIG to use INTEL.';if(btn){btn.style.opacity='';btn.style.pointerEvents='';}return;}
+  const calSum=planCalEvents.length?planCalEvents.map(e=>fmtTime(e.startH,e.startM)+' '+e.title+' ('+e.durMins+'min)').join(', '):'None';
+  const taskSum=S.tasks.filter(t=>!t.done).map(t=>'['+t.pri+'] '+t.title+' ('+(t.dur||45)+'min)').join(', ')||'None';
   try{
-    const res = await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'x-api-key':key,
-        'anthropic-version':'2023-06-01',
-        'anthropic-dangerous-direct-browser-access':'true',
-      },
-      body:JSON.stringify({
-        model:'claude-haiku-4-5-20251001',
-        max_tokens:400,
-        messages:[{role:'user',content:prompt}]
-      })
-    });
-    const data = await res.json();
-    const reply = data.content?.[0]?.text||'No suggestion.';
-    if(txt) txt.textContent = reply;
-  }catch(e){
-    if(txt) txt.textContent = 'INTEL unavailable — check API key.';
-  }finally{
-    if(btn){ btn.style.opacity=''; btn.style.pointerEvents=''; }
-  }
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:300,messages:[{role:'user',content:'INTEL — VFX assistant. Work 10am-7pm, lunch 1-2pm locked. Calendar: '+calSum+'. Tasks: '+taskSum+'. Give 2-3 sentence suggestion on best order and time slots. Be specific.'}]})});
+    const data=await res.json();
+    if(txt) txt.textContent=data.content?.[0]?.text||'No suggestion.';
+  }catch(e){if(txt)txt.textContent='INTEL unavailable.';}
+  finally{if(btn){btn.style.opacity='';btn.style.pointerEvents='';}}
 }
 
-// ── COMMIT ──
 async function planCommit(){
-  if(!planSchedule.length){ toast('NOTHING SCHEDULED YET'); return; }
-
-  const status = document.getElementById('plan-commit-status');
-  const txt    = document.getElementById('plan-commit-txt');
+  if(!planSchedule.length){toast('NOTHING SCHEDULED');return;}
+  const status=document.getElementById('plan-commit-status');
+  const txt=document.getElementById('plan-commit-txt');
   if(status) status.style.display='flex';
-  if(txt) txt.textContent = 'Creating calendar events…';
+  const dateStr=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+  const lines=planSchedule.map(entry=>{
+    const task=S.tasks.find(t=>t.id===entry.taskId);if(!task)return null;
+    const show=gs(task.sid);
+    const endH=Math.floor((entry.startH*60+entry.startM+entry.durMins)/60);
+    const endM=(entry.startM+entry.durMins)%60;
+    return fmtTime(entry.startH,entry.startM)+'–'+fmtTime(endH,endM)+' · '+task.title+(show?' ('+show.code+')':'')+' · '+entry.durMins+'min';
+  }).filter(Boolean);
+  const msg='Seconds, commit my schedule to Google Calendar for '+dateStr+':\n\n'+lines.join('\n')+'\n\nCreate each as a Google Calendar event with the exact times listed.';
 
-  const today = new Date();
-  const tz = 'America/New_York';
-  let created = 0;
 
-  for(const entry of planSchedule){
-    const task = S.tasks.find(t=>t.id===entry.taskId);
-    if(!task) continue;
+')+'
 
-    const start = new Date(today);
-    start.setHours(entry.startH, entry.startM, 0, 0);
-    const end = new Date(start.getTime() + entry.durMins*60000);
-
-    const show = gs(task.sid);
-    const desc = `VTEK task${show?' — '+show.code:''} · ${entry.durMins}min · Priority: ${task.pri.toUpperCase()}${task.notes?'\n\n'+task.notes:''}`;
-
-    try{
-      // Signal Claude chat to create the event
-      // Store in localStorage for Claude to read
-      const pending = JSON.parse(localStorage.getItem('vtek_pending_events')||'[]');
-      pending.push({
-        summary: task.title,
-        start: start.toISOString(),
-        end: end.toISOString(),
-        description: desc,
-        timeZone: tz,
-        created: false,
-      });
-      localStorage.setItem('vtek_pending_events', JSON.stringify(pending));
-      created++;
-    }catch(e){
-      console.error('Failed to stage event:', e);
-    }
-  }
-
-  if(txt) txt.textContent = `${created} event${created!==1?'s':''} staged — say "Seconds, commit my schedule" in Claude`;
-
-  // Also save human-readable summary to clipboard
-  const summary = planSchedule.map(entry=>{
-    const task = S.tasks.find(t=>t.id===entry.taskId);
-    if(!task) return '';
-    return `${fmtTime(entry.startH,entry.startM)} — ${task.title} (${entry.durMins}min)`;
-  }).filter(Boolean).join('\n');
 
   try{
-    await navigator.clipboard.writeText(
-      `Seconds, commit my schedule to Google Calendar:\n\n${summary}\n\nToday: ${today.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'})}`
-    );
-    toast('SCHEDULE COPIED — paste in Claude chat');
+    await navigator.clipboard.writeText(msg);
+    if(txt) txt.textContent='Copied — paste in Claude chat to commit '+lines.length+' event'+(lines.length!==1?'s':'');
+    toast('COPIED — paste in Claude chat');
   }catch(e){
-    toast(`${created} EVENTS STAGED`);
+    if(txt) txt.textContent=msg;
   }
-
-  setTimeout(()=>{
-    if(status) status.style.display='none';
-  }, 4000);
+  setTimeout(()=>{if(status)status.style.display='none';},6000);
 }
 
-// ── CALENDAR FETCH ──
 async function fetchCalendarEvents(){
-  const statusEl = document.getElementById('plan-cal-status');
-  planCalEvents = [];
-
-  // Try to get events from stored schedule (from Claude)
-  // Claude writes cal events to localStorage when it fetches them
-  const cached = localStorage.getItem('vtek_cal_events_today');
-  if(cached){
-    try{
-      const parsed = JSON.parse(cached);
-      const today = new Date().toDateString();
-      if(parsed.date === today){
-        planCalEvents = parsed.events;
-        if(statusEl) statusEl.style.display='none';
-        return;
-      }
-    }catch(e){}
-  }
-
-  // No cached events — show prompt for user
-  if(statusEl){
-    statusEl.innerHTML = `<span style="color:var(--t1)">Say <strong>"Seconds, load my calendar for PLAN mode"</strong> in Claude to pull today's events</span>`;
-  }
+  const statusEl=document.getElementById('plan-cal-status');
+  const txtEl=document.getElementById('plan-cal-txt');
+  planCalEvents=[];
+  const cached=localStorage.getItem('vtek_cal_events_today');
+  if(cached){try{const p=JSON.parse(cached);if(p.date===new Date().toDateString()){planCalEvents=p.events||[];if(statusEl)statusEl.style.display='none';return;}}catch(e){}}
+  if(statusEl){statusEl.style.display='flex';if(txtEl)txtEl.textContent='Say "Seconds, load my calendar" in Claude to pull today\'s events';}
 }
 
-// Called by Claude externally to inject calendar events
 function injectCalendarEvents(events){
-  planCalEvents = events;
-  const statusEl = document.getElementById('plan-cal-status');
-  if(statusEl) statusEl.style.display='none';
-  // Cache for today
-  localStorage.setItem('vtek_cal_events_today', JSON.stringify({
-    date: new Date().toDateString(),
-    events
-  }));
+  planCalEvents=events||[];
+  const el=document.getElementById('plan-cal-status');
+  if(el) el.style.display='none';
+  localStorage.setItem('vtek_cal_events_today',JSON.stringify({date:new Date().toDateString(),events:planCalEvents}));
   renderTimeline();
-  toast(`${events.length} CALENDAR EVENT${events.length!==1?'S':''} LOADED`);
+  toast(planCalEvents.length+' CALENDAR EVENT'+(planCalEvents.length!==1?'S':'')+' LOADED');
 }
 
-// ── PERSIST ──
-function savePlan(){
-  const today = new Date().toDateString();
-  localStorage.setItem('vtek_plan_'+today, JSON.stringify(planSchedule));
-}
+function savePlan(){localStorage.setItem('vtek_plan_'+new Date().toDateString(),JSON.stringify(planSchedule));}
+function loadSavedPlan(){const s=localStorage.getItem('vtek_plan_'+new Date().toDateString());planSchedule=s?JSON.parse(s):[];}
 
-function loadSavedPlan(){
-  const today = new Date().toDateString();
-  const saved = localStorage.getItem('vtek_plan_'+today);
-  if(saved){
-    try{ planSchedule = JSON.parse(saved); renderTimeline(); renderTaskPool(); updateTotalTime(); }
-    catch(e){ planSchedule = []; }
-  }
-}
-
-// ═══════════════════════════════
-// TEAM PAGE
-// ═══════════════════════════════
-
-function rTeam(){
-  rTeamRoster();
-  rTeamShowTabs();
-  rTeamShowCrew();
-}
-
-function rTeamRoster(){
-  const el=document.getElementById('team-roster');
-  if(!el)return;
-  const contacts=S.contacts||[];
-  if(!contacts.length){el.innerHTML='<div class="team-empty">No contacts yet<br>Tap + ADD to add your first crew member</div>';return;}
-  el.innerHTML=contacts.map(ct=>{
-    const initials=ct.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
-    const skills=(ct.skills||[]).slice(0,3).map(s=>`<span class="contact-skill">${s}</span>`).join('');
-    const availLabel={fulltime:'FT',parttime:'PT',freelance:'FREELANCE',vendor:'VENDOR'}[ct.avail]||ct.avail||'';
-    const assignedShows=S.shows.filter(s=>(s.crew||[]).includes(ct.id)).map(s=>s.code).join(', ');
-    return `<div class="contact-card" style="--cc:${ct.color||'var(--p5)'}" onclick="editContact('${ct.id}')">
-      <div class="contact-avatar" style="color:${ct.color||'var(--t1)'};border-color:${ct.color||'var(--b1)'}">${initials}</div>
-      <div class="contact-info">
-        <div class="contact-name">${ct.name}</div>
-        <div class="contact-role">${ct.role||''}${ct.company?' · '+ct.company:''}</div>
-        <div class="contact-badges">
-          ${availLabel?`<span class="contact-badge">${availLabel}</span>`:''}
-          ${ct.type?`<span class="contact-badge">${ct.type.toUpperCase()}</span>`:''}
-          ${assignedShows?`<span class="contact-badge" style="color:var(--t1)">${assignedShows}</span>`:''}
-          ${skills}
-        </div>
-      </div>
-      <div class="contact-actions" onclick="event.stopPropagation()">
-        <button class="contact-action-btn" onclick="editContact('${ct.id}')">EDIT</button>
-        <button class="contact-action-btn danger" onclick="deleteContact('${ct.id}')">REMOVE</button>
-      </div>
-    </div>`;
-  }).join('');
-}
-
-function rTeamShowTabs(){
-  const el=document.getElementById('team-show-tabs');
-  if(!el)return;
-  el.innerHTML=S.shows.map((s,i)=>`<button class="stab${i===0?' on':''}" onclick="teamSelectShow('${s.id}',this)">${s.code}</button>`).join('');
-  teamSelectedShow=S.shows[0]?.id||'';
-}
-
-let teamSelectedShow='';
-
-function teamSelectShow(sid,btn){
-  teamSelectedShow=sid;
-  document.querySelectorAll('#team-show-tabs .stab').forEach(b=>b.classList.remove('on'));
-  if(btn) btn.classList.add('on');
-  rTeamShowCrew();
-}
-
-function rTeamShowCrew(){
-  const el=document.getElementById('team-show-crew');
-  if(!el)return;
-  const show=S.shows.find(s=>s.id===teamSelectedShow);
-  if(!show){el.innerHTML='';return;}
-  const crew=(show.crew||[]).map(cid=>(S.contacts||[]).find(c=>c.id===cid)).filter(Boolean);
-  const unassigned=(S.contacts||[]).filter(c=>!(show.crew||[]).includes(c.id));
-  let html='';
-  if(crew.length){
-    html+=crew.map(ct=>{
-      const initials=ct.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
-      return `<div class="crew-row">
-        <div class="crew-avatar-sm" style="color:${ct.color||'var(--t1)'};border-color:${ct.color||'var(--b1)'}">${initials}</div>
-        <div class="crew-info"><div class="crew-name">${ct.name}</div><div class="crew-role">${ct.role||''}${ct.avail?' · '+ct.avail:''}</div></div>
-        <button class="crew-remove" onclick="removeCrew('${show.id}','${ct.id}')">REMOVE</button>
-      </div>`;
-    }).join('');
-  }else{
-    html+=`<div style="padding:16px;font-family:var(--body);font-size:13px;color:var(--t2)">No crew assigned to ${show.code} yet.</div>`;
-  }
-  if(unassigned.length){
-    html+=`<div class="crew-add-row"><select class="crew-select" onchange="addCrew('${show.id}',this.value);this.value=''">
-      <option value="">+ Assign crew member…</option>
-      ${unassigned.map(c=>`<option value="${c.id}">${c.name} — ${c.role||''}</option>`).join('')}
-    </select></div>`;
-  }
-  el.innerHTML=html;
-}
-
-function addCrew(sid,cid){
-  if(!cid)return;
-  const show=S.shows.find(s=>s.id===sid);
-  if(!show)return;
-  if(!show.crew)show.crew=[];
-  if(!show.crew.includes(cid))show.crew.push(cid);
-  save();rTeamShowCrew();rTeamRoster();toast('CREW ASSIGNED');
-}
-
-function removeCrew(sid,cid){
-  const show=S.shows.find(s=>s.id===sid);
-  if(!show||!show.crew)return;
-  show.crew=show.crew.filter(c=>c!==cid);
-  save();rTeamShowCrew();rTeamRoster();toast('REMOVED FROM CREW');
-}
-
-let editContactId=null;
-const CONTACT_COLORS=['#4a9eff','#3ecf6e','#e8c74a','#c42f20','#c792ea','#f78c6c','#89ddff','#ff6b2b','#72788a','#ffffff'];
-let selectedContactColor=CONTACT_COLORS[0];
-
-function openContactSheet(ct){
-  editContactId=ct?.id||null;
-  document.getElementById('contact-sh-title').textContent=ct?'EDIT CONTACT':'NEW CONTACT';
-  document.getElementById('c-name').value=ct?.name||'';
-  document.getElementById('c-role').value=ct?.role||'';
-  document.getElementById('c-company').value=ct?.company||'';
-  document.getElementById('c-email').value=ct?.email||'';
-  document.getElementById('c-phone').value=ct?.phone||'';
-  document.getElementById('c-skills').value=(ct?.skills||[]).join(', ');
-  document.getElementById('c-notes').value=ct?.notes||'';
-  document.getElementById('c-avail').value=ct?.avail||'freelance';
-  document.getElementById('c-type').value=ct?.type||'compositor';
-  const cr=document.getElementById('c-color-row');
-  cr.innerHTML=CONTACT_COLORS.map(col=>`<div class="cp-swatch${ct?.color===col?' on':''}" style="background:${col}" onclick="selectContactColor('${col}',this)"></div>`).join('');
-  selectedContactColor=ct?.color||CONTACT_COLORS[0];
-  openSheet('ol-contact');
-}
-
-function editContact(id){const ct=(S.contacts||[]).find(c=>c.id===id);if(ct)openContactSheet(ct);}
-
-function selectContactColor(col,el){
-  selectedContactColor=col;
-  document.querySelectorAll('#c-color-row .cp-swatch').forEach(s=>s.classList.remove('on'));
-  el.classList.add('on');
-}
-
-function saveContact(){
-  const name=document.getElementById('c-name').value.trim();
-  if(!name){toast('NAME REQUIRED');return;}
-  const skills=document.getElementById('c-skills').value.split(',').map(s=>s.trim()).filter(Boolean);
-  const ct={
-    id:editContactId||'c'+Date.now(),name,
-    role:document.getElementById('c-role').value.trim(),
-    company:document.getElementById('c-company').value.trim(),
-    email:document.getElementById('c-email').value.trim(),
-    phone:document.getElementById('c-phone').value.trim(),
-    avail:document.getElementById('c-avail').value,
-    type:document.getElementById('c-type').value,
-    skills,notes:document.getElementById('c-notes').value.trim(),
-    color:selectedContactColor,
-  };
-  if(!S.contacts)S.contacts=[];
-  if(editContactId){const idx=S.contacts.findIndex(c=>c.id===editContactId);if(idx>=0)S.contacts[idx]=ct;}
-  else S.contacts.push(ct);
-  save();closeSheet('ol-contact');rTeam();
-  toast(editContactId?'CONTACT UPDATED':'CONTACT ADDED');
-}
-
-function deleteContact(id){
-  if(!confirm('Remove this contact?'))return;
-  S.contacts=(S.contacts||[]).filter(c=>c.id!==id);
-  S.shows.forEach(s=>{if(s.crew)s.crew=s.crew.filter(c=>c!==id);});
-  save();rTeam();toast('CONTACT REMOVED');
-}
-
-// ═══════════════════════════════
-// PLAN WEEK VIEW
-// ═══════════════════════════════
-
-let planScope='today';
-let weekDragging=null;
-
-function setPlanScope(scope){
-  planScope=scope;
-  const todayBoard=document.getElementById('plan-today-board');
-  const weekBoard=document.getElementById('plan-week-board');
-  document.getElementById('plan-scope-today')?.classList.toggle('on',scope==='today');
-  document.getElementById('plan-scope-week')?.classList.toggle('on',scope==='week');
-  if(scope==='today'){
-    todayBoard.style.display='flex'; weekBoard.style.display='none';
-    document.getElementById('plan-date-label').textContent=new Date().toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}).toUpperCase();
-    renderTimeline(); renderTaskPool();
-  }else{
-    todayBoard.style.display='none'; weekBoard.style.display='flex';
-    document.getElementById('plan-date-label').textContent='WEEK OF '+getWeekStart().toLocaleDateString('en-US',{month:'short',day:'numeric'}).toUpperCase();
-    renderWeekBoard();
-  }
-}
-
-function getWeekStart(){
-  const d=new Date(); const day=d.getDay();
-  d.setDate(d.getDate()+(day===0?-6:1-day)); d.setHours(0,0,0,0); return d;
-}
-
-function getWeekDays(){
-  const start=getWeekStart();
-  return Array.from({length:5},(_,i)=>{const d=new Date(start);d.setDate(d.getDate()+i);return d;});
-}
-
-function renderWeekBoard(){
-  const board=document.getElementById('week-board');
-  if(!board)return;
-  const days=getWeekDays();
-  const today=new Date(); today.setHours(0,0,0,0);
-  const priColor={high:'var(--s-blk)',med:'var(--rs-warn-t)',low:'var(--t2)'};
-  const weekDateStrs=new Set(days.map(d=>d.toISOString().slice(0,10)));
-  const tasksWithDue=new Set(S.tasks.filter(t=>!t.done&&weekDateStrs.has(t.due)).map(t=>t.id));
-  const unscheduled=S.tasks.filter(t=>!t.done&&!tasksWithDue.has(t.id));
-
-  const taskCard=(t)=>{
-    const show=gs(t.sid); const col=t.color||(show?.color||'var(--p5)');
-    const pc=priColor[t.pri]||'var(--t2)';
-    return `<div class="week-task-card" style="--wc:${col}" draggable="true" data-tid="${t.id}" ondragstart="weekDragStart(event,'${t.id}')">
-      <div class="week-task-title">${t.title}</div>
-      <div class="week-task-meta">
-        ${show?`<span class="week-task-show">${show.code}</span>`:''}
-        <span class="week-task-pri" style="--wp:${pc}">${t.pri.toUpperCase()}</span>
-        ${t.dur?`<span style="font-family:var(--mono);font-size:9px;color:var(--t2)">${t.dur}m</span>`:''}
-      </div>
-    </div>`;
-  };
-
-  const dropAttrs=(dateStr)=>`ondragover="event.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" ondrop="weekDrop(event,${dateStr?`'${dateStr}'`:'null'})"`;
-
-  let html=`<div class="week-unscheduled">
-    <div class="plan-col-label" style="padding:10px 8px 8px">BACKLOG</div>
-    <div class="week-tasks" ${dropAttrs(null)}>
-      ${unscheduled.map(taskCard).join('')||'<div style="padding:16px 8px;font-family:var(--display);font-size:9px;color:var(--t3);text-align:center;letter-spacing:0.1em">ALL ASSIGNED</div>'}
-    </div>
-  </div>`;
-
-  html+=days.map(day=>{
-    const dateStr=day.toISOString().slice(0,10);
-    const isToday=day.getTime()===today.getTime();
-    const dayTasks=S.tasks.filter(t=>!t.done&&t.due===dateStr);
-    return `<div class="week-col${isToday?' week-col-today':''}">
-      <div class="week-col-header">
-        <div class="week-col-day">${day.toLocaleDateString('en-US',{weekday:'short'}).toUpperCase()}</div>
-        <div class="week-col-date">${day.toLocaleDateString('en-US',{month:'short',day:'numeric'}).toUpperCase()}</div>
-      </div>
-      <div class="week-tasks" ${dropAttrs(dateStr)}>
-        ${dayTasks.map(taskCard).join('')||`<div style="padding:20px 0;text-align:center;font-family:var(--display);font-size:9px;color:var(--t3);letter-spacing:0.1em;text-transform:uppercase">DROP TASKS</div>`}
-      </div>
-    </div>`;
-  }).join('');
-
-  board.innerHTML=html;
-}
-
-function weekDragStart(e,tid){
-  weekDragging=tid; e.dataTransfer.effectAllowed='move';
-  setTimeout(()=>document.querySelector(`[data-tid="${tid}"]`)?.classList.add('dragging'),0);
-}
-
-function weekDrop(e,dateStr){
-  e.preventDefault();
-  document.querySelectorAll('.week-tasks').forEach(el=>el.classList.remove('drag-over'));
-  if(!weekDragging)return;
-  const task=S.tasks.find(t=>t.id===weekDragging);
-  if(!task){weekDragging=null;return;}
-  task.due=dateStr||'';
-  save(); renderWeekBoard();
-  toast(dateStr?'SCHEDULED → '+new Date(dateStr+'T12:00:00').toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}):'MOVED TO BACKLOG');
-  weekDragging=null;
-}
 
 // ── BOOT
-
 
 
 const savedApi=localStorage.getItem('vtek_api');if(savedApi)document.getElementById('api-disp').textContent=savedApi;
