@@ -670,32 +670,159 @@ body{min-height:-webkit-fill-available;}
 /* ══════════════════════════════════════
    VAULT
 ══════════════════════════════════════ */
+/* ── VAULT — mobile stack layout ── */
 .vault-layout{display:flex;flex-direction:column;height:100%;}
-.vault-topbar{display:flex;align-items:center;gap:8px;padding:10px 13px;flex-shrink:0;border-bottom:1px solid var(--b0);background:var(--p1);}
-.vault-breadcrumb{font-family:var(--mono);font-size:9px;color:var(--t2);letter-spacing:0.08em;flex:1;}
-.vault-breadcrumb span{color:var(--t1);}
+
+/* Topbar */
+.vault-topbar{
+  display:flex;align-items:center;gap:8px;
+  padding:12px 16px;flex-shrink:0;
+  border-bottom:1px solid var(--b0);background:var(--p1);
+}
+.vault-back-btn{
+  display:none;align-items:center;gap:6px;
+  font-family:var(--display);font-size:12px;font-weight:600;
+  color:var(--t2);background:none;border:none;cursor:pointer;
+  letter-spacing:0.04em;padding:0;flex-shrink:0;transition:color 0.12s;
+}
+.vault-back-btn:hover{color:var(--t0);}
+.vault-back-btn.show{display:flex;}
+.vault-breadcrumb{
+  font-family:var(--display);font-size:12px;font-weight:500;
+  color:var(--t1);letter-spacing:0.04em;flex:1;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.vault-breadcrumb span{color:var(--t0);}
 .vault-btn{padding:6px 12px;clip-path:none;border:var(--bd);background:transparent;font-family:var(--display);font-size:11px;font-weight:500;color:var(--t1);cursor:pointer;transition:all 0.12s;}
 .vault-btn:hover{color:var(--t0);border-color:var(--b2);background:var(--p3);}
 .vault-btn.ac-btn{border-color:var(--ac-bd);color:var(--ac);}
-.vault-body{flex:1;display:flex;overflow:hidden;}
-.vault-sidebar{width:180px;flex-shrink:0;padding:10px;border-right:1px solid var(--b0);overflow-y:auto;scrollbar-width:none;}
+/* Body — stacked on mobile */
+.vault-body{flex:1;display:flex;flex-direction:column;overflow:hidden;position:relative;}
+
+/* Doc list panel — full width on mobile, shown by default */
+.vault-list-panel{
+  display:flex;flex-direction:column;
+  flex:1;overflow:hidden;
+  transition:transform 0.28s cubic-bezier(0.32,0.72,0,1),opacity 0.2s;
+}
+.vault-list-panel.hidden{
+  display:none;
+}
+
+/* Section labels in list */
+.vault-list-section{margin-bottom:4px;}
+.vault-list-sec-lbl{
+  font-family:var(--display);font-size:10px;font-weight:700;
+  letter-spacing:0.12em;text-transform:uppercase;color:var(--t2);
+  padding:10px 16px 6px;
+}
+
+/* Doc row — full width, tap to open */
+.vault-doc-row{
+  display:flex;align-items:center;gap:12px;
+  padding:14px 16px;border-bottom:1px solid var(--b0);
+  cursor:pointer;transition:background 0.12s;
+}
+.vault-doc-row:hover{background:var(--p2);}
+.vault-doc-row:active{background:var(--p3);}
+.vault-doc-icon{font-size:14px;flex-shrink:0;color:var(--t2);}
+.vault-doc-info{flex:1;min-width:0;}
+.vault-doc-title{
+  font-family:var(--body);font-size:15px;font-weight:400;
+  color:var(--t0);margin-bottom:2px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.vault-doc-meta{
+  font-family:var(--mono);font-size:9px;color:var(--t2);
+  display:flex;gap:8px;align-items:center;
+}
+.vault-doc-tag{
+  font-family:var(--display);font-size:9px;font-weight:500;
+  padding:1px 6px;border:var(--bd);color:var(--t2);
+}
+.vault-doc-chevron{color:var(--t2);font-size:12px;flex-shrink:0;}
+
+/* New note button in list */
+.vault-new-row{
+  display:flex;align-items:center;gap:12px;
+  padding:14px 16px;border-bottom:1px solid var(--b0);
+  cursor:pointer;transition:background 0.12s;
+}
+.vault-new-row:hover{background:var(--p2);}
+.vault-new-icon{font-size:18px;color:var(--t2);flex-shrink:0;}
+.vault-new-label{
+  font-family:var(--display);font-size:13px;font-weight:600;
+  letter-spacing:0.06em;color:var(--t2);text-transform:uppercase;
+}
+
+/* Editor panel — hidden on mobile until doc selected */
+.vault-editor-panel{
+  display:none;flex-direction:column;flex:1;overflow:hidden;
+}
+.vault-editor-panel.show{display:flex;}
+
+/* Editor toolbar */
+.vault-editor-toolbar{
+  display:flex;align-items:center;gap:6px;
+  padding:8px 16px;border-bottom:1px solid var(--b0);
+  background:var(--p1);flex-shrink:0;
+}
+.vault-editor-toolbar .vault-btn{flex-shrink:0;}
+
+/* Expand button */
+.vault-expand-btn{
+  width:32px;height:32px;display:flex;align-items:center;justify-content:center;
+  background:transparent;border:var(--bd);cursor:pointer;
+  color:var(--t2);transition:all 0.14s;flex-shrink:0;margin-left:auto;
+}
+.vault-expand-btn:hover{color:var(--t0);border-color:var(--b2);background:var(--p3);}
+.vault-expand-btn.expanded{color:var(--ac);border-color:var(--ac-bd);}
+
+/* Focused writing mode — hides toolbar chrome */
+.vault-editor-panel.focused .vault-editor-toolbar{display:none;}
+.vault-editor-panel.focused .vault-footer{display:none;}
+.vault-editor-panel.focused .vault-textarea{padding:20px 20px;}
+
+/* Editor */
+.vault-main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.vault-editor{flex:1;padding:0;overflow-y:auto;scrollbar-width:none;}
+.vault-editor::-webkit-scrollbar{display:none;}
+
+/* Legacy tree — still used on desktop */
+.vault-sidebar{width:180px;flex-shrink:0;padding:10px;border-right:1px solid var(--b0);overflow-y:auto;scrollbar-width:none;display:none;}
 .vault-sidebar::-webkit-scrollbar{display:none;}
 .vault-tree-section{margin-bottom:12px;}
-.vault-tree-lbl{font-family:var(--mono);font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:var(--t2);margin-bottom:6px;}
-.vault-tree-item{display:flex;align-items:center;gap:6px;padding:7px 9px;cursor:pointer;transition:background 0.12s;clip-path:none;}
-.vault-tree-item:hover{background:var(--p3);border-left:2px solid var(--b1);padding-left:7px;}
-.vault-tree-item.on{background:var(--p3);border-left:2px solid var(--ac-md);padding-left:7px;}
-.vault-tree-icon{font-size:10px;color:var(--t2);flex-shrink:0;}
+.vault-tree-lbl{font-family:var(--display);font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--t2);margin-bottom:6px;padding:0 4px;}
+.vault-tree-item{display:flex;align-items:center;gap:6px;padding:9px 10px;cursor:pointer;transition:background 0.12s;}
+.vault-tree-item:hover{background:var(--p3);border-left:2px solid var(--b1);padding-left:8px;}
+.vault-tree-item.on{background:var(--p3);border-left:2px solid var(--ac-md);padding-left:8px;}
+.vault-tree-icon{font-size:11px;color:var(--t2);flex-shrink:0;}
 .vault-tree-name{font-family:var(--body);font-size:13px;color:var(--t1);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .vault-tree-item.on .vault-tree-name{color:var(--t0);}
-.vault-main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
-.vault-editor{flex:1;padding:14px;overflow-y:auto;scrollbar-width:none;}
-.vault-editor::-webkit-scrollbar{display:none;}
+
+/* Desktop — side by side */
+@media(min-width:768px){
+  .vault-body{flex-direction:row;}
+  .vault-list-panel{width:240px;flex:none;border-right:1px solid var(--b0);}
+  .vault-list-panel.hidden{display:flex;}
+  .vault-editor-panel{display:flex;}
+  .vault-editor-panel.show{display:flex;}
+  .vault-back-btn{display:none!important;}
+  .vault-expand-btn{display:flex;}
+}
 .vault-doc-title{font-family:var(--display);font-size:22px;font-weight:700;letter-spacing:0.06em;color:var(--t0);background:none;border:none;outline:none;width:100%;margin-bottom:10px;text-transform:uppercase;}
 .vault-doc-title::placeholder{color:var(--t2);}
 .vault-doc-meta{display:flex;gap:8px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--b0);}
 .vault-doc-tag{font-family:var(--mono);font-size:8px;color:var(--t2);padding:2px 7px;background:var(--p3);clip-path:polygon(0 0,100% 0,100% calc(100% - 3px),calc(100% - 3px) 100%,0 100%);}
-.vault-textarea{width:100%;background:none;border:none;outline:none;font-family:var(--mono);font-size:14px;color:var(--t1);line-height:1.8;resize:none;min-height:300px;}
+.vault-doc-title-in{
+  display:block;width:100%;background:none;border:none;border-bottom:1px solid var(--b0);
+  outline:none;font-family:var(--body);font-size:20px;font-weight:500;
+  color:var(--t0);padding:16px 16px 12px;transition:border-color 0.15s;
+}
+.vault-doc-title-in:focus{border-bottom-color:var(--b2);}
+.vault-doc-title-in::placeholder{color:var(--t2);}
+.vault-doc-row.on{background:var(--p2);border-left:2px solid var(--ac-md);padding-left:14px;}
+.vault-textarea{width:100%;background:none;border:none;outline:none;font-family:var(--body);font-size:15px;color:var(--t1);line-height:1.8;resize:none;min-height:300px;padding:12px 16px;}
 .vault-textarea::placeholder{color:var(--t3);}
 .vault-preview{padding:0;font-family:var(--mono);font-size:12px;color:var(--t1);line-height:1.8;}
 .vault-preview h1,.vault-preview h2,.vault-preview h3{font-family:var(--display);color:var(--t0);letter-spacing:0.08em;text-transform:uppercase;margin:16px 0 8px;}
@@ -1206,23 +1333,39 @@ body{min-height:-webkit-fill-available;}
 <!-- ── VAULT ── -->
 <div class="page" id="pg-vault">
   <div class="vault-layout">
+    <!-- Topbar -->
     <div class="vault-topbar">
+      <button class="vault-back-btn" id="vault-back-btn" onclick="vaultBack()">← NOTES</button>
       <div class="vault-breadcrumb" id="vault-breadcrumb"><span>VAULT</span></div>
-      <button class="vault-btn" onclick="vaultBack()">← BACK</button>
       <button class="vault-btn" onclick="vaultNewDoc()">+ NOTE</button>
-      <button class="vault-btn ac-btn" onclick="vaultSave()">SAVE</button>
+      <button class="vault-btn ac-btn" id="vault-save-btn" onclick="vaultSave()" style="display:none">SAVE</button>
     </div>
     <div class="vault-body">
-      <div class="vault-sidebar" id="vault-sidebar"></div>
-      <div class="vault-main">
-        <div class="vault-editor" id="vault-editor"></div>
-        <div class="vault-footer">
-          <button class="vault-mode-toggle on" id="vlt-edit-btn" onclick="setVaultMode('edit')">EDIT</button>
-          <span style="color:var(--t3);font-size:10px">|</span>
-          <button class="vault-mode-toggle" id="vlt-prev-btn" onclick="setVaultMode('preview')">PREVIEW</button>
-          <div class="vault-save-info" id="vault-save-info">Unsaved</div>
+
+      <!-- List panel — full width, shown by default -->
+      <div class="vault-list-panel" id="vault-list-panel">
+        <div id="vault-doc-list" style="overflow-y:auto;flex:1;scrollbar-width:none;"></div>
+      </div>
+
+      <!-- Editor panel — hidden until doc selected on mobile -->
+      <div class="vault-editor-panel" id="vault-editor-panel">
+        <!-- Editor toolbar -->
+        <div class="vault-editor-toolbar">
+          <button class="vault-btn" onclick="setVaultMode('edit')" id="vlt-edit-btn">EDIT</button>
+          <button class="vault-btn" onclick="setVaultMode('preview')" id="vlt-prev-btn">PREVIEW</button>
+          <div class="vault-save-info" id="vault-save-info" style="font-family:var(--display);font-size:10px;color:var(--t2);margin-left:4px;"></div>
+          <button class="vault-expand-btn" id="vault-expand-btn" onclick="toggleVaultFocus()" title="Focus mode">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13">
+              <path d="M1 6V1h5M10 1h5v5M15 10v5h-5M6 15H1v-5"/>
+            </svg>
+          </button>
+        </div>
+        <!-- Editor area -->
+        <div class="vault-main">
+          <div class="vault-editor" id="vault-editor"></div>
         </div>
       </div>
+
     </div>
   </div>
 </div>
@@ -2349,66 +2492,131 @@ function minsToTime(m){const h=Math.floor(m/60),min=m%60;return`${String(h).padS
 // ═══════════════════════════════
 function rVault(){
   if(!S.vaultDocs) S.vaultDocs=[];
-  renderVaultSidebar();
-  if(vaultActiveId){const doc=S.vaultDocs.find(d=>d.id===vaultActiveId);if(doc)renderVaultEditor(doc);else renderVaultWelcome();}
-  else renderVaultWelcome();
+  renderVaultList();
+  if(vaultActiveId){
+    const doc=S.vaultDocs.find(d=>d.id===vaultActiveId);
+    if(doc) openVaultDoc(doc,false);
+    else showVaultList();
+  } else {
+    showVaultList();
+  }
 }
 
-function renderVaultSidebar(){
-  const el=document.getElementById('vault-sidebar');if(!el)return;
-  const shows=S.shows;
-  let h=`<div class="vault-tree-section">
-    <div class="vault-tree-lbl">All Notes</div>
-    ${S.vaultDocs.filter(d=>!d.showId).map(d=>`
-      <div class="vault-tree-item ${vaultActiveId===d.id?'on':''}" onclick="vaultOpen('${d.id}')">
-        <span class="vault-tree-icon">◈</span>
-        <span class="vault-tree-name">${d.title||'Untitled'}</span>
-      </div>`).join('')}
-  </div>`;
-  shows.forEach(s=>{
-    const docs=S.vaultDocs.filter(d=>d.showId===s.id);
-    h+=`<div class="vault-tree-section">
-      <div class="vault-tree-lbl">${s.code}</div>
-      ${docs.map(d=>`<div class="vault-tree-item ${vaultActiveId===d.id?'on':''}" onclick="vaultOpen('${d.id}')">
-        <span class="vault-tree-icon">◈</span>
-        <span class="vault-tree-name">${d.title||'Untitled'}</span>
-      </div>`).join('')}
-    </div>`;
+// Show the doc list (mobile: full width, hide editor)
+function showVaultList(){
+  vaultActiveId=null;
+  const list=document.getElementById('vault-list-panel');
+  const editor=document.getElementById('vault-editor-panel');
+  const backBtn=document.getElementById('vault-back-btn');
+  const saveBtn=document.getElementById('vault-save-btn');
+  if(list) list.classList.remove('hidden');
+  if(editor) editor.classList.remove('show');
+  if(backBtn) backBtn.classList.remove('show');
+  if(saveBtn) saveBtn.style.display='none';
+  document.getElementById('vault-breadcrumb').innerHTML='<span>VAULT</span>';
+  renderVaultList();
+}
+
+// Show the editor (mobile: hide list, full-width editor)
+function openVaultDoc(doc, animate){
+  vaultActiveId=doc.id;
+  const list=document.getElementById('vault-list-panel');
+  const editor=document.getElementById('vault-editor-panel');
+  const backBtn=document.getElementById('vault-back-btn');
+  const saveBtn=document.getElementById('vault-save-btn');
+
+  // On mobile: hide list, show editor
+  const isMobile=window.innerWidth<768;
+  if(isMobile){
+    if(list) list.classList.add('hidden');
+  }
+  if(editor) editor.classList.add('show');
+  if(backBtn) backBtn.classList.add('show');
+  if(saveBtn) saveBtn.style.display='';
+
+  document.getElementById('vault-breadcrumb').innerHTML='<span>'+escHtml(doc.title||'Untitled')+'</span>';
+  renderVaultEditor(doc);
+  renderVaultList();
+}
+
+function renderVaultList(){
+  const el=document.getElementById('vault-doc-list');
+  if(!el) return;
+
+  const groups=[
+    {label:'GENERAL',docs:S.vaultDocs.filter(d=>!d.showId)},
+    ...S.shows.map(s=>({label:s.code,docs:S.vaultDocs.filter(d=>d.showId===s.id)}))
+  ].filter(g=>g.docs.length>0);
+
+  let h='<div class="vault-new-row" onclick="vaultNewDoc()">'
+    +'<span class="vault-new-icon">+</span>'
+    +'<span class="vault-new-label">New Note</span>'
+    +'</div>';
+
+  groups.forEach(g=>{
+    h+='<div class="vault-list-section">'
+      +'<div class="vault-list-sec-lbl">'+g.label+'</div>';
+    g.docs.forEach(d=>{
+      const date=new Date(d.updated||Date.now()).toLocaleDateString('en-US',{month:'short',day:'numeric'});
+      const preview=(d.content||'').replace(/[#*`]/g,'').trim().slice(0,60)||'Empty note';
+      const isActive=vaultActiveId===d.id;
+      h+='<div class="vault-doc-row'+(isActive?' on':'')+' " data-vid="'+d.id+'" onclick="vaultOpen(this.dataset.vid)">'
+        +'<span class="vault-doc-icon">◈</span>'
+        +'<div class="vault-doc-info">'
+        +'<div class="vault-doc-title">'+escHtml(d.title||'Untitled')+'</div>'
+        +'<div class="vault-doc-meta"><span>'+date+'</span><span style="color:var(--t3)">'+escHtml(preview)+'</span></div>'
+        +'</div>'
+        +'<span class="vault-doc-chevron">›</span>'
+        +'</div>';
+    });
+    h+='</div>';
   });
-  el.innerHTML=h;
-}
 
-function renderVaultWelcome(){
-  const el=document.getElementById('vault-editor');if(!el)return;
-  el.innerHTML=`<div style="padding:30px;text-align:center;font-family:var(--mono);color:var(--t2);line-height:2.2;font-size:9px;letter-spacing:0.1em">
-    VAULT — ${S.vaultDocs.length} NOTES<br>
-    <span style="color:var(--t3)">Select a note or create one.</span>
-  </div>`;
-  document.getElementById('vault-breadcrumb').innerHTML=`<span>VAULT</span>`;
+  if(!S.vaultDocs.length){
+    h+='<div style="padding:32px 20px;text-align:center;font-family:var(--display);font-size:12px;color:var(--t2);line-height:2">NO NOTES YET<br><span style="font-size:11px;font-weight:400">Tap + NOTE to create one</span></div>';
+  }
+
+  el.innerHTML=h;
 }
 
 function renderVaultEditor(doc){
   const el=document.getElementById('vault-editor');if(!el)return;
-  document.getElementById('vault-breadcrumb').innerHTML=`<span>VAULT</span> / <span>${doc.title||'Untitled'}</span>`;
   if(vaultMode==='preview'){
-    el.innerHTML=`<div class="vault-preview">${md2html(doc.content||'')}</div>`;
+    el.innerHTML='<div class="vault-preview" style="padding:20px 16px;">'+md2html(doc.content||'')+'</div>';
   }else{
-    el.innerHTML=`
-      <input class="vault-doc-title" id="vault-title-in" value="${escHtml(doc.title||'')}" placeholder="Title…">
-      <div class="vault-doc-meta">
-        ${doc.showId?`<span class="vault-doc-tag">${gs(doc.showId)?.code||''}</span>`:'<span class="vault-doc-tag">GENERAL</span>'}
-        <span class="vault-doc-tag">${new Date(doc.updated||Date.now()).toLocaleDateString('en-US',{month:'short',day:'numeric'})}</span>
-      </div>
-      <textarea class="vault-textarea" id="vault-content-in" placeholder="Write in markdown…">${escHtml(doc.content||'')}</textarea>`;
+    el.innerHTML=''
+      +'<input class="vault-doc-title-in" id="vault-title-in" value="'+escHtml(doc.title||'')+'" placeholder="Title…">'
+      +'<div style="padding:4px 16px 8px;display:flex;gap:6px;">'
+      +(doc.showId?'<span class="vault-doc-tag">'+( gs(doc.showId)?.code||'')+'</span>':'<span class="vault-doc-tag">GENERAL</span>')
+      +'</div>'
+      +'<textarea class="vault-textarea" id="vault-content-in" placeholder="Write in markdown…">'+escHtml(doc.content||'')+'</textarea>';
   }
 }
 
-function vaultOpen(id){vaultActiveId=id;const doc=S.vaultDocs.find(d=>d.id===id);if(doc)renderVaultEditor(doc);renderVaultSidebar();}
+// Legacy sidebar render (kept for desktop compatibility)
+function renderVaultSidebar(){renderVaultList();}
+function renderVaultWelcome(){showVaultList();}
+
+function vaultOpen(id){
+  const doc=S.vaultDocs.find(d=>d.id===id);
+  if(doc) openVaultDoc(doc,true);
+}
+
+function vaultBack(){
+  // Save any changes first
+  if(vaultActiveId) vaultSave();
+  showVaultList();
+}
 
 function vaultNewDoc(){
   const showId=S.activeShow||'';
   const doc={id:'v'+Date.now(),title:'New Note',content:'',showId,tags:[],updated:Date.now()};
-  S.vaultDocs.unshift(doc);save();vaultActiveId=doc.id;vaultMode='edit';rVault();}
+  S.vaultDocs.unshift(doc);
+  save();
+  vaultActiveId=doc.id;
+  vaultMode='edit';
+  openVaultDoc(doc,true);
+}
 
 function vaultSave(){
   if(!vaultActiveId)return;
@@ -2419,16 +2627,31 @@ function vaultSave(){
   if(contentEl)doc.content=contentEl.value;
   doc.updated=Date.now();
   save();toast('SAVED');
-  document.getElementById('vault-save-info').textContent='Saved';
-  renderVaultSidebar();
+  const si=document.getElementById('vault-save-info');
+  if(si) si.textContent='Saved';
+  const bc=document.getElementById('vault-breadcrumb');
+  if(bc) bc.innerHTML='<span>'+escHtml(doc.title||'Untitled')+'</span>';
 }
 
-function vaultBack(){vaultActiveId=null;renderVaultWelcome();renderVaultSidebar();}
+// Focus / expand mode
+function toggleVaultFocus(){
+  const panel=document.getElementById('vault-editor-panel');
+  const btn=document.getElementById('vault-expand-btn');
+  if(!panel) return;
+  const isFocused=panel.classList.toggle('focused');
+  if(btn) btn.classList.toggle('expanded',isFocused);
+  // Update icon
+  if(btn) btn.innerHTML=isFocused
+    ?'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13"><path d="M6 1H1v5M15 6V1h-5M10 15h5v-5M1 10v5h5"/></svg>'
+    :'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13"><path d="M1 6V1h5M10 1h5v5M15 10v5h-5M6 15H1v-5"/></svg>';
+}
 
 function setVaultMode(m){
   vaultMode=m;
-  document.getElementById('vlt-edit-btn').classList.toggle('on',m==='edit');
-  document.getElementById('vlt-prev-btn').classList.toggle('on',m==='preview');
+  const eb=document.getElementById('vlt-edit-btn');
+  const pb=document.getElementById('vlt-prev-btn');
+  if(eb) eb.classList.toggle('on',m==='edit');
+  if(pb) pb.classList.toggle('on',m==='preview');
   if(vaultMode==='preview'&&vaultActiveId){
     const content=document.getElementById('vault-content-in')?.value;
     const title=document.getElementById('vault-title-in')?.value;
@@ -2437,7 +2660,6 @@ function setVaultMode(m){
   }
   if(vaultActiveId){const doc=S.vaultDocs.find(d=>d.id===vaultActiveId);if(doc)renderVaultEditor(doc);}
 }
-
 function md2html(md){
   return md
     .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
