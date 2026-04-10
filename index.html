@@ -557,8 +557,184 @@ body{min-height:-webkit-fill-available;}
   background:var(--s-blk); border-radius:50%;
 }
 
-/* Commit status */
-.plan-commit-status{
+/* Plan scope toggle */
+.plan-mode-toggle{
+  display:flex; gap:3px; flex-shrink:0;
+}
+.plan-scope-btn{
+  padding:5px 11px; border:var(--bd); background:transparent;
+  font-family:var(--display); font-size:10px; font-weight:600;
+  letter-spacing:0.08em; text-transform:uppercase; color:var(--t2);
+  cursor:pointer; transition:all 0.12s;
+}
+.plan-scope-btn.on{ background:var(--p3); color:var(--t0); border-color:var(--b2); }
+
+/* ── WEEK VIEW ── */
+.week-board{
+  display:flex; flex:1; overflow-x:auto; overflow-y:hidden;
+  gap:0; scrollbar-width:none; height:100%;
+}
+.week-board::-webkit-scrollbar{ display:none; }
+.week-col{
+  min-width:140px; flex:1; display:flex; flex-direction:column;
+  border-right:1px solid var(--b0); overflow:hidden;
+}
+.week-col:last-child{ border-right:none; }
+.week-col-header{
+  padding:10px 10px 8px; flex-shrink:0;
+  border-bottom:1px solid var(--b0);
+  display:flex; flex-direction:column; gap:2px;
+}
+.week-col-day{
+  font-family:var(--display); font-size:12px; font-weight:700;
+  letter-spacing:0.08em; text-transform:uppercase; color:var(--t1);
+}
+.week-col-date{
+  font-family:var(--mono); font-size:10px; color:var(--t2);
+}
+.week-col-today .week-col-day{ color:var(--ac); }
+.week-col-today .week-col-date{ color:var(--t1); }
+.week-cal-pills{
+  display:flex; flex-direction:column; gap:2px; margin-top:4px;
+}
+.week-cal-pill{
+  font-family:var(--body); font-size:10px; color:var(--t2);
+  padding:2px 6px; background:var(--p3); border-left:2px solid var(--p6);
+  line-height:1.3; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.week-tasks{
+  flex:1; overflow-y:auto; padding:6px; display:flex;
+  flex-direction:column; gap:4px; scrollbar-width:none;
+}
+.week-tasks::-webkit-scrollbar{ display:none; }
+.week-task-card{
+  padding:9px 10px; background:var(--p2); border:var(--bd);
+  border-left:3px solid var(--wc,var(--p5));
+  cursor:grab; transition:all 0.12s; user-select:none;
+}
+.week-task-card:hover{ background:var(--p3); }
+.week-task-card.dragging{ opacity:0.3; }
+.week-task-title{
+  font-family:var(--body); font-size:12px; color:var(--t0);
+  line-height:1.3; margin-bottom:3px;
+}
+.week-task-meta{
+  display:flex; align-items:center; gap:5px;
+}
+.week-task-show{
+  font-family:var(--display); font-size:9px; font-weight:600;
+  color:var(--t2); letter-spacing:0.04em; text-transform:uppercase;
+}
+.week-task-pri{
+  font-family:var(--display); font-size:9px; font-weight:600;
+  padding:1px 5px; border:1px solid var(--wp,var(--b1));
+  color:var(--wp,var(--t2));
+}
+.week-drop-zone{
+  min-height:60px; flex:1; border:1px dashed transparent;
+  border-radius:0; transition:all 0.14s; display:flex;
+  align-items:center; justify-content:center;
+}
+.week-drop-zone.drag-over{
+  border-color:var(--b2); background:var(--ac-lo);
+}
+.week-drop-label{
+  font-family:var(--display); font-size:9px; color:var(--t3);
+  letter-spacing:0.1em; text-transform:uppercase; pointer-events:none;
+}
+.week-unscheduled{
+  min-width:130px; max-width:130px; border-right:1px solid var(--b1);
+  display:flex; flex-direction:column; overflow:hidden;
+}
+
+/* ── TEAM PAGE ── */
+.contact-card{
+  background:var(--p2); border:var(--bd);
+  border-left:3px solid var(--cc,var(--p5));
+  padding:14px 16px; margin-bottom:6px;
+  display:flex; align-items:flex-start; gap:12px;
+  cursor:pointer; transition:all 0.14s;
+}
+.contact-card:hover{ background:var(--p3); border-color:var(--b2); }
+.contact-avatar{
+  width:40px; height:40px; flex-shrink:0;
+  background:var(--p4); border:var(--bd);
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--display); font-size:16px; font-weight:700;
+  color:var(--t1); text-transform:uppercase;
+}
+.contact-info{ flex:1; min-width:0; }
+.contact-name{
+  font-family:var(--body); font-size:15px; font-weight:500;
+  color:var(--t0); margin-bottom:2px;
+}
+.contact-role{
+  font-family:var(--body); font-size:13px; color:var(--t2); margin-bottom:6px;
+}
+.contact-badges{ display:flex; gap:5px; flex-wrap:wrap; }
+.contact-badge{
+  font-family:var(--display); font-size:10px; font-weight:600;
+  padding:2px 8px; border:var(--bd); color:var(--t2);
+  letter-spacing:0.04em; text-transform:uppercase;
+}
+.contact-skill{
+  font-family:var(--body); font-size:11px;
+  padding:2px 7px; background:var(--p3); border:var(--bd); color:var(--t2);
+}
+.contact-actions{
+  display:flex; flex-direction:column; gap:4px; flex-shrink:0;
+}
+.contact-action-btn{
+  padding:5px 10px; border:var(--bd); background:transparent;
+  font-family:var(--display); font-size:10px; font-weight:600;
+  color:var(--t2); cursor:pointer; transition:all 0.12s;
+  letter-spacing:0.04em; white-space:nowrap;
+}
+.contact-action-btn:hover{ color:var(--t0); border-color:var(--b2); background:var(--p3); }
+.contact-action-btn.danger:hover{ color:var(--s-blk); border-color:rgba(196,47,32,0.4); }
+
+/* Crew assignment section */
+.crew-row{
+  display:flex; align-items:center; gap:10px;
+  padding:12px 16px; border-bottom:1px solid var(--b0);
+  transition:background 0.12s;
+}
+.crew-row:hover{ background:var(--p2); }
+.crew-avatar-sm{
+  width:32px; height:32px; flex-shrink:0;
+  background:var(--p4); border:var(--bd);
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--display); font-size:12px; font-weight:700;
+  color:var(--t1); text-transform:uppercase;
+}
+.crew-info{ flex:1; }
+.crew-name{
+  font-family:var(--body); font-size:14px; color:var(--t0); margin-bottom:1px;
+}
+.crew-role{ font-family:var(--body); font-size:12px; color:var(--t2); }
+.crew-remove{
+  padding:4px 10px; border:var(--bd); background:transparent;
+  font-family:var(--display); font-size:10px; color:var(--t2);
+  cursor:pointer; transition:all 0.12s; letter-spacing:0.04em;
+}
+.crew-remove:hover{ color:var(--s-blk); border-color:rgba(196,47,32,0.4); }
+.crew-add-row{
+  padding:12px 16px;
+}
+.crew-select{
+  width:100%; background:var(--p3); border:var(--bd);
+  font-family:var(--body); font-size:14px; color:var(--t0);
+  padding:10px 12px; outline:none; cursor:pointer;
+}
+.crew-select:focus{ border-color:var(--b2); }
+.team-empty{
+  padding:32px 16px; text-align:center;
+  font-family:var(--display); font-size:13px; font-weight:500;
+  color:var(--t2); letter-spacing:0.06em; line-height:2;
+  text-transform:uppercase;
+}
+
+
   display:flex; align-items:center; gap:8px;
   padding:10px 16px; background:var(--p2);
   border-top:1px solid var(--b1); flex-shrink:0;
@@ -1130,6 +1306,10 @@ body{min-height:-webkit-fill-available;}
   <!-- Header -->
   <div class="plan-header">
     <button class="plan-back-btn" onclick="setPayloadMode('execute')">← PAYLOAD</button>
+    <div class="plan-mode-toggle">
+      <button class="plan-scope-btn on" id="plan-scope-today" onclick="setPlanScope('today')">TODAY</button>
+      <button class="plan-scope-btn" id="plan-scope-week" onclick="setPlanScope('week')">WEEK</button>
+    </div>
     <div class="plan-date" id="plan-date-label"></div>
     <div class="plan-header-actions">
       <button class="plan-action-btn" id="plan-suggest-btn" onclick="planSuggest()">
@@ -1154,6 +1334,8 @@ body{min-height:-webkit-fill-available;}
     <div class="plan-suggest-txt" id="plan-suggest-txt"></div>
   </div>
 
+  <!-- TODAY board -->
+  <div id="plan-today-board" style="flex:1;display:flex;flex-direction:column;overflow:hidden;min-height:0;">
   <!-- Main board — two columns -->
   <div class="plan-board">
 
@@ -1172,6 +1354,12 @@ body{min-height:-webkit-fill-available;}
       <div class="plan-timeline" id="plan-timeline"></div>
     </div>
 
+  </div>
+  </div>
+
+  <!-- WEEK board -->
+  <div id="plan-week-board" style="flex:1;display:none;flex-direction:column;overflow:hidden;min-height:0;">
+    <div class="week-board" id="week-board"></div>
   </div>
 
   <!-- Commit status -->
@@ -1201,6 +1389,87 @@ body{min-height:-webkit-fill-available;}
           <div class="vault-save-info" id="vault-save-info">Unsaved</div>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── TEAM ── -->
+<div class="page" id="pg-team">
+
+  <!-- Roster section -->
+  <div class="sec">
+    <span class="sec-l">Roster</span>
+    <span class="sec-r"></span>
+    <button class="sec-a" onclick="openContactSheet(null)">+ ADD</button>
+  </div>
+  <div id="team-roster"></div>
+
+  <!-- Show crew section -->
+  <div class="sec" style="margin-top:20px">
+    <span class="sec-l">Show Crew</span>
+    <span class="sec-r"></span>
+  </div>
+  <!-- Show selector tabs -->
+  <div class="show-tabs" id="team-show-tabs"></div>
+  <div id="team-show-crew"></div>
+
+</div>
+
+<!-- ── CONTACT SHEET ── -->
+<div class="overlay" id="ol-contact" onclick="if(event.target===this)closeSheet('ol-contact')">
+  <div class="sheet">
+    <div class="sh-head">
+      <div class="sh-title" id="contact-sh-title">NEW CONTACT</div>
+      <button class="sh-close" onclick="closeSheet('ol-contact')">✕</button>
+    </div>
+    <div class="sh-body">
+      <div class="f">
+        <div class="f-row">
+          <div style="flex:1"><label class="fl">Name</label><input class="fc" id="c-name" placeholder="Katherine Soares"></div>
+        </div>
+        <div class="f-row">
+          <div style="flex:1"><label class="fl">Role</label><input class="fc" id="c-role" placeholder="VFX Supervisor"></div>
+          <div style="flex:1"><label class="fl">Company</label><input class="fc" id="c-company" placeholder="MPP Features"></div>
+        </div>
+        <div class="f-row">
+          <div style="flex:1"><label class="fl">Email</label><input class="fc" id="c-email" type="email" placeholder="k@studio.com"></div>
+          <div style="flex:1"><label class="fl">Phone</label><input class="fc" id="c-phone" placeholder="+1 555 0100"></div>
+        </div>
+        <div class="f-row">
+          <div style="flex:1">
+            <label class="fl">Availability</label>
+            <select class="fc" id="c-avail">
+              <option value="fulltime">Full-time</option>
+              <option value="parttime">Part-time</option>
+              <option value="freelance" selected>Freelance</option>
+              <option value="vendor">Vendor</option>
+            </select>
+          </div>
+          <div style="flex:1">
+            <label class="fl">Type</label>
+            <select class="fc" id="c-type">
+              <option value="compositor">Compositor</option>
+              <option value="supervisor">Supervisor</option>
+              <option value="producer">Producer</option>
+              <option value="artist">Artist</option>
+              <option value="td">TD</option>
+              <option value="client">Client</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+        </div>
+        <label class="fl">Skills / Tags</label>
+        <input class="fc" id="c-skills" placeholder="comp, roto, grade, nuke">
+        <label class="fl">Notes</label>
+        <textarea class="fc" id="c-notes" rows="2" placeholder="Any notes…"></textarea>
+        <!-- Color accent -->
+        <label class="fl">Accent Color</label>
+        <div class="color-picker-row" id="c-color-row"></div>
+      </div>
+    </div>
+    <div class="sh-acts">
+      <button class="sh-no" onclick="closeSheet('ol-contact')">CANCEL</button>
+      <button class="sh-ok" onclick="saveContact()">SAVE</button>
     </div>
   </div>
 </div>
@@ -1413,6 +1682,10 @@ body{min-height:-webkit-fill-available;}
   <button class="nb" id="nav-vault" onclick="sw('vault')">
     <svg viewBox="0 0 20 20" fill="none" stroke="currentColor"><path d="M4 2h9l5 5v11a1 1 0 01-1 1H4a1 1 0 01-1-1V3a1 1 0 011-1z"/><path d="M13 2v5h5M7 9h6M7 12h6M7 15h4"/></svg>
     <span class="nl">VAULT</span>
+  </button>
+  <button class="nb" id="nav-team" onclick="sw('team')">
+    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M13 6a3 3 0 11-6 0 3 3 0 016 0z"/><path d="M2 17c0-3.3 2.7-6 6-6h4c3.3 0 6 2.7 6 6"/><path d="M15 2a3 3 0 010 5.3M18 17c0-2-1.2-3.8-3-4.7"/></svg>
+    <span class="nl">TEAM</span>
   </button>
   <button class="nb" id="nav-intel" onclick="sw('intel')">
     <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M10 2a7 7 0 017 7c0 3.5-2.5 6.4-5.8 6.9L10 18l-1.2-2.1C5.5 15.4 3 12.5 3 9a7 7 0 017-7z"/><path d="M7.5 9h5M8.5 12h3"/></svg>
@@ -1630,8 +1903,11 @@ const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per 
 
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
-    {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
-    {id:'s2',code:'AIG',name:'An Innocent Girl',client:'Netflix',due:'2025-12-01',teamSize:2,weeksLeft:28},
+    {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14,crew:[]},
+    {id:'s2',code:'AIG',name:'An Innocent Girl',client:'Netflix',due:'2025-12-01',teamSize:2,weeksLeft:28,crew:[]},
+  ],
+  contacts:[
+    {id:'c1',name:'Katherine Soares',role:'VFX Supervisor',company:'MPP Features',email:'k.soares@mpp.com',phone:'',type:'supervisor',skills:['supervision','review','client'],avail:'freelance',rate:'',notes:'Key supervisor contact — CRL & AIG',color:'#4a9eff'},
   ],
   shots:[
     {id:'sh1',sid:'s1',code:'136_STL_0080',seq:'STL',status:'wip',who:'Ruben',notes:'Drone stabilization — Mocha track needs review',ci:1001,co:1087,bid:2.5},
@@ -1722,12 +1998,14 @@ function getWebhook(){return localStorage.getItem('vtek_webhook')||'';}
 
 function migrateTasks(){
   S.tasks=S.tasks.map(t=>({subtasks:[],tags:[],color:'',notes:t.notes||'',dep:'',expanded:false,dur:t.dur||PRI_DUR[t.pri]||45,...t,pri:['critical','high','med','low'].includes(t.pri)?t.pri:'med'}));
+  if(!S.contacts) S.contacts=[];
+  S.shows=S.shows.map(s=>({crew:[],...s}));
 }
 
 // ═══════════════════════════════
 // NAV
 // ═══════════════════════════════
-const PN={hangar:'HANGAR',shots:'SHOTS',payload:'PAYLOAD',plan:'PLAN',vault:'VAULT',intel:'INTEL',settings:'CONFIG'};
+const PN={hangar:'HANGAR',shots:'SHOTS',payload:'PAYLOAD',plan:'PLAN',vault:'VAULT',team:'TEAM',intel:'INTEL',settings:'CONFIG'};
 function sw(p){
   document.querySelectorAll('.page').forEach(e=>e.classList.remove('on'));
   document.querySelectorAll('.nb').forEach(e=>e.classList.remove('on'));
@@ -1739,6 +2017,7 @@ function sw(p){
   if(p==='shots')   rShots();
   if(p==='payload') rPayload();
   if(p==='vault')   rVault();
+  if(p==='team')    rTeam();
   if(p==='intel')   { checkKeyWarning(); }
   if(p==='plan')    { setPayloadMode('plan'); return; }
 }
@@ -3443,7 +3722,269 @@ function loadSavedPlan(){
   }
 }
 
+// ═══════════════════════════════
+// TEAM PAGE
+// ═══════════════════════════════
+
+function rTeam(){
+  rTeamRoster();
+  rTeamShowTabs();
+  rTeamShowCrew();
+}
+
+function rTeamRoster(){
+  const el=document.getElementById('team-roster');
+  if(!el)return;
+  const contacts=S.contacts||[];
+  if(!contacts.length){el.innerHTML='<div class="team-empty">No contacts yet<br>Tap + ADD to add your first crew member</div>';return;}
+  el.innerHTML=contacts.map(ct=>{
+    const initials=ct.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+    const skills=(ct.skills||[]).slice(0,3).map(s=>`<span class="contact-skill">${s}</span>`).join('');
+    const availLabel={fulltime:'FT',parttime:'PT',freelance:'FREELANCE',vendor:'VENDOR'}[ct.avail]||ct.avail||'';
+    const assignedShows=S.shows.filter(s=>(s.crew||[]).includes(ct.id)).map(s=>s.code).join(', ');
+    return `<div class="contact-card" style="--cc:${ct.color||'var(--p5)'}" onclick="editContact('${ct.id}')">
+      <div class="contact-avatar" style="color:${ct.color||'var(--t1)'};border-color:${ct.color||'var(--b1)'}">${initials}</div>
+      <div class="contact-info">
+        <div class="contact-name">${ct.name}</div>
+        <div class="contact-role">${ct.role||''}${ct.company?' · '+ct.company:''}</div>
+        <div class="contact-badges">
+          ${availLabel?`<span class="contact-badge">${availLabel}</span>`:''}
+          ${ct.type?`<span class="contact-badge">${ct.type.toUpperCase()}</span>`:''}
+          ${assignedShows?`<span class="contact-badge" style="color:var(--t1)">${assignedShows}</span>`:''}
+          ${skills}
+        </div>
+      </div>
+      <div class="contact-actions" onclick="event.stopPropagation()">
+        <button class="contact-action-btn" onclick="editContact('${ct.id}')">EDIT</button>
+        <button class="contact-action-btn danger" onclick="deleteContact('${ct.id}')">REMOVE</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function rTeamShowTabs(){
+  const el=document.getElementById('team-show-tabs');
+  if(!el)return;
+  el.innerHTML=S.shows.map((s,i)=>`<button class="stab${i===0?' on':''}" onclick="teamSelectShow('${s.id}',this)">${s.code}</button>`).join('');
+  teamSelectedShow=S.shows[0]?.id||'';
+}
+
+let teamSelectedShow='';
+
+function teamSelectShow(sid,btn){
+  teamSelectedShow=sid;
+  document.querySelectorAll('#team-show-tabs .stab').forEach(b=>b.classList.remove('on'));
+  if(btn) btn.classList.add('on');
+  rTeamShowCrew();
+}
+
+function rTeamShowCrew(){
+  const el=document.getElementById('team-show-crew');
+  if(!el)return;
+  const show=S.shows.find(s=>s.id===teamSelectedShow);
+  if(!show){el.innerHTML='';return;}
+  const crew=(show.crew||[]).map(cid=>(S.contacts||[]).find(c=>c.id===cid)).filter(Boolean);
+  const unassigned=(S.contacts||[]).filter(c=>!(show.crew||[]).includes(c.id));
+  let html='';
+  if(crew.length){
+    html+=crew.map(ct=>{
+      const initials=ct.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+      return `<div class="crew-row">
+        <div class="crew-avatar-sm" style="color:${ct.color||'var(--t1)'};border-color:${ct.color||'var(--b1)'}">${initials}</div>
+        <div class="crew-info"><div class="crew-name">${ct.name}</div><div class="crew-role">${ct.role||''}${ct.avail?' · '+ct.avail:''}</div></div>
+        <button class="crew-remove" onclick="removeCrew('${show.id}','${ct.id}')">REMOVE</button>
+      </div>`;
+    }).join('');
+  }else{
+    html+=`<div style="padding:16px;font-family:var(--body);font-size:13px;color:var(--t2)">No crew assigned to ${show.code} yet.</div>`;
+  }
+  if(unassigned.length){
+    html+=`<div class="crew-add-row"><select class="crew-select" onchange="addCrew('${show.id}',this.value);this.value=''">
+      <option value="">+ Assign crew member…</option>
+      ${unassigned.map(c=>`<option value="${c.id}">${c.name} — ${c.role||''}</option>`).join('')}
+    </select></div>`;
+  }
+  el.innerHTML=html;
+}
+
+function addCrew(sid,cid){
+  if(!cid)return;
+  const show=S.shows.find(s=>s.id===sid);
+  if(!show)return;
+  if(!show.crew)show.crew=[];
+  if(!show.crew.includes(cid))show.crew.push(cid);
+  save();rTeamShowCrew();rTeamRoster();toast('CREW ASSIGNED');
+}
+
+function removeCrew(sid,cid){
+  const show=S.shows.find(s=>s.id===sid);
+  if(!show||!show.crew)return;
+  show.crew=show.crew.filter(c=>c!==cid);
+  save();rTeamShowCrew();rTeamRoster();toast('REMOVED FROM CREW');
+}
+
+let editContactId=null;
+const CONTACT_COLORS=['#4a9eff','#3ecf6e','#e8c74a','#c42f20','#c792ea','#f78c6c','#89ddff','#ff6b2b','#72788a','#ffffff'];
+let selectedContactColor=CONTACT_COLORS[0];
+
+function openContactSheet(ct){
+  editContactId=ct?.id||null;
+  document.getElementById('contact-sh-title').textContent=ct?'EDIT CONTACT':'NEW CONTACT';
+  document.getElementById('c-name').value=ct?.name||'';
+  document.getElementById('c-role').value=ct?.role||'';
+  document.getElementById('c-company').value=ct?.company||'';
+  document.getElementById('c-email').value=ct?.email||'';
+  document.getElementById('c-phone').value=ct?.phone||'';
+  document.getElementById('c-skills').value=(ct?.skills||[]).join(', ');
+  document.getElementById('c-notes').value=ct?.notes||'';
+  document.getElementById('c-avail').value=ct?.avail||'freelance';
+  document.getElementById('c-type').value=ct?.type||'compositor';
+  const cr=document.getElementById('c-color-row');
+  cr.innerHTML=CONTACT_COLORS.map(col=>`<div class="cp-swatch${ct?.color===col?' on':''}" style="background:${col}" onclick="selectContactColor('${col}',this)"></div>`).join('');
+  selectedContactColor=ct?.color||CONTACT_COLORS[0];
+  openSheet('ol-contact');
+}
+
+function editContact(id){const ct=(S.contacts||[]).find(c=>c.id===id);if(ct)openContactSheet(ct);}
+
+function selectContactColor(col,el){
+  selectedContactColor=col;
+  document.querySelectorAll('#c-color-row .cp-swatch').forEach(s=>s.classList.remove('on'));
+  el.classList.add('on');
+}
+
+function saveContact(){
+  const name=document.getElementById('c-name').value.trim();
+  if(!name){toast('NAME REQUIRED');return;}
+  const skills=document.getElementById('c-skills').value.split(',').map(s=>s.trim()).filter(Boolean);
+  const ct={
+    id:editContactId||'c'+Date.now(),name,
+    role:document.getElementById('c-role').value.trim(),
+    company:document.getElementById('c-company').value.trim(),
+    email:document.getElementById('c-email').value.trim(),
+    phone:document.getElementById('c-phone').value.trim(),
+    avail:document.getElementById('c-avail').value,
+    type:document.getElementById('c-type').value,
+    skills,notes:document.getElementById('c-notes').value.trim(),
+    color:selectedContactColor,
+  };
+  if(!S.contacts)S.contacts=[];
+  if(editContactId){const idx=S.contacts.findIndex(c=>c.id===editContactId);if(idx>=0)S.contacts[idx]=ct;}
+  else S.contacts.push(ct);
+  save();closeSheet('ol-contact');rTeam();
+  toast(editContactId?'CONTACT UPDATED':'CONTACT ADDED');
+}
+
+function deleteContact(id){
+  if(!confirm('Remove this contact?'))return;
+  S.contacts=(S.contacts||[]).filter(c=>c.id!==id);
+  S.shows.forEach(s=>{if(s.crew)s.crew=s.crew.filter(c=>c!==id);});
+  save();rTeam();toast('CONTACT REMOVED');
+}
+
+// ═══════════════════════════════
+// PLAN WEEK VIEW
+// ═══════════════════════════════
+
+let planScope='today';
+let weekDragging=null;
+
+function setPlanScope(scope){
+  planScope=scope;
+  const todayBoard=document.getElementById('plan-today-board');
+  const weekBoard=document.getElementById('plan-week-board');
+  document.getElementById('plan-scope-today')?.classList.toggle('on',scope==='today');
+  document.getElementById('plan-scope-week')?.classList.toggle('on',scope==='week');
+  if(scope==='today'){
+    todayBoard.style.display='flex'; weekBoard.style.display='none';
+    document.getElementById('plan-date-label').textContent=new Date().toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}).toUpperCase();
+    renderTimeline(); renderTaskPool();
+  }else{
+    todayBoard.style.display='none'; weekBoard.style.display='flex';
+    document.getElementById('plan-date-label').textContent='WEEK OF '+getWeekStart().toLocaleDateString('en-US',{month:'short',day:'numeric'}).toUpperCase();
+    renderWeekBoard();
+  }
+}
+
+function getWeekStart(){
+  const d=new Date(); const day=d.getDay();
+  d.setDate(d.getDate()+(day===0?-6:1-day)); d.setHours(0,0,0,0); return d;
+}
+
+function getWeekDays(){
+  const start=getWeekStart();
+  return Array.from({length:5},(_,i)=>{const d=new Date(start);d.setDate(d.getDate()+i);return d;});
+}
+
+function renderWeekBoard(){
+  const board=document.getElementById('week-board');
+  if(!board)return;
+  const days=getWeekDays();
+  const today=new Date(); today.setHours(0,0,0,0);
+  const priColor={high:'var(--s-blk)',med:'var(--rs-warn-t)',low:'var(--t2)'};
+  const weekDateStrs=new Set(days.map(d=>d.toISOString().slice(0,10)));
+  const tasksWithDue=new Set(S.tasks.filter(t=>!t.done&&weekDateStrs.has(t.due)).map(t=>t.id));
+  const unscheduled=S.tasks.filter(t=>!t.done&&!tasksWithDue.has(t.id));
+
+  const taskCard=(t)=>{
+    const show=gs(t.sid); const col=t.color||(show?.color||'var(--p5)');
+    const pc=priColor[t.pri]||'var(--t2)';
+    return `<div class="week-task-card" style="--wc:${col}" draggable="true" data-tid="${t.id}" ondragstart="weekDragStart(event,'${t.id}')">
+      <div class="week-task-title">${t.title}</div>
+      <div class="week-task-meta">
+        ${show?`<span class="week-task-show">${show.code}</span>`:''}
+        <span class="week-task-pri" style="--wp:${pc}">${t.pri.toUpperCase()}</span>
+        ${t.dur?`<span style="font-family:var(--mono);font-size:9px;color:var(--t2)">${t.dur}m</span>`:''}
+      </div>
+    </div>`;
+  };
+
+  const dropAttrs=(dateStr)=>`ondragover="event.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" ondrop="weekDrop(event,${dateStr?`'${dateStr}'`:'null'})"`;
+
+  let html=`<div class="week-unscheduled">
+    <div class="plan-col-label" style="padding:10px 8px 8px">BACKLOG</div>
+    <div class="week-tasks" ${dropAttrs(null)}>
+      ${unscheduled.map(taskCard).join('')||'<div style="padding:16px 8px;font-family:var(--display);font-size:9px;color:var(--t3);text-align:center;letter-spacing:0.1em">ALL ASSIGNED</div>'}
+    </div>
+  </div>`;
+
+  html+=days.map(day=>{
+    const dateStr=day.toISOString().slice(0,10);
+    const isToday=day.getTime()===today.getTime();
+    const dayTasks=S.tasks.filter(t=>!t.done&&t.due===dateStr);
+    return `<div class="week-col${isToday?' week-col-today':''}">
+      <div class="week-col-header">
+        <div class="week-col-day">${day.toLocaleDateString('en-US',{weekday:'short'}).toUpperCase()}</div>
+        <div class="week-col-date">${day.toLocaleDateString('en-US',{month:'short',day:'numeric'}).toUpperCase()}</div>
+      </div>
+      <div class="week-tasks" ${dropAttrs(dateStr)}>
+        ${dayTasks.map(taskCard).join('')||`<div style="padding:20px 0;text-align:center;font-family:var(--display);font-size:9px;color:var(--t3);letter-spacing:0.1em;text-transform:uppercase">DROP TASKS</div>`}
+      </div>
+    </div>`;
+  }).join('');
+
+  board.innerHTML=html;
+}
+
+function weekDragStart(e,tid){
+  weekDragging=tid; e.dataTransfer.effectAllowed='move';
+  setTimeout(()=>document.querySelector(`[data-tid="${tid}"]`)?.classList.add('dragging'),0);
+}
+
+function weekDrop(e,dateStr){
+  e.preventDefault();
+  document.querySelectorAll('.week-tasks').forEach(el=>el.classList.remove('drag-over'));
+  if(!weekDragging)return;
+  const task=S.tasks.find(t=>t.id===weekDragging);
+  if(!task){weekDragging=null;return;}
+  task.due=dateStr||'';
+  save(); renderWeekBoard();
+  toast(dateStr?'SCHEDULED → '+new Date(dateStr+'T12:00:00').toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}):'MOVED TO BACKLOG');
+  weekDragging=null;
+}
+
 // ── BOOT
+
 
 
 const savedApi=localStorage.getItem('vtek_api');if(savedApi)document.getElementById('api-disp').textContent=savedApi;
