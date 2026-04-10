@@ -949,6 +949,10 @@ body{min-height:-webkit-fill-available;}
         <button class="intel-qchip" onclick="intelQuick('Do we have enough team capacity to deliver on time? Flag any shows at risk.')">
           <span class="intel-qchip-icon">&#11041;</span><span class="intel-qchip-label">Resource risk check</span>
         </button>
+        <button class="intel-qchip" id="intel-setup-chip" onclick="sw('settings')" style="border-color:var(--ac-bd)">
+          <span class="intel-qchip-icon" style="color:var(--ac)">&#9881;</span>
+          <span class="intel-qchip-label" style="color:var(--ac)" id="intel-setup-label">Set up INTEL — add API key</span>
+        </button>
       </div>
 
       <button class="intel-expand-btn" id="intel-expand-btn" onclick="togglePromptGroups()">
@@ -1363,6 +1367,7 @@ let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   vaultDocs:[
     {id:'v1',title:'CRL Shot Notes',content:'# CRL Shot Notes\n\nNotes from review sessions.\n\n## 136_STL_0080\nMocha track needs review before delivery.\n\n## 136_INT_0040\nClient approved — ready for final delivery.',showId:'s1',tags:['notes','review'],updated:Date.now()},
     {id:'v2',title:'CBFX Pipeline Docs',content:'# CBFX Pipeline\n\nInternal reference for compositing pipeline.\n\n## Color Management\n- ACES workflow\n- Output: Rec.709\n\n## Delivery Specs\n- ProRes 4444\n- 2048x858',showId:'',tags:['pipeline','reference'],updated:Date.now()},
+    {id:'v-keys',title:'API Keys & Config',content:'# API Keys & Config\n\n> Stored locally on this device only. Never shared.\n\n## Anthropic API Key\n\n(Set via CONFIG → ANTHROPIC API KEY)\n\n## GitHub\n- Repo: https://github.com/biggieai/vtek-hangar\n- Pages: https://biggieai.github.io/vtek-hangar/\n\n## Make.com Webhook\n\n(Set via CONFIG → MAKE.COM WEBHOOK URL)\n\n## Local Server\n- IP: 192.168.100.132:3000',showId:'',tags:['config','keys'],updated:Date.now()},
   ],
   schedule:[],
   activeShow:'s1',activeTaskShow:'all',page:'hangar',
@@ -2258,6 +2263,17 @@ function handleIntelBtn(){
 function checkKeyWarning(){
   const warn=document.getElementById('intel-no-key-warn');
   if(warn) warn.classList.toggle('show',!getKey());
+  // Hide the setup chip once key is set
+  const chip=document.getElementById('intel-setup-chip');
+  const label=document.getElementById('intel-setup-label');
+  if(chip){
+    if(getKey()){
+      chip.style.display='none';
+    } else {
+      chip.style.display='';
+      if(label) label.textContent='Set up INTEL — add API key';
+    }
+  }
 }
 
 function intelQuick(text){
@@ -2545,7 +2561,37 @@ function refresh(){
 
 function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2200);}
 
-function editAPIKey(){const cur=getKey();const v=prompt('Anthropic API Key:',cur?'••••'+cur.slice(-4):'');if(v&&v.startsWith('sk-')){localStorage.setItem('vtek_claude_key',v.trim());updateKeyDisplay();toast('KEY SAVED');}else if(v)toast('INVALID KEY');}
+function editAPIKey(){
+  const cur=getKey();
+  const v=prompt('Anthropic API Key (sk-ant-...):',cur?'••••'+cur.slice(-4):'');
+  if(v&&v.startsWith('sk-')){
+    localStorage.setItem('vtek_claude_key',v.trim());
+    updateKeyDisplay();
+    // Save to vault doc so it's recoverable
+    saveKeyToVault(v.trim());
+    toast('KEY SAVED & STORED IN VAULT');
+  }else if(v){
+    toast('INVALID KEY — must start with sk-');
+  }
+}
+
+function saveKeyToVault(key){
+  if(!S.vaultDocs) S.vaultDocs=[];
+  const doc=S.vaultDocs.find(d=>d.id==='v-keys');
+  if(!doc) return;
+  const masked='sk-...'+key.slice(-8);
+  const date=new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  const newSection='## Anthropic API Key\n\n`'+masked+'`\n\n_Stored in localStorage. Updated: '+date+'_\n\n';
+  const marker='## Anthropic API Key';
+  const nextMarker='## GitHub';
+  const start=doc.content.indexOf(marker);
+  const end=doc.content.indexOf(nextMarker);
+  if(start>=0&&end>start){
+    doc.content=doc.content.slice(0,start)+newSection+doc.content.slice(end);
+  }
+  doc.updated=Date.now();
+  save();
+}
 function editWebhook(){const v=prompt('Make.com Webhook URL:',getWebhook());if(v){localStorage.setItem('vtek_webhook',v.trim());document.getElementById('webhook-disp').textContent=v.length>30?v.slice(0,30)+'…':v;toast('WEBHOOK SAVED');}}
 function editAPI(){const v=prompt('API URL:',localStorage.getItem('vtek_api')||'http://192.168.100.132:8000');if(v){localStorage.setItem('vtek_api',v);document.getElementById('api-disp').textContent=v;}}
 function updateKeyDisplay(){const k=getKey();const el=document.getElementById('key-disp');if(el)el.textContent=k?'••••'+k.slice(-4):'NOT SET';}
@@ -2652,6 +2698,7 @@ const savedApi=localStorage.getItem('vtek_api');if(savedApi)document.getElementB
 const savedWebhook=getWebhook();if(savedWebhook){const wd=document.getElementById('webhook-disp');if(wd)wd.textContent=savedWebhook.length>30?savedWebhook.slice(0,30)+'…':savedWebhook;}
 if(localStorage.getItem('vtek_drive_token')){driveToken=localStorage.getItem('vtek_drive_token');const el=document.getElementById('drive-status');if(el)el.textContent='CONNECTED';}
 updateKeyDisplay();
+checkKeyWarning();
 // Show backup count in config
 const backupCountEl=document.getElementById('backup-count');
 if(backupCountEl){const bc=getBackups().length;backupCountEl.textContent=bc?bc+' saved':' — ';}
