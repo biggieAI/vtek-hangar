@@ -71,10 +71,10 @@ body{min-height:-webkit-fill-available;}
   .live-tag{margin-top:16px;}
   .tb-r{margin-left:0;margin-top:auto;flex-direction:column;width:100%;gap:6px;}
   .tb-btn{width:100%;text-align:center;justify-content:center;}
-  .page-area{flex:1;display:flex;flex-direction:column;min-width:0;}
+  .page-area{flex:1;display:flex;flex-direction:column;min-width:0;padding-bottom:0;}
   .page{padding:28px 36px;}
   .show-grid{grid-template-columns:1fr 1fr 1fr;}
-  .bnav{width:220px;height:100dvh;flex-direction:column;align-items:stretch;padding:8px 12px;border-top:none;border-right:1px solid var(--b0);order:-1;flex-shrink:0;gap:2px;overflow:auto;}
+  .bnav{position:static;width:220px;height:100dvh;flex-direction:column;align-items:stretch;padding:8px 12px;border-top:none;border-right:1px solid var(--b0);order:-1;flex-shrink:0;gap:2px;overflow:auto;}
   .nb{flex:none;flex-direction:row;justify-content:flex-start;min-width:0;padding:10px 12px;gap:12px;}
   .nb .nl{font-size:13px;font-weight:500;letter-spacing:0.02em;}
   .nb svg{width:18px;height:18px;flex-shrink:0;}
@@ -130,10 +130,23 @@ body{min-height:-webkit-fill-available;}
 @keyframes up{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
 
 /* ── BOTTOM NAV ── */
-.bnav{height:calc(60px + env(safe-area-inset-bottom));padding-bottom:env(safe-area-inset-bottom);display:flex;flex-shrink:0;background:var(--p1);border-top:1px solid var(--b0);position:relative;z-index:10;overflow-x:auto;scrollbar-width:none;}
-/* Safari browser chrome compensation — adds extra bottom clearance in non-PWA mode */
-@supports not (display:-webkit-named-image(apple-pay-logo)){
-  .bnav{height:calc(80px + env(safe-area-inset-bottom));padding-bottom:calc(env(safe-area-inset-bottom) + 16px);}
+/* Nav fixed to bottom — always above Safari chrome */
+.bnav{
+  height:calc(56px + env(safe-area-inset-bottom));
+  padding-bottom:env(safe-area-inset-bottom);
+  display:flex; flex-shrink:0;
+  background:var(--p1);
+  border-top:1px solid var(--b0);
+  position:fixed;
+  bottom:0; left:0; right:0;
+  z-index:100;
+  overflow-x:auto;
+  scrollbar-width:none;
+}
+.bnav::-webkit-scrollbar{display:none;}
+/* Push page content above the fixed nav */
+.page-area{
+  padding-bottom:calc(56px + env(safe-area-inset-bottom));
 }
 .bnav::-webkit-scrollbar{display:none;}
 .nb{flex:1;min-width:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;background:none;border:none;cursor:pointer;color:var(--t2);transition:all 0.12s;position:relative;}
