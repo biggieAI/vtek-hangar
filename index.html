@@ -347,6 +347,225 @@ body{min-height:-webkit-fill-available;}
 /* ══════════════════════════════════════
    PAYLOAD STYLES
 ══════════════════════════════════════ */
+
+/* ── PAYLOAD MODE BAR ── */
+.payload-mode-bar{
+  display:flex; gap:6px; margin-bottom:14px;
+  border-bottom:1px solid var(--b0); padding-bottom:14px;
+}
+.pmode-btn{
+  flex:1; display:flex; align-items:center; justify-content:center; gap:7px;
+  padding:11px 14px; border:var(--bd); background:transparent;
+  font-family:var(--display); font-size:12px; font-weight:600;
+  letter-spacing:0.08em; text-transform:uppercase; color:var(--t2);
+  cursor:pointer; transition:all 0.15s;
+}
+.pmode-btn.on{
+  background:var(--p3); color:var(--t0); border-color:var(--b2);
+}
+.pmode-btn:hover:not(.on){ background:var(--p2); color:var(--t1); }
+
+/* ── PLAN MODE PAGE ── */
+#pg-plan{ padding:0; display:none; flex-direction:column; }
+#pg-plan.on{ display:flex; }
+
+.plan-header{
+  display:flex; align-items:center; gap:10px;
+  padding:14px 16px 12px;
+  border-bottom:1px solid var(--b0);
+  flex-shrink:0; background:var(--p1);
+}
+.plan-back-btn{
+  font-family:var(--display); font-size:11px; font-weight:600;
+  color:var(--t2); background:none; border:none; cursor:pointer;
+  letter-spacing:0.06em; padding:0; flex-shrink:0;
+  transition:color 0.12s;
+}
+.plan-back-btn:hover{ color:var(--t0); }
+.plan-date{
+  flex:1; font-family:var(--display); font-size:13px; font-weight:600;
+  color:var(--t1); letter-spacing:0.06em; text-align:center;
+  text-transform:uppercase;
+}
+.plan-header-actions{ display:flex; gap:6px; flex-shrink:0; }
+.plan-action-btn{
+  display:flex; align-items:center; gap:5px;
+  padding:7px 12px; border:var(--bd); background:transparent;
+  font-family:var(--display); font-size:11px; font-weight:600;
+  letter-spacing:0.06em; text-transform:uppercase; color:var(--t1);
+  cursor:pointer; transition:all 0.14s;
+}
+.plan-action-btn:hover{ color:var(--t0); border-color:var(--b2); background:var(--p3); }
+.plan-commit-btn{
+  border-color:var(--ac-bd); color:var(--ac);
+}
+.plan-commit-btn:hover{ background:var(--ac-lo); }
+
+/* Cal status + suggest banners */
+.plan-cal-status{
+  display:flex; align-items:center; gap:8px;
+  padding:8px 16px; font-family:var(--display); font-size:11px;
+  color:var(--t2); flex-shrink:0; border-bottom:1px solid var(--b0);
+}
+.plan-suggest-banner{
+  padding:10px 16px; background:var(--p2);
+  border-bottom:1px solid var(--b1);
+  font-family:var(--body); font-size:13px; color:var(--t1);
+  line-height:1.5; flex-shrink:0;
+}
+
+/* Main board */
+.plan-board{
+  flex:1; display:flex; gap:0; overflow:hidden; min-height:0;
+}
+
+/* Left: unscheduled task pool */
+.plan-unscheduled{
+  width:160px; flex-shrink:0; border-right:1px solid var(--b0);
+  display:flex; flex-direction:column; overflow:hidden;
+}
+.plan-col-label{
+  display:flex; justify-content:space-between; align-items:center;
+  padding:8px 10px; font-family:var(--display); font-size:9px;
+  font-weight:700; letter-spacing:0.12em; text-transform:uppercase;
+  color:var(--t2); border-bottom:1px solid var(--b0); flex-shrink:0;
+}
+#plan-task-pool{
+  flex:1; overflow-y:auto; padding:6px; display:flex;
+  flex-direction:column; gap:4px; scrollbar-width:none;
+}
+#plan-task-pool::-webkit-scrollbar{ display:none; }
+
+/* Unscheduled task chip */
+.plan-task-chip{
+  padding:9px 10px; background:var(--p2); border:var(--bd);
+  border-left:3px solid var(--tc,var(--p5));
+  cursor:grab; user-select:none; transition:all 0.12s;
+}
+.plan-task-chip:hover{ background:var(--p3); border-color:var(--b2); }
+.plan-task-chip.dragging{ opacity:0.4; }
+.plan-chip-title{
+  font-family:var(--body); font-size:12px; color:var(--t0);
+  line-height:1.3; margin-bottom:4px;
+}
+.plan-chip-meta{
+  display:flex; align-items:center; gap:5px; flex-wrap:wrap;
+}
+.plan-chip-dur{
+  font-family:var(--mono); font-size:9px; color:var(--t2);
+}
+.plan-chip-pri{
+  font-family:var(--display); font-size:9px; font-weight:600;
+  padding:1px 5px; border:1px solid var(--pc,var(--b1));
+  color:var(--pc,var(--t2)); letter-spacing:0.04em;
+}
+.plan-chip-fit-btn{
+  margin-top:6px; width:100%; padding:4px 6px;
+  border:1px solid var(--b1); background:transparent;
+  font-family:var(--display); font-size:9px; font-weight:600;
+  color:var(--t2); cursor:pointer; letter-spacing:0.06em;
+  text-transform:uppercase; transition:all 0.12s;
+}
+.plan-chip-fit-btn:hover{ border-color:var(--ac-bd); color:var(--ac); background:var(--ac-lo); }
+
+/* Right: timeline */
+.plan-timeline-wrap{
+  flex:1; display:flex; flex-direction:column; overflow:hidden; min-width:0;
+}
+.plan-timeline{
+  flex:1; overflow-y:auto; position:relative;
+  scrollbar-width:none; padding:0;
+}
+.plan-timeline::-webkit-scrollbar{ display:none; }
+
+/* Time slot rows */
+.plan-slot{
+  display:flex; align-items:stretch; min-height:52px;
+  border-bottom:1px solid var(--b0); position:relative;
+}
+.plan-slot.half-hour{ border-bottom:1px dashed var(--b0); opacity:0.6; min-height:34px; }
+.plan-slot-time{
+  width:52px; flex-shrink:0; font-family:var(--mono); font-size:9px;
+  color:var(--t2); padding:6px 8px 0; letter-spacing:0.04em;
+}
+.plan-slot-body{
+  flex:1; padding:3px 6px; display:flex; flex-direction:column;
+  gap:3px; position:relative;
+}
+.plan-slot.drop-target{ background:var(--ac-lo); }
+
+/* Calendar event block — locked */
+.plan-cal-block{
+  padding:7px 10px; background:var(--p3);
+  border:var(--bd); border-left:3px solid var(--t2);
+  opacity:0.75;
+}
+.plan-cal-block-title{
+  font-family:var(--body); font-size:12px; color:var(--t1); line-height:1.3;
+}
+.plan-cal-block-time{
+  font-family:var(--mono); font-size:9px; color:var(--t2); margin-top:2px;
+}
+
+/* Lunch block */
+.plan-lunch-block{
+  padding:7px 10px; background:var(--p2);
+  border:1px dashed var(--b1); border-left:3px solid var(--p5);
+  opacity:0.6;
+}
+.plan-lunch-title{
+  font-family:var(--display); font-size:11px; font-weight:600;
+  color:var(--t2); letter-spacing:0.06em; text-transform:uppercase;
+}
+
+/* Scheduled task block */
+.plan-block{
+  padding:9px 11px; background:var(--p3);
+  border:var(--bd); border-left:3px solid var(--bc,var(--p5));
+  cursor:grab; transition:all 0.12s; position:relative;
+}
+.plan-block:hover{ background:var(--p4); }
+.plan-block.dragging{ opacity:0.35; }
+.plan-block-title{
+  font-family:var(--body); font-size:13px; color:var(--t0);
+  line-height:1.3; margin-bottom:4px; padding-right:24px;
+}
+.plan-block-meta{
+  display:flex; align-items:center; gap:8px;
+}
+.plan-block-time{
+  font-family:var(--mono); font-size:10px; color:var(--t2);
+}
+.plan-block-dur{
+  font-family:var(--mono); font-size:10px; color:var(--t2);
+}
+.plan-block-remove{
+  position:absolute; top:7px; right:8px;
+  font-family:var(--display); font-size:12px; color:var(--t2);
+  background:none; border:none; cursor:pointer; padding:0;
+  line-height:1; transition:color 0.12s;
+}
+.plan-block-remove:hover{ color:var(--s-blk); }
+
+/* Now indicator */
+.plan-now-line{
+  position:absolute; left:0; right:0; height:2px;
+  background:var(--s-blk); opacity:0.7; pointer-events:none; z-index:10;
+}
+.plan-now-dot{
+  position:absolute; left:50px; top:-3px; width:8px; height:8px;
+  background:var(--s-blk); border-radius:50%;
+}
+
+/* Commit status */
+.plan-commit-status{
+  display:flex; align-items:center; gap:8px;
+  padding:10px 16px; background:var(--p2);
+  border-top:1px solid var(--b1); flex-shrink:0;
+  font-family:var(--display); font-size:11px; font-weight:500;
+  color:var(--t1); letter-spacing:0.04em;
+}
+
 .pl-toolbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;gap:8px;}
 .pl-views{display:flex;gap:2px;}
 .pl-vbtn{padding:7px 13px;clip-path:none;border:var(--bd);background:transparent;font-family:var(--display);font-weight:600;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--t2);cursor:pointer;transition:all 0.12s;}
@@ -859,13 +1078,21 @@ body{min-height:-webkit-fill-available;}
 </div>
 
 <!-- ── PAYLOAD ── -->
+<!-- ── PAYLOAD (EXECUTE MODE) ── -->
 <div class="page" id="pg-payload">
   <div id="payload-dos"></div>
-  <!-- Schedule Section -->
-  <div class="sec" style="margin-top:13px"><span class="sec-l">Daily Schedule</span><span class="sec-r"></span></div>
-  <div id="sched-section"></div>
+  <!-- Mode toggle -->
+  <div class="payload-mode-bar">
+    <button class="pmode-btn on" id="pmode-execute" onclick="setPayloadMode('execute')">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13"><path d="M4 8.5l2.5 2.5 5-5"/><rect x="1" y="1" width="14" height="14" rx="0"/></svg>
+      EXECUTE
+    </button>
+    <button class="pmode-btn" id="pmode-plan" onclick="setPayloadMode('plan')">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13"><rect x="1" y="2" width="14" height="12" rx="0"/><path d="M5 2v12M1 6h14M1 10h14"/></svg>
+      PLAN DAY
+    </button>
+  </div>
   <!-- Task List -->
-  <div class="sec" style="margin-top:8px"><span class="sec-l">Payload</span><span class="sec-r"></span></div>
   <div class="pl-toolbar">
     <div class="pl-views">
       <button class="pl-vbtn on" id="plv-list" onclick="setPlView('list')">LIST</button>
@@ -896,6 +1123,62 @@ body{min-height:-webkit-fill-available;}
     <span>INTEL sorting payload…</span>
   </div>
   <div id="task-list" class="pl-list"></div>
+</div>
+
+<!-- ── PLAN MODE (sub-page) ── -->
+<div class="page" id="pg-plan">
+  <!-- Header -->
+  <div class="plan-header">
+    <button class="plan-back-btn" onclick="setPayloadMode('execute')">← PAYLOAD</button>
+    <div class="plan-date" id="plan-date-label"></div>
+    <div class="plan-header-actions">
+      <button class="plan-action-btn" id="plan-suggest-btn" onclick="planSuggest()">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" width="11" height="11"><path d="M7 1v2M7 11v2M1 7h2M11 7h2M3 3l1.5 1.5M9.5 9.5L11 11M3 11l1.5-1.5M9.5 4.5L11 3"/></svg>
+        SUGGEST
+      </button>
+      <button class="plan-action-btn plan-commit-btn" onclick="planCommit()">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" width="11" height="11"><polyline points="2 7 5 10 12 3"/></svg>
+        COMMIT
+      </button>
+    </div>
+  </div>
+
+  <!-- Cal loading indicator -->
+  <div class="plan-cal-status" id="plan-cal-status">
+    <div class="think-dot"></div><div class="think-dot"></div><div class="think-dot"></div>
+    <span>Loading calendar…</span>
+  </div>
+
+  <!-- Suggest banner -->
+  <div class="plan-suggest-banner" id="plan-suggest-banner" style="display:none">
+    <div class="plan-suggest-txt" id="plan-suggest-txt"></div>
+  </div>
+
+  <!-- Main board — two columns -->
+  <div class="plan-board">
+
+    <!-- Left: Unscheduled tasks -->
+    <div class="plan-unscheduled" id="plan-unscheduled">
+      <div class="plan-col-label">UNSCHEDULED</div>
+      <div id="plan-task-pool"></div>
+    </div>
+
+    <!-- Right: Time-block board -->
+    <div class="plan-timeline-wrap">
+      <div class="plan-col-label">
+        <span>SCHEDULE</span>
+        <span id="plan-total-time" style="color:var(--t2);font-weight:400"></span>
+      </div>
+      <div class="plan-timeline" id="plan-timeline"></div>
+    </div>
+
+  </div>
+
+  <!-- Commit status -->
+  <div class="plan-commit-status" id="plan-commit-status" style="display:none">
+    <div class="think-dot"></div><div class="think-dot"></div><div class="think-dot"></div>
+    <span id="plan-commit-txt">Creating calendar events…</span>
+  </div>
 </div>
 
 <!-- ── VAULT ── -->
@@ -1444,7 +1727,7 @@ function migrateTasks(){
 // ═══════════════════════════════
 // NAV
 // ═══════════════════════════════
-const PN={hangar:'HANGAR',shots:'SHOTS',payload:'PAYLOAD',vault:'VAULT',intel:'INTEL',settings:'CONFIG'};
+const PN={hangar:'HANGAR',shots:'SHOTS',payload:'PAYLOAD',plan:'PLAN',vault:'VAULT',intel:'INTEL',settings:'CONFIG'};
 function sw(p){
   document.querySelectorAll('.page').forEach(e=>e.classList.remove('on'));
   document.querySelectorAll('.nb').forEach(e=>e.classList.remove('on'));
@@ -1456,7 +1739,8 @@ function sw(p){
   if(p==='shots')   rShots();
   if(p==='payload') rPayload();
   if(p==='vault')   rVault();
-  if(p==='intel')   checkKeyWarning();
+  if(p==='intel')   { checkKeyWarning(); }
+  if(p==='plan')    { setPayloadMode('plan'); return; }
 }
 
 // ═══════════════════════════════
@@ -2692,8 +2976,476 @@ function searchKeyNav(e){
 }
 
 // ═══════════════════════════════
-// BOOT
+// PLAN MODE ENGINE
 // ═══════════════════════════════
+
+const WORK_START = 10; // 10am
+const WORK_END   = 19; // 7pm
+const LUNCH_START = 13;
+const LUNCH_END   = 14;
+
+let planSchedule  = []; // [{taskId, startH, startM, durMins}]
+let planCalEvents = []; // [{title, startH, startM, durMins, id}]
+let planDragging  = null;
+
+function setPayloadMode(mode){
+  const execPage = document.getElementById('pg-payload');
+  const planPage = document.getElementById('pg-plan');
+  const execBtn  = document.getElementById('pmode-execute');
+  const planBtn  = document.getElementById('pmode-plan');
+  if(mode==='plan'){
+    execPage.classList.remove('on');
+    planPage.classList.add('on');
+    if(execBtn) execBtn.classList.remove('on');
+    if(planBtn) planBtn.classList.add('on');
+    document.getElementById('wm-p').textContent='PLAN';
+    initPlanMode();
+  } else {
+    planPage.classList.remove('on');
+    execPage.classList.add('on');
+    if(planBtn) planBtn.classList.remove('on');
+    if(execBtn) execBtn.classList.add('on');
+    document.getElementById('wm-p').textContent='PAYLOAD';
+    rPayload();
+  }
+}
+
+async function initPlanMode(){
+  // Set date label
+  const dl = document.getElementById('plan-date-label');
+  if(dl) dl.textContent = new Date().toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}).toUpperCase();
+
+  // Render timeline first
+  renderTimeline();
+
+  // Pull calendar events
+  await fetchCalendarEvents();
+
+  // Render unscheduled tasks
+  renderTaskPool();
+
+  // Re-render timeline with cal events
+  renderTimeline();
+
+  // Restore any saved schedule for today
+  loadSavedPlan();
+}
+
+function renderTimeline(){
+  const tl = document.getElementById('plan-timeline');
+  if(!tl) return;
+  let html = '';
+  const now = new Date();
+  const nowMins = now.getHours()*60 + now.getMinutes();
+
+  for(let h = WORK_START; h < WORK_END; h++){
+    // Full hour slot
+    html += buildSlot(h, 0, nowMins);
+    // Half hour slot
+    html += buildSlot(h, 30, nowMins);
+  }
+  tl.innerHTML = html;
+
+  // Render calendar conflict blocks
+  planCalEvents.forEach(ev => placeCalBlock(ev));
+
+  // Render lunch
+  placeLunchBlock();
+
+  // Render scheduled tasks
+  planSchedule.forEach(entry => placeBlock(entry));
+
+  // Drop zone listeners
+  tl.querySelectorAll('.plan-slot-body').forEach(body => {
+    body.addEventListener('dragover', e => { e.preventDefault(); body.closest('.plan-slot').classList.add('drop-target'); });
+    body.addEventListener('dragleave', e => { body.closest('.plan-slot').classList.remove('drop-target'); });
+    body.addEventListener('drop', e => {
+      e.preventDefault();
+      body.closest('.plan-slot').classList.remove('drop-target');
+      const slotH = parseInt(body.closest('.plan-slot').dataset.h);
+      const slotM = parseInt(body.closest('.plan-slot').dataset.m);
+      if(!planDragging) return;
+      // Remove from schedule if already there
+      planSchedule = planSchedule.filter(s => s.taskId !== planDragging.id);
+      // Add at new slot
+      planSchedule.push({ taskId: planDragging.id, startH: slotH, startM: slotM, durMins: planDragging.dur||45 });
+      savePlan();
+      renderTimeline();
+      renderTaskPool();
+      updateTotalTime();
+    });
+  });
+}
+
+function buildSlot(h, m, nowMins){
+  const totalMins = h*60+m;
+  const isNow = Math.abs(totalMins - nowMins) < 30;
+  const label = m === 0 ? formatHour(h) : '';
+  const isLunch = (h===LUNCH_START && m===0);
+  return `<div class="plan-slot${m===30?' half-hour':''}" data-h="${h}" data-m="${m}">
+    <div class="plan-slot-time">${label}</div>
+    <div class="plan-slot-body" data-h="${h}" data-m="${m}">
+      ${isNow?`<div class="plan-now-line"><div class="plan-now-dot"></div></div>`:''}
+    </div>
+  </div>`;
+}
+
+function formatHour(h){
+  const ampm = h>=12?'PM':'AM';
+  const h12 = h>12?h-12:h;
+  return `${h12}${ampm}`;
+}
+
+function placeLunchBlock(){
+  const body = slotBody(LUNCH_START, 0);
+  if(!body) return;
+  body.insertAdjacentHTML('beforeend',`<div class="plan-lunch-block">
+    <div class="plan-lunch-title">🍽 Lunch — 1:00–2:00 PM</div>
+  </div>`);
+}
+
+function placeCalBlock(ev){
+  const body = slotBody(ev.startH, ev.startM < 30 ? 0 : 30);
+  if(!body) return;
+  const endH = ev.startH + Math.floor((ev.startM + ev.durMins)/60);
+  const endM = (ev.startM + ev.durMins) % 60;
+  body.insertAdjacentHTML('beforeend',`<div class="plan-cal-block">
+    <div class="plan-cal-block-title">${ev.title}</div>
+    <div class="plan-cal-block-time">${fmtTime(ev.startH,ev.startM)} – ${fmtTime(endH,endM)} · CALENDAR</div>
+  </div>`);
+}
+
+function placeBlock(entry){
+  const task = S.tasks.find(t=>t.id===entry.taskId);
+  if(!task) return;
+  const body = slotBody(entry.startH, entry.startM < 30 ? 0 : 30);
+  if(!body) return;
+  const endH = entry.startH + Math.floor((entry.startM + entry.durMins)/60);
+  const endM = (entry.startM + entry.durMins) % 60;
+  const show = gs(task.sid);
+  const col = task.color || (show?.color||'var(--p5)');
+  body.insertAdjacentHTML('beforeend',`<div class="plan-block" style="--bc:${col}" draggable="true"
+    data-tid="${task.id}"
+    ondragstart="planBlockDragStart(event,'${task.id}')">
+    <button class="plan-block-remove" onclick="removePlanBlock('${task.id}')">✕</button>
+    <div class="plan-block-title">${task.title}</div>
+    <div class="plan-block-meta">
+      <span class="plan-block-time">${fmtTime(entry.startH,entry.startM)} – ${fmtTime(endH,endM)}</span>
+      <span class="plan-block-dur">${entry.durMins}min</span>
+    </div>
+  </div>`);
+}
+
+function slotBody(h, m){
+  const tl = document.getElementById('plan-timeline');
+  if(!tl) return null;
+  return tl.querySelector(`.plan-slot-body[data-h="${h}"][data-m="${m}"]`);
+}
+
+function fmtTime(h, m){
+  const ampm = h>=12?'pm':'am';
+  const h12 = h>12?h-12:(h===0?12:h);
+  return `${h12}:${String(m).padStart(2,'0')}${ampm}`;
+}
+
+function renderTaskPool(){
+  const pool = document.getElementById('plan-task-pool');
+  if(!pool) return;
+  // Show open tasks not yet scheduled today
+  const scheduled = new Set(planSchedule.map(s=>s.taskId));
+  const tasks = S.tasks.filter(t=>!t.done && !scheduled.has(t.id));
+  if(!tasks.length){
+    pool.innerHTML=`<div style="padding:16px 8px;font-family:var(--display);font-size:11px;color:var(--t2);text-align:center;line-height:1.8;">ALL TASKS<br>SCHEDULED</div>`;
+    return;
+  }
+  const priColor = {high:'var(--s-blk)',med:'var(--rs-warn-t)',low:'var(--t2)'};
+  pool.innerHTML = tasks.map(t=>{
+    const show = gs(t.sid);
+    const col = t.color||(show?.color||'var(--p5)');
+    const pc = priColor[t.pri]||'var(--t2)';
+    return `<div class="plan-task-chip" style="--tc:${col}"
+      draggable="true"
+      ondragstart="planChipDragStart(event,'${t.id}',${t.dur||45})">
+      <div class="plan-chip-title">${t.title}</div>
+      <div class="plan-chip-meta">
+        <span class="plan-chip-dur">${t.dur||45}min</span>
+        <span class="plan-chip-pri" style="--pc:${pc}">${t.pri.toUpperCase()}</span>
+      </div>
+      <button class="plan-chip-fit-btn" onclick="makeItFit('${t.id}')">MAKE IT FIT</button>
+    </div>`;
+  }).join('');
+}
+
+function planChipDragStart(e, id, dur){
+  planDragging = {id, dur};
+  e.dataTransfer.effectAllowed='move';
+}
+
+function planBlockDragStart(e, id){
+  const entry = planSchedule.find(s=>s.taskId===id);
+  if(entry) planDragging = {id, dur:entry.durMins};
+  e.dataTransfer.effectAllowed='move';
+}
+
+function removePlanBlock(taskId){
+  planSchedule = planSchedule.filter(s=>s.taskId!==taskId);
+  savePlan();
+  renderTimeline();
+  renderTaskPool();
+  updateTotalTime();
+}
+
+function updateTotalTime(){
+  const el = document.getElementById('plan-total-time');
+  if(!el) return;
+  const total = planSchedule.reduce((sum,s)=>sum+s.durMins,0);
+  if(!total){ el.textContent=''; return; }
+  const h = Math.floor(total/60), m = total%60;
+  el.textContent = h>0 ? `${h}h ${m>0?m+'m':''}` : `${m}m`;
+}
+
+// ── MAKE IT FIT ──
+function makeItFit(taskId){
+  const task = S.tasks.find(t=>t.id===taskId);
+  if(!task){ toast('TASK NOT FOUND'); return; }
+  const dur = task.dur||45;
+
+  // Build busy intervals
+  const busy = buildBusyIntervals();
+
+  // Find first gap
+  const gap = findFirstGap(dur, busy);
+  if(!gap){ toast('NO GAP FOUND TODAY — try a shorter duration'); return; }
+
+  // Remove from schedule if already there
+  planSchedule = planSchedule.filter(s=>s.taskId!==taskId);
+  planSchedule.push({ taskId, startH:gap.h, startM:gap.m, durMins:dur });
+  savePlan();
+  renderTimeline();
+  renderTaskPool();
+  updateTotalTime();
+  toast(`FITTED — ${fmtTime(gap.h,gap.m)}`);
+}
+
+function buildBusyIntervals(){
+  const busy = [];
+
+  // Lunch
+  busy.push({start:LUNCH_START*60, end:LUNCH_END*60});
+
+  // Calendar events
+  planCalEvents.forEach(ev=>{
+    busy.push({start:ev.startH*60+ev.startM, end:ev.startH*60+ev.startM+ev.durMins});
+  });
+
+  // Already scheduled tasks
+  planSchedule.forEach(s=>{
+    busy.push({start:s.startH*60+s.startM, end:s.startH*60+s.startM+s.durMins});
+  });
+
+  // Sort
+  busy.sort((a,b)=>a.start-b.start);
+  return busy;
+}
+
+function findFirstGap(durMins, busy){
+  let cursor = WORK_START*60;
+  const end = WORK_END*60;
+
+  for(const b of busy){
+    if(cursor + durMins <= b.start){
+      // Gap found before this busy block
+      return {h:Math.floor(cursor/60), m:cursor%60};
+    }
+    cursor = Math.max(cursor, b.end);
+  }
+  // Check gap after last busy block
+  if(cursor + durMins <= end){
+    return {h:Math.floor(cursor/60), m:cursor%60};
+  }
+  return null;
+}
+
+// ── INTEL SUGGEST ──
+async function planSuggest(){
+  const btn = document.getElementById('plan-suggest-btn');
+  if(btn){ btn.style.opacity='0.4'; btn.style.pointerEvents='none'; }
+
+  const banner = document.getElementById('plan-suggest-banner');
+  const txt    = document.getElementById('plan-suggest-txt');
+  if(banner){ banner.style.display='block'; }
+  if(txt){ txt.textContent='INTEL thinking…'; }
+
+  const tasks = S.tasks.filter(t=>!t.done);
+  const calSummary = planCalEvents.map(e=>`${fmtTime(e.startH,e.startM)} ${e.title} (${e.durMins}min)`).join(', ')||'None';
+  const taskSummary = tasks.map(t=>`[${t.pri}] ${t.title} ${t.dur||45}min`).join(', ')||'None';
+
+  const prompt = `You are INTEL, a VFX production assistant. Suggest the optimal schedule for today.
+
+Work window: 10:00 AM – 7:00 PM. Lunch: 1:00 PM – 2:00 PM (locked).
+
+Existing calendar events (LOCKED — do not schedule over): ${calSummary}
+
+Open tasks to schedule: ${taskSummary}
+
+Give a brief 2-3 sentence suggestion on how to order tasks for maximum impact today. Be specific about which tasks to do first and why. Then suggest exact time slots for the top 3 tasks.`;
+
+  const key = getKey();
+  if(!key){
+    if(txt) txt.textContent='Add API key in CONFIG to use INTEL suggestions.';
+    if(btn){ btn.style.opacity=''; btn.style.pointerEvents=''; }
+    return;
+  }
+
+  try{
+    const res = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'x-api-key':key,
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-access':'true',
+      },
+      body:JSON.stringify({
+        model:'claude-haiku-4-5-20251001',
+        max_tokens:400,
+        messages:[{role:'user',content:prompt}]
+      })
+    });
+    const data = await res.json();
+    const reply = data.content?.[0]?.text||'No suggestion.';
+    if(txt) txt.textContent = reply;
+  }catch(e){
+    if(txt) txt.textContent = 'INTEL unavailable — check API key.';
+  }finally{
+    if(btn){ btn.style.opacity=''; btn.style.pointerEvents=''; }
+  }
+}
+
+// ── COMMIT ──
+async function planCommit(){
+  if(!planSchedule.length){ toast('NOTHING SCHEDULED YET'); return; }
+
+  const status = document.getElementById('plan-commit-status');
+  const txt    = document.getElementById('plan-commit-txt');
+  if(status) status.style.display='flex';
+  if(txt) txt.textContent = 'Creating calendar events…';
+
+  const today = new Date();
+  const tz = 'America/New_York';
+  let created = 0;
+
+  for(const entry of planSchedule){
+    const task = S.tasks.find(t=>t.id===entry.taskId);
+    if(!task) continue;
+
+    const start = new Date(today);
+    start.setHours(entry.startH, entry.startM, 0, 0);
+    const end = new Date(start.getTime() + entry.durMins*60000);
+
+    const show = gs(task.sid);
+    const desc = `VTEK task${show?' — '+show.code:''} · ${entry.durMins}min · Priority: ${task.pri.toUpperCase()}${task.notes?'\n\n'+task.notes:''}`;
+
+    try{
+      // Signal Claude chat to create the event
+      // Store in localStorage for Claude to read
+      const pending = JSON.parse(localStorage.getItem('vtek_pending_events')||'[]');
+      pending.push({
+        summary: task.title,
+        start: start.toISOString(),
+        end: end.toISOString(),
+        description: desc,
+        timeZone: tz,
+        created: false,
+      });
+      localStorage.setItem('vtek_pending_events', JSON.stringify(pending));
+      created++;
+    }catch(e){
+      console.error('Failed to stage event:', e);
+    }
+  }
+
+  if(txt) txt.textContent = `${created} event${created!==1?'s':''} staged — say "Seconds, commit my schedule" in Claude`;
+
+  // Also save human-readable summary to clipboard
+  const summary = planSchedule.map(entry=>{
+    const task = S.tasks.find(t=>t.id===entry.taskId);
+    if(!task) return '';
+    return `${fmtTime(entry.startH,entry.startM)} — ${task.title} (${entry.durMins}min)`;
+  }).filter(Boolean).join('\n');
+
+  try{
+    await navigator.clipboard.writeText(
+      `Seconds, commit my schedule to Google Calendar:\n\n${summary}\n\nToday: ${today.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'})}`
+    );
+    toast('SCHEDULE COPIED — paste in Claude chat');
+  }catch(e){
+    toast(`${created} EVENTS STAGED`);
+  }
+
+  setTimeout(()=>{
+    if(status) status.style.display='none';
+  }, 4000);
+}
+
+// ── CALENDAR FETCH ──
+async function fetchCalendarEvents(){
+  const statusEl = document.getElementById('plan-cal-status');
+  planCalEvents = [];
+
+  // Try to get events from stored schedule (from Claude)
+  // Claude writes cal events to localStorage when it fetches them
+  const cached = localStorage.getItem('vtek_cal_events_today');
+  if(cached){
+    try{
+      const parsed = JSON.parse(cached);
+      const today = new Date().toDateString();
+      if(parsed.date === today){
+        planCalEvents = parsed.events;
+        if(statusEl) statusEl.style.display='none';
+        return;
+      }
+    }catch(e){}
+  }
+
+  // No cached events — show prompt for user
+  if(statusEl){
+    statusEl.innerHTML = `<span style="color:var(--t1)">Say <strong>"Seconds, load my calendar for PLAN mode"</strong> in Claude to pull today's events</span>`;
+  }
+}
+
+// Called by Claude externally to inject calendar events
+function injectCalendarEvents(events){
+  planCalEvents = events;
+  const statusEl = document.getElementById('plan-cal-status');
+  if(statusEl) statusEl.style.display='none';
+  // Cache for today
+  localStorage.setItem('vtek_cal_events_today', JSON.stringify({
+    date: new Date().toDateString(),
+    events
+  }));
+  renderTimeline();
+  toast(`${events.length} CALENDAR EVENT${events.length!==1?'S':''} LOADED`);
+}
+
+// ── PERSIST ──
+function savePlan(){
+  const today = new Date().toDateString();
+  localStorage.setItem('vtek_plan_'+today, JSON.stringify(planSchedule));
+}
+
+function loadSavedPlan(){
+  const today = new Date().toDateString();
+  const saved = localStorage.getItem('vtek_plan_'+today);
+  if(saved){
+    try{ planSchedule = JSON.parse(saved); renderTimeline(); renderTaskPool(); updateTotalTime(); }
+    catch(e){ planSchedule = []; }
+  }
+}
+
+// ── BOOT
+
+
 const savedApi=localStorage.getItem('vtek_api');if(savedApi)document.getElementById('api-disp').textContent=savedApi;
 const savedWebhook=getWebhook();if(savedWebhook){const wd=document.getElementById('webhook-disp');if(wd)wd.textContent=savedWebhook.length>30?savedWebhook.slice(0,30)+'…':savedWebhook;}
 if(localStorage.getItem('vtek_drive_token')){driveToken=localStorage.getItem('vtek_drive_token');const el=document.getElementById('drive-status');if(el)el.textContent='CONNECTED';}
