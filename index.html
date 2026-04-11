@@ -289,6 +289,7 @@ body {
   -webkit-tap-highlight-color: transparent;
   position: relative;
 }
+.armor-card:hover { background: #212121; border-color: #333; }
 .armor-card:active { background: var(--s3); border-color: rgba(0,255,135,0.2); }
 .armor-card-inner { display: none; }
 .show-stripe { height: 3px; width: 100%; }
@@ -404,6 +405,7 @@ body {
   width: 100%; box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
 }
+.shot-row:hover { background: #212121; }
 .shot-row:active { background: var(--s3); }
 .shot-row:last-child { border-bottom: none; }
 .sr-code { font-family: var(--mono); font-size: 12px; font-weight: 500; color: var(--t0); flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; letter-spacing: 0.04em; text-transform: uppercase; }
@@ -438,6 +440,7 @@ body {
   width: 100%; box-sizing: border-box; overflow: hidden;
   -webkit-tap-highlight-color: transparent;
 }
+.tcard:hover { background: #222222; border-color: #333; }
 .tcard:active { background: var(--s3); }
 .tcard.drag-over { border-top: 2px solid var(--y); }
 .tcard-main { display: flex; align-items: flex-start; gap: 12px; padding: 14px 14px 10px; position: relative; }
@@ -578,24 +581,43 @@ body {
 .plan-timeline-header { display: flex; align-items: center; justify-content: space-between; padding: 8px 16px 4px; flex-shrink: 0; }
 .plan-col-label { font-family: var(--sans); font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--t2); }
 .plan-timeline { flex: 1; overflow-y: auto; scrollbar-width: none; background: var(--bg); }
-.plan-slot { display: flex; align-items: stretch; border-bottom: var(--b1); position: relative; min-height: 52px; background: var(--bg); }
+.plan-slot { display: flex; align-items: stretch; border-bottom: 1px solid #1c1c1c; position: relative; min-height: 64px; background: var(--bg); }
 .plan-slot.half-hour { border-bottom: 1px dashed #1a1a1a; min-height: 36px; }
-.plan-slot-time { width: 48px; flex-shrink: 0; font-family: var(--mono); font-size: 9px; color: var(--t2); padding: 7px 8px 0; letter-spacing: 0.03em; }
+.plan-slot-time { width: 52px; flex-shrink: 0; font-family: var(--mono); font-size: 10px; color: var(--t1); padding: 8px 8px 0; letter-spacing: 0.02em; font-weight: 500; }
 .plan-slot-body { flex: 1; padding: 4px 12px 4px 4px; display: flex; flex-direction: column; gap: 3px; cursor: pointer; transition: background 0.1s; position: relative; }
-.plan-slot-body:hover { background: rgba(0,255,135,0.03); }
+.plan-slot-body:hover { background: rgba(0,255,135,0.04); border-left: 2px solid rgba(0,255,135,0.15); }
 .plan-slot-body.has-selection { cursor: crosshair; }
-.plan-cal-block { padding: 5px 8px; background: var(--s2); border: var(--b2); border-left: 2px solid var(--t2); margin-bottom: 2px; }
-.plan-cal-title { font-family: var(--sans); font-size: 11px; color: var(--t1); line-height: 1.3; }
+.plan-cal-block { padding: 6px 10px; background: rgba(167,139,250,0.08); border: 1px solid rgba(167,139,250,0.2); border-left: 3px solid var(--rev); border-radius: 3px; margin-bottom: 3px; }
+.plan-cal-title { font-family: var(--sans); font-size: 11px; font-weight: 500; color: var(--t1); line-height: 1.3; }
 .plan-cal-time { font-family: var(--mono); font-size: 9px; color: var(--t2); margin-top: 2px; }
 .plan-cal-badge { font-family: var(--sans); font-size: 8px; font-weight: 600; letter-spacing: 0.06em; color: var(--t2); margin-left: 4px; }
 .plan-lunch-block { padding: 5px 8px; border: 1px dashed var(--s4); border-left: 2px solid var(--s4); opacity: 0.5; margin-bottom: 2px; }
 .plan-lunch-title { font-family: var(--sans); font-size: 10px; font-weight: 600; color: var(--t2); text-transform: uppercase; letter-spacing: 0.05em; }
-.plan-block { padding: 8px 32px 8px 10px; background: var(--s2); border: var(--b2); border-left: 2px solid var(--bc, var(--s4)); transition: all 0.12s; position: relative; margin-bottom: 2px; }
+.plan-block {
+  padding: 10px 36px 10px 14px;
+  background: var(--s2);
+  border: 1px solid #2a2a2a;
+  border-left: 3px solid var(--bc, var(--y));
+  border-radius: 3px;
+  transition: all 0.12s;
+  position: relative;
+  margin-bottom: 3px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+}
 .plan-block:active { background: var(--s3); }
-.plan-block-title { font-family: var(--sans); font-size: 12px; color: var(--t0); line-height: 1.3; margin-bottom: 3px; }
-.plan-block-meta { display: flex; align-items: center; gap: 8px; }
-.plan-block-time { font-family: var(--mono); font-size: 9px; color: var(--t2); }
-.plan-block-dur { font-family: var(--mono); font-size: 9px; color: var(--t2); }
+.plan-block-title {
+  font-family: var(--sans); font-size: 13px; font-weight: 600;
+  color: var(--t0); line-height: 1.3; margin-bottom: 5px;
+}
+.plan-block-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.plan-block-time {
+  font-family: var(--mono); font-size: 10px;
+  color: var(--bc, var(--y)); opacity: 0.8; font-weight: 500;
+}
+.plan-block-dur {
+  font-family: var(--mono); font-size: 10px; color: var(--t2);
+  background: var(--s3); padding: 1px 6px; border-radius: 2px;
+}
 .plan-block-remove { position: absolute; top: 0; right: 0; bottom: 0; width: 28px; display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--t2); background: none; border: none; border-left: var(--b1); cursor: pointer; transition: all 0.1s; }
 .plan-block-remove:hover { color: var(--blk); background: rgba(232,76,30,0.08); }
 .plan-now-line { position: absolute; left: 48px; right: 0; height: 1px; background: var(--y); opacity: 0.5; pointer-events: none; z-index: 5; top: 0; }
@@ -622,16 +644,28 @@ body {
 .vault-list-panel { display: flex; flex-direction: column; flex: 1; overflow: hidden; }
 .vault-list-panel.hidden { display: none; }
 .vault-list-section { margin-bottom: 0; }
-.vault-list-sec-lbl { font-family: var(--sans); font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--t2); padding: 10px 16px 6px 14px; border-bottom: var(--b1); border-left: 2px solid rgba(0,255,135,0.25); }
-.vault-doc-row { display: flex; align-items: center; gap: 12px; padding: 14px 16px 14px 14px; border-bottom: var(--b1); border-left: 2px solid transparent; cursor: pointer; transition: all 0.1s; -webkit-tap-highlight-color: transparent; }
-.vault-doc-row:hover { background: var(--s2); border-left-color: rgba(0,255,135,0.3); }
-.vault-doc-row:active { background: var(--s3); }
-.vault-doc-row.on { background: var(--s2); border-left: 2px solid var(--y); }
+.vault-list-sec-lbl { font-family: var(--sans); font-size: 9px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--t2); padding: 8px 16px 6px 14px; border-bottom: 1px solid #1c1c1c; border-left: 3px solid rgba(0,255,135,0.35); background: #0d0d0d; }
+.vault-doc-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 16px 14px 14px;
+  border-bottom: 1px solid #1c1c1c;
+  border-left: 3px solid transparent;
+  cursor: pointer; transition: all 0.12s;
+  -webkit-tap-highlight-color: transparent;
+  background: var(--bg);
+}
+.vault-doc-row:hover {
+  background: #161616;
+  border-left-color: rgba(0,255,135,0.4);
+  padding-left: 16px;
+}
+.vault-doc-row:active { background: var(--s2); }
+.vault-doc-row.on { background: #161616; border-left: 3px solid var(--y); }
 .vault-doc-icon { display: none; }
 .vault-doc-info { flex: 1; min-width: 0; }
-.vault-doc-title { font-family: var(--sans); font-size: 14px; font-weight: 500; color: var(--t0); margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.vault-doc-title { font-family: var(--sans); font-size: 14px; font-weight: 600; color: var(--t0); margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .vault-doc-meta { font-family: var(--mono); font-size: 9px; color: var(--t2); display: flex; gap: 8px; }
-.vault-doc-tag { font-family: var(--sans); font-size: 9px; font-weight: 600; padding: 1px 5px; border: var(--b2); border-radius: 2px; color: var(--t2); }
+.vault-doc-tag { font-family: var(--sans); font-size: 9px; font-weight: 700; padding: 2px 6px; border: 1px solid #2e2e2e; border-radius: 2px; color: var(--t1); background: #1c1c1c; letter-spacing: 0.04em; text-transform: uppercase; }
 .vault-doc-chevron { color: var(--t2); font-size: 12px; flex-shrink: 0; }
 .vault-new-row { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-bottom: var(--b1); cursor: pointer; transition: background 0.1s; -webkit-tap-highlight-color: transparent; }
 .vault-new-row:hover { background: var(--s2); }
@@ -645,7 +679,33 @@ body {
   z-index: 500;
   background: var(--bg);
   padding-top: var(--safe-t);
-  padding-bottom: var(--safe-b);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.vault-fs-bar {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  background: var(--s1);
+  border-bottom: 1px solid #252525;
+  flex-shrink: 0;
+}
+.vault-editor-panel.fullscreen .vault-fs-bar { display: flex; }
+.vault-fs-close {
+  font-family: var(--sans); font-size: 11px; font-weight: 700;
+  color: var(--t1); background: none; border: none; cursor: pointer;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  display: flex; align-items: center; gap: 5px; transition: color 0.1s;
+}
+.vault-fs-close:hover { color: var(--t0); }
+.vault-fs-title {
+  flex: 1; font-family: var(--sans); font-size: 12px; font-weight: 600;
+  color: var(--t2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.vault-fs-save {
+  padding: 5px 12px; background: var(--y); border: none; border-radius: 3px;
+  font-family: var(--sans); font-size: 11px; font-weight: 700; color: #000;
+  cursor: pointer; letter-spacing: 0.04em; text-transform: uppercase;
 }
 .vault-editor-panel.fullscreen .vault-editor-toolbar { background: var(--s1); }
 .vault-editor-panel.fullscreen .vault-textarea { font-size: 16px; line-height: 1.9; }
@@ -751,11 +811,11 @@ body {
 
 /* ── CONFIG ── */
 .cfg-block { overflow: hidden; margin-bottom: 2px; }
-.cfg-hd { padding: 10px 0; font-family: var(--sans); font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--t2); border-bottom: var(--b2); margin-bottom: 0; }
-.cfg-row { background: transparent; border-bottom: var(--b1); padding: 14px 0; display: flex; align-items: center; justify-content: space-between; gap: 10px; cursor: pointer; transition: all 0.1s; }
-.cfg-row:hover { padding-left: 4px; }
-.cfg-key { font-family: var(--sans); font-size: 14px; color: var(--t0); font-weight: 400; }
-.cfg-lbl { font-family: var(--sans); font-size: 14px; color: var(--t0); flex: 1; font-weight: 400; }
+.cfg-hd { padding: 10px 0 8px; font-family: var(--sans); font-size: 9px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--t2); border-bottom: 1px solid #252525; margin-top: 8px; }
+.cfg-row { background: transparent; border-bottom: 1px solid #1e1e1e; padding: 14px 2px; display: flex; align-items: center; justify-content: space-between; gap: 10px; cursor: pointer; transition: all 0.1s; }
+.cfg-row:hover { padding-left: 4px; color: var(--t0); background: #151515; }
+.cfg-key { font-family: var(--sans); font-size: 14px; color: var(--t0); font-weight: 500; }
+.cfg-lbl { font-family: var(--sans); font-size: 14px; color: var(--t0); flex: 1; font-weight: 500; }
 .cfg-val { font-family: var(--mono); font-size: 11px; color: var(--t2); display: flex; align-items: center; gap: 6px; }
 .sdot { width: 6px; height: 6px; border-radius: 50%; }
 .sdot-on { background: var(--app); }
@@ -1164,7 +1224,7 @@ body {
       </div>
 
       <!-- Editor panel — hidden until doc selected on mobile -->
-      <div class="vault-editor-panel" id="vault-editor-panel">
+      <div class="vault-editor-panel" id="vault-editor-panel"><div class="vault-fs-bar"><button class="vault-fs-close" onclick="exitVaultFullscreen()">← BACK</button><div class="vault-fs-title" id="vault-fs-title"></div><button class="vault-fs-save" onclick="vaultSave();exitVaultFullscreen()">SAVE</button></div>
         <!-- Editor toolbar -->
         <div class="vault-editor-toolbar">
           <button class="vault-btn" onclick="setVaultMode('edit')" id="vlt-edit-btn">EDIT</button>
@@ -1353,7 +1413,7 @@ body {
 </div>
 
 <!-- ── CONFIG ── -->
-<div class="page" id="pg-settings">
+<div class="page" id="pg-settings" style="background:var(--bg);">
   <div class="sec"><span class="sec-l">Intel / AI</span><span class="sec-r"></span></div>
   <div class="cfg-row" onclick="editAPIKey()"><span class="cfg-lbl">ANTHROPIC API KEY</span><span class="cfg-val" id="key-disp">NOT SET</span></div>
   <div class="cfg-row" onclick="editWebhook()"><span class="cfg-lbl">MAKE.COM WEBHOOK URL</span><span class="cfg-val" id="webhook-disp">NOT SET</span></div>
@@ -2363,6 +2423,7 @@ function openVaultDoc(doc, animate){
   if(editor) editor.classList.add('show');
   if(editor) editor.classList.add('fullscreen');
   if(backBtn) backBtn.classList.add('show');
+  const fst=document.getElementById('vault-fs-title'); if(fst) fst.textContent=doc.title||'Untitled';
   if(saveBtn) saveBtn.style.display='';
   const delBtn=document.getElementById('vault-delete-btn');
   if(delBtn) delBtn.style.display='';
@@ -2464,6 +2525,12 @@ function vaultSave(){
   if(si) si.textContent='Saved';
   const bc=document.getElementById('vault-breadcrumb');
   if(bc) bc.innerHTML='<span>'+escHtml(doc.title||'Untitled')+'</span>';
+}
+
+function exitVaultFullscreen(){
+  vaultSave();
+  const editor=document.getElementById('vault-editor-panel');
+  if(editor) editor.classList.remove('fullscreen');
 }
 
 function vaultDelete(){
