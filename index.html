@@ -504,7 +504,7 @@ body {
 .sub-txt.on { color: var(--t2); text-decoration: line-through; }
 .sub-prog { height: 1px; background: var(--s4); margin: 2px 0; overflow: hidden; border-radius: 0; }
 .sub-prog-fill { height: 100%; background: var(--y); }
-.tcard-expand { display: flex; justify-content: flex-end; padding: 0 14px 10px; }
+.tcard-expand-inline { display: flex; justify-content: flex-end; padding: 2px 0 0; width: 100%; }
 .expand-btn {
   font-family: var(--mono); font-size: 9px; font-weight: 600;
   letter-spacing: 0.08em; text-transform: uppercase;
@@ -670,12 +670,9 @@ body {
 .plan-block-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .plan-block-time {
   font-family: var(--mono); font-size: 10px;
-  color: var(--bc, var(--y)); opacity: 0.8; font-weight: 500;
+  color: var(--t1); font-weight: 500;
 }
-.plan-block-dur {
-  font-family: var(--mono); font-size: 10px; color: var(--t2);
-  background: var(--s3); padding: 1px 6px; border-radius: 2px;
-}
+.plan-block-dur { font-family: var(--mono); font-size: 10px; color: var(--t2); }
 .plan-block-remove { position: absolute; top: 0; right: 0; width: 28px; bottom: 22px; display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--t1); background: none; border: none; border-left: var(--b1); cursor: pointer; transition: all 0.1s; }
 .plan-block-remove:hover { color: var(--blk); background: rgba(80,80,84,0.08); }
 .plan-block-resize {
@@ -2771,6 +2768,8 @@ function renderTCard(t){
           <span class="pri-badge ${t.pri}">${t.pri.toUpperCase()}</span>
           ${(t.tags||[]).map(tag=>`<span class="tag-chip" onclick="plFilter('tag','${tag}')">${tag}</span>`).join('')}
           ${dep?`<span class="dep-badge ${depBlocked?'blocked-dep':''}">→ ${dep.code}${depBlocked?' ⚠':''}</span>`:''}
+          ${(hasSubs||hasNotes)&&!expanded?`<button class="expand-btn" style="margin-left:auto" onclick="toggleExpand('${t.id}')">▼ ${hasSubs?subDone+'/'+subs.length+' SUB':'NOTES'}</button>`:''}
+          ${(hasSubs||hasNotes)&&expanded?`<button class="expand-btn" style="margin-left:auto" onclick="toggleExpand('${t.id}')">▲ LESS</button>`:''}
         </div>
       </div>
     </div>`;
@@ -2779,7 +2778,6 @@ function renderTCard(t){
     if(hasSubs)html+=`<div class="tcard-subs">${subs.map((s,i)=>`<div class="sub-row ${s.done?'done-s':''}"><button class="sub-chk ${s.done?'on':''}" onclick="toggleSub('${t.id}',${i})">${s.done?'✓':''}</button><span class="sub-txt">${s.title}</span></div>`).join('')}</div>`;
     if(hasNotes)html+=`<div class="tcard-notes">${t.notes}</div>`;
   }
-  if(hasSubs||hasNotes)html+=`<div class="tcard-expand"><button class="expand-btn" onclick="toggleExpand('${t.id}')">${expanded?'▲ COLLAPSE':'▼ '+(hasSubs?subDone+'/'+subs.length+' SUBTASKS':'NOTES')}</button></div>`;
   html+=`</div>`;return html;
 }
 
