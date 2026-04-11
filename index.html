@@ -812,7 +812,7 @@ body{min-height:-webkit-fill-available;overflow-x:hidden;width:100%;}
 
 /* Editor panel — hidden on mobile until doc selected */
 .vault-editor-panel{
-  display:none;flex-direction:column;flex:1;overflow:hidden;
+  display:none;flex-direction:column;flex:1;overflow:hidden;width:100%;max-width:100%;
 }
 .vault-editor-panel.show{display:flex;}
 
@@ -839,8 +839,8 @@ body{min-height:-webkit-fill-available;overflow-x:hidden;width:100%;}
 .vault-editor-panel.focused .vault-textarea{padding:20px 20px;}
 
 /* Editor */
-.vault-main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
-.vault-editor{flex:1;padding:0;overflow-y:auto;scrollbar-width:none;}
+.vault-main{flex:1;display:flex;flex-direction:column;overflow:hidden;width:100%;}
+.vault-editor{flex:1;padding:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;width:100%;}
 .vault-editor::-webkit-scrollbar{display:none;}
 
 /* Legacy tree — still used on desktop */
@@ -870,14 +870,14 @@ body{min-height:-webkit-fill-available;overflow-x:hidden;width:100%;}
 .vault-doc-meta{display:flex;gap:8px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--b0);}
 .vault-doc-tag{font-family:var(--mono);font-size:8px;color:var(--t2);padding:2px 7px;background:var(--p3);clip-path:polygon(0 0,100% 0,100% calc(100% - 3px),calc(100% - 3px) 100%,0 100%);}
 .vault-doc-title-in{
-  display:block;width:100%;background:none;border:none;border-bottom:1px solid var(--b0);
-  outline:none;font-family:var(--body);font-size:20px;font-weight:500;
-  color:var(--t0);padding:16px 16px 12px;transition:border-color 0.15s;
+  display:block;width:100%;box-sizing:border-box;background:none;border:none;border-bottom:1px solid rgba(0,0,0,0.08);
+  outline:none;font-family:var(--body);font-size:20px;font-weight:600;
+  color:var(--text-dark);padding:16px 16px 12px;transition:border-color 0.15s;
 }
 .vault-doc-title-in:focus{border-bottom-color:var(--b2);}
 .vault-doc-title-in::placeholder{color:var(--t2);}
 .vault-doc-row.on{background:var(--p2);border-left:2px solid var(--ac-md);padding-left:14px;}
-.vault-textarea{width:100%;background:none;border:none;outline:none;font-family:var(--body);font-size:15px;color:var(--text-dark);line-height:1.8;resize:none;min-height:300px;padding:12px 16px;}
+.vault-textarea{width:100%;box-sizing:border-box;background:none;border:none;outline:none;font-family:var(--body);font-size:15px;color:var(--text-dark);line-height:1.8;resize:none;min-height:300px;padding:12px 16px;}
 .vault-textarea::placeholder{color:var(--t3);}
 .vault-preview{padding:0;font-family:var(--mono);font-size:12px;color:var(--t1);line-height:1.8;}
 .vault-preview h1,.vault-preview h2,.vault-preview h3{font-family:var(--display);color:var(--t0);letter-spacing:0.08em;text-transform:uppercase;margin:16px 0 8px;}
@@ -1398,6 +1398,7 @@ body{min-height:-webkit-fill-available;overflow-x:hidden;width:100%;}
       <button class="vault-back-btn" id="vault-back-btn" onclick="vaultBack()">← NOTES</button>
       <div class="vault-breadcrumb" id="vault-breadcrumb"><span>VAULT</span></div>
       <button class="vault-btn" onclick="vaultNewDoc()">+ NOTE</button>
+      <button class="vault-btn" id="vault-delete-btn" onclick="vaultDelete()" style="display:none;color:var(--s-blk)">DELETE</button>
       <button class="vault-btn ac-btn" id="vault-save-btn" onclick="vaultSave()" style="display:none">SAVE</button>
     </div>
     <div class="vault-body">
@@ -2587,6 +2588,8 @@ function showVaultList(){
   if(editor) editor.classList.remove('show');
   if(backBtn) backBtn.classList.remove('show');
   if(saveBtn) saveBtn.style.display='none';
+  const delBtn2=document.getElementById('vault-delete-btn');
+  if(delBtn2) delBtn2.style.display='none';
   document.getElementById('vault-breadcrumb').innerHTML='<span>VAULT</span>';
   renderVaultList();
 }
@@ -2705,6 +2708,17 @@ function vaultSave(){
   if(si) si.textContent='Saved';
   const bc=document.getElementById('vault-breadcrumb');
   if(bc) bc.innerHTML='<span>'+escHtml(doc.title||'Untitled')+'</span>';
+}
+
+function vaultDelete(){
+  if(!vaultActiveId) return;
+  const doc=S.vaultDocs.find(d=>d.id===vaultActiveId);
+  if(!doc) return;
+  if(!confirm('Delete "'+doc.title+'"? This cannot be undone.')) return;
+  S.vaultDocs=S.vaultDocs.filter(d=>d.id!==vaultActiveId);
+  save();
+  toast('NOTE DELETED');
+  showVaultList();
 }
 
 // Focus / expand mode
