@@ -2258,28 +2258,10 @@ if(S.shows.length===0){
     {id:'t4',sid:'s1',title:'Fix CBFX_Color_CRL node',due:'',pri:'low',dur:20,tags:['comp'],color:'',notes:'',subtasks:[],dep:'',done:false,expanded:false},
   ];
   S.vaultDocs=[
-    {id:'v1',title:'CRL Shot Notes',content:'# CRL Shot Notes
-
-Notes from review sessions.
-
-## 136_STL_0080
-Mocha track needs review before delivery.
-
-## 136_INT_0040
-Client approved — ready for final delivery.',showId:'s1',tags:['notes','review'],updated:Date.now()},
-    {id:'v2',title:'CBFX Pipeline Docs',content:'# CBFX Pipeline
-
-Internal reference for compositing pipeline.
-
-## Color Management
-- ACES workflow
-- Output: Rec.709
-
-## Delivery Specs
-- ProRes 4444
-- 2048x858',showId:'',tags:['pipeline','reference'],updated:Date.now()},
+    {id:'v1',title:'CRL Shot Notes',content:'# CRL Shot Notes\n\nNotes from review sessions.\n\n## 136_STL_0080\nMocha track needs review before delivery.\n\n## 136_INT_0040\nClient approved — ready for final delivery.',showId:'s1',tags:['notes','review'],updated:Date.now()},
+    {id:'v2',title:'CBFX Pipeline Docs',content:'# CBFX Pipeline\n\nInternal reference for compositing pipeline.\n\n## Color Management\n- ACES workflow\n- Output: Rec.709\n\n## Delivery Specs\n- ProRes 4444\n- 2048x858',showId:'',tags:['pipeline','reference'],updated:Date.now()},
   ];
-  S.activeShow='s1';
+    S.activeShow='s1';
   localStorage.setItem('vtek9', JSON.stringify(S));
   console.log('[VTEK] Seeded demo data');
 }
@@ -4201,7 +4183,7 @@ function planQuickAdd(h,m){
         const col=t.color||statusColors[t.status]||'var(--s5)';
         const show=gs(t.sid);
         const meta=[show?show.code:'',t.dur?t.dur+'m':''].filter(Boolean).join(' · ');
-        return '<div onclick="planQAPickTask(''+t.id+'')" style="display:flex;align-items:center;gap:10px;padding:11px 16px;border-bottom:1px solid #181818;cursor:pointer;transition:background 0.1s;" onmouseover="this.style.background='#151515'" onmouseout="this.style.background=''">'+
+        return '<div onclick="planQAPickTask(&quot;'+t.id+'&quot;)" style="display:flex;align-items:center;gap:10px;padding:11px 16px;border-bottom:1px solid #181818;cursor:pointer;transition:background 0.1s;">'+
           '<div style="width:3px;height:28px;border-radius:2px;background:'+col+';flex-shrink:0;"></div>'+
           '<div style="flex:1;min-width:0;">'+
             '<div style="font-family:var(--sans);font-size:13px;color:var(--t0);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+t.title+'</div>'+
