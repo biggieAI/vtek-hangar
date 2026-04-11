@@ -436,30 +436,97 @@ body {
 
 /* ── TASK CARDS ── */
 .pl-list { display: flex; flex-direction: column; gap: 0; border: 1px solid #1a1a1a; border-radius: 4px; overflow: hidden; }
+/* ── TCARD — BEVELED CELL SHADING ── */
 .tcard {
-  background: var(--bg);
-  border: none;
-  border-bottom: 1px solid #1a1a1a;
-  border-left: 2px solid var(--cc, transparent);
-  border-radius: 0;
-  margin-bottom: 0;
+  background: linear-gradient(180deg, #1c1c1c 0%, #141414 60%, #111 100%);
+  border: 1px solid #2a2a2a;
+  border-top: 1px solid #333;
+  border-bottom: 1px solid #0d0d0d;
+  border-left: 3px solid var(--cc, #333);
+  border-radius: 6px;
+  margin-bottom: 6px;
   position: relative;
-  transition: background 0.1s;
+  transition: all 0.12s;
   cursor: default; user-select: none;
   width: 100%; box-sizing: border-box; overflow: hidden;
   -webkit-tap-highlight-color: transparent;
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.04) inset,
+    0 -1px 0 rgba(0,0,0,0.4) inset,
+    0 2px 6px rgba(0,0,0,0.35),
+    0 1px 2px rgba(0,0,0,0.5);
 }
-.tcard:hover { background: #111; }
-.tcard:active { background: var(--s3); }
+.tcard::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.07) 30%, rgba(255,255,255,0.07) 70%, transparent);
+  pointer-events: none;
+}
+/* Priority top-edge glow */
+.tcard::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 3px; right: 0;
+  height: 2px;
+  background: var(--cc, transparent);
+  opacity: 0.5;
+  border-radius: 0 4px 0 0;
+  pointer-events: none;
+}
+.tcard:hover {
+  background: linear-gradient(180deg, #222 0%, #181818 60%, #141414 100%);
+  border-top-color: #3a3a3a;
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.05) inset,
+    0 -1px 0 rgba(0,0,0,0.4) inset,
+    0 4px 12px rgba(0,0,0,0.4),
+    0 1px 3px rgba(0,0,0,0.5);
+  transform: translateY(-1px);
+}
+.tcard:active {
+  transform: translateY(0);
+  box-shadow:
+    0 1px 0 rgba(0,0,0,0.3) inset,
+    0 2px 4px rgba(0,0,0,0.3);
+  background: linear-gradient(180deg, #111 0%, #131313 100%);
+}
 .tcard.drag-over { border-top: 2px solid var(--y); }
-.tcard-main { display: flex; align-items: center; gap: 10px; padding: 10px 14px; position: relative; }
+
+/* Alternating row cell shading */
+.tcard:nth-child(even) {
+  background: linear-gradient(180deg, #191919 0%, #121212 60%, #0f0f0f 100%);
+}
+.tcard:nth-child(even):hover {
+  background: linear-gradient(180deg, #202020 0%, #161616 60%, #131313 100%);
+}
+
+.tcard-main { display: flex; align-items: center; gap: 10px; padding: 11px 14px 10px; position: relative; }
 .tcard-body { flex: 1; min-width: 0; }
-.tcard-title { font-size: 14px; font-weight: 400; color: var(--t0); line-height: 1.3; margin-bottom: 3px; cursor: pointer; }
+.tcard-title {
+  font-size: 13px; font-weight: 500; color: var(--t0);
+  line-height: 1.35; margin-bottom: 4px; cursor: pointer;
+  letter-spacing: 0.01em;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+}
 .tcard-meta { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
-.tcard-show { font-family: var(--mono); font-size: 10px; color: var(--t2); letter-spacing: 0.04em; }
+.tcard-show {
+  font-family: var(--mono); font-size: 9px; color: var(--t2);
+  letter-spacing: 0.06em; text-transform: uppercase;
+  background: rgba(255,255,255,0.04);
+  padding: 1px 5px; border-radius: 2px;
+  border: 1px solid #2a2a2a;
+}
 .tcard-due { font-family: var(--mono); font-size: 10px; color: var(--t2); }
-.tcard-dur { font-family: var(--mono); font-size: 10px; color: var(--t2); }
-.done-c { opacity: 0.35; }
+.tcard-dur {
+  font-family: var(--mono); font-size: 9px; color: var(--t3);
+  background: rgba(255,255,255,0.03);
+  padding: 1px 5px; border-radius: 2px;
+  border: 1px solid #222;
+}
+.done-c { opacity: 0.28; }
+.done-c .tcard-title { text-decoration: line-through; color: var(--t2); }
 .tcard-subs { padding: 0 14px 10px 40px; display: flex; flex-direction: column; gap: 2px; }
 .sub-row { display: flex; align-items: center; gap: 8px; }
 .sub-chk { width: 13px; height: 13px; flex-shrink: 0; background: transparent; border: 1px solid var(--s4); border-radius: 2px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 9px; color: transparent; transition: all 0.1s; }
