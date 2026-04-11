@@ -136,10 +136,9 @@ body{min-height:-webkit-fill-available;overflow-x:hidden;width:100%;}
 }
 
 .wordmark{display:flex;align-items:baseline;user-select:none;flex-shrink:1;min-width:0;overflow:hidden;}
-.wm-v{font-family:var(--body);font-size:15px;font-weight:900;letter-spacing:0.12em;color:var(--text-dark);line-height:1;text-transform:uppercase;}
-.wm-s{font-family:var(--body);font-size:12px;font-weight:400;color:var(--text3-dark);margin:0 2px;line-height:1;letter-spacing:0;}
-.wm-sep{font-family:var(--body);font-size:12px;font-weight:400;color:var(--text3-dark);margin:0 6px;line-height:1;}
-.wm-p{font-family:var(--body);font-size:12px;font-weight:400;color:var(--text3-dark);transition:color 0.2s;letter-spacing:0;}
+.wm-logo{font-family:var(--body);font-size:15px;font-weight:900;letter-spacing:-0.02em;color:var(--text-dark);line-height:1;text-transform:uppercase;flex-shrink:0;}
+.wm-div{font-family:var(--body);font-size:12px;font-weight:400;color:var(--text3-dark);margin:0 6px;line-height:1;flex-shrink:0;}
+.wm-p{font-family:var(--body);font-size:12px;font-weight:500;color:var(--text2-dark);transition:color 0.2s;letter-spacing:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .tb-sep{width:1px;height:12px;background:var(--b1);flex-shrink:0;}
 .live-tag{display:flex;align-items:center;gap:4px;padding:3px 8px;background:var(--step2);border:none;border-radius:4px;clip-path:none;flex-shrink:0;}
 .live-dot{width:4px;height:4px;border-radius:50%;background:var(--s-app);animation:pip 2.5s ease-in-out infinite;}
@@ -177,8 +176,16 @@ body{min-height:-webkit-fill-available;overflow-x:hidden;width:100%;}
   z-index:300;
   overflow-x:hidden;
   scrollbar-width:none;
-  /* extend bg all the way to physical bottom */
-  box-shadow:0 40px 0 40px rgba(232,229,224,0.98);
+}
+/* Extend background flush to physical screen bottom */
+.bnav::after{
+  content:'';
+  position:fixed;
+  bottom:0; left:0; right:0;
+  height:env(safe-area-inset-bottom, 34px);
+  background:rgba(232,229,224,0.98);
+  z-index:-1;
+  pointer-events:none;
 }
 .bnav::-webkit-scrollbar{display:none;}
 /* Push page content above the fixed nav */
@@ -1238,7 +1245,7 @@ body{min-height:-webkit-fill-available;overflow-x:hidden;width:100%;}
 <!-- TOPBAR -->
 <header class="topbar">
   <div class="wordmark">
-    <span class="wm-v">V</span><span class="wm-s">//</span><span class="wm-v">TEK</span><span class="wm-sep"> // </span><span class="wm-p" id="wm-p">HANGAR</span>
+    <span class="wm-logo">V//TEK</span><span class="wm-div"> // </span><span class="wm-p" id="wm-p">HANGAR</span>
   </div>
   <div class="tb-sep"></div>
   <div class="live-tag"><div class="live-dot"></div><span class="live-lbl">LOCAL</span></div>
