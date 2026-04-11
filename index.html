@@ -2223,7 +2223,7 @@ function sw(p){
   const pg=document.getElementById('pg-'+p);
   if(pg){pg.classList.add('on');pg.scrollTop=0;}
   document.getElementById('nav-'+p).classList.add('on');
-  if(p==='settings') initSettings();
+  if(p==='settings') { try{ initSettings(); }catch(e){ console.error('initSettings crash:',e); const pg=document.getElementById('pg-settings'); if(pg) pg.innerHTML='<div style="padding:24px;color:var(--blk);font-family:var(--mono);font-size:11px;">CONFIG ERROR: '+e.message+'</div>'; } }
   document.getElementById('wm-p').textContent=PN[p]||p.toUpperCase();
   S.page=p;
   if(p==='hangar')  rHangar();
@@ -4048,20 +4048,63 @@ function planQuickAdd(h,m){
   document.getElementById('plan-qa-time').textContent=timeStr;
   document.getElementById('plan-qa-input').value='';
   document.getElementById('plan-qa-dur').value='30';
+
+  // Populate existing unscheduled tasks
+  const scheduled=new Set(planSchedule.map(s=>s.taskId));
+  const avail=S.tasks.filter(t=>!t.done&&!scheduled.has(t.id));
+  const listEl=document.getElementById('plan-qa-tasklist');
+  if(listEl){
+    if(avail.length===0){
+      listEl.innerHTML='<div style="padding:14px 16px;font-family:var(--sans);font-size:11px;color:var(--t3);text-align:center;">No unscheduled tasks</div>';
+    } else {
+      const statusColors={wip:'var(--wip)',blocked:'var(--blk)',review:'var(--rev)',approved:'var(--app)',delivered:'var(--del)',hold:'var(--hld)'};
+      listEl.innerHTML=avail.map(t=>{
+        const col=t.color||statusColors[t.status]||'var(--s5)';
+        const show=gs(t.sid);
+        const meta=[show?show.code:'',t.dur?t.dur+'m':''].filter(Boolean).join(' · ');
+        return '<div onclick="planQAPickTask(''+t.id+'')" style="display:flex;align-items:center;gap:10px;padding:11px 16px;border-bottom:1px solid #181818;cursor:pointer;transition:background 0.1s;" onmouseover="this.style.background='#151515'" onmouseout="this.style.background=''">'+
+          '<div style="width:3px;height:28px;border-radius:2px;background:'+col+';flex-shrink:0;"></div>'+
+          '<div style="flex:1;min-width:0;">'+
+            '<div style="font-family:var(--sans);font-size:13px;color:var(--t0);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+t.title+'</div>'+
+            (meta?'<div style="font-family:var(--mono);font-size:9px;color:var(--t2);margin-top:2px;">'+meta+'</div>':'')+
+          '</div>'+
+          '<div style="font-family:var(--mono);font-size:9px;color:var(--y);flex-shrink:0;">PLACE</div>'+
+        '</div>';
+      }).join('');
+    }
+  }
+
   const overlay=document.getElementById('plan-qa-overlay');
   const sheet=document.getElementById('plan-qa-sheet');
   overlay.style.display='block';
-  sheet.style.display='block';
+  sheet.style.display='flex';
+  sheet.style.transform='translateY(100%)';
   requestAnimationFrame(()=>{
-    overlay.classList.add('open');
-    sheet.classList.add('open');
-    sheet.style.transform='';
+    requestAnimationFrame(()=>{
+      sheet.style.transform='translateY(0)';
+      overlay.classList.add('open');
+    });
   });
-  setTimeout(()=>document.getElementById('plan-qa-input').focus(),300);
+  setTimeout(()=>document.getElementById('plan-qa-input').focus(),350);
+}
+
+function planQAPickTask(taskId){
+  const task=S.tasks.find(t=>t.id===taskId);
+  if(!task) return;
+  const dur=task.dur||30;
+  if(isSlotBlocked(_planQASlot.h,_planQASlot.m,dur)){toast('SLOT BLOCKED');return;}
+  planSchedule=planSchedule.filter(s=>s.taskId!==taskId);
+  planSchedule.push({taskId,startH:_planQASlot.h,startM:_planQASlot.m,durMins:dur});
+  savePlan();
+  closePlanQA();
+  renderTimeline();
+  renderTaskPool();
+  toast('PLACED — '+fmtTime(_planQASlot.h,_planQASlot.m));
 }
 function closePlanQA(){
-  const pqo2=document.getElementById('plan-qa-overlay');const pqs3=document.getElementById('plan-qa-sheet');
-  pqs3.classList.remove('open');
+  const pqo2=document.getElementById('plan-qa-overlay');
+  const pqs3=document.getElementById('plan-qa-sheet');
+  pqs3.style.transform='translateY(100%)';
   pqo2.classList.remove('open');
   setTimeout(()=>{
     pqo2.style.display='none';
@@ -4314,23 +4357,30 @@ var _lte=0;document.addEventListener("touchstart",function(e){if(e.touches.lengt
 
 <!-- PLAN QUICK-ADD SHEET -->
 <div id="plan-qa-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:470;" onclick="closePlanQA()"></div>
-<div id="plan-qa-sheet" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:480;background:var(--s1);border-top:1px solid var(--y);padding:16px 16px calc(16px + env(safe-area-inset-bottom));transform:translateY(100%);transition:transform 0.26s cubic-bezier(0.32,0.72,0,1);">
-  <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
-    <span style="font-family:var(--sans);font-size:10px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--t2);">ADD TO SCHEDULE</span>
-    <span style="font-family:var(--mono);font-size:10px;color:var(--y);" id="plan-qa-time">10am</span>
-    <button onclick="closePlanQA()" style="margin-left:auto;background:none;border:none;color:var(--t2);font-size:16px;cursor:pointer;padding:0;">✕</button>
+<div id="plan-qa-sheet" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:480;background:var(--s1);border-top:1px solid var(--y);padding:0;transition:transform 0.26s cubic-bezier(0.32,0.72,0,1);transform:translateY(100%);max-height:70vh;display:none;flex-direction:column;">
+  <!-- Header -->
+  <div style="display:flex;align-items:center;gap:8px;padding:14px 16px 10px;border-bottom:1px solid #1e1e1e;flex-shrink:0;">
+    <span style="font-family:var(--sans);font-size:10px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--t2);">SCHEDULE AT</span>
+    <span style="font-family:var(--mono);font-size:11px;color:var(--y);font-weight:700;" id="plan-qa-time">10am</span>
+    <button onclick="closePlanQA()" style="margin-left:auto;background:none;border:none;color:var(--t2);font-size:18px;cursor:pointer;padding:4px;line-height:1;">✕</button>
   </div>
-  <div style="display:flex;gap:8px;margin-bottom:10px;">
-    <input id="plan-qa-input" placeholder="Task title…" 
-      style="flex:1;background:var(--s2);border:1px solid #2a2a2a;border-radius:3px;padding:10px 12px;font-family:var(--sans);font-size:14px;color:var(--t0);outline:none;"
-      onkeydown="if(event.key==='Enter'){event.preventDefault();confirmPlanQA();}">
-    <div style="display:flex;align-items:center;gap:4px;background:var(--s2);border:1px solid #2a2a2a;border-radius:3px;padding:0 10px;">
-      <input id="plan-qa-dur" type="number" min="15" max="240" step="15" value="30"
-        style="width:36px;background:none;border:none;font-family:var(--mono);font-size:14px;color:var(--t0);outline:none;text-align:center;">
-      <span style="font-family:var(--sans);font-size:10px;color:var(--t2);">MIN</span>
+  <!-- Existing tasks list -->
+  <div id="plan-qa-tasklist" style="overflow-y:auto;flex:1;padding:6px 0;"></div>
+  <!-- Divider + new task -->
+  <div style="border-top:1px solid #1e1e1e;padding:10px 16px calc(10px + env(safe-area-inset-bottom));flex-shrink:0;background:var(--s1);">
+    <div style="font-family:var(--sans);font-size:9px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--t3);margin-bottom:8px;">— OR CREATE NEW —</div>
+    <div style="display:flex;gap:8px;">
+      <input id="plan-qa-input" placeholder="New task title…"
+        style="flex:1;background:var(--s2);border:1px solid #2a2a2a;border-radius:3px;padding:9px 12px;font-family:var(--sans);font-size:13px;color:var(--t0);outline:none;"
+        onkeydown="if(event.key==='Enter'){event.preventDefault();confirmPlanQA();}">
+      <div style="display:flex;align-items:center;gap:4px;background:var(--s2);border:1px solid #2a2a2a;border-radius:3px;padding:0 10px;flex-shrink:0;">
+        <input id="plan-qa-dur" type="number" min="15" max="480" step="15" value="30"
+          style="width:34px;background:none;border:none;font-family:var(--mono);font-size:13px;color:var(--t0);outline:none;text-align:center;">
+        <span style="font-family:var(--sans);font-size:9px;color:var(--t2);">MIN</span>
+      </div>
+      <button onclick="confirmPlanQA()" style="padding:0 14px;background:var(--y);border:none;border-radius:3px;font-family:var(--sans);font-size:11px;font-weight:800;color:#000;letter-spacing:0.06em;text-transform:uppercase;cursor:pointer;white-space:nowrap;">ADD</button>
     </div>
   </div>
-  <button onclick="confirmPlanQA()" style="width:100%;padding:11px;background:var(--y);border:none;border-radius:3px;font-family:var(--sans);font-size:13px;font-weight:800;color:#000;letter-spacing:0.06em;text-transform:uppercase;cursor:pointer;">PLACE AT <span id="plan-qa-time-btn"></span></button>
 </div>
 
 
