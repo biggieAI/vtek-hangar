@@ -1573,66 +1573,69 @@ body {
 
 <!-- ── HANGAR ── -->
 <div class="page on" id="pg-hangar">
-  <div class="sec"><span class="sec-l">Active Shows</span><span class="sec-r"></span><button class="sec-a" onclick="openSheet('ol-show')">+ ADD</button></div>
-  <div class="show-grid" id="show-grid"></div>
-  <div class="sec"><span class="sec-l">Mission Status</span><span class="sec-r"></span></div>
-  <div class="stat-row" id="dash-stats"></div>
-  <div id="dash-dos"></div>
-  <div class="sec"><span class="sec-l">Today</span><span class="sec-r"></span></div>
-  <div id="dash-today"></div>
 
-  <!-- AI STACK -->
-  <div class="sec" style="margin-top:18px;"><span class="sec-l">AI Stack</span></div>
-  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:4px 0 20px;">
+  <!-- AI STACK — top of hangar -->
+  <div class="sec" style="margin-top:4px;"><span class="sec-l">AI Stack</span></div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:4px 0 18px;">
 
-    <!-- Akiflow -->
+    <!-- Akiflow — purple gradient bg, upward triangle wordmark -->
     <a href="akiflow://" style="text-decoration:none;" onclick="if(!navigator.userAgent.match(/iPhone|iPad/))this.href='https://app.akiflow.com'">
       <div class="ai-stack-btn">
-        <div class="ai-stack-icon" style="background:#1a1a2e;">
-          <svg viewBox="0 0 32 32" width="22" height="22" fill="none">
-            <rect x="4" y="4" width="24" height="24" rx="6" fill="#5B4FE8"/>
-            <path d="M16 8l6 14H10L16 8z" fill="#fff" opacity="0.95"/>
+        <div class="ai-stack-icon" style="background:linear-gradient(145deg,#2d1fa3,#4f3ef5);">
+          <svg viewBox="0 0 28 28" width="26" height="26" fill="none">
+            <!-- Akiflow: bold upward arrow / flow mark -->
+            <path d="M14 5L22 20H6L14 5Z" fill="white" opacity="0.95"/>
+            <rect x="11" y="17" width="6" height="2.5" rx="1.2" fill="white" opacity="0.5"/>
           </svg>
         </div>
         <span class="ai-stack-lbl">AKIFLOW</span>
       </div>
     </a>
 
-    <!-- Circleback -->
+    <!-- Circleback — dark teal, soundwave/circle mark -->
     <a href="https://app.circleback.ai" target="_blank" style="text-decoration:none;">
       <div class="ai-stack-btn">
-        <div class="ai-stack-icon" style="background:#0d1f1a;">
-          <svg viewBox="0 0 32 32" width="22" height="22" fill="none">
-            <circle cx="16" cy="16" r="10" stroke="#00c896" stroke-width="2.5"/>
-            <circle cx="16" cy="16" r="5" fill="#00c896" opacity="0.8"/>
-            <circle cx="16" cy="16" r="1.5" fill="#fff"/>
+        <div class="ai-stack-icon" style="background:linear-gradient(145deg,#0a2420,#0d3d34);">
+          <svg viewBox="0 0 28 28" width="26" height="26" fill="none">
+            <!-- Circleback: concentric arcs = recording/replay -->
+            <circle cx="14" cy="14" r="4" fill="#00e5a0"/>
+            <path d="M8 14a6 6 0 0 1 6-6" stroke="#00e5a0" stroke-width="1.8" stroke-linecap="round" opacity="0.7"/>
+            <path d="M20 14a6 6 0 0 1-6 6" stroke="#00e5a0" stroke-width="1.8" stroke-linecap="round" opacity="0.7"/>
+            <path d="M5 14a9 9 0 0 1 9-9" stroke="#00e5a0" stroke-width="1.4" stroke-linecap="round" opacity="0.35"/>
+            <path d="M23 14a9 9 0 0 1-9 9" stroke="#00e5a0" stroke-width="1.4" stroke-linecap="round" opacity="0.35"/>
           </svg>
         </div>
         <span class="ai-stack-lbl">CIRCLEBACK</span>
       </div>
     </a>
 
-    <!-- Claude -->
+    <!-- Claude — warm sand/orange, the actual Claude logomark shape -->
     <a href="https://claude.ai" target="_blank" style="text-decoration:none;">
       <div class="ai-stack-btn">
-        <div class="ai-stack-icon" style="background:#1a1208;">
-          <svg viewBox="0 0 32 32" width="22" height="22" fill="none">
-            <rect x="3" y="3" width="26" height="26" rx="7" fill="#D97706"/>
-            <path d="M10 22l3-8 3 5 3-5 3 8" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <div class="ai-stack-icon" style="background:linear-gradient(145deg,#c8520a,#e8813a);">
+          <svg viewBox="0 0 28 28" width="26" height="26" fill="none">
+            <!-- Claude logomark: overlapping rounded rectangles -->
+            <rect x="5" y="9" width="13" height="4" rx="2" fill="white" opacity="0.95"/>
+            <rect x="10" y="15" width="13" height="4" rx="2" fill="white" opacity="0.95"/>
+            <rect x="5" y="9" width="4" height="10" rx="2" fill="white" opacity="0.5"/>
           </svg>
         </div>
         <span class="ai-stack-lbl">CLAUDE</span>
       </div>
     </a>
 
-    <!-- Obsidian -->
+    <!-- Obsidian — deep purple, gem/crystal mark -->
     <a href="obsidian://" style="text-decoration:none;">
       <div class="ai-stack-btn">
-        <div class="ai-stack-icon" style="background:#16102a;">
-          <svg viewBox="0 0 32 32" width="22" height="22" fill="none">
-            <path d="M16 4 L26 10 L26 22 L16 28 L6 22 L6 10 Z" fill="#7C3AED" opacity="0.3" stroke="#7C3AED" stroke-width="1.5"/>
-            <path d="M16 8 L22 12 L22 20 L16 24 L10 20 L10 12 Z" fill="#7C3AED" opacity="0.6"/>
-            <path d="M16 12 L19 14 L19 18 L16 20 L13 18 L13 14 Z" fill="#a78bfa"/>
+        <div class="ai-stack-icon" style="background:linear-gradient(145deg,#1e0a3c,#3b1f6e);">
+          <svg viewBox="0 0 28 28" width="26" height="26" fill="none">
+            <!-- Obsidian gem: layered facets -->
+            <path d="M14 3L22 9L19 22L14 25L9 22L6 9Z" fill="#7c3aed" opacity="0.4"/>
+            <path d="M14 3L22 9L14 13Z" fill="#a78bfa" opacity="0.9"/>
+            <path d="M14 3L6 9L14 13Z" fill="#c4b5fd" opacity="0.6"/>
+            <path d="M6 9L14 13L9 22Z" fill="#7c3aed" opacity="0.7"/>
+            <path d="M22 9L14 13L19 22Z" fill="#6d28d9" opacity="0.8"/>
+            <path d="M9 22L14 13L19 22L14 25Z" fill="#4c1d95" opacity="0.9"/>
           </svg>
         </div>
         <span class="ai-stack-lbl">OBSIDIAN</span>
@@ -1640,6 +1643,14 @@ body {
     </a>
 
   </div>
+
+  <div class="sec"><span class="sec-l">Active Shows</span><span class="sec-r"></span><button class="sec-a" onclick="openSheet('ol-show')">+ ADD</button></div>
+  <div class="show-grid" id="show-grid"></div>
+  <div class="sec"><span class="sec-l">Mission Status</span><span class="sec-r"></span></div>
+  <div class="stat-row" id="dash-stats"></div>
+  <div id="dash-dos"></div>
+  <div class="sec"><span class="sec-l">Today</span><span class="sec-r"></span></div>
+  <div id="dash-today"></div>
 </div>
 
 <!-- ── SHOTS ── -->
