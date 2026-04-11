@@ -308,10 +308,14 @@ body {
 
 /* ── STAT CHIPS ── */
 .stat-row { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 4px; margin-bottom: 8px; width: 100%; }
+.stat-row .sc:nth-child(1) { border-top: 2px solid #333; }
+.stat-row .sc:nth-child(2) { border-top: 2px solid var(--wip); }
+.stat-row .sc:nth-child(3) { border-top: 2px solid var(--blk); }
+.stat-row .sc:nth-child(4) { border-top: 2px solid var(--app); }
 .sc { background: var(--s2); border: var(--b2); border-radius: 4px; padding: 18px 14px 16px; text-align: center; position: relative; }
 .sc-n {
-  font-family: var(--mono); font-size: 28px; font-weight: 500;
-  line-height: 1; margin-bottom: 6px; color: var(--t0);
+  font-family: var(--mono); font-size: 22px; font-weight: 500;
+  line-height: 1; margin-bottom: 4px; color: var(--t0);
 }
 .sc-l { font-family: var(--sans); font-size: 10px; font-weight: 600; color: var(--t2); letter-spacing: 0.08em; text-transform: uppercase; }
 
@@ -381,14 +385,16 @@ body {
 .stab.on { background: transparent; color: var(--y); border-bottom: 2px solid var(--y); font-weight: 800; }
 .stab:hover:not(.on) { color: var(--t1); }
 
-#shot-stats { grid-template-columns: repeat(5, minmax(0,1fr)) !important; }
+#shot-stats { grid-template-columns: repeat(5, minmax(0,1fr)) !important; gap: 3px !important; }
 /* ── SHOT GROUPS ── */
 .shot-group { display: flex; flex-direction: column; gap: 1px; margin-bottom: 2px; }
 .shot-group-hd {
   display: flex; align-items: center; justify-content: space-between;
   padding: 10px 14px 8px;
-  background: #111; border-bottom: 1px solid #252525;
+  background: #0e0e0e; border-bottom: 1px solid #222;
+  border-left: 3px solid transparent;
 }
+.shot-group-hd:hover { border-left-color: rgba(0,255,135,0.2); }
 .shot-group-label {
   font-size: 12px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
   display: flex; align-items: center; gap: 8px;
@@ -396,7 +402,7 @@ body {
 .gdot { width: 6px; height: 6px; border-radius: 1px; flex-shrink: 0; }
 .shot-row {
   background: var(--s2);
-  border-bottom: 1px solid #252525;
+  border-bottom: 1px solid #1e1e1e;
   border-left: 2px solid var(--rc, var(--s4));
   padding: 12px 14px;
   display: flex; align-items: center; gap: 10px;
@@ -405,6 +411,8 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 .shot-row:hover { background: #212121; }
+.shot-row:nth-child(even) { background: #191919; }
+.shot-row:nth-child(even):hover { background: #222; }
 .shot-row:active { background: var(--s3); }
 .shot-row:last-child { border-bottom: none; }
 .sr-code { font-family: var(--mono); font-size: 12px; font-weight: 500; color: var(--t0); flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; letter-spacing: 0.04em; text-transform: uppercase; }
@@ -428,11 +436,11 @@ body {
 /* ── TASK CARDS ── */
 .pl-list { display: flex; flex-direction: column; gap: 1px; }
 .tcard {
-  background: #1e1e1e;
-  border: 1px solid #2a2a2a;
-  border-left: 2px solid var(--cc, var(--s4));
+  background: #1c1c1c;
+  border: 1px solid #262626;
+  border-left: 3px solid var(--cc, var(--s4));
   border-radius: 3px;
-  margin-bottom: 4px;
+  margin-bottom: 3px;
   position: relative;
   transition: background 0.1s;
   cursor: default; user-select: none;
@@ -583,10 +591,12 @@ body {
 .plan-col-label { font-family: var(--sans); font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--t2); }
 .plan-timeline { flex: 1; overflow-y: auto; scrollbar-width: none; background: var(--bg); }
 .plan-slot { display: flex; align-items: stretch; border-bottom: 1px solid #1c1c1c; position: relative; min-height: 64px; background: var(--bg); }
+.plan-slot:nth-child(even) { background: #0d0d0d; }
 .plan-slot.half-hour { border-bottom: 1px dashed #1a1a1a; min-height: 36px; }
 .plan-slot-time { width: 52px; flex-shrink: 0; font-family: var(--mono); font-size: 10px; color: var(--t1); padding: 8px 8px 0; letter-spacing: 0.02em; font-weight: 500; }
 .plan-slot-body { flex: 1; padding: 4px 12px 4px 4px; display: flex; flex-direction: column; gap: 3px; cursor: pointer; transition: background 0.1s; position: relative; }
-.plan-slot-body:hover { background: rgba(0,255,135,0.04); border-left: 2px solid rgba(0,255,135,0.15); }
+.plan-slot-body:hover { background: rgba(0,255,135,0.04); }
+.plan-slot-body:hover::after { content: "+"; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 18px; color: rgba(0,255,135,0.2); font-weight: 300; pointer-events: none; }
 .plan-slot-body.has-selection { cursor: crosshair; }
 .plan-cal-block { padding: 6px 10px; background: rgba(167,139,250,0.08); border: 1px solid rgba(167,139,250,0.2); border-left: 3px solid var(--rev); border-radius: 3px; margin-bottom: 3px; }
 .plan-cal-title { font-family: var(--sans); font-size: 11px; font-weight: 500; color: var(--t1); line-height: 1.3; }
@@ -664,12 +674,13 @@ body {
 .vault-doc-row {
   display: flex; align-items: center; gap: 12px;
   padding: 14px 16px 14px 14px;
-  border-bottom: 1px solid #1c1c1c;
+  border-bottom: 1px solid #1a1a1a;
   border-left: 3px solid transparent;
   cursor: pointer; transition: all 0.12s;
   -webkit-tap-highlight-color: transparent;
   background: var(--bg);
 }
+.vault-doc-row:nth-child(even) { background: #0d0d0d; }
 .vault-doc-row:hover {
   background: #161616;
   border-left-color: rgba(0,255,135,0.4);
@@ -1453,7 +1464,7 @@ body {
         <span class="plan-sheet-count" id="plan-pool-count">0</span>
       </div>
       <div class="plan-task-sheet-hint">
-        <span id="plan-pool-hint">TAP TO SELECT · TAP SLOT TO PLACE</span>
+        <span id="plan-pool-hint">SELECT TASK BELOW · OR TAP EMPTY SLOT TO ADD</span>
         <span class="plan-sheet-arrow">↑</span>
       </div>
     </div>
@@ -3652,7 +3663,11 @@ function placeBlock(entry){
 }
 
 function onSlotTap(h,m){
-  if(!planSelected) return;
+  if(!planSelected){
+    // No task selected — show quick-add for this slot
+    planQuickAdd(h,m);
+    return;
+  }
   if(isSlotBlocked(h,m,planSelected.dur)){toast('SLOT BLOCKED');return;}
   planSchedule=planSchedule.filter(s=>s.taskId!==planSelected.id);
   planSchedule.push({taskId:planSelected.id,startH:h,startM:m,durMins:planSelected.dur});
@@ -3690,6 +3705,57 @@ function planBlockTapEl(el){
     planSchedule=planSchedule.filter(s=>s.taskId!==taskId);
     renderTaskPool();
   }
+}
+
+
+// ── PLAN QUICK-ADD FROM EMPTY SLOT ──
+let _planQASlot={h:0,m:0};
+function planQuickAdd(h,m){
+  _planQASlot={h,m};
+  const timeStr=fmtTime(h,m);
+  document.getElementById('plan-qa-time').textContent=timeStr;
+  document.getElementById('plan-qa-input').value='';
+  document.getElementById('plan-qa-dur').value='30';
+  const overlay=document.getElementById('plan-qa-overlay');
+  const sheet=document.getElementById('plan-qa-sheet');
+  overlay.classList.add('open');
+  sheet.classList.add('open');
+  setTimeout(()=>document.getElementById('plan-qa-input').focus(),300);
+}
+function closePlanQA(){
+  const pqo=document.getElementById('plan-qa-overlay');pqo.style.display='none';
+  const pqs2=document.getElementById('plan-qa-sheet');pqs2.style.transform='translateY(100%)';
+  setTimeout(()=>pqs2.style.display='none',260);
+}
+function confirmPlanQA(){
+  const title=document.getElementById('plan-qa-input').value.trim();
+  if(!title){closePlanQA();return;}
+  const dur=parseInt(document.getElementById('plan-qa-dur').value)||30;
+  const show=S.shows[0];
+  // Create task
+  const task={
+    id:'t'+Date.now(),
+    sid:show?.id||'',
+    title,
+    due:tod(),
+    pri:'med',
+    dur,
+    tags:[],
+    color:'',
+    notes:'',
+    subtasks:[],
+    dep:'',
+    done:false,
+    expanded:false
+  };
+  S.tasks.push(task);
+  // Place in schedule
+  planSchedule.push({taskId:task.id,startH:_planQASlot.h,startM:_planQASlot.m,durMins:dur});
+  save();
+  closePlanQA();
+  renderTimeline();
+  renderTaskPool();
+  toast('ADDED & PLACED — '+fmtTime(_planQASlot.h,_planQASlot.m));
 }
 
 function planBlockTap(idx){
@@ -3902,6 +3968,28 @@ document.addEventListener('touchmove',e=>{onBlockDrag(e);onBlockResize(e);},{pas
 document.addEventListener('touchend',e=>{endBlockDrag(e);endBlockResize(e);});
 
 </script>
+
+<!-- PLAN QUICK-ADD SHEET -->
+<div id="plan-qa-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:470;" onclick="closePlanQA()"></div>
+<div id="plan-qa-sheet" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:480;background:var(--s1);border-top:1px solid var(--y);padding:16px 16px calc(16px + env(safe-area-inset-bottom));transform:translateY(100%);transition:transform 0.26s cubic-bezier(0.32,0.72,0,1);">
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+    <span style="font-family:var(--sans);font-size:10px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--t2);">ADD TO SCHEDULE</span>
+    <span style="font-family:var(--mono);font-size:10px;color:var(--y);" id="plan-qa-time">10am</span>
+    <button onclick="closePlanQA()" style="margin-left:auto;background:none;border:none;color:var(--t2);font-size:16px;cursor:pointer;padding:0;">✕</button>
+  </div>
+  <div style="display:flex;gap:8px;margin-bottom:10px;">
+    <input id="plan-qa-input" placeholder="Task title…" 
+      style="flex:1;background:var(--s2);border:1px solid #2a2a2a;border-radius:3px;padding:10px 12px;font-family:var(--sans);font-size:14px;color:var(--t0);outline:none;"
+      onkeydown="if(event.key==='Enter'){event.preventDefault();confirmPlanQA();}">
+    <div style="display:flex;align-items:center;gap:4px;background:var(--s2);border:1px solid #2a2a2a;border-radius:3px;padding:0 10px;">
+      <input id="plan-qa-dur" type="number" min="15" max="240" step="15" value="30"
+        style="width:36px;background:none;border:none;font-family:var(--mono);font-size:14px;color:var(--t0);outline:none;text-align:center;">
+      <span style="font-family:var(--sans);font-size:10px;color:var(--t2);">MIN</span>
+    </div>
+  </div>
+  <button onclick="confirmPlanQA()" style="width:100%;padding:11px;background:var(--y);border:none;border-radius:3px;font-family:var(--sans);font-size:13px;font-weight:800;color:#000;letter-spacing:0.06em;text-transform:uppercase;cursor:pointer;">PLACE AT <span id="plan-qa-time-btn"></span></button>
+</div>
+
 <!-- PLAN TASK SHEET -->
 <div id="plan-task-sheet-overlay" onclick="closePlanTaskSheet()"></div>
 <div id="plan-task-sheet">
