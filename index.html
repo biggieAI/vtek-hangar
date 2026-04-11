@@ -167,15 +167,18 @@ body{min-height:-webkit-fill-available;overflow-x:hidden;width:100%;}
 /* Nav fixed to bottom — always above Safari chrome */
 .bnav{
   height:auto;
+  padding-top:4px;
   padding-bottom:env(safe-area-inset-bottom, 0px);
   display:flex; flex-shrink:0;
   background:rgba(232,229,224,0.98);
   border-top:1px solid rgba(0,0,0,0.14);
   position:fixed;
   bottom:0; left:0; right:0;
-  z-index:100;
-  overflow-x:auto;
+  z-index:300;
+  overflow-x:hidden;
   scrollbar-width:none;
+  /* extend bg all the way to physical bottom */
+  box-shadow:0 40px 0 40px rgba(232,229,224,0.98);
 }
 .bnav::-webkit-scrollbar{display:none;}
 /* Push page content above the fixed nav */
