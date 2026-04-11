@@ -20,10 +20,10 @@
   margin: 0; padding: 0;
   -webkit-tap-highlight-color: transparent;
 }
-html, body, .shell, .page-area, .page, .page > *, .show-grid, .stat-row {
+*, *::before, *::after { box-sizing: border-box; }
+html, body, .shell, .page-area, .page {
   max-width: 100vw;
   overflow-x: hidden;
-  box-sizing: border-box;
 }
 
 :root {
@@ -271,7 +271,7 @@ body {
 .sec-a:hover { color: var(--t0); }
 
 /* ── SHOW GRID → full-width cards ── */
-.show-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; }
+.show-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 8px; width: 100%; }
 .armor-card {
   background: var(--s2);
   border: var(--b2);
@@ -304,7 +304,7 @@ body {
 .prog-fill { height: 100%; transition: width 0.4s; }
 
 /* ── STAT CHIPS ── */
-.stat-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 4px; margin-bottom: 8px; width: 100%; }
+.stat-row { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 4px; margin-bottom: 8px; width: 100%; }
 .sc { background: var(--s2); border: var(--b2); border-radius: 4px; padding: 18px 14px 16px; text-align: center; position: relative; }
 .sc-n {
   font-family: var(--mono); font-size: 28px; font-weight: 500;
@@ -438,7 +438,7 @@ body {
 .tcard:hover { background: #222222; border-color: #333; }
 .tcard:active { background: var(--s3); }
 .tcard.drag-over { border-top: 2px solid var(--y); }
-.tcard-main { display: flex; align-items: flex-start; gap: 12px; padding: 14px 14px 10px; position: relative; }
+.tcard-main { display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px 10px; position: relative; }
 .tcard-body { flex: 1; min-width: 0; }
 .tcard-title { font-size: 14px; font-weight: 500; color: var(--t0); line-height: 1.4; margin-bottom: 6px; cursor: pointer; }
 .tcard-meta { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
@@ -478,8 +478,8 @@ body {
 .overdue-badge { font-family: var(--sans); font-size: 9px; font-weight: 700; color: var(--blk); letter-spacing: 0.04em; display: flex; align-items: center; gap: 3px; }
 
 /* ── PAYLOAD TOOLBAR ── */
-.pl-toolbar { display: flex; align-items: center; margin-bottom: 0; gap: 0; border-bottom: 1px solid #1e1e1e; padding-bottom: 0; width: 100%; }
-.pl-views { display: flex; gap: 0; flex: 1; }
+.pl-toolbar { display: flex; align-items: center; margin-bottom: 10px; gap: 0; border-bottom: none; padding-bottom: 0; width: 100%; }
+.pl-views { display: flex; gap: 0; flex: 1; border-bottom: 1px solid #1e1e1e; padding-bottom: 0; }
 .pl-vbtn {
   padding: 5px 10px; border: none; border-bottom: 1px solid transparent;
   background: transparent; font-family: var(--sans); font-weight: 600; font-size: 11px;
@@ -529,17 +529,17 @@ body {
 .pl-ai-banner { display: flex; align-items: center; gap: 6px; padding: 10px 14px; margin-bottom: 10px; background: var(--s2); border: var(--b2); border-left: 2px solid var(--y); font-family: var(--sans); font-size: 11px; color: var(--t1); }
 
 /* ── PAYLOAD MODE BAR ── */
-.payload-mode-bar { display: none; }
+.payload-mode-bar { display: flex; gap: 0; border-bottom: 1px solid #1e1e1e; margin-bottom: 10px; }
 .pmode-btn {
-  display: flex; align-items: center; justify-content: center; gap: 5px;
-  padding: 7px 10px; border: var(--b2); border-radius: 3px;
-  background: var(--s2);
-  font-family: var(--sans); font-size: 10px; font-weight: 700;
+  flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px;
+  padding: 8px 12px; border: none; border-bottom: 2px solid transparent;
+  background: transparent;
+  font-family: var(--sans); font-size: 11px; font-weight: 700;
   letter-spacing: 0.06em; text-transform: uppercase; color: var(--t2);
-  cursor: pointer; transition: all 0.12s; white-space: nowrap;
+  cursor: pointer; transition: all 0.1s;
 }
-.pmode-btn.on { background: var(--y); color: #000; border-color: var(--y); }
-.pmode-btn:hover:not(.on) { background: var(--s3); color: var(--t1); border-color: #333; }
+.pmode-btn.on { color: var(--y); border-bottom-color: var(--y); }
+.pmode-btn:hover:not(.on) { color: var(--t1); }
 
 /* ── PLAN MODE ── */
 #pg-plan { padding: 0; overflow: hidden; }
@@ -1685,73 +1685,7 @@ body {
 </div>
 
 <!-- ── CONFIG ── -->
-<div class="page" id="pg-settings">
-
-  <div class="cfg-section">
-    <div class="cfg-sec-lbl">INTEL / AI</div>
-    <div class="cfg-row" onclick="editAPIKey()">
-      <span class="cfg-lbl">Anthropic API Key</span>
-      <span class="cfg-val" id="key-disp">NOT SET</span>
-    </div>
-    <div class="cfg-row" onclick="editWebhook()">
-      <span class="cfg-lbl">Make.com Webhook</span>
-      <span class="cfg-val" id="webhook-disp">NOT SET</span>
-    </div>
-  </div>
-
-  <div class="cfg-section">
-    <div class="cfg-sec-lbl">SYNC</div>
-    <div class="cfg-row" onclick="driveAuth()">
-      <span class="cfg-lbl">Google Drive</span>
-      <span class="cfg-val" id="drive-status"><span class="sdot sdot-off"></span> DISCONNECTED</span>
-    </div>
-    <div class="cfg-row" onclick="drivePush()">
-      <span class="cfg-lbl">Push to Drive</span>
-      <span class="cfg-val">↑ PUSH</span>
-    </div>
-    <div class="cfg-row" onclick="drivePull()">
-      <span class="cfg-lbl">Pull from Drive</span>
-      <span class="cfg-val">↓ PULL</span>
-    </div>
-    <div class="cfg-row" style="cursor:default">
-      <span class="cfg-lbl">Auto Sync</span>
-      <button class="cfg-toggle" id="auto-sync-toggle" onclick="toggleAutoSync(this)"></button>
-    </div>
-  </div>
-
-  <div class="cfg-section">
-    <div class="cfg-sec-lbl">NETWORK</div>
-    <div class="cfg-row" onclick="editAPI()">
-      <span class="cfg-lbl">API Endpoint</span>
-      <span class="cfg-val" id="api-disp">192.168.100.132:8000</span>
-    </div>
-  </div>
-
-  <div class="cfg-section">
-    <div class="cfg-sec-lbl">DATA</div>
-    <div class="cfg-row" onclick="exportJSON()">
-      <span class="cfg-lbl">Export JSON</span>
-      <span class="cfg-val">↓</span>
-    </div>
-    <div class="cfg-row" onclick="openSheet('ol-backups')">
-      <span class="cfg-lbl">Restore Backup</span>
-      <span class="cfg-val" id="backup-count">—</span>
-    </div>
-    <div class="cfg-row" onclick="resetData()">
-      <span class="cfg-lbl" style="color:var(--blk)">Reset to Demo Data</span>
-      <span class="cfg-val" style="color:var(--blk)">✕</span>
-    </div>
-  </div>
-
-  <div class="cfg-section">
-    <div class="cfg-sec-lbl">ABOUT</div>
-    <div class="cfg-row" style="cursor:default">
-      <span class="cfg-lbl">Version</span>
-      <span class="cfg-val" style="font-family:var(--mono)">v16.0 HANGAR</span>
-    </div>
-  </div>
-
-</div>
+<div class="page" id="pg-settings"></div>
 
 </div><!-- /page-area -->
 
@@ -2165,18 +2099,30 @@ function rHangar(){
     <div class="sc"><div class="sc-n" style="color:var(--s-blk)">${blk}</div><div class="sc-l">Blocked</div></div>
     <div class="sc"><div class="sc-n" style="color:var(--s-app)">${done}</div><div class="sc-l">Done</div></div>`;
   document.getElementById('dash-dos').innerHTML=`
-    <div class="dossier"><div class="dos-inner"></div><div class="dos-border"></div>
-    <div class="dos-content">
-      <div class="dos-top"><div class="dos-eye">ALL SHOWS — MANIFEST</div>
-        <div class="dos-ts">${new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}).toUpperCase()}</div></div>
-      <div class="dos-num"><span class="dos-big" style="color:var(--s-app)">${done}</span><span class="dos-unit">DELIVERED</span></div>
-      <div class="dos-seg">${segDone(done,total,22)}</div>
-      <div class="dos-rows">
-        <div class="dos-row"><span class="dos-rl">WIP</span><span class="dos-rd"></span><span class="dos-rv" style="color:var(--s-act)">${wip} SHOTS</span></div>
-        <div class="dos-row"><span class="dos-rl">BLOCKED</span><span class="dos-rd"></span><span class="dos-rv" style="color:var(--s-blk)">${blk} SHOTS</span></div>
-        <div class="dos-row"><span class="dos-rl">OPEN TASKS</span><span class="dos-rd"></span><span class="dos-rv">${open} ITEMS</span></div>
-        <div class="dos-row"><span class="dos-rl">SHOWS</span><span class="dos-rd"></span><span class="dos-rv">${S.shows.length} ACTIVE</span></div>
-      </div></div></div>`;
+    <div style="background:var(--s2);border:1px solid #252525;border-radius:4px;padding:12px 14px;margin-bottom:8px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+        <span style="font-family:var(--sans);font-size:9px;font-weight:800;letter-spacing:0.12em;color:var(--t2);text-transform:uppercase;">ALL SHOWS — MANIFEST</span>
+        <span style="font-family:var(--mono);font-size:9px;color:var(--t2);">${new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}).toUpperCase()}</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;">
+        <div style="text-align:center;background:var(--bg);padding:8px 4px;border-radius:3px;">
+          <div style="font-family:var(--mono);font-size:18px;font-weight:500;color:var(--t0);line-height:1;">${total}</div>
+          <div style="font-family:var(--sans);font-size:8px;color:var(--t2);letter-spacing:0.08em;text-transform:uppercase;margin-top:3px;">SHOTS</div>
+        </div>
+        <div style="text-align:center;background:var(--bg);padding:8px 4px;border-radius:3px;">
+          <div style="font-family:var(--mono);font-size:18px;font-weight:500;color:var(--wip);line-height:1;">${wip}</div>
+          <div style="font-family:var(--sans);font-size:8px;color:var(--t2);letter-spacing:0.08em;text-transform:uppercase;margin-top:3px;">WIP</div>
+        </div>
+        <div style="text-align:center;background:var(--bg);padding:8px 4px;border-radius:3px;">
+          <div style="font-family:var(--mono);font-size:18px;font-weight:500;color:var(--blk);line-height:1;">${blk}</div>
+          <div style="font-family:var(--sans);font-size:8px;color:var(--t2);letter-spacing:0.08em;text-transform:uppercase;margin-top:3px;">BLK</div>
+        </div>
+        <div style="text-align:center;background:var(--bg);padding:8px 4px;border-radius:3px;">
+          <div style="font-family:var(--mono);font-size:18px;font-weight:500;color:var(--app);line-height:1;">${done}</div>
+          <div style="font-family:var(--sans);font-size:8px;color:var(--t2);letter-spacing:0.08em;text-transform:uppercase;margin-top:3px;">DONE</div>
+        </div>
+      </div>
+    </div>`;
   const today=tod();const tt=S.tasks.filter(t=>t.due===today&&!t.done);
   document.getElementById('dash-today').innerHTML=tt.length?tt.map(t=>renderTCard(t)).join(''):`<div style="font-family:var(--mono);font-size:8px;color:var(--t2);padding:7px 1px;letter-spacing:0.1em">NO TASKS DUE TODAY</div>`;
 }
@@ -2372,17 +2318,19 @@ function rPayload(){
   const total=S.tasks.length,open=S.tasks.filter(t=>!t.done).length,done=S.tasks.filter(t=>t.done).length;
   const crit=S.tasks.filter(t=>!t.done&&t.pri==='critical').length,high=S.tasks.filter(t=>!t.done&&t.pri==='high').length;
   document.getElementById('payload-dos').innerHTML=`
-    <div class="dossier"><div class="dos-inner"></div><div class="dos-border"></div>
-    <div class="dos-content">
-      <div class="dos-top"><div class="dos-eye">PAYLOAD — ACTIVE OBJECTIVES</div>
-        <div class="dos-ts">${new Date().toLocaleDateString('en-US',{month:'short',day:'numeric'}).toUpperCase()}</div></div>
-      <div class="dos-num"><span class="dos-big">${open}</span><span class="dos-unit">OPEN</span></div>
-      <div class="dos-rows">
-        <div class="dos-row"><span class="dos-rl">CRITICAL</span><span class="dos-rd"></span><span class="dos-rv" style="color:var(--s-blk)">${crit} ITEMS</span></div>
-        <div class="dos-row"><span class="dos-rl">HIGH PRI</span><span class="dos-rd"></span><span class="dos-rv" style="color:#d4643a">${high} ITEMS</span></div>
-        <div class="dos-row"><span class="dos-rl">COMPLETE</span><span class="dos-rd"></span><span class="dos-rv" style="color:var(--s-app)">${done} ITEMS</span></div>
-        <div class="dos-row"><span class="dos-rl">TOTAL</span><span class="dos-rd"></span><span class="dos-rv">${total} ITEMS</span></div>
-      </div></div></div>`;
+  <div style="background:var(--s2);border:1px solid #252525;border-radius:4px;padding:10px 14px 8px;margin-bottom:8px;position:relative;overflow:hidden;">
+    <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:6px;">
+      <span style="font-family:var(--sans);font-size:36px;font-weight:900;color:var(--y);line-height:1;">${openTasks}</span>
+      <span style="font-family:var(--sans);font-size:13px;font-weight:600;color:var(--t1);text-transform:uppercase;letter-spacing:0.06em;">OPEN</span>
+      <span style="font-family:var(--mono);font-size:9px;color:var(--t2);margin-left:auto;">${new Date().toLocaleDateString('en-US',{month:'short',day:'numeric'}).toUpperCase()}</span>
+    </div>
+    <div style="display:flex;gap:16px;">
+      <div><span style="font-family:var(--mono);font-size:11px;color:var(--blk);">${critTasks}</span> <span style="font-family:var(--sans);font-size:10px;color:var(--t2);">CRIT</span></div>
+      <div><span style="font-family:var(--mono);font-size:11px;color:var(--wip);">${hiTasks}</span> <span style="font-family:var(--sans);font-size:10px;color:var(--t2);">HIGH</span></div>
+      <div><span style="font-family:var(--mono);font-size:11px;color:var(--app);">${doneTasks}</span> <span style="font-family:var(--sans);font-size:10px;color:var(--t2);">DONE</span></div>
+      <div><span style="font-family:var(--mono);font-size:11px;color:var(--t1);">${S.tasks.length}</span> <span style="font-family:var(--sans);font-size:10px;color:var(--t2);">TOTAL</span></div>
+    </div>
+  </div>`;
   // Schedule section
   rSchedSection();
   // Filter chips
