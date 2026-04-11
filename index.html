@@ -20,9 +20,10 @@
   margin: 0; padding: 0;
   -webkit-tap-highlight-color: transparent;
 }
-html, body, .shell, .page-area, .page {
+html, body, .shell, .page-area, .page, .page > *, .show-grid, .stat-row {
   max-width: 100vw;
   overflow-x: hidden;
+  box-sizing: border-box;
 }
 
 :root {
@@ -477,8 +478,8 @@ body {
 .overdue-badge { font-family: var(--sans); font-size: 9px; font-weight: 700; color: var(--blk); letter-spacing: 0.04em; display: flex; align-items: center; gap: 3px; }
 
 /* ── PAYLOAD TOOLBAR ── */
-.pl-toolbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; gap: 8px; }
-.pl-views { display: flex; gap: 2px; }
+.pl-toolbar { display: flex; align-items: center; margin-bottom: 0; gap: 0; border-bottom: 1px solid #1e1e1e; padding-bottom: 0; width: 100%; }
+.pl-views { display: flex; gap: 0; flex: 1; }
 .pl-vbtn {
   padding: 5px 10px; border: none; border-bottom: 1px solid transparent;
   background: transparent; font-family: var(--sans); font-weight: 600; font-size: 11px;
@@ -486,7 +487,7 @@ body {
   cursor: pointer; transition: all 0.1s; border-radius: 0;
 }
 .pl-vbtn.on { background: transparent; color: var(--y); border-bottom: 1px solid var(--y); font-weight: 800; }
-.pl-actions { display: flex; gap: 5px; }
+.pl-actions { display: flex; gap: 4px; margin-left: auto; align-items: center; padding-bottom: 0; }
 .pl-act-btn {
   padding: 6px 10px; border: var(--b2); border-radius: 3px;
   background: var(--s2); font-family: var(--sans); font-size: 11px; font-weight: 600;
@@ -528,17 +529,17 @@ body {
 .pl-ai-banner { display: flex; align-items: center; gap: 6px; padding: 10px 14px; margin-bottom: 10px; background: var(--s2); border: var(--b2); border-left: 2px solid var(--y); font-family: var(--sans); font-size: 11px; color: var(--t1); }
 
 /* ── PAYLOAD MODE BAR ── */
-.payload-mode-bar { display: flex; gap: 0; margin-bottom: 16px; border-bottom: 1px solid #1e1e1e; padding-bottom: 0; }
+.payload-mode-bar { display: none; }
 .pmode-btn {
-  flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px;
-  padding: 10px 14px; border: none; border-bottom: 2px solid transparent;
-  border-radius: 0; background: transparent;
-  font-family: var(--sans); font-size: 11px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; gap: 5px;
+  padding: 7px 10px; border: var(--b2); border-radius: 3px;
+  background: var(--s2);
+  font-family: var(--sans); font-size: 10px; font-weight: 700;
   letter-spacing: 0.06em; text-transform: uppercase; color: var(--t2);
-  cursor: pointer; transition: all 0.12s;
+  cursor: pointer; transition: all 0.12s; white-space: nowrap;
 }
-.pmode-btn.on { background: transparent; color: var(--y); border-bottom: 2px solid var(--y); }
-.pmode-btn:hover:not(.on) { color: var(--t1); }
+.pmode-btn.on { background: var(--y); color: #000; border-color: var(--y); }
+.pmode-btn:hover:not(.on) { background: var(--s3); color: var(--t1); border-color: #333; }
 
 /* ── PLAN MODE ── */
 #pg-plan { padding: 0; overflow: hidden; }
@@ -614,7 +615,22 @@ body {
   font-family: var(--mono); font-size: 10px; color: var(--t2);
   background: var(--s3); padding: 1px 6px; border-radius: 2px;
 }
-.plan-block-remove { position: absolute; top: 0; right: 0; bottom: 0; width: 28px; display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--t2); background: none; border: none; border-left: var(--b1); cursor: pointer; transition: all 0.1s; }
+.plan-block-remove { position: absolute; top: 0; right: 0; width: 28px; bottom: 22px; display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--t2); background: none; border: none; border-left: var(--b1); cursor: pointer; transition: all 0.1s; }
+.plan-block-remove:hover { color: var(--blk); background: rgba(232,76,30,0.08); }
+.plan-block-resize {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 16px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: ns-resize; background: transparent;
+  border-top: 1px solid rgba(0,255,135,0.1);
+  transition: background 0.1s;
+  touch-action: none;
+}
+.plan-block-resize::after {
+  content: '⠿'; font-size: 8px; color: var(--t2); letter-spacing: 3px;
+  transform: rotate(90deg); pointer-events: none;
+}
+.plan-block-resize:hover { background: rgba(0,255,135,0.06); }
+.plan-block.dragging { opacity: 0.6; z-index: 10; box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
 .plan-block-remove:hover { color: var(--blk); background: rgba(232,76,30,0.08); }
 .plan-now-line { position: absolute; left: 48px; right: 0; height: 1px; background: var(--y); opacity: 0.5; pointer-events: none; z-index: 5; top: 0; }
 .plan-now-dot { position: absolute; left: -3px; top: -3px; width: 6px; height: 6px; background: var(--y); border-radius: 50%; }
@@ -663,10 +679,10 @@ body {
 .vault-doc-meta { font-family: var(--mono); font-size: 9px; color: var(--t2); display: flex; gap: 8px; }
 .vault-doc-tag { font-family: var(--sans); font-size: 9px; font-weight: 700; padding: 2px 6px; border: 1px solid #2e2e2e; border-radius: 2px; color: var(--t1); background: #1c1c1c; letter-spacing: 0.04em; text-transform: uppercase; }
 .vault-doc-chevron { color: var(--t2); font-size: 12px; flex-shrink: 0; }
-.vault-new-row { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-bottom: var(--b1); cursor: pointer; transition: background 0.1s; -webkit-tap-highlight-color: transparent; }
+.vault-new-row { display: flex; align-items: center; gap: 12px; padding: 16px 16px 16px 14px; border-bottom: 1px solid #1c1c1c; border-left: 3px solid var(--y); cursor: pointer; transition: all 0.12s; -webkit-tap-highlight-color: transparent; background: rgba(0,255,135,0.03); }
 .vault-new-row:hover { background: var(--s2); }
-.vault-new-icon { font-size: 16px; color: var(--t2); flex-shrink: 0; }
-.vault-new-label { font-family: var(--sans); font-size: 12px; font-weight: 600; color: var(--t2); text-transform: uppercase; letter-spacing: 0.06em; }
+.vault-new-icon { font-size: 16px; color: var(--y); flex-shrink: 0; }
+.vault-new-label { font-family: var(--sans); font-size: 12px; font-weight: 700; color: var(--y); text-transform: uppercase; letter-spacing: 0.06em; }
 .vault-editor-panel { display: none; flex-direction: column; flex: 1; overflow: hidden; width: 100%; max-width: 100%; }
 .vault-editor-panel.show { display: flex; }
 .vault-editor-panel.fullscreen {
@@ -715,7 +731,7 @@ body {
 .vault-doc-title-in { display: block; width: 100%; box-sizing: border-box; background: none; border: none; border-bottom: var(--b2); outline: none; font-family: var(--sans); font-size: 22px; font-weight: 700; color: var(--t0); padding: 20px 16px 14px; transition: border-color 0.15s; }
 .vault-doc-title-in:focus { border-bottom-color: var(--y); }
 .vault-doc-title-in::placeholder { color: var(--t2); }
-.vault-textarea { width: 100%; box-sizing: border-box; background: none; border: none; outline: none; font-family: var(--sans); font-size: 14px; color: var(--t1); line-height: 1.8; resize: none; min-height: 300px; padding: 12px 16px; }
+.vault-textarea { width: 100%; box-sizing: border-box; background: none; border: none; outline: none; font-family: var(--mono); font-size: 13px; color: var(--t0); line-height: 1.9; resize: none; min-height: 300px; padding: 16px 20px; letter-spacing: 0.01em; }
 .vault-textarea::placeholder { color: var(--t3); }
 .vault-mode-toggle { padding: 4px 10px; border: var(--b2); border-radius: 3px; background: var(--s2); font-family: var(--sans); font-size: 10px; font-weight: 600; color: var(--t2); cursor: pointer; transition: all 0.1s; text-transform: uppercase; letter-spacing: 0.06em; }
 .vault-mode-toggle.on { background: var(--s4); color: var(--t0); border-color: #333; }
@@ -724,7 +740,7 @@ body {
 .vault-preview { padding: 16px; font-family: var(--sans); font-size: 14px; color: var(--t1); line-height: 1.8; }
 .vault-preview h1, .vault-preview h2, .vault-preview h3 { font-family: var(--sans); color: var(--t0); font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; margin: 16px 0 8px; }
 .vault-preview h1 { font-size: 20px; }
-.vault-preview h2 { font-size: 16px; color: var(--y); }
+.vault-preview h2 { font-size: 14px; color: var(--y); border-left: 3px solid var(--y); padding-left: 10px; margin-left: -13px; }
 .vault-preview h3 { font-size: 13px; color: var(--t1); }
 .vault-preview strong { color: var(--t0); font-weight: 700; }
 .vault-preview code { font-family: var(--mono); font-size: 12px; background: var(--s2); padding: 2px 6px; border-radius: 2px; color: var(--y); }
@@ -1170,6 +1186,81 @@ body {
 }
 .plan-drawer-sel-hint.show { opacity: 1; }
 
+
+/* ── PLAN TASK SHEET ── */
+.plan-task-sheet-btn {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 16px 8px;
+  background: var(--s1);
+  border-bottom: 1px solid #252525;
+  cursor: pointer;
+  flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+.plan-task-sheet-label {
+  font-family: var(--sans); font-size: 10px; font-weight: 800;
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--t2);
+  display: flex; align-items: center; gap: 8px;
+}
+.plan-sheet-count {
+  background: var(--y); color: #000;
+  font-size: 9px; font-weight: 900;
+  padding: 1px 6px; border-radius: 2px; font-family: var(--mono);
+}
+.plan-task-sheet-hint {
+  font-family: var(--sans); font-size: 10px; color: var(--t2);
+  display: flex; align-items: center; gap: 4px;
+}
+.plan-sheet-arrow { font-size: 9px; }
+
+/* The overlay + bottom sheet */
+#plan-task-sheet-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.6); z-index: 450;
+  -webkit-tap-highlight-color: transparent;
+}
+#plan-task-sheet-overlay.open { display: block; }
+#plan-task-sheet {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  z-index: 460;
+  background: var(--s1);
+  border-top: 1px solid var(--y);
+  border-radius: 0;
+  max-height: 70dvh;
+  display: flex; flex-direction: column;
+  transform: translateY(100%);
+  transition: transform 0.28s cubic-bezier(0.32,0.72,0,1);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+#plan-task-sheet.open { transform: translateY(0); }
+.plan-sheet-grab {
+  width: 32px; height: 3px; background: var(--s4);
+  border-radius: 99px; margin: 10px auto 6px;
+  flex-shrink: 0;
+}
+.plan-sheet-hd {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 6px 16px 10px; flex-shrink: 0;
+  border-bottom: 1px solid #252525;
+}
+.plan-sheet-title {
+  font-family: var(--sans); font-size: 12px; font-weight: 800;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--t0);
+  display: flex; align-items: center; gap: 8px;
+}
+.plan-sheet-close {
+  font-family: var(--sans); font-size: 11px; font-weight: 600;
+  color: var(--t2); background: none; border: none; cursor: pointer;
+  padding: 4px 8px; transition: color 0.1s;
+}
+.plan-sheet-close:hover { color: var(--t0); }
+.plan-sheet-list {
+  overflow-y: auto; flex: 1;
+  padding: 6px 12px 12px;
+  display: flex; flex-direction: column; gap: 2px;
+  scrollbar-width: none;
+}
+
 /* ── BOTTOM NAV ── */
 .bnav {
   height: auto;
@@ -1352,19 +1443,17 @@ body {
 
   <!-- Task pool — horizontal scrollable chips, collapsible -->
   <div id="plan-pool-section">
-    <div class="plan-drawer-toggle" id="plan-drawer-toggle" onclick="togglePlanDrawer()">
-      <div class="plan-drawer-label">
+    <div class="plan-task-sheet-btn" id="plan-drawer-toggle" onclick="openPlanTaskSheet()">
+      <div class="plan-task-sheet-label">
         TASKS
-        <span class="plan-drawer-count" id="plan-pool-count">0</span>
+        <span class="plan-sheet-count" id="plan-pool-count">0</span>
       </div>
-      <div class="plan-drawer-hint">
+      <div class="plan-task-sheet-hint">
         <span id="plan-pool-hint">TAP TO SELECT · TAP SLOT TO PLACE</span>
-        <span class="plan-drawer-arrow" id="plan-drawer-arrow">▼</span>
+        <span class="plan-sheet-arrow">↑</span>
       </div>
     </div>
-    <div class="plan-drawer-body" id="plan-drawer-body">
-      <div class="plan-drawer-list" id="plan-task-pool"></div>
-    </div>
+    <div id="plan-task-pool" style="display:none"></div>
   </div>
 
   <!-- Cal status -->
@@ -3474,6 +3563,24 @@ async function initPlanMode(){
   renderTimeline();
 }
 
+
+function openPlanTaskSheet(){
+  renderTaskPool(); // refresh list
+  // Populate sheet list from plan-task-pool
+  const pool=document.getElementById('plan-task-pool');
+  const sheetList=document.getElementById('plan-sheet-list');
+  const sheetCount=document.getElementById('plan-sheet-count');
+  if(sheetList&&pool){sheetList.innerHTML=pool.innerHTML;}
+  if(sheetCount){const c=document.getElementById('plan-pool-count');if(c)sheetCount.textContent=c.textContent;}
+  document.getElementById('plan-task-sheet-overlay').classList.add('open');
+  document.getElementById('plan-task-sheet').classList.add('open');
+}
+
+function closePlanTaskSheet(){
+  document.getElementById('plan-task-sheet-overlay').classList.remove('open');
+  document.getElementById('plan-task-sheet').classList.remove('open');
+}
+
 function togglePlanDrawer(){
   const toggle=document.getElementById('plan-drawer-toggle');
   const body=document.getElementById('plan-drawer-body');
@@ -3761,6 +3868,88 @@ if(backupCountEl){const bc=getBackups().length;backupCountEl.textContent=bc?bc+'
 const hashParams=new URLSearchParams(window.location.hash.slice(1));const accessToken=hashParams.get('access_token');
 if(accessToken){driveToken=accessToken;localStorage.setItem('vtek_drive_token',accessToken);history.replaceState({},document.title,window.location.pathname);toast('DRIVE CONNECTED ✓');const el=document.getElementById('drive-status');if(el)el.textContent='CONNECTED';}
 rHangar();
+
+// ── PLAN BLOCK DRAG & RESIZE ──
+let _dragBlock=null, _dragStartY=0, _dragOrigSlot=0;
+let _resizeBlock=null, _resizeStartY=0, _resizeOrigDur=0;
+const SLOT_H=64; // px per slot (matches min-height)
+const MINS_PER_SLOT=60;
+
+function startBlockDrag(e,idx){
+  if(e.target.closest('.plan-block-remove')||e.target.closest('.plan-block-resize')) return;
+  _dragBlock={idx};
+  _dragStartY=e.touches?e.touches[0].clientY:e.clientY;
+  _dragOrigSlot=planSchedule[idx]?.startSlot||0;
+  const el=e.currentTarget;
+  el.classList.add('dragging');
+  e.preventDefault();
+}
+function onBlockDrag(e){
+  if(!_dragBlock) return;
+  const y=e.touches?e.touches[0].clientY:e.clientY;
+  const delta=y-_dragStartY;
+  const slotDelta=Math.round(delta/SLOT_H);
+  const newSlot=Math.max(0,Math.min(9,_dragOrigSlot+slotDelta));
+  if(planSchedule[_dragBlock.idx]){
+    planSchedule[_dragBlock.idx].startSlot=newSlot;
+    const startHour=WORK_START+newSlot;
+    planSchedule[_dragBlock.idx].startTime=startHour+':00';
+    planSchedule[_dragBlock.idx].endTime=(startHour+Math.ceil((planSchedule[_dragBlock.idx].dur||45)/60))+':00';
+    renderPlanTimeline();
+  }
+  e.preventDefault();
+}
+function endBlockDrag(e){
+  if(!_dragBlock) return;
+  document.querySelectorAll('.plan-block.dragging').forEach(el=>el.classList.remove('dragging'));
+  _dragBlock=null;
+  renderPlanTimeline();
+}
+
+function startBlockResize(e,idx){
+  _resizeBlock={idx};
+  _resizeStartY=e.touches?e.touches[0].clientY:e.clientY;
+  _resizeOrigDur=planSchedule[idx]?.dur||45;
+  e.stopPropagation(); e.preventDefault();
+}
+function onBlockResize(e){
+  if(!_resizeBlock) return;
+  const y=e.touches?e.touches[0].clientY:e.clientY;
+  const delta=y-_resizeStartY;
+  const minDelta=Math.round(delta/SLOT_H*MINS_PER_SLOT/15)*15;
+  const newDur=Math.max(15,Math.min(240,_resizeOrigDur+minDelta));
+  if(planSchedule[_resizeBlock.idx]){
+    planSchedule[_resizeBlock.idx].dur=newDur;
+    // update endTime
+    const startH=WORK_START+(planSchedule[_resizeBlock.idx].startSlot||0);
+    const endH=startH+Math.ceil(newDur/60);
+    planSchedule[_resizeBlock.idx].endTime=endH+':'+(newDur%60?String(newDur%60).padStart(2,'0'):'00');
+    renderPlanTimeline();
+  }
+  e.preventDefault();
+}
+function endBlockResize(e){
+  _resizeBlock=null;
+  renderPlanTimeline();
+}
+
+// Global move/end listeners
+document.addEventListener('mousemove',e=>{onBlockDrag(e);onBlockResize(e);});
+document.addEventListener('mouseup',e=>{endBlockDrag(e);endBlockResize(e);});
+document.addEventListener('touchmove',e=>{onBlockDrag(e);onBlockResize(e);},{passive:false});
+document.addEventListener('touchend',e=>{endBlockDrag(e);endBlockResize(e);});
+
 </script>
+<!-- PLAN TASK SHEET -->
+<div id="plan-task-sheet-overlay" onclick="closePlanTaskSheet()"></div>
+<div id="plan-task-sheet">
+  <div class="plan-sheet-grab"></div>
+  <div class="plan-sheet-hd">
+    <div class="plan-sheet-title">TASKS <span class="plan-sheet-count" id="plan-sheet-count">0</span></div>
+    <button class="plan-sheet-close" onclick="closePlanTaskSheet()">DONE</button>
+  </div>
+  <div class="plan-sheet-list" id="plan-sheet-list"></div>
+</div>
+
 </body>
 </html>
