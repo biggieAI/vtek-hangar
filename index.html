@@ -2117,6 +2117,7 @@ const SEG={approved:'s-done',delivered:'s-done',wip:'s-wip',review:'s-rev',block
 const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
+function tod(){return new Date().toISOString().split('T')[0];}
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
@@ -2144,6 +2145,12 @@ let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   schedule:[],
   activeShow:'s1',activeTaskShow:'all',page:'hangar',
 };
+// Ensure required keys exist after localStorage load
+if(!S.shows) S.shows=[];
+if(!S.shots) S.shots=[];
+if(!S.tasks) S.tasks=[];
+if(!S.vaultDocs) S.vaultDocs=[];
+if(!S.schedule) S.schedule=[];
 
 let editId=null, editTaskId=null;
 let plView='list', plFilterTag='', plFilterShow='';
@@ -2204,7 +2211,6 @@ function renderBackupsSheet(){
 
 // Export on visibility change (tab close / switch)
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden') autoBackup();});
-function tod(){return new Date().toISOString().split('T')[0];}
 function gs(id){return S.shows.find(s=>s.id===id);}
 function getKey(){return localStorage.getItem('vtek_claude_key')||'';}
 function getWebhook(){return localStorage.getItem('vtek_webhook')||'';}
