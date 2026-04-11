@@ -43,17 +43,21 @@ html, body, .shell, .page-area, .page {
   --neo-raise: 4px 6px 16px rgba(0,0,0,0.55), -1px -2px 5px rgba(255,255,255,0.04);
   --neo-inset: 3px 4px 10px rgba(0,0,0,0.6) inset, -1px -1px 4px rgba(255,255,255,0.04) inset;
 
-  /* ── ACCENT — single Nest green, used sparingly ── */
-  --y:     #7dd9a0;
-  --y2:    rgba(125,217,160,0.10);
-  --y3:    rgba(125,217,160,0.05);
-  --y-dim: #5cb882;
+  /* ── ACCENT — Nest green, luma steps ── */
+  --y:      #7dd9a0;   /* primary */
+  --y-hi:   #a8e8c0;   /* highlight / hover */
+  --y-mid:  #5fc090;   /* mid tone */
+  --y-dim:  #3d9e6a;   /* subdued */
+  --y-deep: #1e6644;   /* deep / pressed */
+  --y2:     rgba(125,217,160,0.12);
+  --y3:     rgba(125,217,160,0.06);
+  --y4:     rgba(125,217,160,0.03);
 
   /* ── TEXT ── */
-  --t0: #e8e8ea;
-  --t1: #9a9aa8;
-  --t2: #58585e;
-  --t3: #303036;
+  --t0: #ececee;
+  --t1: #b0b0bc;
+  --t2: #787882;
+  --t3: #52525a;
 
   /* ── STATUS — monochrome luminosity ── */
   --wip:   #8a8a8e;
@@ -226,7 +230,7 @@ body {
   color: #000;
   font-weight: 700;
 }
-.tb-btn.go:hover { background: #7dd9a0; border-color: #7dd9a0; }
+.tb-btn.go:hover { background: var(--y-hi); border-color: var(--y-hi); }
 .tb-icon-btn {
   width: 30px; height: 30px;
   display: flex; align-items: center; justify-content: center;
@@ -447,8 +451,8 @@ body {
   background: var(--s2);
   border: 1px solid rgba(255,255,255,0.05);
   border-left: 3px solid var(--cc, #333);
-  border-radius: 6px;
-  margin-bottom: 6px;
+  border-radius: 16px;
+  margin-bottom: 8px;
   position: relative;
   transition: all 0.12s;
   cursor: default; user-select: none;
@@ -491,28 +495,27 @@ body {
 .tcard:nth-child(even) { background: #202022; }
 .tcard:nth-child(even):hover { background: var(--s3); }
 
-.tcard-main { display: flex; align-items: center; gap: 10px; padding: 11px 14px 10px; position: relative; }
+.tcard-main { display: flex; align-items: center; gap: 10px; padding: 14px 14px 12px; position: relative; min-height: 64px; }
 .tcard-body { flex: 1; min-width: 0; }
 .tcard-title {
-  font-size: 13px; font-weight: 500; color: var(--t0);
-  line-height: 1.35; margin-bottom: 4px; cursor: pointer;
-  letter-spacing: 0.01em;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+  font-size: 14px; font-weight: 500; color: var(--t0);
+  line-height: 1.3; margin-bottom: 5px; cursor: pointer;
+  letter-spacing: 0.005em;
 }
 .tcard-meta { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
 .tcard-show {
-  font-family: var(--mono); font-size: 9px; color: var(--t2);
+  font-family: var(--mono); font-size: 9px; color: var(--t1);
   letter-spacing: 0.06em; text-transform: uppercase;
-  background: rgba(255,255,255,0.04);
-  padding: 1px 5px; border-radius: 2px;
-  border: 1px solid #2a2a2a;
+  background: rgba(255,255,255,0.06);
+  padding: 2px 7px; border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.08);
 }
-.tcard-due { font-family: var(--mono); font-size: 10px; color: var(--t2); }
+.tcard-due { font-family: var(--mono); font-size: 10px; color: var(--t1); }
 .tcard-dur {
-  font-family: var(--mono); font-size: 9px; color: var(--t3);
-  background: rgba(255,255,255,0.03);
-  padding: 1px 5px; border-radius: 2px;
-  border: 1px solid #222;
+  font-family: var(--mono); font-size: 9px; color: var(--t2);
+  background: rgba(255,255,255,0.05);
+  padding: 2px 7px; border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.07);
 }
 .done-c { opacity: 0.28; }
 .done-c .tcard-title { text-decoration: line-through; color: var(--t2); }
@@ -524,13 +527,22 @@ body {
 .sub-txt.on { color: var(--t2); text-decoration: line-through; }
 .sub-prog { height: 1px; background: var(--s4); margin: 2px 0; overflow: hidden; border-radius: 0; }
 .sub-prog-fill { height: 100%; background: var(--y); }
-.tcard-expand { display: flex; justify-content: flex-end; padding: 0 14px 8px; }
+.tcard-expand { display: flex; justify-content: flex-end; padding: 0 14px 10px; }
+.expand-btn {
+  font-family: var(--mono); font-size: 9px; font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--t2); background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 20px; padding: 3px 10px;
+  cursor: pointer; transition: all 0.1s;
+}
+.expand-btn:hover { color: var(--t1); background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.12); }
 .tcard-chk {
-  width: 17px; height: 17px; flex-shrink: 0; margin-top: 2px;
-  background: transparent; border: 1px solid var(--s4);
-  border-radius: 2px;
+  width: 18px; height: 18px; flex-shrink: 0; margin-top: 1px;
+  background: transparent; border: 1.5px solid rgba(255,255,255,0.15);
+  border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  cursor: pointer; font-size: 9px; color: transparent; transition: all 0.12s;
+  cursor: pointer; font-size: 9px; color: transparent; transition: all 0.15s;
 }
 .tcard-chk.on { background: var(--y); border-color: var(--y); color: #000; font-weight: 900; }
 .tcard-notes { padding: 0 14px 10px 40px; font-size: 12px; color: var(--t1); line-height: 1.5; }
@@ -746,7 +758,7 @@ body {
 .vault-doc-icon { display: none; }
 .vault-doc-info { flex: 1; min-width: 0; }
 .vault-doc-title { font-family: var(--sans); font-size: 13px; font-weight: 400; color: var(--t0); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.vault-doc-meta { font-family: var(--mono); font-size: 9px; color: var(--t2); display: flex; gap: 6px; margin-top: 1px; }
+.vault-doc-meta { font-family: var(--mono); font-size: 9px; color: var(--t1); display: flex; gap: 6px; margin-top: 1px; }
 .vault-doc-tag { font-family: var(--sans); font-size: 9px; font-weight: 700; padding: 2px 6px; border: 1px solid #2e2e2e; border-radius: 2px; color: var(--t1); background: var(--s1); letter-spacing: 0.04em; text-transform: uppercase; }
 .vault-doc-chevron { color: var(--t2); font-size: 12px; flex-shrink: 0; }
 .vault-new-row { display: flex; align-items: center; gap: 8px; padding: 7px 10px 7px 14px; cursor: pointer; transition: background 0.08s; -webkit-tap-highlight-color: transparent; background: transparent; border-radius: 4px; margin: 4px 4px 1px; }
@@ -1386,9 +1398,10 @@ body {
 }
 .nb svg { width: 18px; height: 18px; stroke-width: 1.5; }
 .nb .nl { font-family: var(--sans); font-size: 8px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
-.nb.on { color: var(--y); }
+.nb.on { color: var(--y-hi); }
 .nb.on::after {
   content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  box-shadow: 0 0 6px var(--y2);
   width: 20px; height: 2px; background: var(--y); border-radius: 0 0 2px 2px;
 }
 
