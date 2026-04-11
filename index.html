@@ -2236,6 +2236,54 @@ if(!S.tasks) S.tasks=[];
 if(!S.vaultDocs) S.vaultDocs=[];
 if(!S.schedule) S.schedule=[];
 
+// ── SEED demo data if shows is empty (fresh install or wiped state) ──
+if(S.shows.length===0){
+  const today=tod();
+  S.shows=[
+    {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
+    {id:'s2',code:'AIG',name:'An Innocent Girl',client:'Netflix',due:'2025-12-01',teamSize:2,weeksLeft:28},
+  ];
+  S.shots=[
+    {id:'sh1',sid:'s1',code:'136_STL_0080',seq:'STL',status:'wip',who:'Ruben',notes:'Drone stabilization — Mocha track needs review',ci:1001,co:1087,bid:2.5},
+    {id:'sh2',sid:'s1',code:'136_STL_0120',seq:'STL',status:'review',who:'Ruben',notes:'',ci:1001,co:1062,bid:1.5},
+    {id:'sh3',sid:'s1',code:'136_INT_0040',seq:'INT',status:'approved',who:'Ruben',notes:'Client signed off',ci:1001,co:1095,bid:3.0},
+    {id:'sh4',sid:'s1',code:'136_INT_0050',seq:'INT',status:'blocked',who:'Ruben',notes:'Waiting on clean plate',ci:1001,co:1044,bid:2.0},
+    {id:'sh5',sid:'s2',code:'AIG_001_0010',seq:'001',status:'wip',who:'Ruben',notes:'',ci:1001,co:1120,bid:4.0},
+    {id:'sh6',sid:'s2',code:'AIG_001_0020',seq:'001',status:'hold',who:'',notes:'',ci:0,co:0,bid:0},
+  ];
+  S.tasks=[
+    {id:'t1',sid:'s1',title:'Deliver STL sequence v3',due:today,pri:'high',dur:45,tags:['deliver'],color:'',notes:'',subtasks:[],dep:'',done:false,expanded:false},
+    {id:'t2',sid:'s1',title:'Update bid — INT extension',due:today,pri:'med',dur:30,tags:['note'],color:'',notes:'[Duration: 30 mins]',subtasks:[],dep:'',done:false,expanded:false},
+    {id:'t3',sid:'s2',title:'Review AIG_001 with supervisor',due:today,pri:'med',dur:60,tags:['review'],color:'',notes:'',subtasks:[],dep:'',done:true,expanded:false},
+    {id:'t4',sid:'s1',title:'Fix CBFX_Color_CRL node',due:'',pri:'low',dur:20,tags:['comp'],color:'',notes:'',subtasks:[],dep:'',done:false,expanded:false},
+  ];
+  S.vaultDocs=[
+    {id:'v1',title:'CRL Shot Notes',content:'# CRL Shot Notes
+
+Notes from review sessions.
+
+## 136_STL_0080
+Mocha track needs review before delivery.
+
+## 136_INT_0040
+Client approved — ready for final delivery.',showId:'s1',tags:['notes','review'],updated:Date.now()},
+    {id:'v2',title:'CBFX Pipeline Docs',content:'# CBFX Pipeline
+
+Internal reference for compositing pipeline.
+
+## Color Management
+- ACES workflow
+- Output: Rec.709
+
+## Delivery Specs
+- ProRes 4444
+- 2048x858',showId:'',tags:['pipeline','reference'],updated:Date.now()},
+  ];
+  S.activeShow='s1';
+  localStorage.setItem('vtek9', JSON.stringify(S));
+  console.log('[VTEK] Seeded demo data');
+}
+
 let editId=null, editTaskId=null;
 let plView='list', plFilterTag='', plFilterShow='';
 let lastAiReason='', dragSrcId=null;
