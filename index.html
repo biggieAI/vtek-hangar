@@ -28,11 +28,11 @@ html, body, .shell, .page-area, .page {
 :root {
   /* ── PALETTE ── */
   --bg:    #0a0a0a;   /* deep matte black */
-  --s1:    #111111;   /* topbar / nav surface */
-  --s2:    #1a1a1a;   /* card surface */
-  --s3:    #222222;   /* elevated card / hover */
-  --s4:    #2a2a2a;   /* border / divider */
-  --s5:    #333333;   /* subtle border */
+  --s1:    #131313;   /* topbar / nav surface */
+  --s2:    #1c1c1c;   /* card surface */
+  --s3:    #252525;   /* elevated card / hover */
+  --s4:    #2e2e2e;   /* border / divider */
+  --s5:    #383838;   /* subtle border */
 
   /* ── ACCENT — electric yellow ── */
   --y:     #00ff87;
@@ -42,9 +42,9 @@ html, body, .shell, .page-area, .page {
 
   /* ── TEXT ── */
   --t0: #f0f0f0;   /* primary */
-  --t1: #909090;   /* secondary */
-  --t2: #444444;   /* tertiary / disabled */
-  --t3: #2a2a2a;   /* ghost */
+  --t1: #aaaaaa;   /* secondary */
+  --t2: #666666;   /* tertiary / disabled */
+  --t3: #3a3a3a;   /* ghost */
 
   /* ── STATUS ── */
   --wip:   #f0c419;   /* yellow = in motion */
@@ -255,7 +255,7 @@ body {
   margin-bottom: 14px; margin-top: 28px;
   width: 100%;
   padding-bottom: 6px;
-  border-bottom: 1px solid #1a1a1a;
+  border-bottom: 1px solid #252525;
 }
 .sec:first-child { margin-top: 0; }
 .sec-l {
@@ -331,7 +331,7 @@ body {
 .dos-rows { border-top: var(--b2); padding-top: 14px; display: flex; flex-direction: column; gap: 10px; }
 .dos-row { display: flex; align-items: center; }
 .dos-rl { font-family: var(--sans); font-size: 11px; color: var(--t2); text-transform: uppercase; font-weight: 500; flex-shrink: 0; width: 100px; letter-spacing: 0.04em; }
-.dos-rd { flex: 1; height: 1px; background: repeating-linear-gradient(90deg, #222 0, #222 2px, transparent 2px, transparent 6px); margin: 0 10px; }
+.dos-rd { flex: 1; height: 1px; background: repeating-linear-gradient(90deg, #333 0, #333 2px, transparent 2px, transparent 6px); margin: 0 10px; }
 .dos-rv { font-family: var(--mono); font-size: 12px; font-weight: 500; flex-shrink: 0; color: var(--t0); }
 
 /* ── SEGMENT BARS ── */
@@ -387,7 +387,7 @@ body {
 .shot-group-hd {
   display: flex; align-items: center; justify-content: space-between;
   padding: 10px 14px 8px;
-  background: var(--s1); border-bottom: var(--b2);
+  background: #111; border-bottom: 1px solid #252525;
 }
 .shot-group-label {
   font-size: 12px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
@@ -396,7 +396,7 @@ body {
 .gdot { width: 6px; height: 6px; border-radius: 1px; flex-shrink: 0; }
 .shot-row {
   background: var(--s2);
-  border-bottom: var(--b1);
+  border-bottom: 1px solid #252525;
   border-left: 2px solid var(--rc, var(--s4));
   padding: 12px 14px;
   display: flex; align-items: center; gap: 10px;
@@ -427,8 +427,8 @@ body {
 /* ── TASK CARDS ── */
 .pl-list { display: flex; flex-direction: column; gap: 1px; }
 .tcard {
-  background: var(--s2);
-  border: var(--b2);
+  background: #1e1e1e;
+  border: 1px solid #2a2a2a;
   border-left: 2px solid var(--cc, var(--s4));
   border-radius: 3px;
   margin-bottom: 4px;
@@ -622,12 +622,12 @@ body {
 .vault-list-panel { display: flex; flex-direction: column; flex: 1; overflow: hidden; }
 .vault-list-panel.hidden { display: none; }
 .vault-list-section { margin-bottom: 0; }
-.vault-list-sec-lbl { font-family: var(--sans); font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--t2); padding: 10px 16px 6px; border-bottom: var(--b1); }
-.vault-doc-row { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-bottom: var(--b1); cursor: pointer; transition: background 0.1s; -webkit-tap-highlight-color: transparent; }
-.vault-doc-row:hover { background: var(--s2); }
+.vault-list-sec-lbl { font-family: var(--sans); font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--t2); padding: 10px 16px 6px 14px; border-bottom: var(--b1); border-left: 2px solid rgba(0,255,135,0.25); }
+.vault-doc-row { display: flex; align-items: center; gap: 12px; padding: 14px 16px 14px 14px; border-bottom: var(--b1); border-left: 2px solid transparent; cursor: pointer; transition: all 0.1s; -webkit-tap-highlight-color: transparent; }
+.vault-doc-row:hover { background: var(--s2); border-left-color: rgba(0,255,135,0.3); }
 .vault-doc-row:active { background: var(--s3); }
-.vault-doc-row.on { background: var(--s2); border-left: 2px solid var(--y); padding-left: 14px; }
-.vault-doc-icon { font-size: 12px; flex-shrink: 0; color: var(--t2); }
+.vault-doc-row.on { background: var(--s2); border-left: 2px solid var(--y); }
+.vault-doc-icon { display: none; }
 .vault-doc-info { flex: 1; min-width: 0; }
 .vault-doc-title { font-family: var(--sans); font-size: 14px; font-weight: 500; color: var(--t0); margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .vault-doc-meta { font-family: var(--mono); font-size: 9px; color: var(--t2); display: flex; gap: 8px; }
@@ -639,6 +639,16 @@ body {
 .vault-new-label { font-family: var(--sans); font-size: 12px; font-weight: 600; color: var(--t2); text-transform: uppercase; letter-spacing: 0.06em; }
 .vault-editor-panel { display: none; flex-direction: column; flex: 1; overflow: hidden; width: 100%; max-width: 100%; }
 .vault-editor-panel.show { display: flex; }
+.vault-editor-panel.fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: var(--bg);
+  padding-top: var(--safe-t);
+  padding-bottom: var(--safe-b);
+}
+.vault-editor-panel.fullscreen .vault-editor-toolbar { background: var(--s1); }
+.vault-editor-panel.fullscreen .vault-textarea { font-size: 16px; line-height: 1.9; }
 .vault-editor-toolbar { display: flex; align-items: center; gap: 6px; padding: 8px 16px; border-bottom: var(--b2); background: var(--s1); flex-shrink: 0; }
 .vault-expand-btn { width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; background: var(--s2); border: var(--b2); border-radius: 3px; cursor: pointer; color: var(--t2); transition: all 0.12s; flex-shrink: 0; margin-left: auto; }
 .vault-expand-btn:hover { color: var(--t0); border-color: #333; }
@@ -646,7 +656,7 @@ body {
 .vault-editor-panel.focused .vault-editor-toolbar { display: none; }
 .vault-main { flex: 1; display: flex; flex-direction: column; overflow: hidden; width: 100%; }
 .vault-editor { flex: 1; padding: 0; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; width: 100%; }
-.vault-doc-title-in { display: block; width: 100%; box-sizing: border-box; background: none; border: none; border-bottom: var(--b2); outline: none; font-family: var(--sans); font-size: 20px; font-weight: 600; color: var(--t0); padding: 16px 16px 12px; transition: border-color 0.15s; }
+.vault-doc-title-in { display: block; width: 100%; box-sizing: border-box; background: none; border: none; border-bottom: var(--b2); outline: none; font-family: var(--sans); font-size: 22px; font-weight: 700; color: var(--t0); padding: 20px 16px 14px; transition: border-color 0.15s; }
 .vault-doc-title-in:focus { border-bottom-color: var(--y); }
 .vault-doc-title-in::placeholder { color: var(--t2); }
 .vault-textarea { width: 100%; box-sizing: border-box; background: none; border: none; outline: none; font-family: var(--sans); font-size: 14px; color: var(--t1); line-height: 1.8; resize: none; min-height: 300px; padding: 12px 16px; }
@@ -890,6 +900,21 @@ body {
 .empty-t { font-size: 15px; font-weight: 600; color: var(--t2); margin-bottom: 4px; }
 .empty-s { font-size: 13px; color: var(--t3); }
 
+/* ── CONFIG TOGGLE ── */
+.cfg-toggle {
+  width: 36px; height: 20px; border-radius: 10px;
+  background: var(--s4); border: var(--b2);
+  position: relative; cursor: pointer; transition: all 0.2s;
+  flex-shrink: 0;
+}
+.cfg-toggle::after {
+  content: ''; position: absolute; top: 2px; left: 2px;
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--t2); transition: all 0.2s;
+}
+.cfg-toggle.on { background: var(--y); border-color: var(--y); }
+.cfg-toggle.on::after { left: 18px; background: #000; }
+
 /* ── BACKUP SHEET ── */
 .backup-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: var(--b1); }
 .backup-label { font-family: var(--mono); font-size: 11px; color: var(--t1); }
@@ -915,8 +940,8 @@ body {
   padding-top: 6px;
   padding-bottom: env(safe-area-inset-bottom, 0px);
   display: flex; flex-shrink: 0;
-  background: #111111;
-  border-top: 1px solid #1a1a1a;
+  background: #131313;
+  border-top: 1px solid #1c1c1c;
   position: fixed; bottom: 0; left: 0; right: 0;
   z-index: 300; overflow-x: hidden; scrollbar-width: none;
   width: 100%; box-sizing: border-box;
@@ -926,7 +951,7 @@ body {
 .bnav::before {
   content: ''; position: fixed; bottom: -1px; left: 0; right: 0;
   height: calc(env(safe-area-inset-bottom, 0px) + 2px);
-  background: #111111; z-index: 301; pointer-events: none;
+  background: #131313; z-index: 301; pointer-events: none;
 }
 .bnav::after { display: none; }
 .bnav::-webkit-scrollbar { display: none; }
@@ -1689,6 +1714,7 @@ function sw(p){
   document.querySelectorAll('.nb').forEach(e=>e.classList.remove('on'));
   document.getElementById('pg-'+p).classList.add('on');
   document.getElementById('nav-'+p).classList.add('on');
+  if(p==='settings') initSettings();
   document.getElementById('wm-p').textContent=PN[p]||p.toUpperCase();
   S.page=p;
   if(p==='hangar')  rHangar();
@@ -2312,6 +2338,7 @@ function showVaultList(){
   const saveBtn=document.getElementById('vault-save-btn');
   if(list) list.classList.remove('hidden');
   if(editor) editor.classList.remove('show');
+  if(editor) editor.classList.remove('fullscreen');
   if(backBtn) backBtn.classList.remove('show');
   if(saveBtn) saveBtn.style.display='none';
   const delBtn2=document.getElementById('vault-delete-btn');
@@ -2334,6 +2361,7 @@ function openVaultDoc(doc, animate){
     if(list) list.classList.add('hidden');
   }
   if(editor) editor.classList.add('show');
+  if(editor) editor.classList.add('fullscreen');
   if(backBtn) backBtn.classList.add('show');
   if(saveBtn) saveBtn.style.display='';
   const delBtn=document.getElementById('vault-delete-btn');
@@ -2366,7 +2394,7 @@ function renderVaultList(){
       const preview=(d.content||'').replace(/[#*`]/g,'').trim().slice(0,60)||'Empty note';
       const isActive=vaultActiveId===d.id;
       h+='<div class="vault-doc-row'+(isActive?' on':'')+' " data-vid="'+d.id+'" onclick="vaultOpen(this.dataset.vid)">'
-        +'<span class="vault-doc-icon">◈</span>'
+        +''
         +'<div class="vault-doc-info">'
         +'<div class="vault-doc-title">'+escHtml(d.title||'Untitled')+'</div>'
         +'<div class="vault-doc-meta"><span>'+date+'</span><span style="color:var(--t3)">'+escHtml(preview)+'</span></div>'
@@ -2939,6 +2967,28 @@ function saveKeyToVault(key){
 }
 function editWebhook(){const v=prompt('Make.com Webhook URL:',getWebhook());if(v){localStorage.setItem('vtek_webhook',v.trim());document.getElementById('webhook-disp').textContent=v.length>30?v.slice(0,30)+'…':v;toast('WEBHOOK SAVED');}}
 function editAPI(){const v=prompt('API URL:',localStorage.getItem('vtek_api')||'http://192.168.100.132:8000');if(v){localStorage.setItem('vtek_api',v);document.getElementById('api-disp').textContent=v;}}
+function initSettings(){
+  // API key display
+  const k=localStorage.getItem('vtek_key')||'';
+  const kd=document.getElementById('key-disp');
+  if(kd) kd.textContent=k?'SET ('+k.slice(0,8)+'…)':'NOT SET';
+  // Webhook display
+  const w=getWebhook();
+  const wd=document.getElementById('webhook-disp');
+  if(wd) wd.textContent=w?w.slice(0,28)+'…':'NOT SET';
+  // API endpoint
+  const ad=document.getElementById('api-disp');
+  if(ad) ad.textContent=localStorage.getItem('vtek_api')||'192.168.100.132:8000';
+  // Auto sync toggle
+  const tog=document.getElementById('auto-sync-toggle');
+  if(tog){ const on=localStorage.getItem('vtek_autosync')==='1'; tog.classList.toggle('on',on); }
+  // Backup count
+  const bc=document.getElementById('backup-count');
+  if(bc){ const bk=JSON.parse(localStorage.getItem('vtek_backups')||'[]'); bc.textContent=bk.length+' SAVED'; }
+  // Drive status
+  const ds=document.getElementById('drive-status');
+  if(ds){ const tok=localStorage.getItem('drive_token'); ds.innerHTML=tok?'<span class="sdot sdot-on"></span> CONNECTED':'<span class="sdot sdot-off"></span> DISCONNECTED'; }
+}
 function updateKeyDisplay(){const k=getKey();const el=document.getElementById('key-disp');if(el)el.textContent=k?'••••'+k.slice(-4):'NOT SET';}
 function exportJSON(){const b=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='vtek_hangar_v1.json';a.click();toast('EXPORTED');}
 function resetData(){if(confirm('RESET?')){localStorage.removeItem('vtek9');location.reload();}}
