@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#111111">
@@ -308,10 +308,7 @@ body {
 
 /* ── STAT CHIPS ── */
 .stat-row { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 4px; margin-bottom: 8px; width: 100%; }
-.stat-row .sc:nth-child(1) { border-top: 2px solid #333; }
-.stat-row .sc:nth-child(2) { border-top: 2px solid var(--wip); }
-.stat-row .sc:nth-child(3) { border-top: 2px solid var(--blk); }
-.stat-row .sc:nth-child(4) { border-top: 2px solid var(--app); }
+/* stat chip top borders removed */
 .sc { background: var(--s2); border: var(--b2); border-radius: 4px; padding: 18px 14px 16px; text-align: center; position: relative; }
 .sc-n {
   font-family: var(--mono); font-size: 22px; font-weight: 500;
@@ -353,11 +350,11 @@ body {
 /* ── STATUS TAGS ── */
 .stag {
   display: inline-flex; align-items: center;
-  padding: 2px 8px;
-  border-radius: 3px;
-  font-family: var(--sans); font-size: 10px; font-weight: 700;
-  letter-spacing: 0.06em; flex-shrink: 0; white-space: nowrap;
-  background: var(--s3); color: var(--t1); border: var(--b2);
+  padding: 1px 7px;
+  border-radius: 2px;
+  font-family: var(--mono); font-size: 9px; font-weight: 500;
+  letter-spacing: 0.04em; flex-shrink: 0; white-space: nowrap;
+  background: transparent; color: var(--t2); border: 1px solid #282828;
 }
 .stag-wip {
   background-color: rgba(0,255,135,0.08);
@@ -366,9 +363,9 @@ body {
   border: 1px solid rgba(0,255,135,0.25);
   font-weight: 800;
 }
-.stag-rev { background: rgba(167,139,250,0.12); color: var(--rev); border: 1px solid rgba(167,139,250,0.25); }
-.stag-app { background: rgba(74,222,128,0.10); color: var(--app); border: 1px solid rgba(74,222,128,0.22); }
-.stag-blk { background: rgba(232,76,30,0.12); color: var(--blk); border: 1px solid rgba(232,76,30,0.28); }
+.stag-rev { background: rgba(140,120,220,0.07); color: #9b82e0; border: 1px solid rgba(140,120,220,0.18); }
+.stag-app { background: rgba(50,160,90,0.07); color: #3aa864; border: 1px solid rgba(50,160,90,0.18); }
+.stag-blk { background: rgba(190,70,35,0.07); color: #c45028; border: 1px solid rgba(190,70,35,0.18); }
 .stag-hld { background: var(--s3); color: var(--t2); border: var(--b2); }
 .stag-del { background: rgba(56,189,248,0.10); color: var(--del); border: 1px solid rgba(56,189,248,0.22); }
 
@@ -396,8 +393,8 @@ body {
 }
 .shot-group-hd:hover { border-left-color: rgba(0,255,135,0.2); }
 .shot-group-label {
-  font-size: 12px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
-  display: flex; align-items: center; gap: 8px;
+  font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+  display: flex; align-items: center; gap: 8px; color: var(--t2);
 }
 .gdot { width: 6px; height: 6px; border-radius: 1px; flex-shrink: 0; }
 .shot-row {
@@ -4200,7 +4197,7 @@ async function fetchCalendarEvents(){
   planCalEvents=[];
   const cached=localStorage.getItem('vtek_cal_events_today');
   if(cached){try{const p=JSON.parse(cached);if(p.date===new Date().toDateString()){planCalEvents=p.events||[];if(statusEl)statusEl.style.display='none';return;}}catch(e){}}
-  if(statusEl){statusEl.style.display='flex';if(txtEl)txtEl.textContent='Say "Seconds, load my calendar" in Claude to pull today\'s events';}
+  if(statusEl){statusEl.style.display='flex';if(txtEl)txtEl.textContent='';}
 }
 
 function injectCalendarEvents(events){
@@ -4302,6 +4299,8 @@ document.addEventListener('mouseup',e=>{endBlockDrag(e);endBlockResize(e);});
 document.addEventListener('touchmove',e=>{onBlockDrag(e);onBlockResize(e);},{passive:false});
 document.addEventListener('touchend',e=>{endBlockDrag(e);endBlockResize(e);});
 
+
+var _lte=0;document.addEventListener("touchstart",function(e){if(e.touches.length>1)e.preventDefault();},{passive:false});document.addEventListener("touchend",function(e){var n=Date.now();if(n-_lte<=300)e.preventDefault();_lte=n;},false);
 </script>
 
 <!-- PLAN QUICK-ADD SHEET -->
@@ -4367,7 +4366,7 @@ document.addEventListener('touchend',e=>{endBlockDrag(e);endBlockResize(e);});
       <div style="font-family:var(--sans);font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--t2);margin-bottom:5px;">START TIME</div>
       <div style="display:flex;gap:8px;">
         <select id="pe-start-h" style="flex:1;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:3px;padding:8px 10px;font-family:var(--mono);font-size:13px;color:var(--t0);outline:none;">
-          ${[10,11,12,13,14,15,16,17,18].map(h=>`<option value="${h}">${h>12?h-12:h}${h>=12?'pm':'am'}</option>`).join('')}
+          <option value="9">9am</option><option value="10">10am</option><option value="11">11am</option><option value="12">12pm</option><option value="13">1pm</option><option value="14">2pm</option><option value="15">3pm</option><option value="16">4pm</option><option value="17">5pm</option><option value="18">6pm</option>
         </select>
         <select id="pe-start-m" style="flex:1;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:3px;padding:8px 10px;font-family:var(--mono);font-size:13px;color:var(--t0);outline:none;">
           <option value="0">:00</option>
@@ -4380,7 +4379,7 @@ document.addEventListener('touchend',e=>{endBlockDrag(e);endBlockResize(e);});
     <div>
       <div style="font-family:var(--sans);font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--t2);margin-bottom:6px;">PRIORITY</div>
       <div style="display:flex;gap:5px;" id="pe-pri-group">
-        ${['critical','high','med','low'].map(p=>`<button class="pe-pri-btn" data-pri="${p}" onclick="setPlanEditPri('${p}')" style="flex:1;padding:7px 4px;border-radius:3px;font-family:var(--sans);font-size:10px;font-weight:700;text-transform:uppercase;cursor:pointer;transition:all 0.1s;">${p}</button>`).join('')}
+        <button class="pe-pri-btn" data-pri="critical" onclick="setPlanEditPri('critical')" style="flex:1;padding:7px 4px;border-radius:3px;font-family:var(--sans);font-size:10px;font-weight:700;text-transform:uppercase;cursor:pointer;background:#1a1a1a;border:1px solid #2a2a2a;color:var(--t2);">CRIT</button><button class="pe-pri-btn" data-pri="high" onclick="setPlanEditPri('high')" style="flex:1;padding:7px 4px;border-radius:3px;font-family:var(--sans);font-size:10px;font-weight:700;text-transform:uppercase;cursor:pointer;background:#1a1a1a;border:1px solid #2a2a2a;color:var(--t2);">HIGH</button><button class="pe-pri-btn" data-pri="med" onclick="setPlanEditPri('med')" style="flex:1;padding:7px 4px;border-radius:3px;font-family:var(--sans);font-size:10px;font-weight:700;text-transform:uppercase;cursor:pointer;background:#1a1a1a;border:1px solid #2a2a2a;color:var(--t2);">MED</button><button class="pe-pri-btn" data-pri="low" onclick="setPlanEditPri('low')" style="flex:1;padding:7px 4px;border-radius:3px;font-family:var(--sans);font-size:10px;font-weight:700;text-transform:uppercase;cursor:pointer;background:#1a1a1a;border:1px solid #2a2a2a;color:var(--t2);">LOW</button>
       </div>
     </div>
 
