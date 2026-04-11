@@ -623,7 +623,7 @@ body {
 .plan-commit-status { display: flex; align-items: center; gap: 8px; padding: 10px 16px; background: var(--s2); border-top: var(--b2); flex-shrink: 0; font-family: var(--sans); font-size: 11px; color: var(--t1); }
 
 /* ── VAULT ── */
-#pg-vault { padding: 0; overflow: hidden; background: var(--bg); }
+#pg-vault { padding: 0; overflow: hidden; background: var(--bg); border-top: 2px solid rgba(0,255,135,0.15); }
 .vault-layout { display: flex; flex-direction: column; height: 100%; }
 .vault-topbar { display: flex; align-items: center; gap: 8px; padding: 12px 16px; flex-shrink: 0; border-bottom: var(--b2); background: var(--s1); }
 .vault-back-btn { font-family: var(--sans); font-size: 11px; font-weight: 600; color: var(--t2); background: none; border: none; cursor: pointer; flex-shrink: 0; display: none; transition: color 0.1s; }
@@ -636,7 +636,7 @@ body {
 .vault-btn.ac-btn:hover { background: #33ffaa; }
 #vault-delete-btn { color: var(--blk); border-color: rgba(232,76,30,0.3); background: rgba(232,76,30,0.08); }
 #vault-delete-btn:hover { background: rgba(232,76,30,0.15); }
-.vault-body { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+.vault-body { flex: 1; display: flex; flex-direction: column; overflow: hidden; width: 100%; max-width: 100%; box-sizing: border-box; }
 .vault-list-panel { display: flex; flex-direction: column; flex: 1; overflow: hidden; }
 .vault-list-panel.hidden { display: none; }
 .vault-list-section { margin-bottom: 0; }
@@ -710,8 +710,8 @@ body {
 .vault-expand-btn:hover { color: var(--t0); border-color: #333; }
 .vault-expand-btn.expanded { color: var(--y); border-color: rgba(0,255,135,0.25); }
 .vault-editor-panel.focused .vault-editor-toolbar { display: none; }
-.vault-main { flex: 1; display: flex; flex-direction: column; overflow: hidden; width: 100%; }
-.vault-editor { flex: 1; padding: 0; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; width: 100%; }
+.vault-main { flex: 1; display: flex; flex-direction: column; overflow: hidden; width: 100%; box-sizing: border-box; max-width: 100%; }
+.vault-editor { flex: 1; padding: 0; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; width: 100%; box-sizing: border-box; }
 .vault-doc-title-in { display: block; width: 100%; box-sizing: border-box; background: none; border: none; border-bottom: var(--b2); outline: none; font-family: var(--sans); font-size: 22px; font-weight: 700; color: var(--t0); padding: 20px 16px 14px; transition: border-color 0.15s; }
 .vault-doc-title-in:focus { border-bottom-color: var(--y); }
 .vault-doc-title-in::placeholder { color: var(--t2); }
@@ -1093,6 +1093,83 @@ body {
   animation-duration: 18s;
 }
 
+
+/* ── PLAN TASK DRAWER ── */
+.plan-drawer-toggle {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 16px;
+  background: var(--s1);
+  border-bottom: 1px solid #252525;
+  cursor: pointer;
+  flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+.plan-drawer-label {
+  font-family: var(--sans); font-size: 10px; font-weight: 800;
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--t2);
+  display: flex; align-items: center; gap: 8px;
+}
+.plan-drawer-count {
+  background: var(--y); color: #000; font-size: 9px; font-weight: 900;
+  padding: 1px 6px; border-radius: 2px;
+}
+.plan-drawer-hint {
+  font-family: var(--sans); font-size: 10px; color: var(--t2);
+  display: flex; align-items: center; gap: 6px;
+}
+.plan-drawer-arrow { transition: transform 0.2s; font-size: 10px; }
+.plan-drawer-open .plan-drawer-arrow { transform: rotate(180deg); }
+
+.plan-drawer-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.28s cubic-bezier(0.32,0.72,0,1);
+  background: var(--bg);
+  flex-shrink: 0;
+}
+.plan-drawer-open .plan-drawer-body {
+  max-height: 280px;
+  overflow-y: auto;
+}
+.plan-drawer-list {
+  display: flex; flex-direction: column; gap: 1px;
+  padding: 4px 12px 8px;
+}
+.plan-drawer-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px;
+  background: var(--s2);
+  border: 1px solid #252525;
+  border-left: 3px solid var(--tc, var(--s4));
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.12s;
+  -webkit-tap-highlight-color: transparent;
+}
+.plan-drawer-item:hover { background: var(--s3); }
+.plan-drawer-item.selected { border-left-color: var(--y); background: rgba(0,255,135,0.05); }
+.plan-drawer-item.scheduled { opacity: 0.35; }
+.plan-drawer-item-title {
+  flex: 1; font-family: var(--sans); font-size: 13px; font-weight: 500;
+  color: var(--t0); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.plan-drawer-item-meta {
+  display: flex; align-items: center; gap: 6px; flex-shrink: 0;
+}
+.plan-drawer-item-dur {
+  font-family: var(--mono); font-size: 10px; color: var(--t2);
+}
+.plan-drawer-sel-hint {
+  position: fixed; bottom: calc(var(--nav-h) + var(--safe-b) + 8px);
+  left: 50%; transform: translateX(-50%);
+  background: var(--y); color: #000;
+  padding: 7px 16px; border-radius: 3px;
+  font-family: var(--sans); font-size: 11px; font-weight: 700;
+  letter-spacing: 0.06em; pointer-events: none; z-index: 200;
+  white-space: nowrap; opacity: 0; transition: opacity 0.2s;
+}
+.plan-drawer-sel-hint.show { opacity: 1; }
+
 /* ── BOTTOM NAV ── */
 .bnav {
   height: auto;
@@ -1274,13 +1351,20 @@ body {
   </div>
 
   <!-- Task pool — horizontal scrollable chips, collapsible -->
-  <div class="plan-pool-section" id="plan-pool-section">
-    <div class="plan-pool-header" onclick="toggleTaskPool()">
-      <span class="plan-pool-label">TASKS <span id="plan-pool-count"></span></span>
-      <span class="plan-pool-hint" id="plan-pool-hint">TAP TO SELECT · TAP SLOT TO PLACE</span>
-      <span class="plan-pool-toggle" id="plan-pool-toggle">▼</span>
+  <div id="plan-pool-section">
+    <div class="plan-drawer-toggle" id="plan-drawer-toggle" onclick="togglePlanDrawer()">
+      <div class="plan-drawer-label">
+        TASKS
+        <span class="plan-drawer-count" id="plan-pool-count">0</span>
+      </div>
+      <div class="plan-drawer-hint">
+        <span id="plan-pool-hint">TAP TO SELECT · TAP SLOT TO PLACE</span>
+        <span class="plan-drawer-arrow" id="plan-drawer-arrow">▼</span>
+      </div>
     </div>
-    <div class="plan-pool-chips" id="plan-task-pool"></div>
+    <div class="plan-drawer-body" id="plan-drawer-body">
+      <div class="plan-drawer-list" id="plan-task-pool"></div>
+    </div>
   </div>
 
   <!-- Cal status -->
@@ -3199,26 +3283,66 @@ function saveKeyToVault(key){
 function editWebhook(){const v=prompt('Make.com Webhook URL:',getWebhook());if(v){localStorage.setItem('vtek_webhook',v.trim());document.getElementById('webhook-disp').textContent=v.length>30?v.slice(0,30)+'…':v;toast('WEBHOOK SAVED');}}
 function editAPI(){const v=prompt('API URL:',localStorage.getItem('vtek_api')||'http://192.168.100.132:8000');if(v){localStorage.setItem('vtek_api',v);document.getElementById('api-disp').textContent=v;}}
 function initSettings(){
-  // API key display
+  const pg=document.getElementById('pg-settings');
+  if(!pg) return;
   const k=localStorage.getItem('vtek_key')||'';
-  const kd=document.getElementById('key-disp');
-  if(kd) kd.textContent=k?'SET ('+k.slice(0,8)+'…)':'NOT SET';
-  // Webhook display
-  const w=getWebhook();
-  const wd=document.getElementById('webhook-disp');
-  if(wd) wd.textContent=w?w.slice(0,28)+'…':'NOT SET';
-  // API endpoint
-  const ad=document.getElementById('api-disp');
-  if(ad) ad.textContent=localStorage.getItem('vtek_api')||'192.168.100.132:8000';
-  // Auto sync toggle
-  const tog=document.getElementById('auto-sync-toggle');
-  if(tog){ const on=localStorage.getItem('vtek_autosync')==='1'; tog.classList.toggle('on',on); }
-  // Backup count
-  const bc=document.getElementById('backup-count');
-  if(bc){ const bk=JSON.parse(localStorage.getItem('vtek_backups')||'[]'); bc.textContent=bk.length+' SAVED'; }
-  // Drive status
-  const ds=document.getElementById('drive-status');
-  if(ds){ const tok=localStorage.getItem('drive_token'); ds.innerHTML=tok?'<span class="sdot sdot-on"></span> CONNECTED':'<span class="sdot sdot-off"></span> DISCONNECTED'; }
+  const w=getWebhook()||'';
+  const api=localStorage.getItem('vtek_api')||'192.168.100.132:8000';
+  const autoSync=localStorage.getItem('vtek_autosync')==='1';
+  const bkCount=(JSON.parse(localStorage.getItem('vtek_backups')||'[]')).length;
+  const driveConnected=!!localStorage.getItem('drive_token');
+
+  pg.innerHTML=`
+  <div class="cfg-section">
+    <div class="cfg-sec-lbl">INTEL / AI</div>
+    <div class="cfg-row" onclick="editAPIKey()">
+      <span class="cfg-lbl">Anthropic API Key</span>
+      <span class="cfg-val">${k?'SET ('+k.slice(0,8)+'…)':'NOT SET'}</span>
+    </div>
+    <div class="cfg-row" onclick="editWebhook()">
+      <span class="cfg-lbl">Make.com Webhook</span>
+      <span class="cfg-val">${w?w.slice(0,22)+'…':'NOT SET'}</span>
+    </div>
+  </div>
+  <div class="cfg-section">
+    <div class="cfg-sec-lbl">SYNC</div>
+    <div class="cfg-row" onclick="driveAuth()">
+      <span class="cfg-lbl">Google Drive</span>
+      <span class="cfg-val"><span class="sdot ${driveConnected?'sdot-on':'sdot-off'}"></span> ${driveConnected?'CONNECTED':'DISCONNECTED'}</span>
+    </div>
+    <div class="cfg-row" onclick="drivePush()"><span class="cfg-lbl">Push to Drive</span><span class="cfg-val">↑ PUSH</span></div>
+    <div class="cfg-row" onclick="drivePull()"><span class="cfg-lbl">Pull from Drive</span><span class="cfg-val">↓ PULL</span></div>
+    <div class="cfg-row" style="cursor:default">
+      <span class="cfg-lbl">Auto Sync</span>
+      <button class="cfg-toggle ${autoSync?'on':''}" id="auto-sync-toggle" onclick="toggleAutoSync(this)"></button>
+    </div>
+  </div>
+  <div class="cfg-section">
+    <div class="cfg-sec-lbl">NETWORK</div>
+    <div class="cfg-row" onclick="editAPI()">
+      <span class="cfg-lbl">API Endpoint</span>
+      <span class="cfg-val">${api}</span>
+    </div>
+  </div>
+  <div class="cfg-section">
+    <div class="cfg-sec-lbl">DATA</div>
+    <div class="cfg-row" onclick="exportJSON()"><span class="cfg-lbl">Export JSON</span><span class="cfg-val">↓</span></div>
+    <div class="cfg-row" onclick="openSheet('ol-backups')">
+      <span class="cfg-lbl">Restore Backup</span>
+      <span class="cfg-val">${bkCount?bkCount+' SAVED':'—'}</span>
+    </div>
+    <div class="cfg-row" onclick="resetData()">
+      <span class="cfg-lbl" style="color:var(--blk)">Reset to Demo</span>
+      <span class="cfg-val" style="color:var(--blk)">✕</span>
+    </div>
+  </div>
+  <div class="cfg-section">
+    <div class="cfg-sec-lbl">ABOUT</div>
+    <div class="cfg-row" style="cursor:default">
+      <span class="cfg-lbl">Version</span>
+      <span class="cfg-val" style="font-family:var(--mono)">v16 HANGAR</span>
+    </div>
+  </div>`;
 }
 function updateKeyDisplay(){const k=getKey();const el=document.getElementById('key-disp');if(el)el.textContent=k?'••••'+k.slice(-4):'NOT SET';}
 function exportJSON(){const b=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='vtek_hangar_v1.json';a.click();toast('EXPORTED');}
@@ -3350,6 +3474,15 @@ async function initPlanMode(){
   renderTimeline();
 }
 
+function togglePlanDrawer(){
+  const toggle=document.getElementById('plan-drawer-toggle');
+  const body=document.getElementById('plan-drawer-body');
+  if(!toggle||!body) return;
+  const isOpen=toggle.classList.toggle('plan-drawer-open');
+  if(isOpen) body.style.maxHeight='260px';
+  else body.style.maxHeight='0';
+}
+
 function toggleTaskPool(){
   const section=document.getElementById('plan-pool-section');
   const toggle=document.getElementById('plan-pool-toggle');
@@ -3375,9 +3508,9 @@ function renderTaskPool(){
     const isSched=scheduled.has(t.id);
     const isSel=planSelected&&planSelected.id===t.id;
     const safeTitle=t.title.replace(/'/g,'&apos;').replace(/"/g,'&quot;');
-    return '<div class="plan-task-chip'+(isSched?' scheduled':'')+(isSel?' selected':'')+'" style="--tc:'+col+'" data-tid="'+t.id+'" data-dur="'+(t.dur||45)+'" onclick="planChipClick(this)">'
-      +'<div class="plan-chip-selected-indicator">✓</div>'
-      +'<div class="plan-chip-title">'+t.title+'</div>'
+    return '<div class="plan-drawer-item'+(isSched?' scheduled':'')+(isSel?' selected':'')+'" style="--tc:'+col+'" data-tid="'+t.id+'" data-dur="'+(t.dur||45)+'" onclick="planChipClick(this)">'
+      +''
+      +'<div class="plan-drawer-item-title">'+t.title+'</div>'
       +'<div class="plan-chip-meta"><span class="plan-chip-dur">'+(t.dur||45)+'min</span>'
       +'<span class="plan-chip-pri" style="--pc:'+pc+'">'+t.pri.toUpperCase()+'</span></div>'
       +(!isSched?'<button class="plan-chip-fit" data-fitid="'+t.id+'" onclick="makeItFitChip(this)">MAKE IT FIT</button>':'')
