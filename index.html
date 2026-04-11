@@ -146,12 +146,14 @@ body {
   flex-shrink: 0;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   background: var(--s1);
   border-bottom: var(--b2);
   position: relative;
   z-index: 10;
   width: 100%;
+  max-width: 100vw;
+  box-sizing: border-box;
   overflow: hidden;
 }
 
@@ -165,6 +167,7 @@ body {
   color: var(--t0);
   text-transform: uppercase;
   flex-shrink: 0;
+  white-space: nowrap;
 }
 .wm-slash { color: var(--y); font-weight: 300; letter-spacing: 0; }
 .wm-div {
@@ -378,6 +381,7 @@ body {
 .stab.on { background: transparent; color: var(--y); border-bottom: 2px solid var(--y); font-weight: 800; }
 .stab:hover:not(.on) { color: var(--t1); }
 
+#shot-stats { grid-template-columns: repeat(5, minmax(0,1fr)) !important; }
 /* ── SHOT GROUPS ── */
 .shot-group { display: flex; flex-direction: column; gap: 1px; margin-bottom: 2px; }
 .shot-group-hd {
@@ -2320,14 +2324,14 @@ function rPayload(){
   document.getElementById('payload-dos').innerHTML=`
   <div style="background:var(--s2);border:1px solid #252525;border-radius:4px;padding:10px 14px 8px;margin-bottom:8px;position:relative;overflow:hidden;">
     <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:6px;">
-      <span style="font-family:var(--sans);font-size:36px;font-weight:900;color:var(--y);line-height:1;">${openTasks}</span>
+      <span style="font-family:var(--sans);font-size:36px;font-weight:900;color:var(--y);line-height:1;">${open}</span>
       <span style="font-family:var(--sans);font-size:13px;font-weight:600;color:var(--t1);text-transform:uppercase;letter-spacing:0.06em;">OPEN</span>
       <span style="font-family:var(--mono);font-size:9px;color:var(--t2);margin-left:auto;">${new Date().toLocaleDateString('en-US',{month:'short',day:'numeric'}).toUpperCase()}</span>
     </div>
     <div style="display:flex;gap:16px;">
-      <div><span style="font-family:var(--mono);font-size:11px;color:var(--blk);">${critTasks}</span> <span style="font-family:var(--sans);font-size:10px;color:var(--t2);">CRIT</span></div>
-      <div><span style="font-family:var(--mono);font-size:11px;color:var(--wip);">${hiTasks}</span> <span style="font-family:var(--sans);font-size:10px;color:var(--t2);">HIGH</span></div>
-      <div><span style="font-family:var(--mono);font-size:11px;color:var(--app);">${doneTasks}</span> <span style="font-family:var(--sans);font-size:10px;color:var(--t2);">DONE</span></div>
+      <div><span style="font-family:var(--mono);font-size:11px;color:var(--blk);">${crit}</span> <span style="font-family:var(--sans);font-size:10px;color:var(--t2);">CRIT</span></div>
+      <div><span style="font-family:var(--mono);font-size:11px;color:var(--wip);">${high}</span> <span style="font-family:var(--sans);font-size:10px;color:var(--t2);">HIGH</span></div>
+      <div><span style="font-family:var(--mono);font-size:11px;color:var(--app);">${done}</span> <span style="font-family:var(--sans);font-size:10px;color:var(--t2);">DONE</span></div>
       <div><span style="font-family:var(--mono);font-size:11px;color:var(--t1);">${S.tasks.length}</span> <span style="font-family:var(--sans);font-size:10px;color:var(--t2);">TOTAL</span></div>
     </div>
   </div>`;
@@ -3320,66 +3324,53 @@ function saveKeyToVault(key){
 function editWebhook(){const v=prompt('Make.com Webhook URL:',getWebhook());if(v){localStorage.setItem('vtek_webhook',v.trim());document.getElementById('webhook-disp').textContent=v.length>30?v.slice(0,30)+'…':v;toast('WEBHOOK SAVED');}}
 function editAPI(){const v=prompt('API URL:',localStorage.getItem('vtek_api')||'http://192.168.100.132:8000');if(v){localStorage.setItem('vtek_api',v);document.getElementById('api-disp').textContent=v;}}
 function initSettings(){
-  const pg=document.getElementById('pg-settings');
-  if(!pg) return;
-  const k=localStorage.getItem('vtek_key')||'';
-  const w=getWebhook()||'';
-  const api=localStorage.getItem('vtek_api')||'192.168.100.132:8000';
-  const autoSync=localStorage.getItem('vtek_autosync')==='1';
-  const bkCount=(JSON.parse(localStorage.getItem('vtek_backups')||'[]')).length;
-  const driveConnected=!!localStorage.getItem('drive_token');
-
-  pg.innerHTML=`
-  <div class="cfg-section">
-    <div class="cfg-sec-lbl">INTEL / AI</div>
-    <div class="cfg-row" onclick="editAPIKey()">
-      <span class="cfg-lbl">Anthropic API Key</span>
-      <span class="cfg-val">${k?'SET ('+k.slice(0,8)+'…)':'NOT SET'}</span>
-    </div>
-    <div class="cfg-row" onclick="editWebhook()">
-      <span class="cfg-lbl">Make.com Webhook</span>
-      <span class="cfg-val">${w?w.slice(0,22)+'…':'NOT SET'}</span>
-    </div>
-  </div>
-  <div class="cfg-section">
-    <div class="cfg-sec-lbl">SYNC</div>
-    <div class="cfg-row" onclick="driveAuth()">
-      <span class="cfg-lbl">Google Drive</span>
-      <span class="cfg-val"><span class="sdot ${driveConnected?'sdot-on':'sdot-off'}"></span> ${driveConnected?'CONNECTED':'DISCONNECTED'}</span>
-    </div>
-    <div class="cfg-row" onclick="drivePush()"><span class="cfg-lbl">Push to Drive</span><span class="cfg-val">↑ PUSH</span></div>
-    <div class="cfg-row" onclick="drivePull()"><span class="cfg-lbl">Pull from Drive</span><span class="cfg-val">↓ PULL</span></div>
-    <div class="cfg-row" style="cursor:default">
-      <span class="cfg-lbl">Auto Sync</span>
-      <button class="cfg-toggle ${autoSync?'on':''}" id="auto-sync-toggle" onclick="toggleAutoSync(this)"></button>
-    </div>
-  </div>
-  <div class="cfg-section">
-    <div class="cfg-sec-lbl">NETWORK</div>
-    <div class="cfg-row" onclick="editAPI()">
-      <span class="cfg-lbl">API Endpoint</span>
-      <span class="cfg-val">${api}</span>
-    </div>
-  </div>
-  <div class="cfg-section">
-    <div class="cfg-sec-lbl">DATA</div>
-    <div class="cfg-row" onclick="exportJSON()"><span class="cfg-lbl">Export JSON</span><span class="cfg-val">↓</span></div>
-    <div class="cfg-row" onclick="openSheet('ol-backups')">
-      <span class="cfg-lbl">Restore Backup</span>
-      <span class="cfg-val">${bkCount?bkCount+' SAVED':'—'}</span>
-    </div>
-    <div class="cfg-row" onclick="resetData()">
-      <span class="cfg-lbl" style="color:var(--blk)">Reset to Demo</span>
-      <span class="cfg-val" style="color:var(--blk)">✕</span>
-    </div>
-  </div>
-  <div class="cfg-section">
-    <div class="cfg-sec-lbl">ABOUT</div>
-    <div class="cfg-row" style="cursor:default">
-      <span class="cfg-lbl">Version</span>
-      <span class="cfg-val" style="font-family:var(--mono)">v16 HANGAR</span>
-    </div>
-  </div>`;
+  try {
+    const pg=document.getElementById('pg-settings');
+    if(!pg) return;
+    const k=localStorage.getItem('vtek_key')||'';
+    const w=getWebhook()||'';
+    const api=localStorage.getItem('vtek_api')||'192.168.100.132:8000';
+    const autoSync=localStorage.getItem('vtek_autosync')==='1';
+    const bkCount=(JSON.parse(localStorage.getItem('vtek_backups')||'[]')).length;
+    const driveConnected=!!localStorage.getItem('drive_token');
+    const rows=[
+      {sec:'INTEL / AI',items:[
+        {label:'Anthropic API Key',val:k?'SET ('+k.slice(0,8)+'…)':'NOT SET',fn:'editAPIKey()'},
+        {label:'Make.com Webhook',val:w?'SET':'NOT SET',fn:'editWebhook()'},
+      ]},
+      {sec:'SYNC',items:[
+        {label:'Google Drive',val:(driveConnected?'● CONNECTED':'○ DISCONNECTED'),fn:'driveAuth()'},
+        {label:'Push to Drive',val:'↑',fn:'drivePush()'},
+        {label:'Pull from Drive',val:'↓',fn:'drivePull()'},
+      ]},
+      {sec:'NETWORK',items:[
+        {label:'API Endpoint',val:api,fn:'editAPI()'},
+      ]},
+      {sec:'DATA',items:[
+        {label:'Export JSON',val:'↓',fn:'exportJSON()'},
+        {label:'Restore Backup',val:bkCount?bkCount+' saved':'—',fn:"openSheet('ol-backups')"},
+        {label:'Reset to Demo',val:'✕',fn:'resetData()',danger:true},
+      ]},
+      {sec:'ABOUT',items:[
+        {label:'Version',val:'v16 HANGAR',fn:''},
+      ]},
+    ];
+    pg.innerHTML=rows.map(group=>
+      '<div class="cfg-section">'
+      +'<div class="cfg-sec-lbl">'+group.sec+'</div>'
+      +group.items.map(item=>
+        '<div class="cfg-row"'+(item.fn?' onclick="'+item.fn+'"':'')+' style="cursor:'+(item.fn?'pointer':'default')+'">'
+        +'<span class="cfg-lbl"'+(item.danger?' style="color:var(--blk)"':'')+'>'+item.label+'</span>'
+        +'<span class="cfg-val"'+(item.danger?' style="color:var(--blk)"':'')+'>'+item.val+'</span>'
+        +'</div>'
+      ).join('')
+      +'</div>'
+    ).join('');
+  } catch(e) {
+    const pg=document.getElementById('pg-settings');
+    if(pg) pg.innerHTML='<div style="padding:20px;color:var(--blk);font-family:var(--mono);font-size:11px;">Error: '+e.message+'</div>';
+    console.error('initSettings:', e);
+  }
 }
 function updateKeyDisplay(){const k=getKey();const el=document.getElementById('key-disp');if(el)el.textContent=k?'••••'+k.slice(-4):'NOT SET';}
 function exportJSON(){const b=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='vtek_hangar_v1.json';a.click();toast('EXPORTED');}
@@ -3657,7 +3648,7 @@ function placeBlock(entry){
   const endM=(entry.startM+entry.durMins)%60;
   const show=gs(task.sid);
   const col=task.color||(show?.color||'var(--p5)');
-  body.insertAdjacentHTML('beforeend','<div class="plan-block" style="--bc:'+col+'" data-bid="'+task.id+'"><button class="plan-block-remove" onclick="removePlanBlockEl(this)">✕</button><div class="plan-block-title">'+task.title+'</div><div class="plan-block-meta"><span class="plan-block-time">'+fmtTime(entry.startH,entry.startM)+'–'+fmtTime(endH,endM)+'</span><span class="plan-block-dur">'+entry.durMins+'min</span></div></div>');
+  body.insertAdjacentHTML('beforeend','<div class="plan-block" style="--bc:'+col+';cursor:pointer" data-bid="'+task.id+'" onclick="planBlockTapEl(this)"><button class="plan-block-remove" onclick="removePlanBlockEl(this)">✕</button><div class="plan-block-title">'+task.title+'</div><div class="plan-block-meta"><span class="plan-block-time">'+fmtTime(entry.startH,entry.startM)+'–'+fmtTime(endH,endM)+'</span><span class="plan-block-dur">'+entry.durMins+'min</span></div></div>');
 }
 
 function onSlotTap(h,m){
@@ -3684,6 +3675,29 @@ function isSlotBlocked(h,m,dur){
 function removePlanBlockEl(btn){
   const id=btn.closest('[data-bid]')?.dataset.bid;
   if(id) removePlanBlock(id);
+}
+
+
+
+function planBlockTapEl(el){
+  const taskId=el.dataset.bid;
+  const titleEl=el.querySelector('.plan-block-title');
+  const title=titleEl?titleEl.textContent:'Task';
+  if(confirm(title+'\n\nRemove from schedule?')){
+    // Remove this block element from DOM
+    el.remove();
+    // Also remove from planSchedule array
+    planSchedule=planSchedule.filter(s=>s.taskId!==taskId);
+    renderTaskPool();
+  }
+}
+
+function planBlockTap(idx){
+  const b=planSchedule[idx];
+  if(!b) return;
+  if(confirm(b.title+'\n'+b.startTime+'-'+b.endTime+' ('+b.dur+'min)\n\nRemove from schedule?')){
+    removePlanBlock(idx);
+  }
 }
 
 function removePlanBlock(taskId){
