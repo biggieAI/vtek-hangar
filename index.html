@@ -3,9 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#111111">
+<!-- BUILD: v16.4 2026-04-11T17:30 -->
 <title>V//TEK</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -2349,6 +2353,7 @@ function fmtMins(m){if(!m)return'';if(m<60)return m+'min';return Math.floor(m/60
 // HANGAR
 // ═══════════════════════════════
 function rHangar(){
+  console.log("[VTEK] S.shows=",S.shows?.length,"S.shots=",S.shots?.length,"S.tasks=",S.tasks?.length);
   const total=S.shots.length,done=S.shots.filter(s=>s.status==='approved'||s.status==='delivered').length;
   const wip=S.shots.filter(s=>s.status==='wip').length,blk=S.shots.filter(s=>s.status==='blocked').length;
   const open=S.tasks.filter(t=>!t.done).length;
