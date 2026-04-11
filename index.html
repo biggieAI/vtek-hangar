@@ -186,19 +186,11 @@ body {
   text-overflow: ellipsis;
 }
 .tb-sep { display: none; }
-.live-tag {
-  display: flex; align-items: center; gap: 4px;
-  padding: 3px 8px;
-  background: var(--s2);
-  border: var(--b2);
-  border-radius: 3px;
-  flex-shrink: 0;
-}
-.live-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--app); flex-shrink: 0; }
-.live-lbl { font-family: var(--mono); font-size: 9px; color: var(--t1); letter-spacing: 0.06em; }
+.live-tag{display:none}.live-dot{display:none}.live-lbl{display:none}
 .tb-r { margin-left: auto; display: flex; gap: 4px; flex-shrink: 0; align-items: center; }
 .tb-btn {
-  padding: 5px 10px;
+  padding: 0 10px;
+  height: 30px;
   border: var(--b2);
   border-radius: 3px;
   background: var(--s2);
@@ -211,6 +203,8 @@ body {
   cursor: pointer;
   transition: all 0.1s;
   white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
 }
 .tb-btn:hover { background: var(--s3); color: var(--t0); border-color: #333; }
 .tb-btn:active { background: var(--s4); }
@@ -318,15 +312,15 @@ body {
 .sc-l { font-family: var(--sans); font-size: 10px; font-weight: 600; color: var(--t2); letter-spacing: 0.08em; text-transform: uppercase; }
 
 /* ── DOSSIER ── */
-.dossier { background: var(--s2); margin-bottom: 2px; width: 100%; overflow: hidden; }
+.dossier { background: var(--s2); border: 1px solid #252525; border-radius: 4px; margin-bottom: 12px; width: 100%; overflow: hidden; }
 .dos-border, .dos-inner { display: none; }
-.dos-content { padding: 16px; }
+.dos-content { padding: 12px 14px; }
 .dos-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 12px; }
 .dos-eye { font-family: var(--sans); font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--t2); display: flex; align-items: center; gap: 6px; }
 .dos-eye-bar { width: 14px; height: 2px; background: var(--y); flex-shrink: 0; }
 .dos-ts { font-family: var(--mono); font-size: 10px; color: var(--t2); }
 .dos-num { display: flex; align-items: baseline; gap: 10px; margin-bottom: 16px; }
-.dos-big { font-family: var(--sans); font-size: 72px; font-weight: 900; color: var(--y); line-height: 1; letter-spacing: -0.03em; text-shadow: 0 0 40px rgba(0,255,135,0.2); }
+.dos-big { font-family: var(--sans); font-size: 48px; font-weight: 900; color: var(--y); line-height: 1; letter-spacing: -0.03em; }
 .dos-unit { font-family: var(--sans); font-size: 14px; font-weight: 700; color: var(--t1); letter-spacing: 0.06em; text-transform: uppercase; align-self: flex-end; margin-bottom: 6px; }
 .dos-seg { margin-bottom: 8px; }
 .dos-rows { border-top: var(--b2); padding-top: 14px; display: flex; flex-direction: column; gap: 10px; }
@@ -371,17 +365,17 @@ body {
 .stag-del { background: rgba(56,189,248,0.10); color: var(--del); border: 1px solid rgba(56,189,248,0.22); }
 
 /* ── SHOW TABS ── */
-.show-tabs { display: flex; gap: 4px; margin-bottom: 16px; overflow-x: auto; scrollbar-width: none; width: 100%; }
+.show-tabs { display: flex; gap: 0; margin-bottom: 16px; overflow-x: auto; scrollbar-width: none; width: 100%; border-bottom: 1px solid #1e1e1e; }
 .stab {
   flex-shrink: 0; padding: 6px 14px;
-  border: var(--b2); border-radius: 3px;
-  background: var(--s2);
+  border: none; border-bottom: 2px solid transparent;
+  border-radius: 0; background: transparent;
   font-family: var(--sans); font-size: 11px; font-weight: 600;
   letter-spacing: 0.06em; text-transform: uppercase;
   color: var(--t2); cursor: pointer; transition: all 0.1s; white-space: nowrap;
 }
-.stab.on { background: var(--y); color: #000; border-color: var(--y); font-weight: 800; }
-.stab:hover:not(.on) { border-color: #333; color: var(--t1); }
+.stab.on { background: transparent; color: var(--y); border-bottom: 2px solid var(--y); font-weight: 800; }
+.stab:hover:not(.on) { color: var(--t1); }
 
 /* ── SHOT GROUPS ── */
 .shot-group { display: flex; flex-direction: column; gap: 1px; margin-bottom: 2px; }
@@ -486,12 +480,12 @@ body {
 .pl-toolbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; gap: 8px; }
 .pl-views { display: flex; gap: 2px; }
 .pl-vbtn {
-  padding: 6px 12px; border: var(--b2); border-radius: 3px;
-  background: var(--s2); font-family: var(--sans); font-weight: 600; font-size: 11px;
+  padding: 5px 10px; border: none; border-bottom: 1px solid transparent;
+  background: transparent; font-family: var(--sans); font-weight: 600; font-size: 11px;
   letter-spacing: 0.06em; text-transform: uppercase; color: var(--t2);
-  cursor: pointer; transition: all 0.1s;
+  cursor: pointer; transition: all 0.1s; border-radius: 0;
 }
-.pl-vbtn.on { background: var(--y); color: #000; border-color: var(--y); font-weight: 800; }
+.pl-vbtn.on { background: transparent; color: var(--y); border-bottom: 1px solid var(--y); font-weight: 800; }
 .pl-actions { display: flex; gap: 5px; }
 .pl-act-btn {
   padding: 6px 10px; border: var(--b2); border-radius: 3px;
@@ -523,26 +517,28 @@ body {
 /* ── FILTER CHIPS ── */
 .pl-filters { display: flex; gap: 4px; margin-bottom: 10px; overflow-x: auto; scrollbar-width: none; flex-wrap: wrap; }
 .pl-fchip {
-  flex-shrink: 0; padding: 4px 10px; border: var(--b2); border-radius: 3px;
-  background: var(--s2); font-family: var(--sans); font-size: 10px; font-weight: 600;
+  flex-shrink: 0; padding: 3px 10px; border: none; border-radius: 2px;
+  background: transparent; font-family: var(--sans); font-size: 10px; font-weight: 600;
   letter-spacing: 0.05em; text-transform: uppercase; color: var(--t2);
   cursor: pointer; transition: all 0.1s; white-space: nowrap;
+  border-bottom: 1px solid transparent;
 }
-.pl-fchip.on { background: var(--y); color: #000; border-color: var(--y); font-weight: 800; }
-.pl-fchip:hover:not(.on) { color: var(--t1); border-color: #333; }
+.pl-fchip.on { background: transparent; color: var(--y); border-bottom: 1px solid var(--y); font-weight: 800; }
+.pl-fchip:hover:not(.on) { color: var(--t1); }
 .pl-ai-banner { display: flex; align-items: center; gap: 6px; padding: 10px 14px; margin-bottom: 10px; background: var(--s2); border: var(--b2); border-left: 2px solid var(--y); font-family: var(--sans); font-size: 11px; color: var(--t1); }
 
 /* ── PAYLOAD MODE BAR ── */
-.payload-mode-bar { display: flex; gap: 2px; margin-bottom: 12px; border-bottom: var(--b2); padding-bottom: 12px; }
+.payload-mode-bar { display: flex; gap: 0; margin-bottom: 16px; border-bottom: 1px solid #1e1e1e; padding-bottom: 0; }
 .pmode-btn {
   flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px;
-  padding: 10px 14px; border: var(--b2); border-radius: 3px; background: var(--s2);
+  padding: 10px 14px; border: none; border-bottom: 2px solid transparent;
+  border-radius: 0; background: transparent;
   font-family: var(--sans); font-size: 11px; font-weight: 700;
   letter-spacing: 0.06em; text-transform: uppercase; color: var(--t2);
   cursor: pointer; transition: all 0.12s;
 }
-.pmode-btn.on { background: var(--y); color: #000; border-color: var(--y); }
-.pmode-btn:hover:not(.on) { background: var(--s3); color: var(--t1); }
+.pmode-btn.on { background: transparent; color: var(--y); border-bottom: 2px solid var(--y); }
+.pmode-btn:hover:not(.on) { color: var(--t1); }
 
 /* ── PLAN MODE ── */
 #pg-plan { padding: 0; overflow: hidden; }
@@ -960,6 +956,22 @@ body {
 .empty-t { font-size: 15px; font-weight: 600; color: var(--t2); margin-bottom: 4px; }
 .empty-s { font-size: 13px; color: var(--t3); }
 
+/* ── CONFIG SECTION ── */
+.cfg-section {
+  margin-bottom: 24px;
+}
+.cfg-sec-lbl {
+  font-family: var(--sans);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--t2);
+  padding: 0 0 8px 0;
+  border-bottom: 1px solid #1e1e1e;
+  margin-bottom: 0;
+}
+
 /* ── CONFIG TOGGLE ── */
 .cfg-toggle {
   width: 36px; height: 20px; border-radius: 10px;
@@ -1005,8 +1017,10 @@ body {
   position: fixed; bottom: 0; left: 0; right: 0;
   z-index: 300; overflow-x: hidden; scrollbar-width: none;
   width: 100%; box-sizing: border-box;
-  /* Fill to physical bottom edge */
-  padding-bottom: max(env(safe-area-inset-bottom, 0px), 0px);
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  will-change: transform;
+  padding-bottom: max(env(safe-area-inset-bottom, 0px), 8px);
 }
 .bnav::before {
   content: ''; position: fixed; bottom: -1px; left: 0; right: 0;
@@ -1065,7 +1079,7 @@ body {
     <span class="wm-logo">V<span class="wm-slash">//</span>TEK</span><span class="wm-div"> // </span><span class="wm-p" id="wm-p">HANGAR</span>
   </div>
   <div class="tb-sep"></div>
-  <div class="live-tag"><div class="live-dot"></div><span class="live-lbl">LOCAL</span></div>
+  <span class="live-lbl">LOCAL</span></div>
   <div class="tb-r">
     <button class="tb-btn" onclick="openSearch()" title="Search (/)">
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13"><circle cx="6.5" cy="6.5" r="4"/><path d="M10 10l3 3"/></svg>
@@ -1413,26 +1427,72 @@ body {
 </div>
 
 <!-- ── CONFIG ── -->
-<div class="page" id="pg-settings" style="background:var(--bg);">
-  <div class="sec"><span class="sec-l">Intel / AI</span><span class="sec-r"></span></div>
-  <div class="cfg-row" onclick="editAPIKey()"><span class="cfg-lbl">ANTHROPIC API KEY</span><span class="cfg-val" id="key-disp">NOT SET</span></div>
-  <div class="cfg-row" onclick="editWebhook()"><span class="cfg-lbl">MAKE.COM WEBHOOK URL</span><span class="cfg-val" id="webhook-disp">NOT SET</span></div>
-  <div class="sec" style="margin-top:13px"><span class="sec-l">Google Drive Sync</span><span class="sec-r"></span></div>
-  <div class="cfg-row" onclick="driveAuth()"><span class="cfg-lbl">CONNECT GOOGLE DRIVE</span><span class="cfg-val" id="drive-status">DISCONNECTED</span></div>
-  <div class="cfg-row" onclick="drivePush()"><span class="cfg-lbl">PUSH TO DRIVE NOW</span><span class="cfg-val">↑</span></div>
-  <div class="cfg-row" onclick="drivePull()"><span class="cfg-lbl">PULL FROM DRIVE</span><span class="cfg-val">↓</span></div>
-  <div class="cfg-row" style="cursor:default">
-    <span class="cfg-lbl">AUTO SYNC</span>
-    <button class="cfg-toggle" id="auto-sync-toggle" onclick="toggleAutoSync(this)"></button>
+<div class="page" id="pg-settings">
+
+  <div class="cfg-section">
+    <div class="cfg-sec-lbl">INTEL / AI</div>
+    <div class="cfg-row" onclick="editAPIKey()">
+      <span class="cfg-lbl">Anthropic API Key</span>
+      <span class="cfg-val" id="key-disp">NOT SET</span>
+    </div>
+    <div class="cfg-row" onclick="editWebhook()">
+      <span class="cfg-lbl">Make.com Webhook</span>
+      <span class="cfg-val" id="webhook-disp">NOT SET</span>
+    </div>
   </div>
-  <div class="sec" style="margin-top:13px"><span class="sec-l">Connection</span><span class="sec-r"></span></div>
-  <div class="cfg-row" onclick="editAPI()"><span class="cfg-lbl">API ENDPOINT</span><span class="cfg-val" id="api-disp">192.168.100.132:8000</span></div>
-  <div class="sec" style="margin-top:13px"><span class="sec-l">Data</span><span class="sec-r"></span></div>
-  <div class="cfg-row" onclick="exportJSON()"><span class="cfg-lbl">EXPORT JSON</span><span class="cfg-val">↓</span></div>
-  <div class="cfg-row" onclick="openSheet('ol-backups')"><span class="cfg-lbl">RESTORE BACKUP</span><span class="cfg-val" id="backup-count">—</span></div>
-  <div class="cfg-row" onclick="resetData()"><span class="cfg-lbl" style="color:var(--s-blk)">RESET TO DEMO</span><span class="cfg-val" style="color:var(--s-blk)">✕</span></div>
-  <div class="sec" style="margin-top:13px"><span class="sec-l">About</span><span class="sec-r"></span></div>
-  <div style="font-family:var(--mono);font-size:8px;color:var(--t2);padding:5px 1px;letter-spacing:0.1em">VTEK // HANGAR v1.0.0 — PLATFORM</div>
+
+  <div class="cfg-section">
+    <div class="cfg-sec-lbl">SYNC</div>
+    <div class="cfg-row" onclick="driveAuth()">
+      <span class="cfg-lbl">Google Drive</span>
+      <span class="cfg-val" id="drive-status"><span class="sdot sdot-off"></span> DISCONNECTED</span>
+    </div>
+    <div class="cfg-row" onclick="drivePush()">
+      <span class="cfg-lbl">Push to Drive</span>
+      <span class="cfg-val">↑ PUSH</span>
+    </div>
+    <div class="cfg-row" onclick="drivePull()">
+      <span class="cfg-lbl">Pull from Drive</span>
+      <span class="cfg-val">↓ PULL</span>
+    </div>
+    <div class="cfg-row" style="cursor:default">
+      <span class="cfg-lbl">Auto Sync</span>
+      <button class="cfg-toggle" id="auto-sync-toggle" onclick="toggleAutoSync(this)"></button>
+    </div>
+  </div>
+
+  <div class="cfg-section">
+    <div class="cfg-sec-lbl">NETWORK</div>
+    <div class="cfg-row" onclick="editAPI()">
+      <span class="cfg-lbl">API Endpoint</span>
+      <span class="cfg-val" id="api-disp">192.168.100.132:8000</span>
+    </div>
+  </div>
+
+  <div class="cfg-section">
+    <div class="cfg-sec-lbl">DATA</div>
+    <div class="cfg-row" onclick="exportJSON()">
+      <span class="cfg-lbl">Export JSON</span>
+      <span class="cfg-val">↓</span>
+    </div>
+    <div class="cfg-row" onclick="openSheet('ol-backups')">
+      <span class="cfg-lbl">Restore Backup</span>
+      <span class="cfg-val" id="backup-count">—</span>
+    </div>
+    <div class="cfg-row" onclick="resetData()">
+      <span class="cfg-lbl" style="color:var(--blk)">Reset to Demo Data</span>
+      <span class="cfg-val" style="color:var(--blk)">✕</span>
+    </div>
+  </div>
+
+  <div class="cfg-section">
+    <div class="cfg-sec-lbl">ABOUT</div>
+    <div class="cfg-row" style="cursor:default">
+      <span class="cfg-lbl">Version</span>
+      <span class="cfg-val" style="font-family:var(--mono)">v16.0 HANGAR</span>
+    </div>
+  </div>
+
 </div>
 
 </div><!-- /page-area -->
@@ -2028,6 +2088,24 @@ In 2-3 direct sentences: are they on track? Do they need more resources or are t
 function setPlView(v){
   plView=v;document.querySelectorAll('.pl-vbtn').forEach(b=>b.classList.remove('on'));
   const el=document.getElementById('plv-'+v);if(el)el.classList.add('on');rPayload();
+}
+
+function sortTasks(){
+  const modes=['none','pri','due','dur','show'];
+  if(!window._sortMode) window._sortMode=0;
+  window._sortMode=(window._sortMode+1)%modes.length;
+  const mode=modes[window._sortMode];
+  const btn=document.getElementById('sort-btn');
+  if(btn) btn.textContent='⇅ '+mode.toUpperCase();
+  if(mode==='none'){rPayload();return;}
+  S.tasks=[...S.tasks].sort((a,b)=>{
+    if(mode==='pri'){const o={critical:0,high:1,med:2,low:3};return(o[a.pri]||2)-(o[b.pri]||2);}
+    if(mode==='due'){return(a.due||'9')>(b.due||'9')?1:-1;}
+    if(mode==='dur'){return(a.dur||0)-(b.dur||0);}
+    if(mode==='show'){return(a.sid||'')>(b.sid||'')?1:-1;}
+    return 0;
+  });
+  rPayload();
 }
 
 function rPayload(){
