@@ -4050,14 +4050,23 @@ function planQuickAdd(h,m){
   document.getElementById('plan-qa-dur').value='30';
   const overlay=document.getElementById('plan-qa-overlay');
   const sheet=document.getElementById('plan-qa-sheet');
-  overlay.classList.add('open');
-  sheet.classList.add('open');
+  overlay.style.display='block';
+  sheet.style.display='block';
+  requestAnimationFrame(()=>{
+    overlay.classList.add('open');
+    sheet.classList.add('open');
+    sheet.style.transform='';
+  });
   setTimeout(()=>document.getElementById('plan-qa-input').focus(),300);
 }
 function closePlanQA(){
   const pqo2=document.getElementById('plan-qa-overlay');const pqs3=document.getElementById('plan-qa-sheet');
-  pqs3.style.transform='translateY(100%)';
-  setTimeout(()=>{pqo2.style.display='none';pqs3.style.display='none';},260);
+  pqs3.classList.remove('open');
+  pqo2.classList.remove('open');
+  setTimeout(()=>{
+    pqo2.style.display='none';
+    pqs3.style.display='none';
+  },280);
 }
 function confirmPlanQA(){
   const title=document.getElementById('plan-qa-input').value.trim();
