@@ -385,7 +385,7 @@ body {
 .stab.on { background: transparent; color: var(--y); border-bottom: 2px solid var(--y); font-weight: 800; }
 .stab:hover:not(.on) { color: var(--t1); }
 
-#shot-stats { grid-template-columns: repeat(5, minmax(0,1fr)) !important; gap: 3px !important; }
+#shots-stats { grid-template-columns: repeat(5, minmax(0,1fr)) !important; gap: 3px !important; }
 /* ── SHOT GROUPS ── */
 .shot-group { display: flex; flex-direction: column; gap: 1px; margin-bottom: 2px; }
 .shot-group-hd {
@@ -1428,7 +1428,7 @@ body {
 
   /* Content layout constraints */
   .show-grid { grid-template-columns: repeat(3, minmax(0,1fr)); }
-  #shot-stats { grid-template-columns: repeat(5, minmax(0,1fr)) !important; }
+  #shots-stats { grid-template-columns: repeat(5, minmax(0,1fr)) !important; }
 
   /* ── HANGAR — two-column layout ── */
   #pg-hangar .page-split {
@@ -1567,7 +1567,7 @@ body {
 <div class="page" id="pg-shots">
   <div class="sec"><span class="sec-l">Show</span><span class="sec-r"></span><button class="sec-a" onclick="openSheet('ol-shot')">+ SHOT</button></div>
   <div class="show-tabs" id="shot-tabs"></div>
-  <div class="stat-row" id="shots-stats"></div>
+  <div class="stat-row" id="shots-stats" style="grid-template-columns:repeat(5,minmax(0,1fr));gap:3px;"></div>
   <div id="shots-prog"></div>
   <!-- Resource Planning -->
   <div class="sec"><span class="sec-l">Resource Planning</span><span class="sec-r"></span></div>
