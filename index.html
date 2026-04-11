@@ -3698,6 +3698,158 @@ async function initPlanMode(){
 }
 
 
+
+// ── PLAN BLOCK EDIT SHEET ──
+let _planEditTaskId = null;
+let _planEditBlockEl = null;
+
+function openPlanBlockEdit(el) {
+  const taskId = el.dataset.bid;
+  const task = S.tasks.find(t => t.id === taskId);
+  if (!task) return;
+  
+  _planEditTaskId = taskId;
+  _planEditBlockEl = el;
+  
+  // Find schedule entry
+  const entry = planSchedule.find(s => s.taskId === taskId) || {};
+  
+  // Populate fields
+  document.getElementById('pe-title').value = task.title || '';
+  
+  const dur = entry.durMins || task.dur || 30;
+  document.getElementById('pe-dur-slider').value = dur;
+  document.getElementById('pe-dur-num').value = dur;
+  
+  // Start time
+  const startH = entry.startH || 10;
+  const startM = entry.startM || 0;
+  const hSel = document.getElementById('pe-start-h');
+  const mSel = document.getElementById('pe-start-m');
+  if (hSel) {
+    // Set options if empty
+    if (!hSel.options.length) {
+      [10,11,12,13,14,15,16,17,18].forEach(h => {
+        const opt = document.createElement('option');
+        opt.value = h;
+        opt.textContent = (h>12?h-12:h) + (h>=12?'pm':'am');
+        hSel.appendChild(opt);
+      });
+    }
+    hSel.value = startH;
+  }
+  if (mSel) mSel.value = startM;
+  
+  // Priority buttons
+  updatePlanEditPriUI(task.pri || 'med');
+  
+  document.getElementById('pe-due').value = task.due || '';
+  document.getElementById('pe-notes').value = task.notes || '';
+  document.getElementById('pe-tags').value = (task.tags || []).join(', ');
+  
+  // Wire slider to number input
+  const slider = document.getElementById('pe-dur-slider');
+  const numIn = document.getElementById('pe-dur-num');
+  slider.oninput = () => numIn.value = slider.value;
+  numIn.oninput = () => { slider.value = numIn.value; };
+  
+  // Show sheet
+  const overlay = document.getElementById('plan-edit-overlay');
+  const sheet = document.getElementById('plan-edit-sheet');
+  overlay.style.display = 'block';
+  sheet.style.display = 'block';
+  requestAnimationFrame(() => { sheet.style.transform = 'translateY(0)'; });
+}
+
+function closePlanEdit() {
+  const overlay = document.getElementById('plan-edit-overlay');
+  const sheet = document.getElementById('plan-edit-sheet');
+  sheet.style.transform = 'translateY(100%)';
+  setTimeout(() => {
+    overlay.style.display = 'none';
+    sheet.style.display = 'none';
+    _planEditTaskId = null;
+  }, 280);
+}
+
+function setPlanEditPri(pri) {
+  updatePlanEditPriUI(pri);
+}
+
+function updatePlanEditPriUI(pri) {
+  const priColors = {
+    critical: {bg:'var(--blk)',color:'#fff'},
+    high: {bg:'rgba(232,76,30,0.8)',color:'#fff'},
+    med: {bg:'#2a2a2a',color:'var(--t1)'},
+    low: {bg:'transparent',color:'var(--t2)'}
+  };
+  document.querySelectorAll('.pe-pri-btn').forEach(btn => {
+    const p = btn.dataset.pri;
+    const active = p === pri;
+    const col = priColors[p] || priColors.med;
+    btn.style.background = active ? col.bg : '#1a1a1a';
+    btn.style.color = active ? col.color : 'var(--t2)';
+    btn.style.border = active ? 'none' : '1px solid #2a2a2a';
+    btn.dataset.active = active ? '1' : '';
+  });
+  // Store selected priority
+  const group = document.getElementById('pe-pri-group');
+  if (group) group.dataset.selected = pri;
+}
+
+function savePlanEdit() {
+  if (!_planEditTaskId) return;
+  const task = S.tasks.find(t => t.id === _planEditTaskId);
+  if (!task) return;
+  
+  // Update task fields
+  const title = document.getElementById('pe-title').value.trim();
+  if (title) task.title = title;
+  
+  const dur = parseInt(document.getElementById('pe-dur-num').value) || parseInt(document.getElementById('pe-dur-slider').value) || task.dur;
+  task.dur = dur;
+  
+  task.due = document.getElementById('pe-due').value;
+  task.notes = document.getElementById('pe-notes').value;
+  
+  const tagsRaw = document.getElementById('pe-tags').value;
+  task.tags = tagsRaw ? tagsRaw.split(',').map(t => t.trim().toLowerCase()).filter(Boolean) : [];
+  
+  const priGroup = document.getElementById('pe-pri-group');
+  if (priGroup && priGroup.dataset.selected) task.pri = priGroup.dataset.selected;
+  
+  // Update schedule entry
+  const hSel = document.getElementById('pe-start-h');
+  const mSel = document.getElementById('pe-start-m');
+  const newH = parseInt(hSel.value);
+  const newM = parseInt(mSel.value);
+  
+  const entryIdx = planSchedule.findIndex(s => s.taskId === _planEditTaskId);
+  if (entryIdx > -1) {
+    planSchedule[entryIdx].durMins = dur;
+    planSchedule[entryIdx].startH = newH;
+    planSchedule[entryIdx].startM = newM;
+    planSchedule[entryIdx].startTime = fmtTime(newH, newM);
+    planSchedule[entryIdx].endTime = fmtTime(newH + Math.floor((newM + dur) / 60), (newM + dur) % 60);
+  }
+  
+  save();
+  closePlanEdit();
+  renderTimeline();
+  renderTaskPool();
+  rPayload();
+  toast('BLOCK UPDATED');
+}
+
+function removePlanEditBlock() {
+  if (!_planEditTaskId) return;
+  planSchedule = planSchedule.filter(s => s.taskId !== _planEditTaskId);
+  if (_planEditBlockEl) _planEditBlockEl.remove();
+  renderTaskPool();
+  closePlanEdit();
+  toast('REMOVED');
+}
+
 function openPlanTaskSheet(){
   renderTaskPool(); // refresh list
   // Populate sheet list from plan-task-pool
@@ -3879,13 +4031,12 @@ function removePlanBlockEl(btn){
 
 
 function planBlockTapEl(el){
-  const taskId=el.dataset.bid;
-  const titleEl=el.querySelector('.plan-block-title');
-  const title=titleEl?titleEl.textContent:'Task';
-  if(confirm(title+'\n\nRemove from schedule?')){
-    // Remove this block element from DOM
+  // Open full edit sheet instead of confirm dialog
+  openPlanBlockEdit(el);
+  // (old confirm logic removed)
+  if(false){
+    const taskId=el.dataset.bid;
     el.remove();
-    // Also remove from planSchedule array
     planSchedule=planSchedule.filter(s=>s.taskId!==taskId);
     renderTaskPool();
   }
@@ -4172,6 +4323,86 @@ document.addEventListener('touchend',e=>{endBlockDrag(e);endBlockResize(e);});
     </div>
   </div>
   <button onclick="confirmPlanQA()" style="width:100%;padding:11px;background:var(--y);border:none;border-radius:3px;font-family:var(--sans);font-size:13px;font-weight:800;color:#000;letter-spacing:0.06em;text-transform:uppercase;cursor:pointer;">PLACE AT <span id="plan-qa-time-btn"></span></button>
+</div>
+
+
+<!-- PLAN BLOCK EDIT SHEET -->
+<div id="plan-edit-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:490;backdrop-filter:blur(4px);" onclick="closePlanEdit()"></div>
+<div id="plan-edit-sheet" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:495;background:#111;border-top:1px solid var(--y);border-radius:0;max-height:85dvh;overflow-y:auto;transform:translateY(100%);transition:transform 0.28s cubic-bezier(0.32,0.72,0,1);padding-bottom:env(safe-area-inset-bottom,0px);">
+  <div style="width:32px;height:3px;background:#333;border-radius:99px;margin:10px auto 0;"></div>
+  
+  <!-- Header -->
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 18px 10px;">
+    <div style="font-family:var(--sans);font-size:10px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:var(--t2);">EDIT BLOCK</div>
+    <div style="display:flex;gap:6px;">
+      <button onclick="savePlanEdit()" style="padding:5px 14px;background:var(--y);border:none;border-radius:3px;font-family:var(--sans);font-size:11px;font-weight:800;color:#000;cursor:pointer;letter-spacing:0.04em;">SAVE</button>
+      <button onclick="removePlanEditBlock()" style="padding:5px 10px;background:rgba(232,76,30,0.12);border:1px solid rgba(232,76,30,0.3);border-radius:3px;font-family:var(--sans);font-size:11px;font-weight:700;color:var(--blk);cursor:pointer;">REMOVE</button>
+    </div>
+  </div>
+
+  <div style="padding:0 18px 20px;display:flex;flex-direction:column;gap:14px;">
+    
+    <!-- Title -->
+    <div>
+      <div style="font-family:var(--sans);font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--t2);margin-bottom:5px;">TASK TITLE</div>
+      <input id="pe-title" style="width:100%;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:3px;padding:10px 12px;font-family:var(--sans);font-size:14px;color:var(--t0);outline:none;box-sizing:border-box;" placeholder="Task title…">
+    </div>
+
+    <!-- Duration -->
+    <div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+        <div style="font-family:var(--sans);font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--t2);">DURATION</div>
+        <div style="display:flex;align-items:center;gap:4px;">
+          <input id="pe-dur-num" type="number" min="15" max="480" step="15" style="width:52px;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:3px;padding:4px 8px;font-family:var(--mono);font-size:13px;color:var(--y);outline:none;text-align:center;">
+          <span style="font-family:var(--sans);font-size:11px;color:var(--t2);">MIN</span>
+        </div>
+      </div>
+      <input id="pe-dur-slider" type="range" min="15" max="480" step="15" style="width:100%;accent-color:var(--y);cursor:pointer;"
+        oninput="document.getElementById('pe-dur-num').value=this.value">
+      <div id="pe-dur-num" style="display:none"></div>
+    </div>
+
+    <!-- Start Time -->
+    <div>
+      <div style="font-family:var(--sans);font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--t2);margin-bottom:5px;">START TIME</div>
+      <div style="display:flex;gap:8px;">
+        <select id="pe-start-h" style="flex:1;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:3px;padding:8px 10px;font-family:var(--mono);font-size:13px;color:var(--t0);outline:none;">
+          ${[10,11,12,13,14,15,16,17,18].map(h=>`<option value="${h}">${h>12?h-12:h}${h>=12?'pm':'am'}</option>`).join('')}
+        </select>
+        <select id="pe-start-m" style="flex:1;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:3px;padding:8px 10px;font-family:var(--mono);font-size:13px;color:var(--t0);outline:none;">
+          <option value="0">:00</option>
+          <option value="30">:30</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Priority -->
+    <div>
+      <div style="font-family:var(--sans);font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--t2);margin-bottom:6px;">PRIORITY</div>
+      <div style="display:flex;gap:5px;" id="pe-pri-group">
+        ${['critical','high','med','low'].map(p=>`<button class="pe-pri-btn" data-pri="${p}" onclick="setPlanEditPri('${p}')" style="flex:1;padding:7px 4px;border-radius:3px;font-family:var(--sans);font-size:10px;font-weight:700;text-transform:uppercase;cursor:pointer;transition:all 0.1s;">${p}</button>`).join('')}
+      </div>
+    </div>
+
+    <!-- Due Date -->
+    <div>
+      <div style="font-family:var(--sans);font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--t2);margin-bottom:5px;">DUE DATE</div>
+      <input id="pe-due" type="date" style="width:100%;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:3px;padding:9px 12px;font-family:var(--mono);font-size:13px;color:var(--t0);outline:none;box-sizing:border-box;color-scheme:dark;">
+    </div>
+
+    <!-- Notes -->
+    <div>
+      <div style="font-family:var(--sans);font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--t2);margin-bottom:5px;">NOTES</div>
+      <textarea id="pe-notes" rows="3" style="width:100%;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:3px;padding:10px 12px;font-family:var(--mono);font-size:13px;color:var(--t0);outline:none;resize:none;box-sizing:border-box;line-height:1.6;" placeholder="Add notes…"></textarea>
+    </div>
+
+    <!-- Tags -->
+    <div>
+      <div style="font-family:var(--sans);font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--t2);margin-bottom:5px;">TAGS</div>
+      <input id="pe-tags" style="width:100%;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:3px;padding:9px 12px;font-family:var(--sans);font-size:13px;color:var(--t0);outline:none;box-sizing:border-box;" placeholder="deliver, review, comp…">
+    </div>
+
+  </div>
 </div>
 
 <!-- PLAN TASK SHEET -->
