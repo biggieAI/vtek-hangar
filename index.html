@@ -315,13 +315,13 @@ body {
 .ac-client { font-size: 12px; color: var(--t2); margin-top: 2px; }
 .show-stat-num { font-family: var(--mono); font-size: 13px; font-weight: 500; color: var(--t0); }
 .show-stat-key { font-size: 11px; color: var(--t2); margin-top: 1px; }
-.prog-track { height: 3px; background: var(--bg); margin-bottom: 12px; overflow: hidden; border-radius: 3px; box-shadow: 2px 3px 8px rgba(0,0,0,0.5) inset; }
+.prog-track { height: 2px; background: var(--bg); margin-bottom: 8px; overflow: hidden; border-radius: 3px; box-shadow: 2px 3px 8px rgba(0,0,0,0.5) inset; }
 .prog-fill { height: 100%; transition: width 0.4s; }
 
 /* ── STAT CHIPS ── */
 .stat-row { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 4px; margin-bottom: 8px; width: 100%; }
 /* stat chip top borders removed */
-.sc { background: var(--s2); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 16px 10px 14px; text-align: center; position: relative; box-shadow: 4px 6px 16px rgba(0,0,0,0.55), -1px -2px 5px rgba(255,255,255,0.04); }
+.sc { background: var(--s2); border: 1px solid rgba(255,255,255,0.05); border-radius: 14px; padding: 10px 8px 9px; text-align: center; position: relative; box-shadow: 4px 6px 16px rgba(0,0,0,0.55), -1px -2px 5px rgba(255,255,255,0.04); }
 .sc-n {
   font-family: var(--mono); font-size: 22px; font-weight: 500;
   line-height: 1; margin-bottom: 4px; color: var(--t0);
@@ -446,7 +446,7 @@ body {
   border: 1px solid rgba(255,255,255,0.05);
   border-left: 3px solid var(--cc, #333);
   border-radius: 16px;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   position: relative;
   transition: all 0.12s;
   cursor: default; user-select: none;
@@ -472,7 +472,7 @@ body {
 .tcard:nth-child(even) { background: #202022; }
 .tcard:nth-child(even):hover { background: var(--s3); }
 
-.tcard-main { display: flex; align-items: center; gap: 10px; padding: 10px 12px 9px; position: relative; min-height: 44px; }
+.tcard-main { display: flex; align-items: center; gap: 8px; padding: 9px 14px; position: relative; }
 .tcard-body { flex: 1; min-width: 0; }
 .tcard-title {
   font-size: 14px; font-weight: 500; color: var(--t0);
@@ -2760,7 +2760,6 @@ function renderTCard(t){
   let html=`<div class="tcard ${t.done?'done-c':''}" id="tc-${t.id}" draggable="true" style="--cc:${cc}"
     ondragstart="onDragStart(event,'${t.id}')" ondragover="onDragOver(event,'${t.id}')"
     ondrop="onDrop(event,'${t.id}')" ondragleave="onDragLeave(event,'${t.id}')">
-    <div class="tcard-drag" title="Drag to reorder">⋮⋮</div>
     <div class="tcard-main">
       <div class="tcard-chk ${t.done?'on':''}" onclick="toggleTask('${t.id}')">${t.done?'✓':''}</div>
       <div class="tcard-body">
