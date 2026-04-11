@@ -1057,6 +1057,89 @@ body {
 .empty-s { font-size: 13px; color: var(--t3); }
 
 /* ── CONFIG SECTION ── */
+/* ══ WORKSPACE PANEL SECTIONS ══ */
+.ws-section {
+  margin-bottom: 2px;
+  background: #0e0e0e;
+  border: 1px solid #1e1e1e;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.ws-sec-header {
+  display: flex; align-items: center; gap: 7px;
+  padding: 9px 12px;
+  cursor: pointer;
+  user-select: none;
+  background: #111;
+  border-bottom: 1px solid #1a1a1a;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.1s;
+}
+.ws-sec-header:active { background: #161616; }
+.ws-sec-header svg:first-child { color: var(--t2); flex-shrink: 0; }
+.ws-sec-lbl {
+  font-family: var(--sans); font-size: 9px; font-weight: 800;
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--t2);
+  flex: 1;
+}
+.ws-sec-add {
+  background: none; border: 1px solid #2a2a2a; color: var(--t2);
+  font-size: 13px; line-height: 1; width: 18px; height: 18px;
+  border-radius: 3px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: all 0.1s; flex-shrink: 0;
+  font-family: var(--sans);
+}
+.ws-sec-add:hover { border-color: var(--y); color: var(--y); }
+.ws-sec-pill {
+  font-family: var(--mono); font-size: 8px; color: #000;
+  background: var(--y); padding: 1px 6px; border-radius: 10px;
+  font-weight: 700; flex-shrink: 0; letter-spacing: 0.04em;
+}
+.ws-caret {
+  color: var(--t3); flex-shrink: 0;
+  transition: transform 0.2s;
+}
+.ws-collapsed .ws-caret { transform: rotate(-90deg); }
+.ws-collapsed .ws-sec-body { display: none; }
+.ws-sec-body { padding: 10px 12px 12px; }
+
+/* ── AI LAUNCH LIST (workspace row style) ── */
+.ai-launch-grid { display: flex; flex-direction: column; gap: 2px; }
+.ai-launch-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px;
+  background: #0d0d0d;
+  border: 1px solid #1c1c1c;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: all 0.12s;
+  -webkit-tap-highlight-color: transparent;
+}
+.ai-launch-row:hover, .ai-launch-row:active {
+  background: #151515;
+  border-color: #2a2a2a;
+  transform: translateX(2px);
+}
+.ai-launch-icon {
+  width: 28px; height: 28px; border-radius: 7px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+}
+.ai-launch-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.ai-launch-name {
+  font-family: var(--sans); font-size: 12px; font-weight: 600; color: var(--t0);
+}
+.ai-launch-sub {
+  font-family: var(--mono); font-size: 9px; color: var(--t3); letter-spacing: 0.04em;
+}
+.ai-launch-dot {
+  width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0;
+  opacity: 0.7;
+  box-shadow: 0 0 4px currentColor;
+}
+
+/* ── WORKSPACE TODAY PILL update ── */
+
 /* ── AI STACK SHORTCUTS ── */
 .ai-stack-btn {
   display: flex; flex-direction: column; align-items: center; gap: 7px;
@@ -1641,84 +1724,103 @@ body {
 <!-- ── HANGAR ── -->
 <div class="page on" id="pg-hangar">
 
-  <div class="sec" style="margin-top:4px;"><span class="sec-l">Today</span><span class="sec-r"></span></div>
-  <div id="dash-today"></div>
-
-  <!-- AI STACK -->
-  <div class="sec" style="margin-top:4px;"><span class="sec-l">AI Stack</span></div>
-  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:4px 0 18px;">
-
-    <!-- Akiflow — purple gradient bg, upward triangle wordmark -->
-    <a href="akiflow://" style="text-decoration:none;" onclick="if(!navigator.userAgent.match(/iPhone|iPad/))this.href='https://app.akiflow.com'">
-      <div class="ai-stack-btn">
-        <div class="ai-stack-icon" style="background:linear-gradient(145deg,#2d1fa3,#4f3ef5);">
-          <svg viewBox="0 0 28 28" width="26" height="26" fill="none">
-            <!-- Akiflow: bold upward arrow / flow mark -->
-            <path d="M14 5L22 20H6L14 5Z" fill="white" opacity="0.95"/>
-            <rect x="11" y="17" width="6" height="2.5" rx="1.2" fill="white" opacity="0.5"/>
-          </svg>
-        </div>
-        <span class="ai-stack-lbl">AKIFLOW</span>
-      </div>
-    </a>
-
-    <!-- Circleback — dark teal, soundwave/circle mark -->
-    <a href="https://app.circleback.ai" target="_blank" style="text-decoration:none;">
-      <div class="ai-stack-btn">
-        <div class="ai-stack-icon" style="background:linear-gradient(145deg,#0a2420,#0d3d34);">
-          <svg viewBox="0 0 28 28" width="26" height="26" fill="none">
-            <!-- Circleback: concentric arcs = recording/replay -->
-            <circle cx="14" cy="14" r="4" fill="#00e5a0"/>
-            <path d="M8 14a6 6 0 0 1 6-6" stroke="#00e5a0" stroke-width="1.8" stroke-linecap="round" opacity="0.7"/>
-            <path d="M20 14a6 6 0 0 1-6 6" stroke="#00e5a0" stroke-width="1.8" stroke-linecap="round" opacity="0.7"/>
-            <path d="M5 14a9 9 0 0 1 9-9" stroke="#00e5a0" stroke-width="1.4" stroke-linecap="round" opacity="0.35"/>
-            <path d="M23 14a9 9 0 0 1-9 9" stroke="#00e5a0" stroke-width="1.4" stroke-linecap="round" opacity="0.35"/>
-          </svg>
-        </div>
-        <span class="ai-stack-lbl">CIRCLEBACK</span>
-      </div>
-    </a>
-
-    <!-- Claude — warm sand/orange, the actual Claude logomark shape -->
-    <a href="https://claude.ai" target="_blank" style="text-decoration:none;">
-      <div class="ai-stack-btn">
-        <div class="ai-stack-icon" style="background:linear-gradient(145deg,#c8520a,#e8813a);">
-          <svg viewBox="0 0 28 28" width="26" height="26" fill="none">
-            <!-- Claude logomark: overlapping rounded rectangles -->
-            <rect x="5" y="9" width="13" height="4" rx="2" fill="white" opacity="0.95"/>
-            <rect x="10" y="15" width="13" height="4" rx="2" fill="white" opacity="0.95"/>
-            <rect x="5" y="9" width="4" height="10" rx="2" fill="white" opacity="0.5"/>
-          </svg>
-        </div>
-        <span class="ai-stack-lbl">CLAUDE</span>
-      </div>
-    </a>
-
-    <!-- Obsidian — deep purple, gem/crystal mark -->
-    <a href="obsidian://" style="text-decoration:none;">
-      <div class="ai-stack-btn">
-        <div class="ai-stack-icon" style="background:linear-gradient(145deg,#1e0a3c,#3b1f6e);">
-          <svg viewBox="0 0 28 28" width="26" height="26" fill="none">
-            <!-- Obsidian gem: layered facets -->
-            <path d="M14 3L22 9L19 22L14 25L9 22L6 9Z" fill="#7c3aed" opacity="0.4"/>
-            <path d="M14 3L22 9L14 13Z" fill="#a78bfa" opacity="0.9"/>
-            <path d="M14 3L6 9L14 13Z" fill="#c4b5fd" opacity="0.6"/>
-            <path d="M6 9L14 13L9 22Z" fill="#7c3aed" opacity="0.7"/>
-            <path d="M22 9L14 13L19 22Z" fill="#6d28d9" opacity="0.8"/>
-            <path d="M9 22L14 13L19 22L14 25Z" fill="#4c1d95" opacity="0.9"/>
-          </svg>
-        </div>
-        <span class="ai-stack-lbl">OBSIDIAN</span>
-      </div>
-    </a>
-
+  <!-- ══ ACTIVE SHOWS — workspace panel style ══ -->
+  <div class="ws-section">
+    <div class="ws-sec-header" onclick="this.parentElement.classList.toggle('ws-collapsed')">
+      <svg viewBox="0 0 14 14" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="1" width="5" height="5" rx="1"/><rect x="8" y="1" width="5" height="5" rx="1"/><rect x="1" y="8" width="5" height="5" rx="1"/><rect x="8" y="8" width="5" height="5" rx="1"/></svg>
+      <span class="ws-sec-lbl">SHOWS</span>
+      <button class="ws-sec-add" onclick="event.stopPropagation();openSheet('ol-show')">+</button>
+      <svg class="ws-caret" viewBox="0 0 10 6" width="8" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 1l4 4 4-4"/></svg>
+    </div>
+    <div class="ws-sec-body">
+      <div class="show-grid" id="show-grid"></div>
+    </div>
   </div>
 
-  <div class="sec"><span class="sec-l">Active Shows</span><span class="sec-r"></span><button class="sec-a" onclick="openSheet('ol-show')">+ ADD</button></div>
-  <div class="show-grid" id="show-grid"></div>
-  <div class="sec"><span class="sec-l">Mission Status</span><span class="sec-r"></span></div>
-  <div class="stat-row" id="dash-stats"></div>
-  <div id="dash-dos"></div>
+  <!-- ══ MISSION STATUS — stat bar ══ -->
+  <div class="ws-section">
+    <div class="ws-sec-header" onclick="this.parentElement.classList.toggle('ws-collapsed')">
+      <svg viewBox="0 0 14 14" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="5"/><path d="M7 4v3l2 2"/></svg>
+      <span class="ws-sec-lbl">MISSION STATUS</span>
+      <svg class="ws-caret" viewBox="0 0 10 6" width="8" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 1l4 4 4-4"/></svg>
+    </div>
+    <div class="ws-sec-body">
+      <div class="stat-row" id="dash-stats"></div>
+      <div id="dash-dos"></div>
+    </div>
+  </div>
+
+  <!-- ══ TODAY — task viewport ══ -->
+  <div class="ws-section">
+    <div class="ws-sec-header" onclick="this.parentElement.classList.toggle('ws-collapsed')">
+      <svg viewBox="0 0 14 14" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="2" width="12" height="11" rx="1.5"/><path d="M4 1v2M10 1v2M1 6h12"/></svg>
+      <span class="ws-sec-lbl">TODAY</span>
+      <span class="ws-sec-pill" id="today-pill">—</span>
+      <svg class="ws-caret" viewBox="0 0 10 6" width="8" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 1l4 4 4-4"/></svg>
+    </div>
+    <div class="ws-sec-body">
+      <div id="dash-today"></div>
+    </div>
+  </div>
+
+  <!-- ══ AI STACK — quick launch ══ -->
+  <div class="ws-section">
+    <div class="ws-sec-header" onclick="this.parentElement.classList.toggle('ws-collapsed')">
+      <svg viewBox="0 0 14 14" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 1l1.5 4H13l-3.5 2.5 1.5 4L7 9l-4 2.5 1.5-4L1 5h4.5Z"/></svg>
+      <span class="ws-sec-lbl">AI STACK</span>
+      <svg class="ws-caret" viewBox="0 0 10 6" width="8" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 1l4 4 4-4"/></svg>
+    </div>
+    <div class="ws-sec-body">
+      <div class="ai-launch-grid">
+
+        <a href="akiflow://" class="ai-launch-row" onclick="if(!navigator.userAgent.match(/iPhone|iPad/))this.href='https://app.akiflow.com'">
+          <div class="ai-launch-icon" style="background:linear-gradient(135deg,#2d1fa3,#4f3ef5);">
+            <svg viewBox="0 0 20 20" width="14" height="14" fill="none"><path d="M10 2L17 15H3L10 2Z" fill="white" opacity="0.95"/></svg>
+          </div>
+          <div class="ai-launch-info">
+            <span class="ai-launch-name">Akiflow</span>
+            <span class="ai-launch-sub">Task scheduler</span>
+          </div>
+          <div class="ai-launch-dot" style="background:#4f3ef5;"></div>
+        </a>
+
+        <a href="https://app.circleback.ai" target="_blank" class="ai-launch-row">
+          <div class="ai-launch-icon" style="background:linear-gradient(135deg,#0a2420,#0d5040);">
+            <svg viewBox="0 0 20 20" width="14" height="14" fill="none"><circle cx="10" cy="10" r="3" fill="#00e5a0"/><path d="M5.5 10a4.5 4.5 0 0 1 4.5-4.5" stroke="#00e5a0" stroke-width="1.5" stroke-linecap="round"/><path d="M14.5 10a4.5 4.5 0 0 1-4.5 4.5" stroke="#00e5a0" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div class="ai-launch-info">
+            <span class="ai-launch-name">Circleback</span>
+            <span class="ai-launch-sub">Meeting recorder</span>
+          </div>
+          <div class="ai-launch-dot" style="background:#00e5a0;"></div>
+        </a>
+
+        <a href="https://claude.ai" target="_blank" class="ai-launch-row">
+          <div class="ai-launch-icon" style="background:linear-gradient(135deg,#b84a08,#e07030);">
+            <svg viewBox="0 0 20 20" width="14" height="14" fill="none"><rect x="3" y="6" width="9" height="3" rx="1.5" fill="white" opacity="0.95"/><rect x="8" y="11" width="9" height="3" rx="1.5" fill="white" opacity="0.95"/></svg>
+          </div>
+          <div class="ai-launch-info">
+            <span class="ai-launch-name">Claude</span>
+            <span class="ai-launch-sub">AI assistant</span>
+          </div>
+          <div class="ai-launch-dot" style="background:#e07030;"></div>
+        </a>
+
+        <a href="obsidian://" class="ai-launch-row">
+          <div class="ai-launch-icon" style="background:linear-gradient(135deg,#1e0a3c,#3b1f6e);">
+            <svg viewBox="0 0 20 20" width="14" height="14" fill="none"><path d="M10 2L16 6.5L14 15L10 17L6 15L4 6.5Z" fill="#7c3aed" opacity="0.4"/><path d="M10 2L16 6.5L10 9Z" fill="#c4b5fd"/><path d="M10 2L4 6.5L10 9Z" fill="#a78bfa" opacity="0.7"/><path d="M4 6.5L10 9L6 15Z" fill="#7c3aed" opacity="0.8"/><path d="M16 6.5L10 9L14 15Z" fill="#6d28d9"/></svg>
+          </div>
+          <div class="ai-launch-info">
+            <span class="ai-launch-name">Obsidian</span>
+            <span class="ai-launch-sub">Knowledge vault</span>
+          </div>
+          <div class="ai-launch-dot" style="background:#7c3aed;"></div>
+        </a>
+
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <!-- ── SHOTS ── -->
@@ -2521,6 +2623,8 @@ function rHangar(){
     </div>`;
   const today=tod();const tt=S.tasks.filter(t=>t.due===today&&!t.done);
   document.getElementById('dash-today').innerHTML=tt.length?tt.map(t=>renderTCard(t)).join(''):`<div style="font-family:var(--mono);font-size:8px;color:var(--t2);padding:7px 1px;letter-spacing:0.1em">NO TASKS DUE TODAY</div>`;
+  const pillEl=document.getElementById('today-pill');
+  if(pillEl){ if(tt.length){pillEl.textContent=tt.length;pillEl.style.display='';}else{pillEl.style.display='none';} }
 }
 
 // ═══════════════════════════════
