@@ -639,8 +639,8 @@ body {
 .plan-action-btn:hover { background: var(--s3); color: var(--t0); }
 .plan-commit-btn { border-color: rgba(255,255,255,0.3); color: #ffffff; text-shadow: 0 0 8px rgba(255,255,255,0.4), 0 0 16px rgba(200,215,255,0.2); }
 .plan-commit-btn:hover { background: var(--y2); }
-.plan-suggest-banner { padding: 10px 16px; background: var(--s2); border-bottom: var(--b2); font-family: var(--sans); font-size: 12px; color: var(--t1); line-height: 1.5; flex-shrink: 0; position: relative; padding-right: 36px; }
-.plan-suggest-close { position: absolute; top: 8px; right: 10px; background: none; border: none; color: var(--t2); cursor: pointer; font-size: 14px; }
+.plan-rack-banner { padding: 10px 16px; background: var(--s2); border-bottom: var(--b2); font-family: var(--sans); font-size: 12px; color: var(--t1); line-height: 1.5; flex-shrink: 0; position: relative; padding-right: 36px; }
+.plan-rack-close { position: absolute; top: 8px; right: 10px; background: none; border: none; color: var(--t2); cursor: pointer; font-size: 14px; }
 .plan-pool-section { flex-shrink: 0; border-bottom: var(--b2); background: var(--s1); }
 .plan-pool-header { display: flex; align-items: center; gap: 8px; padding: 8px 16px; cursor: pointer; user-select: none; }
 .plan-pool-label { font-family: var(--sans); font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--t2); flex-shrink: 0; }
@@ -1186,6 +1186,18 @@ body {
   background: linear-gradient(90deg, transparent, rgba(255,255,255,0.10) 30%, rgba(255,255,255,0.18) 50%, rgba(200,215,255,0.10) 70%, transparent);
   pointer-events: none;
 }
+
+
+/* Plan block lock button */
+.plan-block-lock {
+  position: absolute; top: 7px; right: 28px;
+  width: 18px; height: 18px;
+  background: none; border: none; cursor: pointer;
+  font-size: 10px; color: rgba(255,255,255,0.35);
+  display: flex; align-items: center; justify-content: center;
+  transition: color 0.1s; padding: 0; line-height: 1;
+}
+.plan-block-lock:hover { color: rgba(255,255,255,0.7); }
 
 /* ── AI STACK SHORTCUTS ── */
 .ai-stack-btn {
@@ -2547,7 +2559,7 @@ html, body { height:100%; overflow:hidden; }
       HOME
     </button>
     <span class="module-title-lbl">SCHEDULE</span>
-    <div class="module-actions-bar"><button class="tb-btn" onclick="planSuggest()">SUGGEST</button><button class="tb-btn" onclick="planCommit()">COMMIT</button></div>
+    <div class="module-actions-bar"><button class="tb-btn" id="rack-btn-top" onclick="rackDay()">RACK</button><button class="tb-btn" onclick="planCommit()">COMMIT</button></div>
   </div>
   <div class="module-scroll" style="padding-bottom:0;">
     <!-- ── PLAN MODE (sub-page) ── -->
@@ -2558,15 +2570,15 @@ html, body { height:100%; overflow:hidden; }
     <button class="plan-back-btn" onclick="setPayloadMode('execute')">← BACK</button>
     <div class="plan-date" id="plan-date-label"></div>
     <div class="plan-header-actions">
-      <button class="plan-action-btn" id="plan-suggest-btn" onclick="planSuggest()">SUGGEST</button>
+      <button class="plan-action-btn" id="plan-rack-btn" onclick="planSuggest()">RACK</button>
       <button class="plan-action-btn plan-commit-btn" onclick="planCommit()">COMMIT</button>
     </div>
   </div>
 
   <!-- INTEL suggestion banner -->
-  <div class="plan-suggest-banner" id="plan-suggest-banner" style="display:none">
-    <div class="plan-suggest-txt" id="plan-suggest-txt"></div>
-    <button class="plan-suggest-close" onclick="this.parentElement.style.display='none'">✕</button>
+  <div class="plan-rack-banner" id="plan-rack-banner" style="display:none">
+    <div class="plan-rack-txt" id="plan-rack-txt"></div>
+    <button class="plan-rack-close" onclick="this.parentElement.style.display='none'">✕</button>
   </div>
 
   <!-- Task pool — horizontal scrollable chips, collapsible -->
@@ -4715,6 +4727,7 @@ async function initPlanMode(){
   try{ await fetchCalendarEvents(); }catch(e){}
   renderTaskPool();
   renderTimeline();
+  checkDayStartRack();
 }
 
 
@@ -5015,8 +5028,19 @@ function placeBlock(entry){
   const endM=(entry.startM+entry.durMins)%60;
   const show=gs(task.sid);
   const col=task.color||(show?.color||'var(--p5)');
-  body.insertAdjacentHTML('beforeend','<div class="plan-block" style="--bc:'+col+';cursor:pointer" data-bid="'+task.id+'" onclick="planBlockTapEl(this)"><button class="plan-block-remove" onclick="removePlanBlockEl(this)">✕</button><div class="plan-block-title">'+task.title+'</div><div class="plan-block-meta"><span class="plan-block-time">'+fmtTime(entry.startH,entry.startM)+'–'+fmtTime(endH,endM)+'</span><span class="plan-block-dur">'+entry.durMins+'min</span></div></div>');
-}
+  body.insertAdjacentHTML('beforeend', (function(){
+    var lockSt = entry.locked ? 'outline:1px solid rgba(255,255,255,0.25);' : '';
+    var lockIc = entry.locked ? '&#x1F512;' : '&#x25CB;';
+    var endH2 = Math.floor((entry.startH*60+entry.startM+entry.durMins)/60);
+    var endM2 = (entry.startM+entry.durMins)%60;
+    return '<div class="plan-block" style="--bc:'+col+';cursor:pointer;'+lockSt+'" data-bid="'+task.id+'" onclick="planBlockTapEl(this)">'
+      +'<button class="plan-block-remove" onclick="removePlanBlockEl(this)">&#x2715;</button>'
+      +'<button class="plan-block-lock" onclick="event.stopPropagation();togglePlanLock(this.closest(\'.plan-block\').dataset.bid)" title="Lock">'+lockIc+'</button>'
+      +'<div class="plan-block-title">'+task.title+'</div>'
+      +'<div class="plan-block-meta"><span class="plan-block-time">'+fmtTime(entry.startH,entry.startM)+'&ndash;'+fmtTime(endH2,endM2)+'</span>'
+      +'<span class="plan-block-dur">'+entry.durMins+'min</span></div>'
+      +'</div>';
+  })());}
 
 function onSlotTap(h,m){
   if(!planSelected){
@@ -5219,9 +5243,9 @@ function findFirstGap(dur,busy){
 }
 
 async function planSuggest(){
-  const btn=document.getElementById('plan-suggest-btn');
-  const banner=document.getElementById('plan-suggest-banner');
-  const txt=document.getElementById('plan-suggest-txt');
+  const btn=document.getElementById('plan-rack-btn');
+  const banner=document.getElementById('plan-rack-banner');
+  const txt=document.getElementById('plan-rack-txt');
   if(btn){btn.style.opacity='0.4';btn.style.pointerEvents='none';}
   if(banner) banner.style.display='block';
   if(txt) txt.textContent='INTEL thinking…';
@@ -5286,6 +5310,188 @@ function injectCalendarEvents(events){
 
 function savePlan(){localStorage.setItem('vtek_plan_'+new Date().toDateString(),JSON.stringify(planSchedule));}
 function loadSavedPlan(){const s=localStorage.getItem('vtek_plan_'+new Date().toDateString());planSchedule=s?JSON.parse(s):[];}
+
+
+
+// ══════════════════════════════════════════════════════
+// AUTO-RACK ENGINE — bin-pack tasks into open day slots
+// ══════════════════════════════════════════════════════
+
+function getOpenSlots() {
+  // Returns array of {startH, startM, durMins} for available time
+  const SLOT = 30; // minutes per half-hour slot
+  const slots = [];
+  for (let h = WORK_START; h < WORK_END; h++) {
+    [0, 30].forEach(m => {
+      // Skip lunch
+      if (h === LUNCH_START && m === 0) return;
+      if (h === LUNCH_START && m === 30) return;
+      // Skip past time
+      const now = new Date();
+      const slotMins = h * 60 + m;
+      const nowMins = now.getHours() * 60 + now.getMinutes();
+      if (slotMins < nowMins - 15) return;
+      // Check if occupied by calendar event
+      const occupied = planCalEvents.some(ev => {
+        const evStart = ev.startH * 60 + ev.startM;
+        const evEnd = evStart + ev.durMins;
+        return slotMins >= evStart && slotMins < evEnd;
+      });
+      if (!occupied) slots.push({ startH: h, startM: m, durMins: SLOT });
+    });
+  }
+  return slots;
+}
+
+function sortTasksForRack(tasks) {
+  const todStr = tod();
+  return tasks
+    .filter(t => !t.done)
+    .sort((a, b) => {
+      // Priority score
+      const priScore = { high: 0, med: 1, low: 2 };
+      const aOverdue = a.due && a.due < todStr ? -1 : 0;
+      const bOverdue = b.due && b.due < todStr ? -1 : 0;
+      if (aOverdue !== bOverdue) return aOverdue - bOverdue;
+      // Due today first
+      const aDueToday = a.due === todStr ? 0 : 1;
+      const bDueToday = b.due === todStr ? 0 : 1;
+      if (aDueToday !== bDueToday) return aDueToday - bDueToday;
+      // Then priority
+      const ap = priScore[a.pri] ?? 1;
+      const bp = priScore[b.pri] ?? 1;
+      if (ap !== bp) return ap - bp;
+      // Then soonest due date
+      if (a.due && b.due) return a.due.localeCompare(b.due);
+      if (a.due) return -1;
+      if (b.due) return 1;
+      return 0;
+    });
+}
+
+function autoRackDay(silent = false) {
+  // Keep locked blocks
+  const locked = planSchedule.filter(e => e.locked);
+  const lockedTaskIds = new Set(locked.map(e => e.taskId));
+
+  // Get tasks not already locked in
+  const tasks = sortTasksForRack(S.tasks).filter(t => !lockedTaskIds.has(t.id));
+
+  // Remove non-locked entries from schedule
+  planSchedule = locked.slice();
+
+  // Get open slots
+  const open = getOpenSlots().filter(slot => {
+    // Remove slots consumed by locked blocks
+    return !locked.some(lk => {
+      const lkStart = lk.startH * 60 + lk.startM;
+      const lkEnd = lkStart + lk.durMins;
+      const slotStart = slot.startH * 60 + slot.startM;
+      return slotStart >= lkStart && slotStart < lkEnd;
+    });
+  });
+
+  // Merge consecutive open slots into runs
+  const runs = [];
+  let cur = null;
+  open.forEach(s => {
+    const mins = s.startH * 60 + s.startM;
+    if (cur && mins === cur.startH * 60 + cur.startM + cur.durMins) {
+      cur.durMins += 30;
+    } else {
+      if (cur) runs.push(cur);
+      cur = { startH: s.startH, startM: s.startM, durMins: 30 };
+    }
+  });
+  if (cur) runs.push(cur);
+
+  // Bin-pack tasks into runs
+  let placed = 0;
+  tasks.forEach(task => {
+    const dur = task.dur || 45;
+    for (let i = 0; i < runs.length; i++) {
+      const run = runs[i];
+      if (run.durMins >= dur) {
+        planSchedule.push({
+          taskId: task.id,
+          startH: run.startH,
+          startM: run.startM,
+          durMins: dur,
+          locked: false,
+        });
+        // Advance run pointer
+        const newStart = run.startH * 60 + run.startM + dur;
+        run.startH = Math.floor(newStart / 60);
+        run.startM = newStart % 60;
+        run.durMins -= dur;
+        placed++;
+        break;
+      }
+    }
+  });
+
+  // Persist and re-render
+  localStorage.setItem('vtek_plan_' + new Date().toDateString(), JSON.stringify(planSchedule));
+  renderTimeline();
+  updateTotalTime();
+
+  if (!silent) {
+    const unplaced = tasks.length - placed;
+    const msg = placed
+      ? 'RACKED ' + placed + ' TASK' + (placed > 1 ? 'S' : '') + (unplaced ? ' · ' + unplaced + ' OVERFLOW' : '')
+      : 'NO OPEN SLOTS';
+    toast(msg);
+  }
+
+  // Update rack button state
+  const rackBtn = document.getElementById('plan-rack-btn') || document.getElementById('rack-btn-top');
+  if (rackBtn) {
+    rackBtn.textContent = 'RACKED';
+    rackBtn.style.opacity = '0.5';
+    setTimeout(() => {
+      rackBtn.textContent = 'RACK';
+      rackBtn.style.opacity = '';
+    }, 2000);
+  }
+}
+
+// Public trigger — called by RACK button
+function rackDay() {
+  autoRackDay(false);
+}
+
+// ── DAY-START AUTO-RACK ──
+// Fires once on first open of a new day
+function checkDayStartRack() {
+  const key = 'vtek_last_rack_' + tod();
+  if (!localStorage.getItem(key)) {
+    localStorage.setItem(key, '1');
+    // Only auto-rack if there are tasks and no committed plan yet
+    loadSavedPlan();
+    const unlockedPlan = planSchedule.filter(e => !e.locked);
+    if (S.tasks.filter(t => !t.done).length > 0 && unlockedPlan.length === 0) {
+      autoRackDay(true); // silent — no toast
+    }
+  }
+}
+
+// ── LOCK TOGGLE ──
+// Called on long-press or lock icon tap on a plan block
+function togglePlanLock(taskId) {
+  const entry = planSchedule.find(e => e.taskId === taskId);
+  if (!entry) return;
+  entry.locked = !entry.locked;
+  localStorage.setItem('vtek_plan_' + new Date().toDateString(), JSON.stringify(planSchedule));
+  renderTimeline();
+  toast(entry.locked ? 'BLOCK LOCKED' : 'BLOCK UNLOCKED');
+}
+
+// ── REACTIVE RACK — rebalance after task mutations ──
+function reactiveRack() {
+  // Only rebalance if plan is open and has no locked blocks overriding
+  if (!document.getElementById('pg-plan')?.classList.contains('on')) return;
+  autoRackDay(true);
+}
 
 
 // ── BOOT
