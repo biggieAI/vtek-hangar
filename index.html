@@ -2981,6 +2981,34 @@ html, body { height:100%; overflow:hidden; }
 .hng-vl-lbl { font-family: var(--mono); font-size: 10px; color: var(--t0); flex: 1; }
 .hng-vl-date { font-family: var(--mono); font-size: 9px; color: var(--t3); flex-shrink: 0; }
 .hng-vl-empty { font-family: var(--mono); font-size: 10px; color: var(--t3); padding: 8px 0; }
+
+/* ── HANGAR: Team Roster ── */
+.hng-team-member { display:flex; align-items:center; gap:10px; padding:10px 12px; background:var(--s2); border-radius:6px; margin-bottom:6px; }
+.hng-team-avatar { width:32px; height:32px; border-radius:50%; background:var(--s4); display:flex; align-items:center; justify-content:center; font-family:var(--mono); font-size:11px; font-weight:700; color:var(--t0); flex-shrink:0; }
+.hng-team-info { flex:1; min-width:0; }
+.hng-team-name { font-family:var(--mono); font-size:12px; font-weight:700; color:var(--t0); }
+.hng-team-role { font-family:var(--mono); font-size:9px; color:var(--t3); letter-spacing:0.08em; margin-top:1px; }
+.hng-team-shots { font-family:var(--mono); font-size:9px; color:var(--y); margin-top:2px; }
+.hng-team-actions { display:flex; gap:5px; }
+.hng-team-btn { font-family:var(--mono); font-size:9px; padding:4px 8px; border:1px solid var(--s4); background:var(--s3); color:var(--t2); border-radius:3px; cursor:pointer; }
+.hng-team-btn.danger { border-color:var(--blk); color:var(--blk); }
+.hng-team-btn:active { background:var(--s4); }
+.hng-team-empty { font-family:var(--mono); font-size:10px; color:var(--t3); padding:16px 0; text-align:center; }
+
+/* ── HANGAR: Import ── */
+.hng-import-tabs { display:flex; gap:6px; margin-bottom:14px; }
+.hng-itab { font-family:var(--mono); font-size:9px; font-weight:700; letter-spacing:0.08em; padding:6px 12px; border:1px solid var(--s4); background:var(--s2); color:var(--t2); border-radius:3px; cursor:pointer; }
+.hng-itab.on { background:var(--y); color:var(--bg); border-color:var(--y); }
+.hng-imp-panel {}
+.hng-import-hint { font-family:var(--mono); font-size:9px; color:var(--t2); line-height:1.7; margin-bottom:8px; }
+.hng-import-example { font-family:var(--mono); font-size:8px; color:var(--t3); background:var(--s2); border-radius:4px; padding:8px 10px; margin-bottom:10px; line-height:1.8; white-space:pre-wrap; }
+.hng-import-label { font-family:var(--mono); font-size:9px; color:var(--t3); letter-spacing:0.1em; }
+.hng-import-ta { width:100%; min-height:140px; background:var(--s2); border:1px solid var(--s3); border-radius:4px; padding:10px 12px; font-family:var(--mono); font-size:10px; color:var(--t0); resize:vertical; box-sizing:border-box; }
+.hng-import-ta:focus { outline:none; border-color:var(--y); }
+.hng-import-btn { width:100%; margin-top:10px; padding:12px; background:var(--s3); border:1px solid var(--s4); border-radius:4px; font-family:var(--mono); font-size:10px; font-weight:700; letter-spacing:0.1em; color:var(--t0); cursor:pointer; }
+.hng-import-btn:active { background:var(--s4); }
+.hng-import-result-ok { font-family:var(--mono); font-size:10px; color:var(--app); line-height:1.8; background:var(--s2); padding:10px 12px; border-radius:4px; border-left:2px solid var(--app); }
+.hng-import-result-err { font-family:var(--mono); font-size:10px; color:var(--blk); line-height:1.8; background:var(--s2); padding:10px 12px; border-radius:4px; border-left:2px solid var(--blk); }
 </style>
 </head>
 <body>
@@ -3177,7 +3205,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260412-174157';
+const BUILD_ID = 'VTEK-20260412-174826';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
@@ -3209,6 +3237,7 @@ let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
 if(!S.shows) S.shows=[];
 if(!S.shots) S.shots=[];
 if(!S.tasks) S.tasks=[];
+if(!S.team) S.team=[];
 if(!S.vaultDocs) S.vaultDocs=[];
 if(!S.schedule) S.schedule=[];
 if(!S.config) S.config={};
@@ -4241,7 +4270,10 @@ function logNewVersion(){
 }
 
 function setStat(id,st){
-  const sh=S.shots.find(s=>s.id===id);sh.status=st;save();openEdit(id);
+  const sh=S.shots.find(s=>s.id===id);if(!sh)return;
+  sh.status=st;save();openEdit(id);
+  // Also refresh detail if open
+  if(typeof _hngDetailShotId!=='undefined'&&_hngDetailShotId===id){const dv=document.getElementById('hv-detail');if(dv&&dv.style.display!=='none')hngOpenDetail(id);}
 }
 function saveShot(){
   const sh=S.shots.find(s=>s.id===editId);
@@ -4262,8 +4294,11 @@ function addShot(){
     ci:parseInt(document.getElementById('as-ci').value)||0,
     co:parseInt(document.getElementById('as-co').value)||0,
     bid:parseFloat(document.getElementById('as-bid').value)||0});
-  save();closeSheet('ol-shot');refresh();toast('SHOT LOGGED');
+  save();closeSheet('ol-shot');rHangar();toast('SHOT LOGGED');
   ['as-code','as-seq','as-who','as-bid','as-notes','as-ci','as-co'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  // If shots view open for this show, refresh it
+  const _newSid=document.getElementById('as-show')?.value;
+  if(_newSid&&S.activeShow===_newSid){const dv=document.getElementById('hv-shots');if(dv&&dv.style.display!=='none')rShots();}
 }
 function addShow(){
   const code=document.getElementById('ash-code').value.trim().toUpperCase();
@@ -4273,7 +4308,7 @@ function addShow(){
     due:document.getElementById('ash-due').value,
     teamSize:parseInt(document.getElementById('ash-team').value)||2,
     weeksLeft:parseInt(document.getElementById('ash-weeks').value)||12});
-  save();closeSheet('ol-show');refresh();toast('SHOW ADDED');
+  save();closeSheet('ol-show');rHangar();toast('SHOW ADDED');
   ['ash-code','ash-name','ash-client','ash-team','ash-weeks'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
 }
 
@@ -4654,7 +4689,7 @@ function toggleAutoSync(btn){
 // SHEETS + UTILS
 // ═══════════════════════════════
 function openSheet(id){
-  if(id==='ol-shot') document.getElementById('as-show').innerHTML=S.shows.map(s=>`<option value="${s.id}">${s.code} — ${s.name}</option>`).join('');
+  if(id==='ol-shot'){document.getElementById('as-show').innerHTML=S.shows.map(s=>`<option value="${s.id}">${s.code} — ${s.name}</option>`).join('');populateWhoDropdown('as-who','');}
   if(id==='ol-task'){
     document.getElementById('at-show').innerHTML=S.shows.map(s=>`<option value="${s.id}">${s.code} — ${s.name}</option>`).join('');
     const tg=document.getElementById('task-template-grid');if(tg)tg.innerHTML=renderTemplateGrid();
@@ -6747,6 +6782,10 @@ function _hngShow(which, titleTxt, lblTxt) {
   v.home.style.display   = which === 'home'   ? '' : 'none';
   v.shots.style.display  = which === 'shots'  ? '' : 'none';
   v.detail.style.display = which === 'detail' ? '' : 'none';
+  const team   = document.getElementById('hv-team');
+  const imp    = document.getElementById('hv-import');
+  if (team)   team.style.display   = which === 'team'   ? '' : 'none';
+  if (imp)    imp.style.display    = which === 'import' ? '' : 'none';
   if (v.title) v.title.textContent = titleTxt;
   if (v.lbl)   v.lbl.textContent   = lblTxt;
 }
@@ -6756,12 +6795,16 @@ function hangarBack() {
   const openOverlay = document.querySelector('.overlay.open');
   if (openOverlay) { openOverlay.classList.remove('open'); return; }
   const v = _hngViews();
-  if (v.detail && v.detail.style.display !== 'none') {
-    // detail → shots
+  const team   = document.getElementById('hv-team');
+  const imp    = document.getElementById('hv-import');
+  if (team && team.style.display !== 'none') {
+    _hngShow('home', 'HANGAR', 'HOME');
+  } else if (imp && imp.style.display !== 'none') {
+    _hngShow('home', 'HANGAR', 'HOME');
+  } else if (v.detail && v.detail.style.display !== 'none') {
     const show = (S.shows || []).find(s => s.id === S.activeShow);
     _hngShow('shots', show ? show.code : 'SHOTS', 'HANGAR');
   } else if (v.shots && v.shots.style.display !== 'none') {
-    // shots → home
     _hngShow('home', 'HANGAR', 'HOME');
   } else {
     closeModule();
@@ -6838,12 +6881,16 @@ function hngDetailDelete() {
   if (!_hngDetailShotId) return;
   const sh = (S.shots||[]).find(s=>s.id===_hngDetailShotId);
   if (!sh) return;
-  if (!confirm('Delete '+sh.code+'?')) return;
+  if (!confirm('Delete '+sh.code+'? This cannot be undone.')) return;
+  const sid = sh.sid;
   S.shots = S.shots.filter(s=>s.id!==_hngDetailShotId);
-  save(); toast('Shot deleted'); rHangar();
-  const show = (S.shows||[]).find(s=>s.id===sh.sid);
+  _hngDetailShotId = null;
+  save(); rHangar();
+  const show = (S.shows||[]).find(s=>s.id===sid);
+  S.activeShow = sid;
   _hngShow('shots', show?show.code:'SHOTS', 'HANGAR');
   rShots();
+  toast('Shot deleted');
 }
 
 function hngOpenShots(showId) {
@@ -6907,6 +6954,206 @@ function cycleHngStatus(shotId) {
   save(); haptic('light'); toast(sh.code + ' → ' + sh.status.toUpperCase());
   renderHngShotList();
   rHangar();
+}
+
+// ══════════════════════════════════════════════
+// TEAM ROSTER
+// ══════════════════════════════════════════════
+
+function hngOpenTeam() {
+  renderHngTeam();
+  _hngShow('team', 'TEAM', 'HANGAR');
+}
+
+function renderHngTeam() {
+  const el = document.getElementById('hng-team-list');
+  if (!el) return;
+  const team = S.team || [];
+  if (!team.length) {
+    el.innerHTML = '<div class="hng-team-empty">No team members yet — tap + MEMBER</div>';
+    return;
+  }
+  el.innerHTML = team.map((m, idx) => {
+    const initials = m.name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+    const assigned = (S.shots||[]).filter(s=>s.who===m.name).length;
+    const colors = ['#3b82f6','#8b5cf6','#10b981','#f59e0b','#ef4444','#06b6d4'];
+    const col = colors[idx % colors.length];
+    return `<div class="hng-team-member">
+      <div class="hng-team-avatar" style="background:${col}22;color:${col};border:1px solid ${col}44">${initials}</div>
+      <div class="hng-team-info">
+        <div class="hng-team-name">${m.name}</div>
+        <div class="hng-team-role">${m.role||'—'}</div>
+        ${assigned?`<div class="hng-team-shots">${assigned} SHOT${assigned!==1?'S':''} ASSIGNED</div>`:''}
+      </div>
+      <div class="hng-team-actions">
+        <button class="hng-team-btn" onclick="hngTeamEdit(${idx})">EDIT</button>
+        <button class="hng-team-btn danger" onclick="hngTeamDelete(${idx})">✕</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function hngTeamAdd() {
+  const name = prompt('Name:');
+  if (!name || !name.trim()) return;
+  const role = prompt('Role (e.g. Compositor, Lead, VFX Sup):') || '';
+  if (!S.team) S.team = [];
+  S.team.push({ name: name.trim(), role: role.trim() });
+  save(); renderHngTeam(); toast(name.trim() + ' added');
+}
+
+function hngTeamEdit(idx) {
+  const m = (S.team||[])[idx];
+  if (!m) return;
+  const name = prompt('Name:', m.name);
+  if (name === null) return;
+  const role = prompt('Role:', m.role||'');
+  if (role === null) return;
+  const oldName = m.name;
+  m.name = name.trim() || oldName;
+  m.role = role.trim();
+  // Update assigned shots
+  if (oldName !== m.name) {
+    (S.shots||[]).forEach(s => { if(s.who===oldName) s.who=m.name; });
+  }
+  save(); renderHngTeam(); toast('Updated');
+}
+
+function hngTeamDelete(idx) {
+  const m = (S.team||[])[idx];
+  if (!m) return;
+  if (!confirm('Remove ' + m.name + ' from roster?')) return;
+  S.team.splice(idx, 1);
+  save(); renderHngTeam(); toast('Removed');
+}
+
+// Populate team dropdown in add-shot and edit-shot sheets
+function populateWhoDropdown(selectId, currentVal) {
+  const el = document.getElementById(selectId);
+  if (!el) return;
+  const team = S.team || [];
+  el.innerHTML = '<option value="">— Select artist —</option>'
+    + team.map(m => `<option value="${m.name}" ${m.name===currentVal?'selected':''}>${m.name} (${m.role||'?'})</option>`).join('')
+    + `<option value="_custom">Custom…</option>`;
+  el.onchange = function() {
+    if (this.value === '_custom') {
+      const v = prompt('Enter name:');
+      if (v) { const opt=document.createElement('option'); opt.value=v; opt.textContent=v; opt.selected=true; this.appendChild(opt); }
+      else this.value = currentVal||'';
+    }
+  };
+}
+
+// ══════════════════════════════════════════════
+// IMPORT SYSTEM
+// ══════════════════════════════════════════════
+
+function hngOpenImport() {
+  // Populate show dropdown in shots CSV tab
+  const sel = document.getElementById('imp-shots-show');
+  if (sel) sel.innerHTML = (S.shows||[]).map(s=>`<option value="${s.id}">${s.code} — ${s.name}</option>`).join('');
+  document.getElementById('hng-import-result').innerHTML = '';
+  _hngShow('import', 'IMPORT', 'HANGAR');
+}
+
+function hngImportTab(tab) {
+  ['show','shots','json'].forEach(t => {
+    const btn = document.getElementById('itab-'+t);
+    const panel = document.getElementById('imp-'+(t==='show'?'show':t==='shots'?'shots':'json'));
+    if (btn) btn.classList.toggle('on', t===tab);
+    if (panel) panel.style.display = t===tab ? '' : 'none';
+  });
+}
+
+function _importResult(ok, msg) {
+  const el = document.getElementById('hng-import-result');
+  if (el) el.innerHTML = `<div class="hng-import-result-${ok?'ok':'err'}">${msg}</div>`;
+}
+
+function hngImportShowPack() {
+  const raw = document.getElementById('imp-show-json')?.value.trim();
+  if (!raw) { _importResult(false, 'Nothing to import.'); return; }
+  let pack;
+  try { pack = JSON.parse(raw); } catch(e) { _importResult(false, 'JSON parse error: '+e.message); return; }
+  if (!pack.show || !pack.show.code) { _importResult(false, 'Missing show.code field.'); return; }
+  const showId = 's'+Date.now();
+  const show = { id:showId, code:pack.show.code.toUpperCase(), name:pack.show.name||'', client:pack.show.client||'', due:pack.show.due||'', teamSize:pack.show.teamSize||2, weeksLeft:pack.show.weeksLeft||12, color:pack.show.color||'' };
+  if (!S.shows) S.shows=[];
+  S.shows.push(show);
+  let shotCount=0, taskCount=0;
+  (pack.shots||[]).forEach(sh => {
+    const sid = 'sh'+Date.now()+Math.random().toString(36).slice(2,6);
+    S.shots.push({ id:sid, sid:showId, code:sh.code||'UNNAMED', seq:sh.seq||'', status:sh.status||'wip', who:sh.who||'', notes:sh.notes||'', ci:sh.ci||0, co:sh.co||0, bid:sh.bid||0, vlog:(sh.versions||sh.vlog||[]).map(v=>({ts:Date.now(),label:v.label||v.ver||'v?',status:v.status||sh.status||'wip',note:v.note||''})) });
+    shotCount++;
+  });
+  (pack.tasks||[]).forEach(t => {
+    S.tasks.push({ id:'t'+Date.now()+Math.random().toString(36).slice(2,6), sid:showId, title:t.title||'Untitled', due:t.due||'', priority:t.priority||'med', notes:t.notes||'', done:false, tags:(t.tags||[]) });
+    taskCount++;
+  });
+  (pack.team||[]).forEach(m => {
+    if (!S.team) S.team=[];
+    if (!S.team.find(e=>e.name===m.name)) S.team.push({name:m.name,role:m.role||''});
+  });
+  save(); rHangar();
+  _importResult(true, `✓ Imported ${show.code}\n${shotCount} shots\n${taskCount} tasks`);
+  document.getElementById('imp-show-json').value = '';
+  toast('Show imported: '+show.code);
+}
+
+function hngImportShotsCSV() {
+  const raw = document.getElementById('imp-shots-csv')?.value.trim();
+  const sid = document.getElementById('imp-shots-show')?.value;
+  if (!raw) { _importResult(false,'No CSV data.'); return; }
+  if (!sid) { _importResult(false,'Select a target show.'); return; }
+  const lines = raw.split('\n').map(l=>l.trim()).filter(Boolean);
+  if (lines.length < 2) { _importResult(false,'Need header + at least 1 data row.'); return; }
+  const headers = lines[0].split(',').map(h=>h.trim().toLowerCase());
+  const gi = k => headers.indexOf(k);
+  let count=0, errors=[];
+  lines.slice(1).forEach((line,li) => {
+    const cols = line.split(',').map(c=>c.trim());
+    const code = cols[gi('code')]||'';
+    if (!code) { errors.push('Row '+(li+2)+': missing code'); return; }
+    S.shots.push({
+      id:'sh'+Date.now()+Math.random().toString(36).slice(2,6),
+      sid, code, seq:cols[gi('seq')]||'', status:cols[gi('status')]||'wip',
+      who:cols[gi('who')]||'', notes:cols[gi('notes')]||'',
+      ci:parseInt(cols[gi('ci')])||0, co:parseInt(cols[gi('co')])||0,
+      bid:parseFloat(cols[gi('bid')])||0, vlog:[]
+    });
+    count++;
+  });
+  save(); rHangar();
+  const show = (S.shows||[]).find(s=>s.id===sid);
+  _importResult(true, `✓ Imported ${count} shots into ${show?show.code:'show'}${errors.length?' — '+errors.join(', '):''}`);
+  document.getElementById('imp-shots-csv').value='';
+  toast(count+' shots imported');
+}
+
+function hngImportRaw(mode) {
+  const raw = document.getElementById('imp-raw-json')?.value.trim();
+  if (!raw) { _importResult(false,'No JSON.'); return; }
+  let data;
+  try { data=JSON.parse(raw); } catch(e) { _importResult(false,'Parse error: '+e.message); return; }
+  if (mode==='replace') {
+    if (!confirm('Replace ALL current data? This cannot be undone.')) return;
+    if (data.shows) S.shows=data.shows;
+    if (data.shots) S.shots=data.shots;
+    if (data.tasks) S.tasks=data.tasks;
+    if (data.team)  S.team=data.team;
+  } else {
+    // Merge — avoid duplicates by id
+    const existIds = new Set((S.shows||[]).map(s=>s.id));
+    (data.shows||[]).forEach(s=>{ if(!existIds.has(s.id)) S.shows.push(s); });
+    const existShotIds = new Set((S.shots||[]).map(s=>s.id));
+    (data.shots||[]).forEach(s=>{ if(!existShotIds.has(s.id)) S.shots.push(s); });
+    const existTaskIds = new Set((S.tasks||[]).map(t=>t.id));
+    (data.tasks||[]).forEach(t=>{ if(!existTaskIds.has(t.id)) S.tasks.push(t); });
+    (data.team||[]).forEach(m=>{ if(!S.team) S.team=[]; if(!S.team.find(e=>e.name===m.name)) S.team.push(m); });
+  }
+  save(); rHangar();
+  _importResult(true, mode==='replace'?'✓ Data replaced successfully.':'✓ Data merged successfully.');
+  document.getElementById('imp-raw-json').value='';
 }
 
 // Patch rHangar to populate new DOM IDs
@@ -7339,6 +7586,8 @@ if (typeof MODULE_MAP !== 'undefined' && MODULE_MAP.hangar) {
       <button class="tb-btn" onclick="rHangar();if(document.getElementById('hv-shots').style.display!='none')rShots();" title="Refresh" style="padding:6px 8px;">
         <svg viewBox="0 0 14 14" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11.5 7A4.5 4.5 0 1 1 7 2.5c1.4 0 2.7.6 3.6 1.6"/><path d="M11.5 2.5v2h-2"/></svg>
       </button>
+      <button class="tb-btn" onclick="hngOpenTeam()">TEAM</button>
+      <button class="tb-btn" onclick="hngOpenImport()">IMPORT</button>
       <button class="tb-btn" onclick="openSheet('ol-show')">+ SHOW</button>
       <button class="tb-btn go" onclick="openSheet('ol-shot')">+ SHOT</button>
     </div>
@@ -7441,6 +7690,65 @@ if (typeof MODULE_MAP !== 'undefined' && MODULE_MAP.hangar) {
       <div class="hng-detail-section-lbl" style="margin-top:14px;">VERSION LOG</div>
       <div id="hd-verlog" class="hng-detail-verlog"></div>
 
+      <div style="height:40px;"></div>
+    </div>
+  </div>
+
+  <!-- TEAM ROSTER VIEW -->
+  <div id="hv-team" class="hng-view" style="display:none;">
+    <div class="hng-detail-scroll">
+      <div class="hng-row-head" style="margin:0 0 12px;">
+        <span class="hng-row-lbl">TEAM ROSTER</span>
+        <button class="hng-row-add" onclick="hngTeamAdd()">+ MEMBER</button>
+      </div>
+      <div id="hng-team-list"></div>
+      <div style="height:40px;"></div>
+    </div>
+  </div>
+
+  <!-- IMPORT VIEW -->
+  <div id="hv-import" class="hng-view" style="display:none;">
+    <div class="hng-detail-scroll">
+      <div class="hng-row-head" style="margin:0 0 8px;">
+        <span class="hng-row-lbl">BULK IMPORT</span>
+      </div>
+      <div class="hng-import-tabs">
+        <button class="hng-itab on" id="itab-show" onclick="hngImportTab('show')">SHOW PACK</button>
+        <button class="hng-itab" id="itab-shots" onclick="hngImportTab('shots')">SHOTS CSV</button>
+        <button class="hng-itab" id="itab-json" onclick="hngImportTab('json')">RAW JSON</button>
+      </div>
+
+      <!-- SHOW PACK tab -->
+      <div id="imp-show" class="hng-imp-panel">
+        <div class="hng-import-hint">Paste a JSON show pack. Include shots, tasks, notes, versions.</div>
+        <div class="hng-import-example">Example:<br>{<br>&nbsp;&nbsp;"show":{"code":"CRL","name":"Cerulean","client":"Netflix"},<br>&nbsp;&nbsp;"shots":[{"code":"CRL_001_0010","status":"wip","who":"Ruben","notes":"...","versions":[{"label":"v1","note":"initial"}]}],<br>&nbsp;&nbsp;"tasks":[{"title":"Grade pass","due":"2026-05-01","priority":"high"}]<br>}</div>
+        <textarea class="hng-import-ta" id="imp-show-json" placeholder='{"show":{...},"shots":[...],"tasks":[]}'></textarea>
+        <button class="hng-import-btn" onclick="hngImportShowPack()">IMPORT SHOW PACK</button>
+      </div>
+
+      <!-- SHOTS CSV tab -->
+      <div id="imp-shots" class="hng-imp-panel" style="display:none;">
+        <div class="hng-import-hint">Paste CSV rows. First row must be headers.<br>Columns: code, seq, status, who, notes, ci, co, bid</div>
+        <div class="hng-import-example">Example:<br>code,seq,status,who,notes,ci,co,bid<br>CRL_001_0010,001,wip,Ruben,Drone stab,1001,1087,2.5<br>CRL_001_0020,001,review,Maria,,1001,1062,1.5</div>
+        <div style="margin-bottom:8px;">
+          <label class="hng-import-label">Target Show</label>
+          <select class="fc" id="imp-shots-show" style="margin-top:4px;"></select>
+        </div>
+        <textarea class="hng-import-ta" id="imp-shots-csv" placeholder="code,seq,status,who,notes,ci,co,bid"></textarea>
+        <button class="hng-import-btn" onclick="hngImportShotsCSV()">IMPORT SHOTS</button>
+      </div>
+
+      <!-- RAW JSON tab -->
+      <div id="imp-json" class="hng-imp-panel" style="display:none;">
+        <div class="hng-import-hint">Paste full VTEK export JSON to merge or restore state.</div>
+        <textarea class="hng-import-ta" id="imp-raw-json" placeholder='{"shows":[...],"shots":[...],"tasks":[]}'></textarea>
+        <div style="display:flex;gap:8px;margin-top:10px;">
+          <button class="hng-import-btn" style="flex:1" onclick="hngImportRaw('merge')">MERGE</button>
+          <button class="hng-import-btn" style="flex:1;background:var(--blk);" onclick="hngImportRaw('replace')">REPLACE ALL</button>
+        </div>
+      </div>
+
+      <div id="hng-import-result" style="margin-top:12px;"></div>
       <div style="height:40px;"></div>
     </div>
   </div>
