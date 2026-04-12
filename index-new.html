@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#1a1a1c">
+<title>V//TEK</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; overflow: hidden; background: #1a1a1c; color: #ececee; font-family: 'Inter', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+
+:root {
+  --bg:   #1a1a1c;
+  --s1:   #1f1f21;
+  --s2:   #222224;
+  --s3:   #272729;
+  --s4:   #2e2e30;
+  --t0:   #ececee;
+  --t1:   #b0b0bc;
+  --t2:   #787882;
+  --t3:   #52525a;
+  --mono: 'JetBrains Mono', monospace;
+  --safe-t: env(safe-area-inset-top, 0px);
+  --safe-b: env(safe-area-inset-bottom, 0px);
+
+  /* Glow system */
+  --glow-sm:  0 0 8px rgba(255,255,255,0.18), 0 0 20px rgba(200,215,255,0.10);
+  --glow-md:  0 0 14px rgba(255,255,255,0.28), 0 0 32px rgba(200,215,255,0.16);
+  --edge-sweep: linear-gradient(90deg, transparent 0%, rgba(200,215,255,0.3) 15%, rgba(255,255,255,0.85) 50%, rgba(200,215,255,0.3) 85%, transparent 100%);
+  --card-shadow: 4px 6px 18px rgba(0,0,0,0.55), -1px -2px 5px rgba(255,255,255,0.04);
+}
+
+/* ── SHELL ── */
+.shell {
+  display: flex; flex-direction: column;
+  height: 100vh; height: 100dvh;
+  overflow: hidden;
+}
+
+/* ── VIEWS ── */
+.view { display: none; flex-direction: column; height: 100%; overflow: hidden; }
+.view.active { display: flex; }
+
+/* ── TOPBAR ── */
+.topbar {
+  display: flex; align-items: center;
+  padding: calc(var(--safe-t) + 14px) 16px 14px;
+  flex-shrink: 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  background: var(--s1);
+  position: relative;
+}
+.topbar::after {
+  content: '';
+  position: absolute; bottom: -1px; left: 8%; right: 8%; height: 1px;
+  background: var(--edge-sweep);
+  opacity: 0.4;
+}
+.wordmark {
+  display: flex; align-items: baseline; gap: 2px;
+  overflow: visible; user-select: none;
+}
+.wm-logo {
+  font-size: 15px; font-weight: 900; letter-spacing: -0.01em;
+  text-transform: uppercase;
+  background: linear-gradient(160deg, #ffffff 0%, #dde2f8 55%, #c0c8f0 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  filter: drop-shadow(0 0 3px rgba(255,255,255,0.5)) drop-shadow(0 0 8px rgba(210,220,255,0.2));
+}
+.wm-slash { color: rgba(255,255,255,0.35); font-weight: 300; font-size: 15px; }
+.wm-sep {
+  font-size: 12px; color: var(--t3); margin: 0 8px;
+  background: linear-gradient(160deg, rgba(255,255,255,0.35), rgba(200,215,255,0.2));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.wm-page {
+  font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+  background: linear-gradient(160deg, #c0c4e0 0%, #9098bc 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.topbar-right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+.topbar-stat {
+  font-family: var(--mono); font-size: 9px; color: var(--t3);
+  letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 3px 8px; border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 20px; background: rgba(255,255,255,0.03);
+}
+
+/* ── INDEX PAGE ── */
+.index-scroll {
+  flex: 1; overflow-y: auto; overflow-x: hidden;
+  scrollbar-width: none; padding: 0 0 calc(var(--safe-b) + 16px);
+}
+.index-scroll::-webkit-scrollbar { display: none; }
+
+/* Status strip */
+.status-strip {
+  padding: 12px 16px 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.status-date {
+  font-family: var(--mono); font-size: 10px; color: var(--t2); letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.status-pulse { display: flex; align-items: center; gap: 12px; }
+.pulse-item { display: flex; align-items: center; gap: 5px; }
+.pulse-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+.pulse-dot.warn { background: radial-gradient(circle, #ffffff, rgba(210,220,255,0.7)); box-shadow: 0 0 5px rgba(255,255,255,0.5); }
+.pulse-dot.ok { background: rgba(160,160,166,0.7); }
+.pulse-dot.off { background: rgba(80,80,86,0.5); }
+.pulse-txt { font-family: var(--mono); font-size: 9px; color: var(--t2); letter-spacing: 0.04em; }
+
+/* Module grid */
+.module-grid {
+  display: flex; flex-direction: column; gap: 8px;
+  padding: 16px;
+}
+
+/* Module card */
+.module-card {
+  background: var(--s2);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 18px;
+  overflow: hidden; position: relative;
+  cursor: pointer;
+  transition: all 0.16s cubic-bezier(0.34,1.2,0.64,1);
+  box-shadow: var(--card-shadow);
+  -webkit-tap-highlight-color: transparent;
+}
+.module-card::before {
+  content: '';
+  position: absolute; top: 0; left: 8%; right: 8%; height: 1px;
+  background: var(--edge-sweep); opacity: 0.35;
+  pointer-events: none;
+}
+.module-card:active { transform: scale(0.985); box-shadow: 2px 3px 8px rgba(0,0,0,0.5); }
+.module-card:hover { border-color: rgba(255,255,255,0.10); }
+
+.mc-inner { display: flex; align-items: stretch; }
+
+/* Icon column */
+.mc-icon {
+  width: 64px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(255,255,255,0.025);
+  border-right: 1px solid rgba(255,255,255,0.04);
+  padding: 18px 0;
+  position: relative;
+}
+.mc-icon::after {
+  content: '';
+  position: absolute; top: 10%; bottom: 10%; right: 0; width: 1px;
+  background: linear-gradient(180deg, transparent, rgba(255,255,255,0.08) 40%, rgba(255,255,255,0.12) 50%, rgba(255,255,255,0.08) 60%, transparent);
+}
+.mc-icon svg { opacity: 0.7; }
+
+/* Body */
+.mc-body { flex: 1; padding: 14px 16px; min-width: 0; }
+.mc-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 6px; }
+.mc-name {
+  font-size: 11px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase;
+  background: linear-gradient(160deg, #ffffff 0%, #d8dcf0 60%, #bec4e0 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  line-height: 1;
+}
+.mc-tag {
+  font-family: var(--mono); font-size: 8px; color: var(--t3);
+  letter-spacing: 0.08em; text-transform: uppercase;
+  border: 1px solid rgba(255,255,255,0.07); border-radius: 20px;
+  padding: 2px 7px; background: rgba(255,255,255,0.03);
+  flex-shrink: 0; margin-top: 1px;
+}
+.mc-desc {
+  font-size: 11px; color: var(--t2); line-height: 1.45;
+  margin-bottom: 10px;
+}
+.mc-stats { display: flex; gap: 14px; align-items: center; }
+.mc-stat { display: flex; flex-direction: column; gap: 1px; }
+.mc-stat-n {
+  font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--t0);
+  background: linear-gradient(160deg, #ffffff, #c8cce8);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  line-height: 1;
+}
+.mc-stat-l { font-size: 8px; color: var(--t3); letter-spacing: 0.08em; text-transform: uppercase; }
+.mc-stat-div { width: 1px; height: 20px; background: rgba(255,255,255,0.07); align-self: center; }
+
+/* Arrow */
+.mc-arrow {
+  display: flex; align-items: center; padding: 0 14px;
+  color: var(--t3); font-size: 16px; flex-shrink: 0;
+}
+
+/* Quick actions */
+.quick-bar {
+  display: flex; gap: 8px; padding: 4px 16px 8px;
+}
+.quick-btn {
+  flex: 1; padding: 10px 0;
+  background: var(--s2); border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px; color: var(--t1);
+  font-family: var(--mono); font-size: 9px; font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  cursor: pointer; display: flex; flex-direction: column;
+  align-items: center; gap: 5px; transition: all 0.12s;
+  position: relative; overflow: hidden;
+}
+.quick-btn::before {
+  content: '';
+  position: absolute; top: 0; left: 15%; right: 15%; height: 1px;
+  background: var(--edge-sweep); opacity: 0.3;
+}
+.quick-btn:active { transform: scale(0.96); background: var(--s3); }
+.quick-btn svg { opacity: 0.6; }
+.section-label {
+  font-family: var(--mono); font-size: 9px; font-weight: 700;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  background: linear-gradient(160deg, #909098, #70707a);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  padding: 14px 16px 6px;
+}
+
+/* ── MODULE VIEWS ── */
+.module-topbar {
+  display: flex; align-items: center;
+  padding: calc(var(--safe-t) + 12px) 16px 12px;
+  flex-shrink: 0; gap: 12px;
+  background: var(--s1);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  position: relative;
+}
+.module-topbar::after {
+  content: '';
+  position: absolute; bottom: -1px; left: 8%; right: 8%; height: 1px;
+  background: var(--edge-sweep); opacity: 0.35;
+}
+.back-btn {
+  display: flex; align-items: center; gap: 6px;
+  background: none; border: none; color: var(--t2);
+  font-family: var(--mono); font-size: 10px; font-weight: 500;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  cursor: pointer; padding: 0; flex-shrink: 0;
+  transition: color 0.1s;
+}
+.back-btn:active { color: var(--t1); }
+.module-title {
+  font-size: 11px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase;
+  background: linear-gradient(160deg, #ffffff 0%, #d8dcf0 60%, #bec4e0 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.module-actions { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+.mod-btn {
+  font-family: var(--mono); font-size: 9px; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 6px 12px; border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.04); color: var(--t1);
+  cursor: pointer; transition: all 0.1s;
+}
+.mod-btn.primary {
+  background: rgba(255,255,255,0.90); color: #08080e;
+  border-color: transparent; font-weight: 800;
+}
+.mod-btn:active { transform: scale(0.96); }
+
+/* Module content scroll area */
+.module-content {
+  flex: 1; overflow-y: auto; overflow-x: hidden;
+  scrollbar-width: none; padding-bottom: calc(var(--safe-b) + 16px);
+}
+.module-content::-webkit-scrollbar { display: none; }
+
+/* ── PLACEHOLDER MODULE CONTENT ── */
+.module-placeholder {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  flex: 1; gap: 16px; padding: 40px 24px; text-align: center;
+}
+.placeholder-icon {
+  width: 64px; height: 64px; border-radius: 18px;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(160deg, rgba(40,40,50,0.9), rgba(30,30,38,0.95));
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: var(--card-shadow);
+  position: relative;
+}
+.placeholder-icon::before {
+  content: '';
+  position: absolute; top: 0; left: 10%; right: 10%; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2) 40%, rgba(255,255,255,0.3) 50%, rgba(200,215,255,0.2) 60%, transparent);
+}
+.placeholder-name {
+  font-size: 11px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase;
+  background: linear-gradient(160deg, #ffffff, #c8cce8);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.placeholder-desc { font-size: 13px; color: var(--t2); line-height: 1.6; max-width: 280px; }
+.placeholder-cta {
+  padding: 10px 24px; border-radius: 20px;
+  background: rgba(255,255,255,0.88); color: #08080e;
+  font-family: var(--mono); font-size: 10px; font-weight: 800;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  border: none; cursor: pointer; transition: all 0.12s;
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.2), 0 0 14px rgba(255,255,255,0.15);
+}
+
+/* Feature grid */
+.feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 0 16px; margin-top: 12px; }
+.feature-item {
+  background: var(--s2); border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 14px; padding: 12px; position: relative; overflow: hidden;
+  box-shadow: 3px 5px 12px rgba(0,0,0,0.4);
+}
+.feature-item::before {
+  content: '';
+  position: absolute; top: 0; left: 8%; right: 8%; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.10) 40%, rgba(255,255,255,0.18) 50%, rgba(200,215,255,0.10) 60%, transparent);
+}
+.feature-icon { margin-bottom: 8px; opacity: 0.6; }
+.feature-title { font-size: 10px; font-weight: 700; color: var(--t0); letter-spacing: 0.04em; margin-bottom: 3px; }
+.feature-desc { font-size: 10px; color: var(--t3); line-height: 1.45; }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.module-card { animation: fadeUp 0.3s ease both; }
+.module-card:nth-child(1) { animation-delay: 0.05s; }
+.module-card:nth-child(2) { animation-delay: 0.10s; }
+.module-card:nth-child(3) { animation-delay: 0.15s; }
+.module-card:nth-child(4) { animation-delay: 0.20s; }
+.module-card:nth-child(5) { animation-delay: 0.25s; }
+.quick-bar { animation: fadeUp 0.3s 0.30s ease both; }
+
+/* Slide transition */
+.view { transition: opacity 0.18s ease; }
+.view:not(.active) { opacity: 0; pointer-events: none; }
+.view.active { opacity: 1; }
+</style>
+</head>
+<body>
+<div class="shell">
+
+<!-- ══════════════════════════════════════════
+     INDEX VIEW
+══════════════════════════════════════════ -->
+<div class="view active" id="view-index">
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="wordmark">
+      <span class="wm-logo">V<span class="wm-slash">//</span>TEK</span>
+    </div>
+    <div class="topbar-right">
+      <span class="topbar-stat" id="idx-date"></span>
+    </div>
+  </div>
+
+  <div class="index-scroll">
+
+    <!-- Status strip -->
+    <div class="status-strip">
+      <span class="status-date" id="idx-status-txt">LOADING...</span>
+      <div class="status-pulse" id="idx-pulse"></div>
+    </div>
+
+    <!-- Quick actions -->
+    <div class="section-label">QUICK ADD</div>
+    <div class="quick-bar">
+      <button class="quick-btn" onclick="openModule('hangar')">
+        <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M8 2l5 3v6l-5 3-5-3V5z"/></svg>
+        + SHOT
+      </button>
+      <button class="quick-btn" onclick="openModule('payload')">
+        <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 8h8M8 4v8"/><circle cx="8" cy="8" r="6"/></svg>
+        + TASK
+      </button>
+      <button class="quick-btn" onclick="openModule('vault')">
+        <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 2h7l4 4v8H3z"/><path d="M10 2v4h4"/></svg>
+        + NOTE
+      </button>
+      <button class="quick-btn" onclick="openModule('intel')">
+        <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="8" r="3"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2"/></svg>
+        INTEL
+      </button>
+    </div>
+
+    <!-- Module cards -->
+    <div class="section-label">MODULES</div>
+    <div class="module-grid">
+
+      <!-- HANGAR -->
+      <div class="module-card" onclick="openModule('hangar')">
+        <div class="mc-inner">
+          <div class="mc-icon">
+            <svg viewBox="0 0 22 22" width="22" height="22" fill="none" stroke="white" stroke-width="1.4">
+              <path d="M11 2L20 7v8l-9 5-9-5V7z"/>
+              <path d="M11 2v13M2 7l9 5 9-5"/>
+            </svg>
+          </div>
+          <div class="mc-body">
+            <div class="mc-header">
+              <span class="mc-name">HANGAR</span>
+              <span class="mc-tag">PROJECT</span>
+            </div>
+            <div class="mc-desc">Active shows, shot tracking, delivery status and blockers.</div>
+            <div class="mc-stats" id="idx-hangar-stats">
+              <div class="mc-stat"><span class="mc-stat-n" id="h-shows">—</span><span class="mc-stat-l">SHOWS</span></div>
+              <div class="mc-stat-div"></div>
+              <div class="mc-stat"><span class="mc-stat-n" id="h-shots">—</span><span class="mc-stat-l">SHOTS</span></div>
+              <div class="mc-stat-div"></div>
+              <div class="mc-stat"><span class="mc-stat-n" id="h-blk">—</span><span class="mc-stat-l">BLK</span></div>
+            </div>
+          </div>
+          <div class="mc-arrow">›</div>
+        </div>
+      </div>
+
+      <!-- PAYLOAD -->
+      <div class="module-card" onclick="openModule('payload')">
+        <div class="mc-inner">
+          <div class="mc-icon">
+            <svg viewBox="0 0 22 22" width="22" height="22" fill="none" stroke="white" stroke-width="1.4">
+              <rect x="3" y="3" width="16" height="16" rx="2"/>
+              <path d="M7 8.5l2 2 4-4M7 13.5l2 2 4-4"/>
+            </svg>
+          </div>
+          <div class="mc-body">
+            <div class="mc-header">
+              <span class="mc-name">PAYLOAD</span>
+              <span class="mc-tag">TASKS</span>
+            </div>
+            <div class="mc-desc">Daily execution queue. Tasks, priority order, completion.</div>
+            <div class="mc-stats">
+              <div class="mc-stat"><span class="mc-stat-n" id="p-open">—</span><span class="mc-stat-l">OPEN</span></div>
+              <div class="mc-stat-div"></div>
+              <div class="mc-stat"><span class="mc-stat-n" id="p-today">—</span><span class="mc-stat-l">TODAY</span></div>
+              <div class="mc-stat-div"></div>
+              <div class="mc-stat"><span class="mc-stat-n" id="p-done">—</span><span class="mc-stat-l">DONE</span></div>
+            </div>
+          </div>
+          <div class="mc-arrow">›</div>
+        </div>
+      </div>
+
+      <!-- SCHEDULE -->
+      <div class="module-card" onclick="openModule('schedule')">
+        <div class="mc-inner">
+          <div class="mc-icon">
+            <svg viewBox="0 0 22 22" width="22" height="22" fill="none" stroke="white" stroke-width="1.4">
+              <rect x="3" y="4" width="16" height="15" rx="2"/>
+              <path d="M7 2v4M15 2v4M3 9h16"/>
+              <circle cx="11" cy="14" r="1.5" fill="white"/>
+            </svg>
+          </div>
+          <div class="mc-body">
+            <div class="mc-header">
+              <span class="mc-name">SCHEDULE</span>
+              <span class="mc-tag">TIME</span>
+            </div>
+            <div class="mc-desc">Day plan, time blocks, delivery waypoints and milestones.</div>
+            <div class="mc-stats">
+              <div class="mc-stat"><span class="mc-stat-n" id="s-planned">—</span><span class="mc-stat-l">PLANNED</span></div>
+              <div class="mc-stat-div"></div>
+              <div class="mc-stat"><span class="mc-stat-n" id="s-hrs">—</span><span class="mc-stat-l">HRS</span></div>
+            </div>
+          </div>
+          <div class="mc-arrow">›</div>
+        </div>
+      </div>
+
+      <!-- VAULT -->
+      <div class="module-card" onclick="openModule('vault')">
+        <div class="mc-inner">
+          <div class="mc-icon">
+            <svg viewBox="0 0 22 22" width="22" height="22" fill="none" stroke="white" stroke-width="1.4">
+              <path d="M5 2h9l5 5v13H5z"/>
+              <path d="M14 2v5h5"/>
+              <path d="M8 11h6M8 14h6M8 8h3"/>
+            </svg>
+          </div>
+          <div class="mc-body">
+            <div class="mc-header">
+              <span class="mc-name">VAULT</span>
+              <span class="mc-tag">DOCS</span>
+            </div>
+            <div class="mc-desc">Shot notes, bids, pipeline docs, references and planning.</div>
+            <div class="mc-stats">
+              <div class="mc-stat"><span class="mc-stat-n" id="v-docs">—</span><span class="mc-stat-l">DOCS</span></div>
+              <div class="mc-stat-div"></div>
+              <div class="mc-stat"><span class="mc-stat-n" id="v-updated">—</span><span class="mc-stat-l">UPDATED</span></div>
+            </div>
+          </div>
+          <div class="mc-arrow">›</div>
+        </div>
+      </div>
+
+      <!-- INTEL -->
+      <div class="module-card" onclick="openModule('intel')">
+        <div class="mc-inner">
+          <div class="mc-icon">
+            <svg viewBox="0 0 22 22" width="22" height="22" fill="none" stroke="white" stroke-width="1.4">
+              <circle cx="11" cy="11" r="3"/>
+              <path d="M11 2v3M11 17v3M2 11h3M17 11h3"/>
+              <path d="M4.9 4.9l2.1 2.1M14.9 14.9l2.1 2.1M4.9 17.1l2.1-2.1M14.9 7.1l2.1-2.1"/>
+            </svg>
+          </div>
+          <div class="mc-body">
+            <div class="mc-header">
+              <span class="mc-name">INTEL</span>
+              <span class="mc-tag">AI</span>
+            </div>
+            <div class="mc-desc">AI with full show context. Workflows, automation, summaries.</div>
+            <div class="mc-stats">
+              <div class="mc-stat"><span class="mc-stat-n">AI</span><span class="mc-stat-l">ACTIVE</span></div>
+              <div class="mc-stat-div"></div>
+              <div class="mc-stat"><span class="mc-stat-n" id="i-tools">5</span><span class="mc-stat-l">TOOLS</span></div>
+            </div>
+          </div>
+          <div class="mc-arrow">›</div>
+        </div>
+      </div>
+
+    </div><!-- /module-grid -->
+  </div><!-- /index-scroll -->
+</div><!-- /view-index -->
+
+
+<!-- ══════════════════════════════════════════
+     HANGAR MODULE
+══════════════════════════════════════════ -->
+<div class="view" id="view-hangar">
+  <div class="module-topbar">
+    <button class="back-btn" onclick="goIndex()">
+      <svg viewBox="0 0 12 12" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7.5 2L3.5 6l4 4"/></svg>
+      HOME
+    </button>
+    <span class="module-title">HANGAR</span>
+    <div class="module-actions">
+      <button class="mod-btn">+ SHOT</button>
+    </div>
+  </div>
+  <div class="module-content">
+    <div class="module-placeholder">
+      <div class="placeholder-icon">
+        <svg viewBox="0 0 28 28" width="28" height="28" fill="none" stroke="white" stroke-width="1.4" opacity="0.8">
+          <path d="M14 3L25 9v10l-11 6L3 19V9z"/><path d="M14 3v16M3 9l11 6 11-6"/>
+        </svg>
+      </div>
+      <span class="placeholder-name">HANGAR</span>
+      <p class="placeholder-desc">Project command center. Active shows, shot pipeline, delivery tracking and blockers in one view.</p>
+    </div>
+    <div class="feature-grid">
+      <div class="feature-item">
+        <div class="feature-icon"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="white" stroke-width="1.3" opacity="0.6"><rect x="1" y="1" width="6" height="6" rx="1"/><rect x="9" y="1" width="6" height="6" rx="1"/><rect x="1" y="9" width="6" height="6" rx="1"/><rect x="9" y="9" width="6" height="6" rx="1"/></svg></div>
+        <div class="feature-title">SHOW CARDS</div>
+        <div class="feature-desc">CRL, AIG and all active projects at a glance</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="white" stroke-width="1.3" opacity="0.6"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg></div>
+        <div class="feature-title">SHOT STATUS</div>
+        <div class="feature-desc">WIP, Review, Blocked, Approved, Delivered</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="white" stroke-width="1.3" opacity="0.6"><path d="M2 12l4-8 4 6 2-3 3 5H2z"/></svg></div>
+        <div class="feature-title">PROGRESS</div>
+        <div class="feature-desc">Delivery percentage and week-over-week trend</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="white" stroke-width="1.3" opacity="0.6"><path d="M8 3v5l3 3"/><circle cx="8" cy="8" r="6"/></svg></div>
+        <div class="feature-title">MISSION STATUS</div>
+        <div class="feature-desc">Global manifest across all active shows</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAYLOAD MODULE
+══════════════════════════════════════════ -->
+<div class="view" id="view-payload">
+  <div class="module-topbar">
+    <button class="back-btn" onclick="goIndex()">
+      <svg viewBox="0 0 12 12" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7.5 2L3.5 6l4 4"/></svg>
+      HOME
+    </button>
+    <span class="module-title">PAYLOAD</span>
+    <div class="module-actions">
+      <button class="mod-btn">+ TASK</button>
+    </div>
+  </div>
+  <div class="module-content">
+    <div class="module-placeholder">
+      <div class="placeholder-icon">
+        <svg viewBox="0 0 28 28" width="28" height="28" fill="none" stroke="white" stroke-width="1.4" opacity="0.8">
+          <rect x="4" y="4" width="20" height="20" rx="3"/><path d="M9 11l3 3 5-5M9 17l3 3 5-5"/>
+        </svg>
+      </div>
+      <span class="placeholder-name">PAYLOAD</span>
+      <p class="placeholder-desc">Daily execution queue. Tasks ranked by priority, duration and due date. Schedule them into your day.</p>
+    </div>
+    <div class="feature-grid">
+      <div class="feature-item">
+        <div class="feature-icon"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="white" stroke-width="1.3" opacity="0.6"><path d="M3 8h10M3 5h10M3 11h6"/></svg></div>
+        <div class="feature-title">TASK LIST</div>
+        <div class="feature-desc">Priority queue with show context and duration</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="white" stroke-width="1.3" opacity="0.6"><rect x="1" y="4" width="14" height="9" rx="1"/><path d="M5 4V3a1 1 0 012 0v1M9 4V3a1 1 0 012 0v1"/></svg></div>
+        <div class="feature-title">SCHEDULE</div>
+        <div class="feature-desc">Drag tasks onto the day plan calendar</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="white" stroke-width="1.3" opacity="0.6"><circle cx="5" cy="8" r="2"/><circle cx="11" cy="5" r="2"/><circle cx="11" cy="11" r="2"/><path d="M7 8h2M7 5.5l2-1M7 10.5l2 1"/></svg></div>
+        <div class="feature-title">FILTER</div>
+        <div class="feature-desc">By show, tag, priority or due date</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="white" stroke-width="1.3" opacity="0.6"><path d="M4 8.5l2.5 2.5 5-5"/><rect x="1" y="1" width="14" height="14" rx="2"/></svg></div>
+        <div class="feature-title">COMPLETE</div>
+        <div class="feature-desc">Circle tap to check off. Done tasks auto-archive.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SCHEDULE MODULE
+══════════════════════════════════════════ -->
+<div class="view" id="view-schedule">
+  <div class="module-topbar">
+    <button class="back-btn" onclick="goIndex()">
+      <svg viewBox="0 0 12 12" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7.5 2L3.5 6l4 4"/></svg>
+      HOME
+    </button>
+    <span class="module-title">SCHEDULE</span>
+    <div class="module-actions">
+      <button class="mod-btn">TODAY</button>
+    </div>
+  </div>
+  <div class="module-content">
+    <div class="module-placeholder">
+      <div class="placeholder-icon">
+        <svg viewBox="0 0 28 28" width="28" height="28" fill="none" stroke="white" stroke-width="1.4" opacity="0.8">
+          <rect x="3" y="5" width="22" height="20" rx="3"/><path d="M9 3v4M19 3v4M3 12h22"/>
+          <circle cx="14" cy="18" r="2" fill="white" opacity="0.6"/>
+        </svg>
+      </div>
+      <span class="placeholder-name">SCHEDULE</span>
+      <p class="placeholder-desc">Time-blocked day plan. Drag tasks into slots, set waypoints for key deliveries, track hours committed.</p>
+    </div>
+    <div class="feature-grid">
+      <div class="feature-item">
+        <div class="feature-icon"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="white" stroke-width="1.3" opacity="0.6"><rect x="1" y="3" width="14" height="11" rx="1"/><path d="M1 7h14M5 3v11M5 7h10"/></svg></div>
+        <div class="feature-title">DAY PLAN</div>
+        <div class="feature-desc">Hourly time blocks from start to end of day</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="white" stroke-width="1.3" opacity="0.6"><path d="M8 2v12M4 6l4-4 4 4M4 10l4 4 4-4"/></svg></div>
+        <div class="feature-title">WAYPOINTS</div>
+        <div class="feature-desc">Shot lock, client review, delivery deadlines</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="white" stroke-width="1.3" opacity="0.6"><circle cx="8" cy="8" r="5"/><path d="M8 5v3l2 1.5"/></svg></div>
+        <div class="feature-title">TIME LOG</div>
+        <div class="feature-desc">Track hours committed per show and task</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="white" stroke-width="1.3" opacity="0.6"><path d="M2 4h12l-1 9H3L2 4zM5 4V3a1 1 0 012 0v1M9 4V3a1 1 0 012 0v1"/></svg></div>
+        <div class="feature-title">AI SUGGEST</div>
+        <div class="feature-desc">Auto-fill your day based on priority and due dates</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     VAULT MODULE
+══════════════════════════════════════════ -->
+<div class="view" id="view-vault">
+  <div class="module-topbar">
+    <button class="back-btn" onclick="goIndex()">
+      <svg viewBox="0 0 12 12" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7.5 2L3.5 6l4 4"/></svg>
+      HOME
+    </button>
+    <span class="module-title">VAULT</span>
+    <div class="module-actions">
+      <button class="mod-btn">+ NOTE</button>
+    </div>
+  </div>
+  <div class="module-content">
+    <div class="module-placeholder">
+      <div class="placeholder-icon">
+        <svg viewBox="0 0 28 28" width="28" height="28" fill="none" stroke="white" stroke-width="1.4" opacity="0.8">
+          <path d="M6 3h11l7 7v15H6z"/><path d="M17 3v7h7"/><path d="M10 14h8M10 18h8M10 10h4"/>
+        </svg>
+      </div>
+      <span class="placeholder-name">VAULT</span>
+      <p class="placeholder-desc">Shot notes, bid sheets, pipeline docs, client specs and show reference. Organized by project.</p>
+    </div>
+    <div class="feature-grid">
+      <div class="feature-item">
+        <div class="feature-icon"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="white" stroke-width="1.3" opacity="0.6"><path d="M3 2h7l4 4v8H3z"/><path d="M10 2v4h4"/></svg></div>
+        <div class="feature-title">SHOT NOTES</div>
+        <div class="feature-desc">Per-shot retake notes and delivery flags</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="white" stroke-width="1.3" opacity="0.6"><rect x="1" y="1" width="14" height="14" rx="2"/><path d="M5 5h6M5 8h6M5 11h3"/></svg></div>
+        <div class="feature-title">BID SHEETS</div>
+        <div class="feature-desc">Bid days per shot, extensions, overages</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="white" stroke-width="1.3" opacity="0.6"><path d="M8 1l2 5h5l-4 3 1.5 5L8 11l-4.5 3L5 9 1 6h5z"/></svg></div>
+        <div class="feature-title">PIPELINE</div>
+        <div class="feature-desc">CBFX node refs, delivery specs, color workflow</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="white" stroke-width="1.3" opacity="0.6"><path d="M2 6h12M2 10h12M8 2v12"/></svg></div>
+        <div class="feature-title">PLANNING</div>
+        <div class="feature-desc">Schedule planning docs and milestone notes</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     INTEL MODULE
+══════════════════════════════════════════ -->
+<div class="view" id="view-intel">
+  <div class="module-topbar">
+    <button class="back-btn" onclick="goIndex()">
+      <svg viewBox="0 0 12 12" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7.5 2L3.5 6l4 4"/></svg>
+      HOME
+    </button>
+    <span class="module-title">INTEL</span>
+    <div class="module-actions">
+      <button class="mod-btn primary">ASK</button>
+    </div>
+  </div>
+  <div class="module-content">
+    <div class="module-placeholder">
+      <div class="placeholder-icon">
+        <svg viewBox="0 0 28 28" width="28" height="28" fill="none" stroke="white" stroke-width="1.4" opacity="0.8">
+          <circle cx="14" cy="14" r="4.5"/><path d="M14 3v4M14 21v4M3 14h4M21 14h4"/>
+          <path d="M6.6 6.6l2.8 2.8M18.6 18.6l2.8 2.8M6.6 21.4l2.8-2.8M18.6 9.4l2.8-2.8"/>
+        </svg>
+      </div>
+      <span class="placeholder-name">INTEL</span>
+      <p class="placeholder-desc">AI with full context of your shows, shots, tasks and schedule. Pre-wired workflows for VFX production.</p>
+    </div>
+    <div class="feature-grid">
+      <div class="feature-item">
+        <div class="feature-icon"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="white" stroke-width="1.3" opacity="0.6"><path d="M2 12l3-8 3 5 2-3 3 6H2z"/></svg></div>
+        <div class="feature-title">SHOW BRIEF</div>
+        <div class="feature-desc">Summarize blockers, progress and risks</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="white" stroke-width="1.3" opacity="0.6"><path d="M4 2h8v12H4z"/><path d="M7 6h2M7 9h4M7 12h2"/></svg></div>
+        <div class="feature-title">STATUS EMAIL</div>
+        <div class="feature-desc">Draft client-ready progress updates</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="white" stroke-width="1.3" opacity="0.6"><rect x="1" y="4" width="14" height="9" rx="1"/><path d="M8 1v3M5 14v2M11 14v2"/></svg></div>
+        <div class="feature-title">BID ESTIMATE</div>
+        <div class="feature-desc">Remaining days, overages and pacing analysis</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="white" stroke-width="1.3" opacity="0.6"><circle cx="5" cy="5" r="3"/><circle cx="11" cy="11" r="3"/><path d="M7.5 7.5l1 1"/></svg></div>
+        <div class="feature-title">AUTOMATION</div>
+        <div class="feature-desc">Make.com workflows, Linear sync, Akiflow routing</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /shell -->
+
+<script>
+// ── STATE ──
+const S = JSON.parse(localStorage.getItem('vtek9') || 'null') || { shows:[], shots:[], tasks:[], vaultDocs:[], schedule:[] };
+
+// ── ROUTING ──
+let currentView = 'index';
+
+function openModule(name) {
+  document.getElementById('view-' + currentView).classList.remove('active');
+  document.getElementById('view-' + name).classList.add('active');
+  currentView = name;
+  window.scrollTo(0,0);
+}
+
+function goIndex() {
+  document.getElementById('view-' + currentView).classList.remove('active');
+  document.getElementById('view-index').classList.add('active');
+  currentView = 'index';
+}
+
+// ── INDEX STATS ──
+function renderIndexStats() {
+  const tod = new Date().toISOString().split('T')[0];
+  const date = new Date().toLocaleDateString('en-US', { weekday:'short', month:'short', day:'numeric' }).toUpperCase();
+
+  // Date
+  const dateEl = document.getElementById('idx-date');
+  if (dateEl) dateEl.textContent = date;
+
+  // Hangar stats
+  const shows = S.shows || [];
+  const shots = S.shots || [];
+  const blk = shots.filter(s => s.status === 'blocked').length;
+  setEl('h-shows', shows.length || '—');
+  setEl('h-shots', shots.length || '—');
+  setEl('h-blk', blk || '—');
+
+  // Payload stats
+  const tasks = S.tasks || [];
+  const open = tasks.filter(t => !t.done).length;
+  const todayTasks = tasks.filter(t => t.due === tod && !t.done).length;
+  const done = tasks.filter(t => t.done).length;
+  setEl('p-open', open || '—');
+  setEl('p-today', todayTasks || '—');
+  setEl('p-done', done || '—');
+
+  // Schedule stats
+  const sched = S.schedule || [];
+  const hrs = sched.reduce((a,b) => a + (b.durMins||0), 0);
+  setEl('s-planned', sched.length || '—');
+  setEl('s-hrs', hrs ? Math.round(hrs/60*10)/10+'h' : '—');
+
+  // Vault
+  const docs = S.vaultDocs || [];
+  const lastUpdated = docs.length ? new Date(Math.max(...docs.map(d=>d.updated||0))).toLocaleDateString('en-US',{month:'short',day:'numeric'}) : '—';
+  setEl('v-docs', docs.length || '—');
+  setEl('v-updated', docs.length ? lastUpdated : '—');
+
+  // Status strip
+  const statusEl = document.getElementById('idx-status-txt');
+  const parts = [];
+  if (blk > 0) parts.push(`${blk} SHOT${blk>1?'S':''} BLOCKED`);
+  if (todayTasks > 0) parts.push(`${todayTasks} DUE TODAY`);
+  if (parts.length === 0) parts.push('ALL CLEAR');
+  if (statusEl) statusEl.textContent = parts.join(' · ');
+
+  // Pulse dots
+  const pulseEl = document.getElementById('idx-pulse');
+  if (pulseEl) {
+    pulseEl.innerHTML = [
+      { label: 'SHOTS', state: blk > 0 ? 'warn' : 'ok' },
+      { label: 'TASKS', state: todayTasks > 0 ? 'warn' : 'ok' },
+      { label: 'INTEL', state: 'ok' },
+    ].map(p => `
+      <div class="pulse-item">
+        <div class="pulse-dot ${p.state}"></div>
+        <span class="pulse-txt">${p.label}</span>
+      </div>`).join('');
+  }
+}
+
+function setEl(id, val) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = val;
+}
+
+// ── BOOT ──
+renderIndexStats();
+</script>
+</body>
+</html>
