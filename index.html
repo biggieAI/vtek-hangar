@@ -2689,7 +2689,6 @@ html, body { height:100%; overflow:hidden; }
   flex: 1; overflow: hidden;
   position: absolute; inset: 0; top: 48px; /* below topbar */
 }
-#mv-hangar { position: relative; }
 #mv-hangar .module-topbar { position: absolute; top: 0; left: 0; right: 0; z-index: 2; }
 
 /* Status banner */
@@ -3002,116 +3001,11 @@ html, body { height:100%; overflow:hidden; }
 </div>
 <!-- END INDEX -->
 
-<!-- HANGAR MODULE -->
-<div class="module-view" id="mv-hangar">
-  <div class="module-topbar">
-    <button class="back-btn" id="hng-back-btn" onclick="hangarBack()">
-      <svg viewBox="0 0 12 12" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7.5 2L3.5 6l4 4"/></svg>
-      <span id="hng-back-lbl">HOME</span>
-    </button>
-    <span class="module-title-lbl" id="hng-title">HANGAR</span>
-    <div class="module-actions-bar">
-      <button class="tb-btn" onclick="rHangar();if(document.getElementById('hv-shots').style.display!='none')rShots();" title="Refresh" style="padding:6px 8px;">
-        <svg viewBox="0 0 14 14" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11.5 7A4.5 4.5 0 1 1 7 2.5c1.4 0 2.7.6 3.6 1.6"/><path d="M11.5 2.5v2h-2"/></svg>
-      </button>
-      <button class="tb-btn go" onclick="openSheet('ol-shot')">+ SHOT</button>
-    </div>
-  </div>
-
-  <!-- HOME VIEW -->
-  <div id="hv-home" class="hng-view">
-    <div class="module-scroll">
-
-      <div class="hng-banner">
-        <div class="hng-banner-cell"><span class="hng-b-n" id="hng-b-total">--</span><span class="hng-b-l">SHOTS</span></div>
-        <div class="hng-banner-sep"></div>
-        <div class="hng-banner-cell"><span class="hng-b-n hng-wip" id="hng-b-wip">--</span><span class="hng-b-l">WIP</span></div>
-        <div class="hng-banner-sep"></div>
-        <div class="hng-banner-cell"><span class="hng-b-n" id="hng-b-rev">--</span><span class="hng-b-l">REV</span></div>
-        <div class="hng-banner-sep"></div>
-        <div class="hng-banner-cell"><span class="hng-b-n hng-blk" id="hng-b-blk">--</span><span class="hng-b-l">BLK</span></div>
-        <div class="hng-banner-sep"></div>
-        <div class="hng-banner-cell"><span class="hng-b-n hng-done" id="hng-b-done">--</span><span class="hng-b-l">DONE</span></div>
-      </div>
-
-      <div class="hng-row-head">
-        <span class="hng-row-lbl">ACTIVE SHOWS</span>
-        <button class="hng-row-add" onclick="openSheet('ol-show')">+ ADD</button>
-      </div>
-      <div id="hng-show-grid" class="hng-show-grid"></div>
-
-      <div class="hng-row-head" style="margin-top:4px;">
-        <span class="hng-row-lbl">TODAY</span>
-        <span class="hng-row-ct" id="hng-today-ct"></span>
-      </div>
-      <div id="hng-today" class="hng-today-list"></div>
-
-      <div class="hng-row-head" style="margin-top:4px;">
-        <span class="hng-row-lbl">AI STACK</span>
-      </div>
-      <div class="hng-ai-grid">
-        <a href="akiflow://" class="hng-ai-btn" onclick="if(!navigator.userAgent.match(/iPhone|iPad/))this.href='https://app.akiflow.com'">
-          <div class="hng-ai-icon" style="background:linear-gradient(145deg,#2d1fa3,#4f3ef5);">
-            <svg viewBox="0 0 28 28" width="22" height="22" fill="none"><path d="M14 5L22 20H6L14 5Z" fill="white" opacity="0.95"/><rect x="11" y="17" width="6" height="2.5" rx="1.2" fill="white" opacity="0.5"/></svg>
-          </div>
-          <span class="hng-ai-lbl">AKIFLOW</span>
-        </a>
-        <a href="https://app.circleback.ai" target="_blank" class="hng-ai-btn">
-          <div class="hng-ai-icon" style="background:linear-gradient(145deg,#0a2420,#0d3d34);">
-            <svg viewBox="0 0 28 28" width="22" height="22" fill="none"><circle cx="14" cy="14" r="4" fill="rgba(255,255,255,0.88)"/><path d="M8 14a6 6 0 0 1 6-6" stroke="rgba(255,255,255,0.88)" stroke-width="1.8" stroke-linecap="round" opacity="0.7"/><path d="M20 14a6 6 0 0 1-6 6" stroke="rgba(255,255,255,0.88)" stroke-width="1.8" stroke-linecap="round" opacity="0.7"/><path d="M5 14a9 9 0 0 1 9-9" stroke="rgba(255,255,255,0.88)" stroke-width="1.4" stroke-linecap="round" opacity="0.35"/><path d="M23 14a9 9 0 0 1-9 9" stroke="rgba(255,255,255,0.88)" stroke-width="1.4" stroke-linecap="round" opacity="0.35"/></svg>
-          </div>
-          <span class="hng-ai-lbl">CIRCLEBACK</span>
-        </a>
-        <a href="https://claude.ai" target="_blank" class="hng-ai-btn">
-          <div class="hng-ai-icon" style="background:linear-gradient(145deg,#c8520a,#e8813a);">
-            <svg viewBox="0 0 28 28" width="22" height="22" fill="none"><rect x="5" y="9" width="13" height="4" rx="2" fill="white" opacity="0.95"/><rect x="10" y="15" width="13" height="4" rx="2" fill="white" opacity="0.95"/><rect x="5" y="9" width="4" height="10" rx="2" fill="white" opacity="0.5"/></svg>
-          </div>
-          <span class="hng-ai-lbl">CLAUDE</span>
-        </a>
-        <a href="obsidian://" class="hng-ai-btn">
-          <div class="hng-ai-icon" style="background:linear-gradient(145deg,#1e0a3c,#3b1f6e);">
-            <svg viewBox="0 0 28 28" width="22" height="22" fill="none"><path d="M14 3L22 9L19 22L14 25L9 22L6 9Z" fill="#7c3aed" opacity="0.4"/><path d="M14 3L22 9L14 13Z" fill="#686870" opacity="0.9"/><path d="M14 3L6 9L14 13Z" fill="#c4b5fd" opacity="0.6"/><path d="M6 9L14 13L9 22Z" fill="#7c3aed" opacity="0.7"/><path d="M22 9L14 13L19 22Z" fill="#6d28d9" opacity="0.8"/><path d="M9 22L14 13L19 22L14 25Z" fill="#4c1d95" opacity="0.9"/></svg>
-          </div>
-          <span class="hng-ai-lbl">OBSIDIAN</span>
-        </a>
-      </div>
-
-      <div style="height:32px;"></div>
-    </div>
-  </div>
-
-  <!-- SHOTS DRILL-DOWN -->
-  <div id="hv-shots" class="hng-view" style="display:none;">
-    <div class="hng-tabs-bar"><div class="hng-tabs" id="hng-tabs"></div></div>
-    <div id="hng-prog-wrap" class="hng-prog-wrap"></div>
-    <div class="hng-shot-stats" id="hng-shot-stats"></div>
-    <div class="hng-filter-row">
-      <button class="hng-fchip on" id="hfc-all"      onclick="hngFilter('all')">ALL</button>
-      <button class="hng-fchip"    id="hfc-wip"      onclick="hngFilter('wip')">WIP</button>
-      <button class="hng-fchip"    id="hfc-review"   onclick="hngFilter('review')">REVIEW</button>
-      <button class="hng-fchip"    id="hfc-blocked"  onclick="hngFilter('blocked')">BLK</button>
-      <button class="hng-fchip"    id="hfc-approved" onclick="hngFilter('approved')">DONE</button>
-    </div>
-    <div class="hng-shots-scroll">
-      <div id="hng-shots-list"></div>
-      <div style="height:32px;"></div>
-    </div>
-  </div>
-
-</div>
-
-<!-- STUBS for other modules referenced in JS (keep DOM happy) -->
-<div class="module-view" id="mv-payload"></div>
-<div class="module-view" id="mv-schedule"></div>
-<div class="module-view" id="mv-vault"></div>
-<div class="module-view" id="mv-intel"></div>
-<div class="module-view" id="mv-config"></div>
-
 <!-- DEBUG BAR -->
 <div id="dbg-bar" style="position:fixed;bottom:0;left:0;right:0;z-index:99999;background:#111;border-top:1px solid #333;font-family:monospace;font-size:11px;">
   <div id="dbg-collapsed" style="height:28px;display:flex;align-items:center;padding:0 12px;gap:12px;cursor:pointer;pointer-events:auto;" onclick="document.getElementById('dbg-expanded').style.display=document.getElementById('dbg-expanded').style.display=='none'?'block':'none'">
     <span style="color:#0f0;">▶</span>
-    <span id="dbg-build-id" style="color:#aaa;">VTEK-20260412-155647</span>
+    <span id="dbg-build-id" style="color:#aaa;">VTEK-BUILD</span>
     <span style="color:#555;font-size:10px;">tap to expand</span>
   </div>
   <div id="dbg-expanded" style="display:none;max-height:200px;overflow-y:auto;padding:8px 12px;">
@@ -7126,12 +7020,119 @@ if (typeof MODULE_MAP !== 'undefined' && MODULE_MAP.hangar) {
 
 // Stamp build ID
 (function(){
-  const bid = typeof BUILD_ID !== 'undefined' ? BUILD_ID : 'VTEK-20260412-155647';
+  const bid = typeof BUILD_ID !== 'undefined' ? BUILD_ID : 'VTEK-STRIPPED';
   const el = document.getElementById('dbg-build-id');
   if(el) el.textContent = bid;
 })();
 </script>
 
 </div><!-- .shell -->
+
+
+<!-- MODULE VIEWS MOVED OUTSIDE .shell (iOS fixed+overflow:hidden bug) -->
+<div class="module-view" id="mv-hangar">
+  <div class="module-topbar">
+    <button class="back-btn" id="hng-back-btn" onclick="hangarBack()">
+      <svg viewBox="0 0 12 12" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7.5 2L3.5 6l4 4"/></svg>
+      <span id="hng-back-lbl">HOME</span>
+    </button>
+    <span class="module-title-lbl" id="hng-title">HANGAR</span>
+    <div class="module-actions-bar">
+      <button class="tb-btn" onclick="rHangar();if(document.getElementById('hv-shots').style.display!='none')rShots();" title="Refresh" style="padding:6px 8px;">
+        <svg viewBox="0 0 14 14" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11.5 7A4.5 4.5 0 1 1 7 2.5c1.4 0 2.7.6 3.6 1.6"/><path d="M11.5 2.5v2h-2"/></svg>
+      </button>
+      <button class="tb-btn go" onclick="openSheet('ol-shot')">+ SHOT</button>
+    </div>
+  </div>
+
+  <!-- HOME VIEW -->
+  <div id="hv-home" class="hng-view">
+    <div class="module-scroll">
+
+      <div class="hng-banner">
+        <div class="hng-banner-cell"><span class="hng-b-n" id="hng-b-total">--</span><span class="hng-b-l">SHOTS</span></div>
+        <div class="hng-banner-sep"></div>
+        <div class="hng-banner-cell"><span class="hng-b-n hng-wip" id="hng-b-wip">--</span><span class="hng-b-l">WIP</span></div>
+        <div class="hng-banner-sep"></div>
+        <div class="hng-banner-cell"><span class="hng-b-n" id="hng-b-rev">--</span><span class="hng-b-l">REV</span></div>
+        <div class="hng-banner-sep"></div>
+        <div class="hng-banner-cell"><span class="hng-b-n hng-blk" id="hng-b-blk">--</span><span class="hng-b-l">BLK</span></div>
+        <div class="hng-banner-sep"></div>
+        <div class="hng-banner-cell"><span class="hng-b-n hng-done" id="hng-b-done">--</span><span class="hng-b-l">DONE</span></div>
+      </div>
+
+      <div class="hng-row-head">
+        <span class="hng-row-lbl">ACTIVE SHOWS</span>
+        <button class="hng-row-add" onclick="openSheet('ol-show')">+ ADD</button>
+      </div>
+      <div id="hng-show-grid" class="hng-show-grid"></div>
+
+      <div class="hng-row-head" style="margin-top:4px;">
+        <span class="hng-row-lbl">TODAY</span>
+        <span class="hng-row-ct" id="hng-today-ct"></span>
+      </div>
+      <div id="hng-today" class="hng-today-list"></div>
+
+      <div class="hng-row-head" style="margin-top:4px;">
+        <span class="hng-row-lbl">AI STACK</span>
+      </div>
+      <div class="hng-ai-grid">
+        <a href="akiflow://" class="hng-ai-btn" onclick="if(!navigator.userAgent.match(/iPhone|iPad/))this.href='https://app.akiflow.com'">
+          <div class="hng-ai-icon" style="background:linear-gradient(145deg,#2d1fa3,#4f3ef5);">
+            <svg viewBox="0 0 28 28" width="22" height="22" fill="none"><path d="M14 5L22 20H6L14 5Z" fill="white" opacity="0.95"/><rect x="11" y="17" width="6" height="2.5" rx="1.2" fill="white" opacity="0.5"/></svg>
+          </div>
+          <span class="hng-ai-lbl">AKIFLOW</span>
+        </a>
+        <a href="https://app.circleback.ai" target="_blank" class="hng-ai-btn">
+          <div class="hng-ai-icon" style="background:linear-gradient(145deg,#0a2420,#0d3d34);">
+            <svg viewBox="0 0 28 28" width="22" height="22" fill="none"><circle cx="14" cy="14" r="4" fill="rgba(255,255,255,0.88)"/><path d="M8 14a6 6 0 0 1 6-6" stroke="rgba(255,255,255,0.88)" stroke-width="1.8" stroke-linecap="round" opacity="0.7"/><path d="M20 14a6 6 0 0 1-6 6" stroke="rgba(255,255,255,0.88)" stroke-width="1.8" stroke-linecap="round" opacity="0.7"/><path d="M5 14a9 9 0 0 1 9-9" stroke="rgba(255,255,255,0.88)" stroke-width="1.4" stroke-linecap="round" opacity="0.35"/><path d="M23 14a9 9 0 0 1-9 9" stroke="rgba(255,255,255,0.88)" stroke-width="1.4" stroke-linecap="round" opacity="0.35"/></svg>
+          </div>
+          <span class="hng-ai-lbl">CIRCLEBACK</span>
+        </a>
+        <a href="https://claude.ai" target="_blank" class="hng-ai-btn">
+          <div class="hng-ai-icon" style="background:linear-gradient(145deg,#c8520a,#e8813a);">
+            <svg viewBox="0 0 28 28" width="22" height="22" fill="none"><rect x="5" y="9" width="13" height="4" rx="2" fill="white" opacity="0.95"/><rect x="10" y="15" width="13" height="4" rx="2" fill="white" opacity="0.95"/><rect x="5" y="9" width="4" height="10" rx="2" fill="white" opacity="0.5"/></svg>
+          </div>
+          <span class="hng-ai-lbl">CLAUDE</span>
+        </a>
+        <a href="obsidian://" class="hng-ai-btn">
+          <div class="hng-ai-icon" style="background:linear-gradient(145deg,#1e0a3c,#3b1f6e);">
+            <svg viewBox="0 0 28 28" width="22" height="22" fill="none"><path d="M14 3L22 9L19 22L14 25L9 22L6 9Z" fill="#7c3aed" opacity="0.4"/><path d="M14 3L22 9L14 13Z" fill="#686870" opacity="0.9"/><path d="M14 3L6 9L14 13Z" fill="#c4b5fd" opacity="0.6"/><path d="M6 9L14 13L9 22Z" fill="#7c3aed" opacity="0.7"/><path d="M22 9L14 13L19 22Z" fill="#6d28d9" opacity="0.8"/><path d="M9 22L14 13L19 22L14 25Z" fill="#4c1d95" opacity="0.9"/></svg>
+          </div>
+          <span class="hng-ai-lbl">OBSIDIAN</span>
+        </a>
+      </div>
+
+      <div style="height:32px;"></div>
+    </div>
+  </div>
+
+  <!-- SHOTS DRILL-DOWN -->
+  <div id="hv-shots" class="hng-view" style="display:none;">
+    <div class="hng-tabs-bar"><div class="hng-tabs" id="hng-tabs"></div></div>
+    <div id="hng-prog-wrap" class="hng-prog-wrap"></div>
+    <div class="hng-shot-stats" id="hng-shot-stats"></div>
+    <div class="hng-filter-row">
+      <button class="hng-fchip on" id="hfc-all"      onclick="hngFilter('all')">ALL</button>
+      <button class="hng-fchip"    id="hfc-wip"      onclick="hngFilter('wip')">WIP</button>
+      <button class="hng-fchip"    id="hfc-review"   onclick="hngFilter('review')">REVIEW</button>
+      <button class="hng-fchip"    id="hfc-blocked"  onclick="hngFilter('blocked')">BLK</button>
+      <button class="hng-fchip"    id="hfc-approved" onclick="hngFilter('approved')">DONE</button>
+    </div>
+    <div class="hng-shots-scroll">
+      <div id="hng-shots-list"></div>
+      <div style="height:32px;"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- STUBS for other modules referenced in JS (keep DOM happy) -->
+<div class="module-view" id="mv-payload"></div>
+<div class="module-view" id="mv-schedule"></div>
+<div class="module-view" id="mv-vault"></div>
+<div class="module-view" id="mv-intel"></div>
+<div class="module-view" id="mv-config"></div>
+
 </body>
 </html>
