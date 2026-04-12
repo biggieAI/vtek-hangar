@@ -2985,7 +2985,7 @@ html, body { height:100%; overflow:hidden; }
     <div class="module-grid" style="padding-top:8px;">
 
       <!-- HANGAR -->
-      <div class="module-card" role="button" onclick="openModule('hangar')">
+      <div class="module-card" role="button" onclick="openModule('hangar')" ontouchend="event.preventDefault();openModule('hangar')">
         <div class="mc-inner">
           <div class="mc-icon">
             <svg viewBox="0 0 22 22" width="22" height="22" fill="none" stroke="white" stroke-width="1.4">
@@ -3012,7 +3012,7 @@ html, body { height:100%; overflow:hidden; }
       </div>
 
       <!-- PAYLOAD -->
-      <div class="module-card" role="button" onclick="openModule('payload')">
+      <div class="module-card" role="button" onclick="openModule('payload')" ontouchend="event.preventDefault();openModule('payload')">
         <div class="mc-inner">
           <div class="mc-icon">
             <svg viewBox="0 0 22 22" width="22" height="22" fill="none" stroke="white" stroke-width="1.4">
@@ -3039,7 +3039,7 @@ html, body { height:100%; overflow:hidden; }
       </div>
 
       <!-- SCHEDULE -->
-      <div class="module-card" role="button" onclick="openModule('schedule')">
+      <div class="module-card" role="button" onclick="openModule('schedule')" ontouchend="event.preventDefault();openModule('schedule')">
         <div class="mc-inner">
           <div class="mc-icon">
             <svg viewBox="0 0 22 22" width="22" height="22" fill="none" stroke="white" stroke-width="1.4">
@@ -3065,7 +3065,7 @@ html, body { height:100%; overflow:hidden; }
       </div>
 
       <!-- VAULT -->
-      <div class="module-card" role="button" onclick="openModule('vault')">
+      <div class="module-card" role="button" onclick="openModule('vault')" ontouchend="event.preventDefault();openModule('vault')">
         <div class="mc-inner">
           <div class="mc-icon">
             <svg viewBox="0 0 22 22" width="22" height="22" fill="none" stroke="white" stroke-width="1.4">
@@ -3091,7 +3091,7 @@ html, body { height:100%; overflow:hidden; }
       </div>
 
       <!-- INTEL -->
-      <div class="module-card" role="button" onclick="openModule('intel')">
+      <div class="module-card" role="button" onclick="openModule('intel')" ontouchend="event.preventDefault();openModule('intel')">
         <div class="mc-inner">
           <div class="mc-icon">
             <svg viewBox="0 0 22 22" width="22" height="22" fill="none" stroke="white" stroke-width="1.4">
@@ -7509,7 +7509,7 @@ function renderIndexStats() {
 }
 
 // Boot
-setTimeout(()=>{ renderIndexStats(); updateBadges(); }, 0);
+requestAnimationFrame(()=>requestAnimationFrame(()=>{ renderIndexStats(); updateBadges(); }));
 window.addEventListener('load', ()=>{ renderIndexStats(); updateBadges(); });
 
 // Pull to refresh on index
