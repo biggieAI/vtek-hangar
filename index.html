@@ -2655,7 +2655,10 @@ html, body { height:100%; overflow:hidden; }
   background:linear-gradient(160deg,#ffffff 0%,#d8dcf0 60%,#bec4e0 100%);
   -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
 }
-.module-actions-bar { margin-left:auto; display:flex; gap:8px; align-items:center; }
+.module-actions-bar { margin-left:auto; display:flex; gap:6px; align-items:center; overflow-x:auto; -webkit-overflow-scrolling:touch; flex-shrink:1; min-width:0; }
+.module-actions-bar::-webkit-scrollbar{display:none;}
+.module-topbar{overflow:hidden;}
+.tb-btn{white-space:nowrap;flex-shrink:0;}
 
 /* Module scroll */
 .module-scroll {
@@ -3205,7 +3208,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260412-174826';
+const BUILD_ID = 'VTEK-20260412-175941';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
@@ -4224,7 +4227,7 @@ function openEdit(id){
   if(!sh.vlog) sh.vlog=[];
   document.getElementById('es-eye').textContent=sv?`${sv.code} // ${sv.name}`:'';
   document.getElementById('es-title').textContent=sh.code;
-  document.getElementById('es-who').value=sh.who||'';
+  document.getElementById('es-who').value=sh.who||'';attachTeamDatalist('es-who');
   document.getElementById('es-notes').value=sh.notes||'';
   document.getElementById('es-ci').value=sh.ci||'';
   document.getElementById('es-co').value=sh.co||'';
@@ -4276,13 +4279,21 @@ function setStat(id,st){
   if(typeof _hngDetailShotId!=='undefined'&&_hngDetailShotId===id){const dv=document.getElementById('hv-detail');if(dv&&dv.style.display!=='none')hngOpenDetail(id);}
 }
 function saveShot(){
+  console.log('[SAVE] editId='+editId);
   const sh=S.shots.find(s=>s.id===editId);
-  sh.who=document.getElementById('es-who').value;sh.notes=document.getElementById('es-notes').value;
-  sh.ci=parseInt(document.getElementById('es-ci').value)||0;sh.co=parseInt(document.getElementById('es-co').value)||0;
+  if(!sh){console.error('[SAVE] shot not found for editId:'+editId);toast('ERROR: shot not found');return;}
+  sh.who=document.getElementById('es-who').value.trim();
+  sh.notes=document.getElementById('es-notes').value;
+  sh.ci=parseInt(document.getElementById('es-ci').value)||0;
+  sh.co=parseInt(document.getElementById('es-co').value)||0;
   sh.bid=parseFloat(document.getElementById('es-bid').value)||0;
-  save();closeSheet('ol-edit');refresh();toast('SHOT UPDATED');
-  // Refresh detail view if open
+  // Also capture status from es-stats if a status option is .on
+  const statOn=document.querySelector('#es-stats .sopt.on');
+  if(statOn){const newSt=statOn.getAttribute('onclick')?.match(/'([^']+)'\)$/)?.[1];if(newSt)sh.status=newSt;}
+  console.log('[SAVE] who='+sh.who+' status='+sh.status);
+  save();closeSheet('ol-edit');rHangar();toast('SHOT UPDATED');
   if(typeof _hngDetailShotId!=='undefined'&&_hngDetailShotId===editId){const dv=document.getElementById('hv-detail');if(dv&&dv.style.display!=='none')hngOpenDetail(editId);}
+  if(S.activeShow===sh.sid){const sv=document.getElementById('hv-shots');if(sv&&sv.style.display!=='none')rShots();}
 }
 function addShot(){
   const code=document.getElementById('as-code').value.trim();if(!code){toast('CODE REQUIRED');return;}
@@ -4689,7 +4700,7 @@ function toggleAutoSync(btn){
 // SHEETS + UTILS
 // ═══════════════════════════════
 function openSheet(id){
-  if(id==='ol-shot'){document.getElementById('as-show').innerHTML=S.shows.map(s=>`<option value="${s.id}">${s.code} — ${s.name}</option>`).join('');populateWhoDropdown('as-who','');}
+  if(id==='ol-shot'){document.getElementById('as-show').innerHTML=S.shows.map(s=>`<option value="${s.id}">${s.code} — ${s.name}</option>`).join('');attachTeamDatalist('as-who');}
   if(id==='ol-task'){
     document.getElementById('at-show').innerHTML=S.shows.map(s=>`<option value="${s.id}">${s.code} — ${s.name}</option>`).join('');
     const tg=document.getElementById('task-template-grid');if(tg)tg.innerHTML=renderTemplateGrid();
@@ -7027,21 +7038,21 @@ function hngTeamDelete(idx) {
   save(); renderHngTeam(); toast('Removed');
 }
 
-// Populate team dropdown in add-shot and edit-shot sheets
-function populateWhoDropdown(selectId, currentVal) {
-  const el = document.getElementById(selectId);
-  if (!el) return;
-  const team = S.team || [];
-  el.innerHTML = '<option value="">— Select artist —</option>'
-    + team.map(m => `<option value="${m.name}" ${m.name===currentVal?'selected':''}>${m.name} (${m.role||'?'})</option>`).join('')
-    + `<option value="_custom">Custom…</option>`;
-  el.onchange = function() {
-    if (this.value === '_custom') {
-      const v = prompt('Enter name:');
-      if (v) { const opt=document.createElement('option'); opt.value=v; opt.textContent=v; opt.selected=true; this.appendChild(opt); }
-      else this.value = currentVal||'';
-    }
-  };
+// Attach datalist autocomplete from team roster to any input
+function attachTeamDatalist(inputId) {
+  const input = document.getElementById(inputId);
+  if (!input) return;
+  const dlId = 'dl-team-' + inputId;
+  let dl = document.getElementById(dlId);
+  if (!dl) {
+    dl = document.createElement('datalist');
+    dl.id = dlId;
+    document.body.appendChild(dl);
+    input.setAttribute('list', dlId);
+  }
+  dl.innerHTML = (S.team || []).map(m =>
+    `<option value="${m.name}">${m.name}${m.role?' — '+m.role:''}</option>`
+  ).join('');
 }
 
 // ══════════════════════════════════════════════
