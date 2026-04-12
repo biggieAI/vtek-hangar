@@ -5544,28 +5544,7 @@ function updateKeyDisplay(){const k=getKey();const el=document.getElementById('k
 function exportJSON(){const b=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='vtek_hangar_v1.json';a.click();toast('EXPORTED');}
 function resetData(){if(confirm('RESET?')){localStorage.removeItem('vtek9');location.reload();}}
 
-// ═══════════════════════════════
-// GLOBAL SEARCH
-// ═══════════════════════════════
-let searchIdx=0;
-
-function openSearch(){
-  document.getElementById('search-wrap').classList.add('open');
-  document.getElementById('search-input').value='';
-  document.getElementById('search-results').innerHTML=`<div class="sr-empty">Type to search across all shots, tasks and vault notes.</div>`;
-  setTimeout(()=>document.getElementById('search-input').focus(),80);
-}
-
-function closeSearch(){
-  document.getElementById('search-wrap').classList.remove('open');
-  searchIdx=0;
-}
-
-document.addEventListener('keydown',e=>{
-  if(e.key==='/'&&!e.target.closest('input,textarea')){e.preventDefault();openSearch();}
-  if(e.key==='Escape') closeSearch();
-});
-document.getElementById('search-wrap').addEventListener('click',e=>{if(e.target===document.getElementById('search-wrap'))closeSearch();});
+// [old search block removed - see GLOBAL SEARCH below]
 
 function highlight(text,q){
   if(!q||!text) return text||'';
