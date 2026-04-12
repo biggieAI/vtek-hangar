@@ -1,16 +1,11 @@
-<!-- vtek-build:20260412-141551 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#1a1a1c">
-<title>V//TEK</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<title>VTEK HANGAR</title>
 <style>
 
 /* ════════════════════════════════════════════════════
@@ -2953,7 +2948,7 @@ html, body { height:100%; overflow:hidden; }
 <body>
 <div class="shell">
 
-<!-- INDEX -->
+<!-- INDEX — STRIPPED: only Hangar card for isolated debug -->
 <div id="view-index">
   <div class="topbar">
     <div class="wordmark">
@@ -2961,34 +2956,21 @@ html, body { height:100%; overflow:hidden; }
     </div>
     <div class="topbar-right">
       <span class="topbar-stat" id="idx-date"></span>
-      <button onclick="openSearch()" style="background:none;border:none;color:var(--t2);cursor:pointer;padding:6px;display:flex;align-items:center;border-radius:8px;transition:color 0.1s;" title="Search">
-        <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6.5" cy="6.5" r="4.5"/><path d="M10.5 10.5l3 3"/></svg>
-      </button>
-      <button onclick="renderIndexStats();updateBadges();" style="background:none;border:none;color:var(--t2);cursor:pointer;padding:6px;display:flex;align-items:center;border-radius:8px;transition:color 0.1s;" title="Refresh">
+      <button onclick="renderIndexStats();updateBadges();" style="background:none;border:none;color:var(--t2);cursor:pointer;padding:6px;display:flex;align-items:center;border-radius:8px;" title="Refresh">
         <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13.5 8A5.5 5.5 0 1 1 8 2.5c1.8 0 3.4.87 4.4 2.2"/><path d="M13.5 2.5v2.2h-2.2"/></svg>
-      </button>
-      <button onclick="openModule('config')" style="background:none;border:none;color:var(--t2);cursor:pointer;padding:6px;display:flex;align-items:center;border-radius:8px;transition:color 0.1s;" title="Config">
-        <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.1 3.1l1.4 1.4M11.5 11.5l1.4 1.4M3.1 12.9l1.4-1.4M11.5 4.5l1.4-1.4"/></svg>
       </button>
     </div>
   </div>
 
   <div class="index-scroll">
-
-    <!-- Status strip -->
     <div class="status-strip">
-      <span class="status-date" id="idx-status-txt">LOADING...</span>
+      <span class="status-date" id="idx-status-txt">VTEK // STRIPPED BUILD</span>
       <div class="status-pulse" id="idx-pulse"></div>
     </div>
 
-    <!-- Morning Brief -->
-    <div id="morning-brief-wrap"></div>
-
-    <!-- Module cards -->
+    <!-- HANGAR CARD ONLY -->
     <div class="module-grid" style="padding-top:8px;">
-
-      <!-- HANGAR -->
-      <div class="module-card" role="button" onclick="openModule('hangar')" ontouchend="event.preventDefault();openModule('hangar')">
+      <div class="module-card" role="button" onclick="openModule('hangar')">
         <div class="mc-inner">
           <div class="mc-icon">
             <svg viewBox="0 0 22 22" width="22" height="22" fill="none" stroke="white" stroke-width="1.4">
@@ -3007,159 +2989,20 @@ html, body { height:100%; overflow:hidden; }
               <div class="mc-stat-div"></div>
               <div class="mc-stat"><span class="mc-stat-n" id="h-shots">—</span><span class="mc-stat-l">SHOTS</span></div>
               <div class="mc-stat-div"></div>
-              <div class="mc-stat"><span class="mc-stat-n" id="h-blk">—</span><span class="mc-stat-l">BLK</span></div>
+              <div class="mc-stat"><span class="mc-stat-n" id="h-tasks">—</span><span class="mc-stat-l">TASKS</span></div>
             </div>
           </div>
-          <div id="badge-hangar" class="mc-badge" style="display:none">0</div><div class="mc-arrow">›</div>
         </div>
-      </div>
-
-      <!-- PAYLOAD -->
-      <div class="module-card" role="button" onclick="openModule('payload')" ontouchend="event.preventDefault();openModule('payload')">
-        <div class="mc-inner">
-          <div class="mc-icon">
-            <svg viewBox="0 0 22 22" width="22" height="22" fill="none" stroke="white" stroke-width="1.4">
-              <rect x="3" y="3" width="16" height="16" rx="2"/>
-              <path d="M7 8.5l2 2 4-4M7 13.5l2 2 4-4"/>
-            </svg>
-          </div>
-          <div class="mc-body">
-            <div class="mc-header">
-              <span class="mc-name">PAYLOAD</span>
-              <span class="mc-tag">TASKS</span>
-            </div>
-            <div class="mc-desc">Daily execution queue. Tasks, priority order, completion.</div>
-            <div class="mc-stats">
-              <div class="mc-stat"><span class="mc-stat-n" id="p-open">—</span><span class="mc-stat-l">OPEN</span></div>
-              <div class="mc-stat-div"></div>
-              <div class="mc-stat"><span class="mc-stat-n" id="p-today">—</span><span class="mc-stat-l">TODAY</span></div>
-              <div class="mc-stat-div"></div>
-              <div class="mc-stat"><span class="mc-stat-n" id="p-done">—</span><span class="mc-stat-l">DONE</span></div>
-            </div>
-          </div>
-          <div id="badge-payload" class="mc-badge" style="display:none">0</div><div class="mc-arrow">›</div>
-        </div>
-      </div>
-
-      <!-- SCHEDULE -->
-      <div class="module-card" role="button" onclick="openModule('schedule')" ontouchend="event.preventDefault();openModule('schedule')">
-        <div class="mc-inner">
-          <div class="mc-icon">
-            <svg viewBox="0 0 22 22" width="22" height="22" fill="none" stroke="white" stroke-width="1.4">
-              <rect x="3" y="4" width="16" height="15" rx="2"/>
-              <path d="M7 2v4M15 2v4M3 9h16"/>
-              <circle cx="11" cy="14" r="1.5" fill="white"/>
-            </svg>
-          </div>
-          <div class="mc-body">
-            <div class="mc-header">
-              <span class="mc-name">SCHEDULE</span>
-              <span class="mc-tag">TIME</span>
-            </div>
-            <div class="mc-desc">Day plan, time blocks, delivery waypoints and milestones.</div>
-            <div class="mc-stats">
-              <div class="mc-stat"><span class="mc-stat-n" id="s-planned">—</span><span class="mc-stat-l">PLANNED</span></div>
-              <div class="mc-stat-div"></div>
-              <div class="mc-stat"><span class="mc-stat-n" id="s-hrs">—</span><span class="mc-stat-l">HRS</span></div>
-            </div>
-          </div>
-          <div class="mc-arrow">›</div>
-        </div>
-      </div>
-
-      <!-- VAULT -->
-      <div class="module-card" role="button" onclick="openModule('vault')" ontouchend="event.preventDefault();openModule('vault')">
-        <div class="mc-inner">
-          <div class="mc-icon">
-            <svg viewBox="0 0 22 22" width="22" height="22" fill="none" stroke="white" stroke-width="1.4">
-              <path d="M5 2h9l5 5v13H5z"/>
-              <path d="M14 2v5h5"/>
-              <path d="M8 11h6M8 14h6M8 8h3"/>
-            </svg>
-          </div>
-          <div class="mc-body">
-            <div class="mc-header">
-              <span class="mc-name">VAULT</span>
-              <span class="mc-tag">DOCS</span>
-            </div>
-            <div class="mc-desc">Shot notes, bids, pipeline docs, references and planning.</div>
-            <div class="mc-stats">
-              <div class="mc-stat"><span class="mc-stat-n" id="v-docs">—</span><span class="mc-stat-l">DOCS</span></div>
-              <div class="mc-stat-div"></div>
-              <div class="mc-stat"><span class="mc-stat-n" id="v-updated">—</span><span class="mc-stat-l">UPDATED</span></div>
-            </div>
-          </div>
-          <div class="mc-arrow">›</div>
-        </div>
-      </div>
-
-      <!-- INTEL -->
-      <div class="module-card" role="button" onclick="openModule('intel')" ontouchend="event.preventDefault();openModule('intel')">
-        <div class="mc-inner">
-          <div class="mc-icon">
-            <svg viewBox="0 0 22 22" width="22" height="22" fill="none" stroke="white" stroke-width="1.4">
-              <circle cx="11" cy="11" r="3"/>
-              <path d="M11 2v3M11 17v3M2 11h3M17 11h3"/>
-              <path d="M4.9 4.9l2.1 2.1M14.9 14.9l2.1 2.1M4.9 17.1l2.1-2.1M14.9 7.1l2.1-2.1"/>
-            </svg>
-          </div>
-          <div class="mc-body">
-            <div class="mc-header">
-              <span class="mc-name">INTEL</span>
-              <span class="mc-tag">AI</span>
-            </div>
-            <div class="mc-desc">AI with full show context. Workflows, automation, summaries.</div>
-            <div class="mc-stats">
-              <div class="mc-stat"><span class="mc-stat-n">AI</span><span class="mc-stat-l">ACTIVE</span></div>
-              <div class="mc-stat-div"></div>
-              <div class="mc-stat"><span class="mc-stat-n" id="i-tools">5</span><span class="mc-stat-l">TOOLS</span></div>
-            </div>
-          </div>
-          <div class="mc-arrow">›</div>
-        </div>
-      </div>
-
-    </div><!-- /module-grid -->
-  </div><!-- /index-scroll -->
-
-  <!-- Footer nav -->
-  <nav class="footer-nav">
-    <button class="fnav-btn primary" onclick="openModule('hangar')">
-      <svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="white" stroke-width="1.4"><path d="M8 2l5 3v6l-5 3-5-3V5z"/><path d="M8 2v8M3 5l5 3 5-3"/></svg>
-      <span class="fnav-lbl">+ SHOT</span>
-    </button>
-    <div class="fnav-divider"></div>
-    <button class="fnav-btn" onclick="openModule('payload')">
-      <svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="white" stroke-width="1.4"><path d="M4 8h8M8 4v8"/><circle cx="8" cy="8" r="6"/></svg>
-      <span class="fnav-lbl">+ TASK</span>
-    </button>
-    <div class="fnav-divider"></div>
-    <button class="fnav-btn" onclick="openModule('vault')">
-      <svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="white" stroke-width="1.4"><path d="M3 2h7l4 4v8H3z"/><path d="M10 2v4h4"/></svg>
-      <span class="fnav-lbl">+ NOTE</span>
-    </button>
-    <div class="fnav-divider"></div>
-    <button class="fnav-btn" onclick="openModule('intel')">
-      <svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="white" stroke-width="1.4"><circle cx="8" cy="8" r="3"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.5 3.5l1.4 1.4M11.1 11.1l1.4 1.4M3.5 12.5l1.4-1.4M11.1 4.9l1.4-1.4"/></svg>
-      <span class="fnav-lbl">INTEL</span>
-    </button>
-  </nav>
-
-  <!-- DEBUG BAR - static HTML, always in DOM -->
-  <div id="dbg-bar">
-    <div id="dbg-header">
-      <span>// DEBUG <span id="dbg-build-lbl" style="color:#888;font-size:9px;"></span></span>
-      <div style="display:flex;gap:6px;">
-        <button class="dbg-hbtn" id="dbg-copy-btn" onclick="copyDbgLog()">COPY</button>
-        <button class="dbg-hbtn" onclick="document.getElementById('dbg-log').innerHTML='';_dbgEntries=[];">CLR</button>
-        <button class="dbg-hbtn" onclick="document.getElementById('dbg-bar').classList.toggle('open')">▲▼</button>
       </div>
     </div>
-    <div id="dbg-log"></div>
+    <!-- END HANGAR CARD -->
+
+    <div style="height:120px;"></div>
   </div>
 </div>
+<!-- END INDEX -->
 
-
+<!-- HANGAR MODULE -->
 <div class="module-view" id="mv-hangar">
   <div class="module-topbar">
     <button class="back-btn" id="hng-back-btn" onclick="hangarBack()">
@@ -3257,636 +3100,25 @@ html, body { height:100%; overflow:hidden; }
 
 </div>
 
+<!-- STUBS for other modules referenced in JS (keep DOM happy) -->
+<div class="module-view" id="mv-payload"></div>
+<div class="module-view" id="mv-schedule"></div>
+<div class="module-view" id="mv-vault"></div>
+<div class="module-view" id="mv-intel"></div>
+<div class="module-view" id="mv-config"></div>
 
-
-<div class="module-view" id="mv-payload">
-  <div class="module-topbar">
-    <button class="back-btn" onclick="closeModule()">
-      <svg viewBox="0 0 12 12" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7.5 2L3.5 6l4 4"/></svg>
-      HOME
-    </button>
-    <span class="module-title-lbl">PAYLOAD</span>
-    <div class="module-actions-bar"><button class="tb-btn go" onclick="openSheet('ol-task')">+ TASK</button></div>
+<!-- DEBUG BAR -->
+<div id="dbg-bar" style="position:fixed;bottom:0;left:0;right:0;z-index:99999;background:#111;border-top:1px solid #333;font-family:monospace;font-size:11px;">
+  <div id="dbg-collapsed" style="height:28px;display:flex;align-items:center;padding:0 12px;gap:12px;cursor:pointer;pointer-events:auto;" onclick="document.getElementById('dbg-expanded').style.display=document.getElementById('dbg-expanded').style.display=='none'?'block':'none'">
+    <span style="color:#0f0;">▶</span>
+    <span id="dbg-build-id" style="color:#aaa;">VTEK-20260412-155647</span>
+    <span style="color:#555;font-size:10px;">tap to expand</span>
   </div>
-  <div class="module-scroll" >
-    <!-- ── PAYLOAD ── -->
-<!-- ── PAYLOAD (EXECUTE MODE) ── -->
-<div class="page" id="pg-payload">
-  <div id="payload-dos"></div>
-  <!-- Mode toggle -->
-  <div class="payload-mode-bar">
-    <button class="pmode-btn on" id="pmode-execute" onclick="setPayloadMode('execute')">
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13"><path d="M4 8.5l2.5 2.5 5-5"/><rect x="1" y="1" width="14" height="14" rx="0"/></svg>
-      EXECUTE
-    </button>
-    <button class="pmode-btn" id="pmode-plan" onclick="setPayloadMode('plan')">
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13"><rect x="1" y="2" width="14" height="12" rx="0"/><path d="M5 2v12M1 6h14M1 10h14"/></svg>
-      PLAN DAY
-    </button>
-  </div>
-  <!-- Task List -->
-  <div class="pl-toolbar">
-    <div class="pl-views">
-      <button class="pl-vbtn on" id="plv-list" onclick="setPlView('list')">LIST</button>
-      <button class="pl-vbtn" id="plv-show" onclick="setPlView('show')">SHOW</button>
-      <button class="pl-vbtn" id="plv-tag"  onclick="setPlView('tag')">TAG</button>
-      <button class="pl-vbtn" id="plv-today" onclick="setPlView('today')">TODAY</button>
-    </div>
-    <div class="pl-actions">
-      <button class="pl-act-btn" onclick="aiPrioritize()">
-        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" width="11" height="11"><path d="M2 3h10M4 7h6M6 11h2"/></svg>SORT
-      </button>
-      <button class="pl-act-btn" onclick="openSheet('ol-task')">+ TASK</button>
-    </div>
-  </div>
-  <div class="pl-quickadd">
-    <div class="pl-qa-wrap">
-      <input class="pl-qa-input" id="pl-qa" placeholder='Quick add — "fix STL grade tomorrow high"…'
-        onkeydown="if(event.key==='Enter'){event.preventDefault();quickAdd();}">
-      <button class="pl-qa-mic" id="pl-qa-mic" onclick="plToggleMic()">
-        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" width="11" height="11"><rect x="4" y="1" width="6" height="7" rx="3"/><path d="M2 7a5 5 0 0010 0M7 12v-2"/></svg>
-      </button>
-    </div>
-    <button class="pl-qa-send" onclick="quickAdd()">ADD</button>
-  </div>
-  <div class="pl-filters" id="pl-filters"></div>
-  <div class="pl-ai-banner" id="pl-ai-banner" style="display:none">
-    <div class="think-dot"></div><div class="think-dot"></div><div class="think-dot"></div>
-    <span>INTEL sorting payload…</span>
-  </div>
-  <div id="task-list" class="pl-list"></div>
-</div>
+  <div id="dbg-expanded" style="display:none;max-height:200px;overflow-y:auto;padding:8px 12px;">
+    <button onclick="navigator.clipboard&&navigator.clipboard.writeText(document.getElementById('dbg-log').innerText)" style="background:#222;border:1px solid #444;color:#0f0;padding:4px 10px;font-size:10px;cursor:pointer;margin-bottom:6px;">COPY ALL</button>
+    <div id="dbg-log" style="color:#0f0;line-height:1.6;white-space:pre-wrap;"></div>
   </div>
 </div>
-
-
-<div class="module-view" id="mv-schedule">
-  <div class="module-topbar">
-    <button class="back-btn" onclick="closeModule()">
-      <svg viewBox="0 0 12 12" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7.5 2L3.5 6l4 4"/></svg>
-      HOME
-    </button>
-    <span class="module-title-lbl">SCHEDULE</span>
-    <div class="module-actions-bar"><button class="tb-btn" id="rack-btn-top" onclick="rackDay()">RACK</button><button class="tb-btn" onclick="planCommit()">COMMIT</button></div>
-  </div>
-  <div class="module-scroll" style="padding-bottom:0;">
-    <!-- ── PLAN MODE (sub-page) ── -->
-<div class="page" id="pg-plan">
-
-  <!-- Header bar -->
-  <div class="plan-header">
-    <button class="plan-back-btn" onclick="closeModule()">← HOME</button>
-    <div class="plan-date" id="plan-date-label"></div>
-    <div class="plan-header-actions">
-      <button class="plan-action-btn" id="plan-rack-btn" onclick="planSuggest()">RACK</button>
-      <button class="plan-action-btn plan-commit-btn" onclick="planCommit()">COMMIT</button>
-    </div>
-  </div>
-
-  <!-- INTEL suggestion banner -->
-  <div class="plan-rack-banner" id="plan-rack-banner" style="display:none">
-    <div class="plan-rack-txt" id="plan-rack-txt"></div>
-    <button class="plan-rack-close" onclick="this.parentElement.style.display='none'">✕</button>
-  </div>
-
-  <!-- Task pool — horizontal scrollable chips, collapsible -->
-  <div id="plan-pool-section">
-    <div class="plan-task-sheet-btn" id="plan-drawer-toggle" onclick="openPlanTaskSheet()">
-      <div class="plan-task-sheet-label">
-        TASKS
-        <span class="plan-sheet-count" id="plan-pool-count">0</span>
-      </div>
-      <div class="plan-task-sheet-hint">
-        <span id="plan-pool-hint">SELECT TASK BELOW · OR TAP EMPTY SLOT TO ADD</span>
-        <span class="plan-sheet-arrow">↑</span>
-      </div>
-    </div>
-    <div id="plan-task-pool" style="display:none"></div>
-  </div>
-
-  <!-- Cal status -->
-  <div class="plan-cal-status" id="plan-cal-status" style="display:none">
-    <div class="think-dot"></div><div class="think-dot"></div><div class="think-dot"></div>
-    <span id="plan-cal-txt">Loading calendar…</span>
-  </div>
-
-  <!-- Timeline — full width -->
-  <div class="plan-timeline-header">
-    <span class="plan-col-label">TODAY'S SCHEDULE</span>
-    <span id="plan-total-time" style="font-family:var(--mono);font-size:11px;color:var(--t2)"></span>
-  </div>
-  <div class="plan-timeline" id="plan-timeline"></div>
-
-  <!-- Commit status -->
-  <div class="plan-commit-status" id="plan-commit-status" style="display:none">
-    <div class="think-dot"></div><div class="think-dot"></div><div class="think-dot"></div>
-    <span id="plan-commit-txt">Staging schedule…</span>
-  </div>
-
-</div>
-  </div>
-</div>
-
-
-<div class="module-view" id="mv-vault">
-  <div class="module-topbar">
-    <button class="back-btn" onclick="closeModule()">
-      <svg viewBox="0 0 12 12" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7.5 2L3.5 6l4 4"/></svg>
-      HOME
-    </button>
-    <span class="module-title-lbl">VAULT</span>
-    <div class="module-actions-bar"><button class="tb-btn go" onclick="vaultNewDoc()">+ NOTE</button></div>
-  </div>
-  <div class="module-scroll" style="padding-bottom:0;">
-    <!-- ── VAULT ── -->
-<div class="page" id="pg-vault">
-  <div class="vault-layout">
-    <!-- Topbar -->
-    <div class="vault-topbar">
-      <button class="vault-back-btn" id="vault-back-btn" onclick="vaultBack()">← NOTES</button>
-      <div class="vault-breadcrumb" id="vault-breadcrumb"><span>VAULT</span></div>
-      <button class="vault-btn" onclick="vaultNewDoc()">+ NOTE</button>
-      <button class="vault-btn" id="vault-delete-btn" onclick="vaultDelete()" style="display:none;color:var(--s-blk)">DELETE</button>
-      <button class="vault-btn ac-btn" id="vault-save-btn" onclick="vaultSave()" style="display:none">SAVE</button>
-    </div>
-    <div class="vault-body">
-
-      <!-- List panel — full width, shown by default -->
-      <div class="vault-list-panel" id="vault-list-panel">
-        <div id="vault-doc-list" style="overflow-y:auto;flex:1;scrollbar-width:none;"></div>
-      </div>
-
-      <!-- Editor panel — hidden until doc selected on mobile -->
-      <div class="vault-editor-panel" id="vault-editor-panel"><div class="vault-fs-bar"><button class="vault-fs-close" onclick="exitVaultFullscreen()">← BACK</button><div class="vault-fs-title" id="vault-fs-title"></div><button class="vault-fs-save" onclick="vaultSave();exitVaultFullscreen()">SAVE</button></div>
-        <!-- Editor toolbar -->
-        <div class="vault-editor-toolbar">
-          <button class="vault-btn" onclick="setVaultMode('edit')" id="vlt-edit-btn">EDIT</button>
-          <button class="vault-btn" onclick="setVaultMode('preview')" id="vlt-prev-btn">PREVIEW</button>
-          <div class="vault-save-info" id="vault-save-info" style="font-family:var(--display);font-size:10px;color:var(--t2);margin-left:4px;"></div>
-          <button class="vault-expand-btn" id="vault-expand-btn" onclick="toggleVaultFocus()" title="Focus mode">
-            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13">
-              <path d="M1 6V1h5M10 1h5v5M15 10v5h-5M6 15H1v-5"/>
-            </svg>
-          </button>
-        </div>
-        <!-- Editor area -->
-        <div class="vault-main">
-          <div class="vault-editor" id="vault-editor"></div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</div>
-  </div>
-</div>
-
-
-<div class="module-view" id="mv-intel">
-  <div class="module-topbar">
-    <button class="back-btn" onclick="closeModule()">
-      <svg viewBox="0 0 12 12" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7.5 2L3.5 6l4 4"/></svg>
-      HOME
-    </button>
-    <span class="module-title-lbl">INTEL</span>
-    <div class="module-actions-bar"></div>
-  </div>
-  <div class="module-scroll" >
-    <!-- ── INTEL ── -->
-<div class="page" id="pg-intel">
-  <div class="intel-msgs" id="intel-msgs">
-    <!-- Empty / welcome state -->
-    <div class="intel-empty" id="intel-empty" style="position:relative;"><div class="halftone-bg"></div>
-      <div class="intel-empty-logo">
-        <div class="intel-empty-word">INTEL</div>
-      </div>
-      <div class="intel-empty-sub">
-        Your VFX production assistant<br>
-        <span>Shots &middot; Schedule &middot; Resources &middot; Actions</span>
-      </div>
-
-      <!-- API key warning -->
-      <button class="intel-qchip" id="intel-setup-chip" onclick="openModule('config')" style="display:none;border-color:rgba(255,255,255,0.15);margin-bottom:8px;">
-        <span class="intel-qchip-icon">&#9881;</span>
-        <span class="intel-qchip-label" id="intel-setup-label">Add API key in CONFIG</span>
-      </button>
-
-      <!-- QUICK LOG -->
-      <div class="intel-quicklog-wrap">
-        <div class="intel-quicklog-label">QUICK LOG</div>
-        <div class="intel-quicklog-row">
-          <input id="intel-quicklog" class="intel-quicklog-input" placeholder="grade STL_0080 tomorrow high 2hrs..." />
-          <button class="intel-quicklog-btn" onclick="quickLog()">LOG</button>
-        </div>
-        <div class="intel-quicklog-hint">Natural language → task created instantly, no AI needed</div>
-      </div>
-
-      <!-- WORKFLOW BUTTONS -->
-      <div class="intel-workflows">
-        <div class="intel-wf-label">WORKFLOWS</div>
-        <div class="intel-wf-grid">
-
-          <button class="intel-wf-btn crit" onclick="intelWorkflow('blocker_brief')">
-            <div class="intel-wf-icon"><svg viewBox="0 0 14 14" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M7 1L13 12H1z"/><path d="M7 5v4M7 10.5v.5"/></svg></div>
-            <div class="intel-wf-body"><div class="intel-wf-name">BLOCKER BRIEF</div><div class="intel-wf-desc">What's stuck and why</div></div>
-          </button>
-
-          <button class="intel-wf-btn" onclick="intelWorkflow('status_email')">
-            <div class="intel-wf-icon"><svg viewBox="0 0 14 14" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="1" y="3" width="12" height="9" rx="1"/><path d="M1 3l6 5 6-5"/></svg></div>
-            <div class="intel-wf-body"><div class="intel-wf-name">STATUS EMAIL</div><div class="intel-wf-desc">Client-ready progress update</div></div>
-          </button>
-
-          <button class="intel-wf-btn" onclick="intelWorkflow('bid_check')">
-            <div class="intel-wf-icon"><svg viewBox="0 0 14 14" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 11l3-8 4 6 2-3 3 5H2z"/></svg></div>
-            <div class="intel-wf-body"><div class="intel-wf-name">BID CHECK</div><div class="intel-wf-desc">Over-budget shots flagged</div></div>
-          </button>
-
-          <button class="intel-wf-btn" onclick="intelWorkflow('risk_alert')">
-            <div class="intel-wf-icon"><svg viewBox="0 0 14 14" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="7" cy="7" r="6"/><path d="M7 4v4M7 9.5v.5"/></svg></div>
-            <div class="intel-wf-body"><div class="intel-wf-name">RISK ALERT</div><div class="intel-wf-desc">Delivery risk by velocity</div></div>
-          </button>
-
-          <button class="intel-wf-btn" onclick="intelWorkflow('daily_plan')">
-            <div class="intel-wf-icon"><svg viewBox="0 0 14 14" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="1" y="2" width="12" height="11" rx="1"/><path d="M1 6h12M5 2v4M9 2v4"/></svg></div>
-            <div class="intel-wf-body"><div class="intel-wf-name">DAILY PLAN</div><div class="intel-wf-desc">Today's priorities briefed</div></div>
-          </button>
-
-          <button class="intel-wf-btn" onclick="intelWorkflow('shot_notes')">
-            <div class="intel-wf-icon"><svg viewBox="0 0 14 14" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 2h10v10H2z"/><path d="M4 5h6M4 7h6M4 9h4"/></svg></div>
-            <div class="intel-wf-body"><div class="intel-wf-name">SHOT NOTES</div><div class="intel-wf-desc">Compile all shot context</div></div>
-          </button>
-
-        </div>
-      </div>
-
-      <button class="intel-expand-btn" id="intel-expand-btn" onclick="togglePromptGroups()">
-        MORE PROMPTS <span id="intel-expand-arrow">&#9660;</span>
-      </button>
-
-      <div class="intel-prompt-groups" id="intel-prompt-groups" style="display:none;width:100%;max-width:360px;">
-
-        <div class="intel-group">
-          <div class="intel-group-label">STATUS &amp; BLOCKING</div>
-          <div class="intel-quick-chips">
-            <button class="intel-qchip" onclick="intelQuick('Which shots have been in WIP the longest? List with assignee and notes.')"><span class="intel-qchip-icon">&#8987;</span><span class="intel-qchip-label">Overdue WIP shots</span></button>
-            <button class="intel-qchip" onclick="intelQuick('Show me every shot currently in review status across all shows.')"><span class="intel-qchip-icon">&#9683;</span><span class="intel-qchip-label">All shots in review</span></button>
-            <button class="intel-qchip" onclick="intelQuick('What shots are on hold? Which have been sitting longest?')"><span class="intel-qchip-icon">&#9633;</span><span class="intel-qchip-label">Held shots check</span></button>
-            <button class="intel-qchip" onclick="intelQuick('Give me a full shot count breakdown by status for each show.')"><span class="intel-qchip-icon">&#8801;</span><span class="intel-qchip-label">Count by status</span></button>
-            <button class="intel-qchip" onclick="intelQuick('Which shots are unassigned across all shows?')"><span class="intel-qchip-icon">&#9675;</span><span class="intel-qchip-label">Unassigned shots</span></button>
-            <button class="intel-qchip" onclick="intelQuick('Any shots with retake or client feedback notes that are still in WIP?')"><span class="intel-qchip-icon">&#8629;</span><span class="intel-qchip-label">Retake flagged</span></button>
-          </div>
-        </div>
-
-        <div class="intel-group">
-          <div class="intel-group-label">DELIVERY &amp; CLIENT</div>
-          <div class="intel-quick-chips">
-            <button class="intel-qchip" onclick="intelQuick('Write a professional client-facing delivery update email for CRL. Shots delivered, what is coming next.')"><span class="intel-qchip-icon">&#9993;</span><span class="intel-qchip-label">Draft delivery email</span></button>
-            <button class="intel-qchip" onclick="intelQuick('What has been delivered and approved so far? Summary I can share with the producer.')"><span class="intel-qchip-icon">&#10003;</span><span class="intel-qchip-label">Delivery summary</span></button>
-            <button class="intel-qchip" onclick="intelQuick('Write an end-of-week status update for the supervisor. Wins, blockers, next week plan.')"><span class="intel-qchip-icon">&#9999;</span><span class="intel-qchip-label">Weekly status update</span></button>
-            <button class="intel-qchip" onclick="intelQuick('Which sequences are closest to complete? Rank by delivery progress.')"><span class="intel-qchip-icon">&#9654;</span><span class="intel-qchip-label">Nearest to done</span></button>
-            <button class="intel-qchip" onclick="intelQuick('Draft a note to the client about the blocked shot. Clean plate issue, estimated turnaround.')"><span class="intel-qchip-icon">&#9873;</span><span class="intel-qchip-label">Blocked shot note</span></button>
-            <button class="intel-qchip" onclick="intelQuick('Summarize the version log for all delivered shots. Last version and date for each.')"><span class="intel-qchip-icon">v</span><span class="intel-qchip-label">Version log summary</span></button>
-          </div>
-        </div>
-
-        <div class="intel-group">
-          <div class="intel-group-label">RESOURCES &amp; CAPACITY</div>
-          <div class="intel-quick-chips">
-            <button class="intel-qchip" onclick="intelQuick('Based on remaining bid days and weeks left, do we need to add headcount on any show?')"><span class="intel-qchip-icon">+</span><span class="intel-qchip-label">Need more people?</span></button>
-            <button class="intel-qchip" onclick="intelQuick('What is our current team utilization across all shows? Over or under capacity?')"><span class="intel-qchip-icon">&#9633;</span><span class="intel-qchip-label">Team utilization</span></button>
-            <button class="intel-qchip" onclick="intelQuick('At current pace on CRL, what is our projected final delivery date?')"><span class="intel-qchip-icon">&#8594;</span><span class="intel-qchip-label">Projected delivery</span></button>
-            <button class="intel-qchip" onclick="intelQuick('Compare bid days to actual progress across all shows. Are we over or under bid?')"><span class="intel-qchip-icon">&#8597;</span><span class="intel-qchip-label">Bid vs actual</span></button>
-            <button class="intel-qchip" onclick="intelQuick('Which show is most at risk right now based on remaining work vs time left?')"><span class="intel-qchip-icon">&#9888;</span><span class="intel-qchip-label">Highest risk show</span></button>
-            <button class="intel-qchip" onclick="intelQuick('If I move one artist from AIG to CRL, how does that change delivery outlook for both?')"><span class="intel-qchip-icon">&#8644;</span><span class="intel-qchip-label">Rebalance resources</span></button>
-          </div>
-        </div>
-
-        <div class="intel-group">
-          <div class="intel-group-label">SCHEDULING &amp; TASKS</div>
-          <div class="intel-quick-chips">
-            <button class="intel-qchip" onclick="intelQuick('What tasks are due today? Rank by priority and tell me what to hit first.')"><span class="intel-qchip-icon">&#9711;</span><span class="intel-qchip-label">Today priorities</span></button>
-            <button class="intel-qchip" onclick="intelQuick('I have a client call in 30 mins. What do I need to know about CRL right now?')"><span class="intel-qchip-icon">&#9743;</span><span class="intel-qchip-label">Pre-call brief</span></button>
-            <button class="intel-qchip" onclick="intelQuick('List all overdue tasks with how many days late and priority level.')"><span class="intel-qchip-icon">!</span><span class="intel-qchip-label">Overdue tasks</span></button>
-            <button class="intel-qchip" onclick="intelQuick('Plan my day 9am-6pm but block 11am to 1pm for an unavailable review session.')"><span class="intel-qchip-icon">&#8856;</span><span class="intel-qchip-label">Plan with blocked time</span></button>
-            <button class="intel-qchip" onclick="intelQuick('Which high priority tasks have no due date set? Help me triage them.')"><span class="intel-qchip-icon">?</span><span class="intel-qchip-label">Undated high-pri</span></button>
-            <button class="intel-qchip" onclick="intelQuick('Estimate total time to clear my full open task list working consecutively.')"><span class="intel-qchip-icon">&#8721;</span><span class="intel-qchip-label">Total task time</span></button>
-          </div>
-        </div>
-
-        <div class="intel-group">
-          <div class="intel-group-label">PIPELINE &amp; TECH</div>
-          <div class="intel-quick-chips">
-            <button class="intel-qchip" onclick="intelQuick('Give me a Nuke ACES color management pipeline setup guide for a live action comp.')"><span class="intel-qchip-icon">N</span><span class="intel-qchip-label">Nuke ACES setup</span></button>
-            <button class="intel-qchip" onclick="intelQuick('Best practices for Mocha Pro tracking on shaky handheld plates.')"><span class="intel-qchip-icon">&#8853;</span><span class="intel-qchip-label">Mocha tracking tips</span></button>
-            <button class="intel-qchip" onclick="intelQuick('Explain ScanlineRender vs ZDefocus for depth of field in Nuke. Which when?')"><span class="intel-qchip-icon">&#9676;</span><span class="intel-qchip-label">Nuke DOF approaches</span></button>
-            <button class="intel-qchip" onclick="intelQuick('Clean roto strategy for semi-transparent hair on a busy background plate.')"><span class="intel-qchip-icon">&#9986;</span><span class="intel-qchip-label">Hair roto strategy</span></button>
-            <button class="intel-qchip" onclick="intelQuick('How do I set up solid edge integration for CG elements over live action in Nuke?')"><span class="intel-qchip-icon">&#8287;</span><span class="intel-qchip-label">CG edge integration</span></button>
-            <button class="intel-qchip" onclick="intelQuick('What are the most useful Nuke expressions for production compositing I should know?')"><span class="intel-qchip-icon">{}</span><span class="intel-qchip-label">Nuke expressions</span></button>
-          </div>
-        </div>
-
-        <div class="intel-group">
-          <div class="intel-group-label">ADMIN &amp; DOCS</div>
-          <div class="intel-quick-chips">
-            <button class="intel-qchip" onclick="intelQuick('Write a shot breakdown document for the current CRL sequence I can share with the team.')"><span class="intel-qchip-icon">&#8803;</span><span class="intel-qchip-label">Shot breakdown doc</span></button>
-            <button class="intel-qchip" onclick="intelQuick('Help me write a bid for 12 CRL shots, standard comp, no roto, 1.5 days each average.')"><span class="intel-qchip-icon">$</span><span class="intel-qchip-label">Write a bid</span></button>
-            <button class="intel-qchip" onclick="intelQuick('Draft a retake response email. Acknowledge director feedback, outline the fix, give turnaround.')"><span class="intel-qchip-icon">&#8629;</span><span class="intel-qchip-label">Draft retake response</span></button>
-            <button class="intel-qchip" onclick="intelQuick('Create a daily log entry for today based on my current task and shot status.')"><span class="intel-qchip-icon">&#9672;</span><span class="intel-qchip-label">Daily log entry</span></button>
-            <button class="intel-qchip" onclick="intelQuick('What should I focus on tomorrow morning to make the biggest impact?')"><span class="intel-qchip-icon">&#8593;</span><span class="intel-qchip-label">Tomorrow focus</span></button>
-            <button class="intel-qchip" onclick="intelQuick('Summarize everything across all shows today. Shots moved, tasks done, anything flagged.')"><span class="intel-qchip-icon">&#9671;</span><span class="intel-qchip-label">End of day summary</span></button>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-  <!-- Input area -->
-  <div class="intel-bar">
-    <!-- No API key warning — tap to go to config -->
-    <div class="intel-no-key-warn" id="intel-no-key-warn" onclick="openModule('config')">
-      ⚠ API KEY NOT SET — TAP TO CONFIGURE
-    </div>
-
-    <div class="intel-panel" id="intel-panel">
-      <!-- Mic button — inside panel -->
-      <button class="intel-mic" id="intel-mic" onclick="toggleMic()" title="Voice input">
-        <span class="mic-icon">
-          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" width="15" height="15">
-            <rect x="7" y="2" width="6" height="10" rx="3"/>
-            <path d="M4 10a6 6 0 0012 0M10 18v-2"/>
-          </svg>
-        </span>
-        <span class="mic-wave" aria-hidden="true">
-          <span class="wave-bar"></span>
-          <span class="wave-bar"></span>
-          <span class="wave-bar"></span>
-          <span class="wave-bar"></span>
-          <span class="wave-bar"></span>
-        </span>
-      </button>
-
-      <!-- Text input / transcript display -->
-      <textarea
-        class="intel-input" id="intel-input"
-        placeholder="Ask about your shots, schedule, resources…"
-        rows="1"
-        onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendIntel();}"
-        oninput="onIntelInput(this)"
-      ></textarea>
-      <div class="intel-transcript" id="intel-transcript">Listening…</div>
-
-      <!-- Send / cancel -->
-      <button class="intel-send" id="intel-send" onclick="handleIntelBtn()">
-        <!-- Send icon -->
-        <svg class="send-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" width="13" height="13">
-          <path d="M18 2L2 9l6 3 2 6 8-16z"/>
-        </svg>
-      </button>
-    </div>
-
-    <!-- Hint row -->
-    <div class="intel-hint">
-      <span class="intel-hint-key">Enter to send · Shift+Enter for newline</span>
-      <span class="intel-char-count" id="intel-char-count"></span>
-    </div>
-  </div>
-</div>
-  </div>
-</div>
-
-
-<!-- CONFIG MODULE -->
-<div class="module-view" id="mv-config">
-  <div class="module-topbar">
-    <button class="back-btn" onclick="closeModule()">
-      <svg viewBox="0 0 12 12" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7.5 2L3.5 6l4 4"/></svg>
-      HOME
-    </button>
-    <span class="module-title-lbl">CONFIG</span>
-    <div class="module-actions-bar">
-      <button class="tb-btn go" onclick="saveConfig()">SAVE</button>
-    </div>
-  </div>
-  <div class="module-scroll" id="config-scroll">
-    <div id="config-body"></div>
-  </div>
-</div>
-
-
-<!-- GLOBAL SEARCH OVERLAY -->
-<div class="search-overlay" id="search-overlay">
-  <div class="search-bar-wrap">
-    <input class="search-bar" id="search-input-old" placeholder="Search shots, tasks, vault..." 
-      oninput="renderSearchResults(this.value)"
-      onkeydown="if(event.key==='Escape')closeSearch()">
-    <button class="search-cancel" onclick="closeSearch()">CANCEL</button>
-  </div>
-  <div class="search-results" id="search-results-body">
-    <div class="search-empty">TYPE TO SEARCH SHOTS · TASKS · VAULT</div>
-  </div>
-</div>
-
-<!-- SHEETS -->
-<div class="overlay" id="ol-shot">
-  <div class="sheet">
-    <div class="sh-handle"></div>
-    <div class="sh-head"><div class="sh-eye">Shots manifest</div><div class="sh-title">Log Shot</div></div>
-    <div class="sh-body">
-      <div class="f"><div class="fl">Show</div><select class="fc" id="as-show"></select></div>
-      <div class="f-row">
-        <div class="f"><div class="fl">Shot Code</div><input class="fc" id="as-code" placeholder="136_STL_0080"></div>
-        <div class="f"><div class="fl">Seq</div><input class="fc" id="as-seq" placeholder="STL"></div>
-      </div>
-      <div class="f-row">
-        <div class="f"><div class="fl">Assignee</div><input class="fc" id="as-who" placeholder="Artist"></div>
-        <div class="f"><div class="fl">Bid Days</div><input class="fc" id="as-bid" type="number" step="0.5" placeholder="2.0"></div>
-      </div>
-      <div class="f-row">
-        <div class="f"><div class="fl">Cut In</div><input class="fc" id="as-ci" placeholder="1001"></div>
-        <div class="f"><div class="fl">Cut Out</div><input class="fc" id="as-co" placeholder="1087"></div>
-      </div>
-      <div class="f"><div class="fl">Status</div>
-        <select class="fc" id="as-status">
-          <option value="hold">Hold</option><option value="wip" selected>WIP</option>
-          <option value="review">Int. Review</option><option value="delivered">Delivered</option>
-          <option value="approved">Approved</option><option value="blocked">Blocked</option>
-        </select>
-      </div>
-      <div class="f"><div class="fl">Notes</div><textarea class="fc" id="as-notes" rows="2" placeholder="Flags, retakes…"></textarea></div>
-      <div class="sh-acts"><button class="sh-ok" onclick="addShot()">CONFIRM</button><button class="sh-no" onclick="closeSheet('ol-shot')">ABORT</button></div>
-    </div>
-  </div>
-</div>
-
-<div class="overlay" id="ol-task">
-  <div class="sheet">
-    <div class="sh-handle"></div>
-    <div class="sh-head"><div class="sh-eye">Payload</div><div class="sh-title">Log Task</div></div>
-    <div class="sh-body">
-
-      <div style="padding:0 0 8px;">
-        <div style="font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;background:linear-gradient(160deg,#909098,#70707a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;padding:12px 16px 6px;">TEMPLATES</div>
-        <div id="task-template-grid"></div>
-      </div>
-      <div style="height:1px;background:rgba(255,255,255,0.05);margin:0 16px 4px;"></div>
-      <div class="f"><div class="fl">Show</div><select class="fc" id="at-show"></select></div>
-      <div class="f"><div class="fl">Objective</div><input class="fc" id="at-title" placeholder="What needs doing?"></div>
-      <div class="f-row">
-        <div class="f"><div class="fl">Due</div><input class="fc" id="at-due" type="date"></div>
-        <div class="f"><div class="fl">Est. Duration</div><input class="fc" id="at-dur" type="number" step="15" placeholder="mins"></div>
-      </div>
-      <div class="f"><div class="fl">Priority</div>
-        <select class="fc" id="at-pri"><option value="critical">Critical</option><option value="high">High</option><option value="med" selected>Medium</option><option value="low">Low</option></select>
-      </div>
-      <div class="f"><div class="fl">Tags</div><input class="fc" id="at-tags" placeholder="comp, paint, deliver… (comma separated)"></div>
-      <div class="f">
-        <div class="fl">Color</div>
-        <div class="color-picker-row" id="at-color-row">
-          <div class="cp-swatch on" data-c="" style="background:var(--s3);border:1px solid var(--s4)"></div>
-          <div class="cp-swatch" data-c="#c42f20" style="background:#c42f20"></div>
-          <div class="cp-swatch" data-c="#d4963a" style="background:#d4963a"></div>
-          <div class="cp-swatch" data-c="#7a9e4a" style="background:#7a9e4a"></div>
-          <div class="cp-swatch" data-c="#4a7abf" style="background:#4a7abf"></div>
-          <div class="cp-swatch" data-c="#7a5abf" style="background:#7a5abf"></div>
-        </div>
-      </div>
-      <div class="f">
-        <div class="fl">Sub-tasks</div>
-        <div id="at-subs-list"></div>
-        <div style="display:flex;gap:5px;margin-top:5px">
-          <input class="fc" id="at-sub-input" placeholder="Add sub-task…" style="flex:1" onkeydown="if(event.key==='Enter'){event.preventDefault();addSubInput();}">
-          <button class="sh-no" style="flex-shrink:0;padding:6px 10px;font-size:10px" onclick="addSubInput()">ADD</button>
-        </div>
-      </div>
-      <div class="f"><div class="fl">Notes</div><textarea class="fc" id="at-notes" rows="2" placeholder="Duration, context, links…"></textarea></div>
-      <div class="f"><div class="fl">Depends on shot</div><select class="fc" id="at-dep"><option value="">None</option></select></div>
-      <div class="sh-acts"><button class="sh-ok" onclick="addTask()">CONFIRM</button><button class="sh-no" onclick="closeSheet('ol-task')">ABORT</button></div>
-    </div>
-  </div>
-</div>
-
-<div class="overlay" id="ol-edit-task">
-  <div class="sheet">
-    <div class="sh-handle"></div>
-    <div class="sh-head"><div class="sh-eye" id="et-eye"></div><div class="sh-title" id="et-title-head"></div></div>
-    <div class="sh-body">
-      <div class="f"><div class="fl">Title</div><input class="fc" id="et-title" placeholder="Objective"></div>
-      <div class="f-row">
-        <div class="f"><div class="fl">Due</div><input class="fc" id="et-due" type="date"></div>
-        <div class="f"><div class="fl">Duration (mins)</div><input class="fc" id="et-dur" type="number" step="15" placeholder="60"></div>
-      </div>
-      <div class="f"><div class="fl">Priority</div>
-        <select class="fc" id="et-pri"><option value="critical">Critical</option><option value="high">High</option><option value="med">Medium</option><option value="low">Low</option></select>
-      </div>
-      <div class="f"><div class="fl">Tags</div><input class="fc" id="et-tags" placeholder="comp, paint, deliver…"></div>
-      <div class="f">
-        <div class="fl">Color</div>
-        <div class="color-picker-row" id="et-color-row">
-          <div class="cp-swatch on" data-c="" style="background:var(--s3);border:1px solid var(--s4)"></div>
-          <div class="cp-swatch" data-c="#c42f20" style="background:#c42f20"></div>
-          <div class="cp-swatch" data-c="#d4963a" style="background:#d4963a"></div>
-          <div class="cp-swatch" data-c="#7a9e4a" style="background:#7a9e4a"></div>
-          <div class="cp-swatch" data-c="#4a7abf" style="background:#4a7abf"></div>
-          <div class="cp-swatch" data-c="#7a5abf" style="background:#7a5abf"></div>
-        </div>
-      </div>
-      <div class="f">
-        <div class="fl">Sub-tasks</div>
-        <div id="et-subs-list"></div>
-        <div style="display:flex;gap:5px;margin-top:5px">
-          <input class="fc" id="et-sub-input" placeholder="Add sub-task…" style="flex:1" onkeydown="if(event.key==='Enter'){event.preventDefault();addSubEdit();}">
-          <button class="sh-no" style="flex-shrink:0;padding:6px 10px;font-size:10px" onclick="addSubEdit()">ADD</button>
-        </div>
-      </div>
-      <div class="f"><div class="fl">Notes</div><textarea class="fc" id="et-notes" rows="3" placeholder="Context, links…"></textarea></div>
-      <div class="f"><div class="fl">Depends on shot</div><select class="fc" id="et-dep"><option value="">None</option></select></div>
-      <div class="sh-acts">
-        <button class="sh-ok" onclick="saveTaskEdit()">SAVE</button>
-        <button class="sh-no" style="color:var(--s-blk)" onclick="deleteTask()">DELETE</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="overlay" id="ol-show">
-  <div class="sheet">
-    <div class="sh-handle"></div>
-    <div class="sh-head"><div class="sh-eye">Workspace</div><div class="sh-title">Add Show</div></div>
-    <div class="sh-body">
-      <div class="f-row">
-        <div class="f"><div class="fl">Code</div><input class="fc" id="ash-code" placeholder="CRL" style="text-transform:uppercase"></div>
-        <div class="f"><div class="fl">Name</div><input class="fc" id="ash-name" placeholder="Cerulean"></div>
-      </div>
-      <div class="f-row">
-        <div class="f"><div class="fl">Client</div><input class="fc" id="ash-client" placeholder="Netflix"></div>
-        <div class="f"><div class="fl">Delivery Date</div><input class="fc" id="ash-due" type="date"></div>
-      </div>
-      <div class="f-row">
-        <div class="f"><div class="fl">Team Size</div><input class="fc" id="ash-team" type="number" placeholder="2" min="1"></div>
-        <div class="f"><div class="fl">Weeks Remaining</div><input class="fc" id="ash-weeks" type="number" placeholder="12" min="1"></div>
-      </div>
-      <div class="sh-acts"><button class="sh-ok" onclick="addShow()">CONFIRM</button><button class="sh-no" onclick="closeSheet('ol-show')">ABORT</button></div>
-    </div>
-  </div>
-</div>
-
-<div class="overlay" id="ol-edit">
-  <div class="sheet">
-    <div class="sh-handle"></div>
-    <div class="sh-head"><div class="sh-eye" id="es-eye"></div><div class="sh-title" id="es-title"></div></div>
-    <div class="sh-body">
-      <div class="f"><div class="fl">Status</div><div class="stat-opts" id="es-stats"></div></div>
-      <div class="f"><div class="fl">Assignee</div><input class="fc" id="es-who" placeholder="Artist"></div>
-      <div class="f"><div class="fl">Notes</div><textarea class="fc" id="es-notes" rows="3" placeholder="Retakes, feedback…"></textarea></div>
-      <div class="f-row">
-        <div class="f"><div class="fl">Cut In</div><input class="fc" id="es-ci"></div>
-        <div class="f"><div class="fl">Cut Out</div><input class="fc" id="es-co"></div>
-        <div class="f"><div class="fl">Bid Days</div><input class="fc" id="es-bid"></div>
-      </div>
-      <!-- Version log -->
-      <div style="border-top:1px solid var(--b0);padding-top:12px;">
-        <div style="font-family:var(--mono);font-size:8px;color:var(--t2);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;">
-          <span>Version Log</span>
-          <button onclick="logNewVersion()" style="font-family:var(--mono);font-size:8px;padding:3px 9px;background:var(--p3);box-shadow:var(--sh-rm),inset 0 0 0 1px var(--ac-bd);border:none;color:var(--ac);cursor:pointer;clip-path:polygon(0 0,100% 0,100% calc(100% - 4px),calc(100% - 4px) 100%,0 100%);letter-spacing:0.08em;">+ LOG VERSION</button>
-        </div>
-        <div style="display:flex;gap:5px;margin-bottom:8px;">
-          <input class="fc" id="es-ver-label" placeholder="v1, v2, client_review…" style="flex:1">
-          <input class="fc" id="es-ver-note" placeholder="Note (optional)" style="flex:2">
-        </div>
-        <div id="es-vlog"></div>
-      </div>
-      <div class="sh-acts"><button class="sh-ok" onclick="saveShot()">SAVE</button><button class="sh-no" onclick="closeSheet('ol-edit')">CANCEL</button></div>
-    </div>
-  </div>
-</div>
-
-<!-- GLOBAL SEARCH -->
-<div class="search-wrap" id="search-wrap" onclick="e=>e.target===this&&closeSearch()">
-  <div class="search-box" style="position:relative">
-    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="15" height="15" style="color:var(--t2);flex-shrink:0"><circle cx="6.5" cy="6.5" r="4"/><path d="M10 10l3 3"/></svg>
-    <input class="search-input" id="search-input" placeholder="Search shots, tasks, notes…" oninput="doSearch(this.value)" onkeydown="searchKeyNav(event)">
-    <span class="search-kbd">ESC to close</span>
-  </div>
-  <div class="search-results" id="search-results">
-    <div class="sr-empty">Type to search across all shots, tasks and vault notes.</div>
-  </div>
-</div>
-
-<div class="overlay" id="ol-backups">
-  <div class="sheet">
-    <div class="sh-handle"></div>
-    <div class="sh-head"><div class="sh-eye">Data Safety</div><div class="sh-title">Restore Backup</div></div>
-    <div class="sh-body">
-      <div style="font-family:var(--mono);font-size:8px;color:var(--t2);letter-spacing:0.1em;line-height:1.8;margin-bottom:4px">Last 20 auto-saves. Restoring will overwrite current state.</div>
-      <div id="backups-list"></div>
-      <div class="sh-acts"><button class="sh-no" onclick="closeSheet('ol-backups')">CLOSE</button></div>
-    </div>
-  </div>
-</div>
-
-<div class="toast" id="toast"></div>
-
-
 
 <script>
 // ════════════════════════════════════
@@ -7806,159 +7038,6 @@ if (typeof MODULE_MAP !== 'undefined' && MODULE_MAP.hangar) {
   };
 }
 </script>
-
-
-<!-- PLAN QUICK-ADD SHEET -->
-<div id="plan-qa-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:470;" onclick="closePlanQA()"></div>
-<div id="plan-qa-sheet" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:480;background:var(--s1);border-top:1px solid var(--y);padding:0;transition:transform 0.26s cubic-bezier(0.32,0.72,0,1);transform:translateY(100%);max-height:70vh;display:none;flex-direction:column;">
-  <!-- Header -->
-  <div style="display:flex;align-items:center;gap:8px;padding:14px 16px 10px;border-bottom:1px solid #1e1e1e;flex-shrink:0;">
-    <span style="font-family:var(--sans);font-size:10px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--t2);">SCHEDULE AT</span>
-    <span style="font-family:var(--mono);font-size:11px;color:var(--y);font-weight:700;" id="plan-qa-time">10am</span>
-    <button onclick="closePlanQA()" style="margin-left:auto;background:none;border:none;color:var(--t2);font-size:18px;cursor:pointer;padding:4px;line-height:1;">✕</button>
-  </div>
-  <!-- Existing tasks list -->
-  <div id="plan-qa-tasklist" style="overflow-y:auto;flex:1;padding:6px 0;"></div>
-  <!-- Divider + new task -->
-  <div style="border-top:1px solid #1e1e1e;padding:10px 16px calc(10px + env(safe-area-inset-bottom));flex-shrink:0;background:var(--s1);">
-    <div style="font-family:var(--sans);font-size:9px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--t3);margin-bottom:8px;">— OR CREATE NEW —</div>
-    <div style="display:flex;gap:8px;">
-      <input id="plan-qa-input" placeholder="New task title…"
-        style="flex:1;background:var(--s2);border:1px solid #2a2a2a;border-radius:3px;padding:9px 12px;font-family:var(--sans);font-size:13px;color:var(--t0);outline:none;"
-        onkeydown="if(event.key==='Enter'){event.preventDefault();confirmPlanQA();}">
-      <div style="display:flex;align-items:center;gap:4px;background:var(--s2);border:1px solid #2a2a2a;border-radius:3px;padding:0 10px;flex-shrink:0;">
-        <input id="plan-qa-dur" type="number" min="15" max="480" step="15" value="30"
-          style="width:34px;background:none;border:none;font-family:var(--mono);font-size:13px;color:var(--t0);outline:none;text-align:center;">
-        <span style="font-family:var(--sans);font-size:9px;color:var(--t2);">MIN</span>
-      </div>
-      <button onclick="confirmPlanQA()" style="padding:0 14px;background:var(--y);border:none;border-radius:3px;font-family:var(--sans);font-size:11px;font-weight:800;color:#000;letter-spacing:0.06em;text-transform:uppercase;cursor:pointer;white-space:nowrap;">ADD</button>
-    </div>
-  </div>
-</div>
-
-
-<!-- PLAN BLOCK EDIT SHEET -->
-<div id="plan-edit-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:490;backdrop-filter:blur(4px);" onclick="closePlanEdit()"></div>
-<div id="plan-edit-sheet" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:495;background:#111;border-top:1px solid var(--y);border-radius:0;max-height:85dvh;overflow-y:auto;transform:translateY(100%);transition:transform 0.28s cubic-bezier(0.32,0.72,0,1);padding-bottom:env(safe-area-inset-bottom,0px);">
-  <div style="width:32px;height:3px;background:#333;border-radius:99px;margin:10px auto 0;"></div>
-  
-  <!-- Header -->
-  <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 18px 10px;">
-    <div style="font-family:var(--sans);font-size:10px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:var(--t2);">EDIT BLOCK</div>
-    <div style="display:flex;gap:6px;">
-      <button onclick="savePlanEdit()" style="padding:5px 14px;background:var(--y);border:none;border-radius:3px;font-family:var(--sans);font-size:11px;font-weight:800;color:#000;cursor:pointer;letter-spacing:0.04em;">SAVE</button>
-      <button onclick="removePlanEditBlock()" style="padding:5px 10px;background:rgba(232,76,30,0.12);border:1px solid rgba(232,76,30,0.3);border-radius:3px;font-family:var(--sans);font-size:11px;font-weight:700;color:var(--blk);cursor:pointer;">REMOVE</button>
-    </div>
-  </div>
-
-  <div style="padding:0 18px 20px;display:flex;flex-direction:column;gap:14px;">
-    
-    <!-- Title -->
-    <div>
-      <div style="font-family:var(--sans);font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--t2);margin-bottom:5px;">TASK TITLE</div>
-      <input id="pe-title" style="width:100%;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:3px;padding:10px 12px;font-family:var(--sans);font-size:14px;color:var(--t0);outline:none;box-sizing:border-box;" placeholder="Task title…">
-    </div>
-
-    <!-- Duration -->
-    <div>
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-        <div style="font-family:var(--sans);font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--t2);">DURATION</div>
-        <div style="display:flex;align-items:center;gap:4px;">
-          <input id="pe-dur-num" type="number" min="15" max="480" step="15" style="width:52px;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:3px;padding:4px 8px;font-family:var(--mono);font-size:13px;color:var(--y);outline:none;text-align:center;">
-          <span style="font-family:var(--sans);font-size:11px;color:var(--t2);">MIN</span>
-        </div>
-      </div>
-      <input id="pe-dur-slider" type="range" min="15" max="480" step="15" style="width:100%;accent-color:var(--y);cursor:pointer;"
-        oninput="document.getElementById('pe-dur-num').value=this.value">
-      <div id="pe-dur-num-display" style="display:none"></div>
-    </div>
-
-    <!-- Start Time -->
-    <div>
-      <div style="font-family:var(--sans);font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--t2);margin-bottom:5px;">START TIME</div>
-      <div style="display:flex;gap:8px;">
-        <select id="pe-start-h" style="flex:1;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:3px;padding:8px 10px;font-family:var(--mono);font-size:13px;color:var(--t0);outline:none;">
-          <option value="9">9am</option><option value="10">10am</option><option value="11">11am</option><option value="12">12pm</option><option value="13">1pm</option><option value="14">2pm</option><option value="15">3pm</option><option value="16">4pm</option><option value="17">5pm</option><option value="18">6pm</option>
-        </select>
-        <select id="pe-start-m" style="flex:1;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:3px;padding:8px 10px;font-family:var(--mono);font-size:13px;color:var(--t0);outline:none;">
-          <option value="0">:00</option>
-          <option value="30">:30</option>
-        </select>
-      </div>
-    </div>
-
-    <!-- Priority -->
-    <div>
-      <div style="font-family:var(--sans);font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--t2);margin-bottom:6px;">PRIORITY</div>
-      <div style="display:flex;gap:5px;" id="pe-pri-group">
-        <button class="pe-pri-btn" data-pri="critical" onclick="setPlanEditPri('critical')" style="flex:1;padding:7px 4px;border-radius:3px;font-family:var(--sans);font-size:10px;font-weight:700;text-transform:uppercase;cursor:pointer;background:#1a1a1a;border:1px solid #2a2a2a;color:var(--t2);">CRIT</button><button class="pe-pri-btn" data-pri="high" onclick="setPlanEditPri('high')" style="flex:1;padding:7px 4px;border-radius:3px;font-family:var(--sans);font-size:10px;font-weight:700;text-transform:uppercase;cursor:pointer;background:#1a1a1a;border:1px solid #2a2a2a;color:var(--t2);">HIGH</button><button class="pe-pri-btn" data-pri="med" onclick="setPlanEditPri('med')" style="flex:1;padding:7px 4px;border-radius:3px;font-family:var(--sans);font-size:10px;font-weight:700;text-transform:uppercase;cursor:pointer;background:#1a1a1a;border:1px solid #2a2a2a;color:var(--t2);">MED</button><button class="pe-pri-btn" data-pri="low" onclick="setPlanEditPri('low')" style="flex:1;padding:7px 4px;border-radius:3px;font-family:var(--sans);font-size:10px;font-weight:700;text-transform:uppercase;cursor:pointer;background:#1a1a1a;border:1px solid #2a2a2a;color:var(--t2);">LOW</button>
-      </div>
-    </div>
-
-    <!-- Due Date -->
-    <div>
-      <div style="font-family:var(--sans);font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--t2);margin-bottom:5px;">DUE DATE</div>
-      <input id="pe-due" type="date" style="width:100%;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:3px;padding:9px 12px;font-family:var(--mono);font-size:13px;color:var(--t0);outline:none;box-sizing:border-box;color-scheme:dark;">
-    </div>
-
-    <!-- Notes -->
-    <div>
-      <div style="font-family:var(--sans);font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--t2);margin-bottom:5px;">NOTES</div>
-      <textarea id="pe-notes" rows="3" style="width:100%;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:3px;padding:10px 12px;font-family:var(--mono);font-size:13px;color:var(--t0);outline:none;resize:none;box-sizing:border-box;line-height:1.6;" placeholder="Add notes…"></textarea>
-    </div>
-
-    <!-- Tags -->
-    <div>
-      <div style="font-family:var(--sans);font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--t2);margin-bottom:5px;">TAGS</div>
-      <input id="pe-tags" style="width:100%;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:3px;padding:9px 12px;font-family:var(--sans);font-size:13px;color:var(--t0);outline:none;box-sizing:border-box;" placeholder="deliver, review, comp…">
-    </div>
-
-  </div>
-</div>
-
-<!-- PLAN TASK SHEET -->
-<div id="plan-task-sheet-overlay" onclick="closePlanTaskSheet()"></div>
-<div id="plan-task-sheet">
-  <div class="plan-sheet-grab"></div>
-  <div class="plan-sheet-hd">
-    <div class="plan-sheet-title">TASKS <span class="plan-sheet-count" id="plan-sheet-count">0</span></div>
-    <button class="plan-sheet-close" onclick="closePlanTaskSheet()">DONE</button>
-  </div>
-  <div class="plan-sheet-list" id="plan-sheet-list"></div>
-</div>
-
-
-
-<!-- DEBUG CONSOLE LOGIC -->
-<style>
-#dbg-bar {
-  position: fixed;
-  bottom: 0; left: 0; right: 0;
-  z-index: 9999;
-  background: #0b0b0b;
-  border-top: 1px solid rgba(255,50,50,0.5);
-  display: flex; flex-direction: column;
-  height: 28px; /* collapsed - just header */
-  transition: height 0.2s ease;
-  padding-bottom: env(safe-area-inset-bottom);
-  pointer-events: none; /* don't block clicks when collapsed */
-}
-#dbg-bar.open { height: 220px; pointer-events: auto; }
-#dbg-header {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0 10px; height: 28px; flex-shrink: 0;
-  cursor: pointer; pointer-events: auto;
-}
-#dbg-header > span { font-family: monospace; font-size: 10px; font-weight: 700; color: #ff4444; letter-spacing: 0.08em; }
-.dbg-hbtn { background: none; border: 1px solid rgba(255,255,255,0.15); color: #aaa; font-size: 9px; padding: 3px 7px; border-radius: 4px; cursor: pointer; font-family: monospace; }
-#dbg-log { flex: 1; overflow-y: auto; padding: 6px 10px; font-family: monospace; font-size: 10px; line-height: 1.5; -webkit-overflow-scrolling: touch; display: none; }
-#dbg-bar.open #dbg-log { display: block; }
-.de { padding: 2px 0; border-bottom: 1px solid rgba(255,255,255,0.03); word-break: break-all; }
-.de.err { color: #ff5555; } .de.warn { color: #ffaa00; } .de.info { color: #66ff88; } .de.log { color: #ccc; }
-.de-ts { color: #444; margin-right: 5px; font-size: 9px; }
-/* push index content up so debug bar doesn't cover footer */
-.index-wrap { padding-bottom: 28px !important; }
-</style>
 <script>
 (function(){
   let _dbgEntries = [];
@@ -8028,5 +7107,31 @@ if (typeof MODULE_MAP !== 'undefined' && MODULE_MAP.hangar) {
 })();
 </script>
 
+<script>
+// Override console to also write to debug bar
+(function(){
+  const orig = {log:console.log, warn:console.warn, error:console.error};
+  function dbgWrite(level, args){
+    const el = document.getElementById('dbg-log');
+    if(!el) return;
+    const t = new Date().toTimeString().slice(0,8);
+    const msg = Array.from(args).map(a=>typeof a==='object'?JSON.stringify(a):String(a)).join(' ');
+    el.textContent += t+' ['+level+'] '+msg+'\n';
+    el.scrollTop = el.scrollHeight;
+  }
+  console.log = function(){ orig.log.apply(console,arguments); dbgWrite('LOG',arguments); };
+  console.warn = function(){ orig.warn.apply(console,arguments); dbgWrite('WARN',arguments); };
+  console.error = function(){ orig.error.apply(console,arguments); dbgWrite('ERR',arguments); };
+})();
+
+// Stamp build ID
+(function(){
+  const bid = typeof BUILD_ID !== 'undefined' ? BUILD_ID : 'VTEK-20260412-155647';
+  const el = document.getElementById('dbg-build-id');
+  if(el) el.textContent = bid;
+})();
+</script>
+
+</div><!-- .shell -->
 </body>
 </html>
