@@ -2625,11 +2625,13 @@ html, body { height:100%; overflow:hidden; }
   position:fixed; inset:0; z-index:10001;
   display:flex; flex-direction:column;
   background:var(--bg);
-  transform:translateX(100%);
-  transition:transform 0.30s cubic-bezier(0.32,0.72,0,1);
+  transform:translate3d(100%,0,0);
+  transition:transform 0.28s cubic-bezier(0.32,0.72,0,1);
   will-change:transform;
+  -webkit-backface-visibility:hidden;
+  backface-visibility:hidden;
 }
-.module-view.open { transform:translateX(0); }
+.module-view.open { transform:translate3d(0,0,0); }
 
 /* Module topbar */
 .module-topbar {
@@ -3333,7 +3335,7 @@ html, body { height:100%; overflow:hidden; }
 
   <!-- Header bar -->
   <div class="plan-header">
-    <button class="plan-back-btn" onclick="setPayloadMode('execute')">← BACK</button>
+    <button class="plan-back-btn" onclick="closeModule()">← HOME</button>
     <div class="plan-date" id="plan-date-label"></div>
     <div class="plan-header-actions">
       <button class="plan-action-btn" id="plan-rack-btn" onclick="planSuggest()">RACK</button>
@@ -3674,7 +3676,7 @@ html, body { height:100%; overflow:hidden; }
 <!-- GLOBAL SEARCH OVERLAY -->
 <div class="search-overlay" id="search-overlay">
   <div class="search-bar-wrap">
-    <input class="search-bar" id="search-input" placeholder="Search shots, tasks, vault..." 
+    <input class="search-bar" id="search-input-old" placeholder="Search shots, tasks, vault..." 
       oninput="renderSearchResults(this.value)"
       onkeydown="if(event.key==='Escape')closeSearch()">
     <button class="search-cancel" onclick="closeSearch()">CANCEL</button>
@@ -3942,14 +3944,16 @@ const MODULE_MAP = {
   config:   { mv:'mv-config',   init:()=>{ renderConfig(); } },
 };
 
-function openModule(name) { haptic("light");
+function openModule(name) {
+  console.log('[OM] openModule:', name);
+  haptic("light");
   const m = MODULE_MAP[name];
-  if (!m) return;
+  if (!m) { console.error('[OM] no map entry:', name); return; }
   const mv = document.getElementById(m.mv);
-  if (!mv) return;
+  if (!mv) { console.error('[OM] no element:', m.mv); return; }
   _activeModule = name;
   mv.classList.add('open');
-  document.body.style.overflow = 'hidden';
+  console.log('[OM] .open added to', m.mv);
   const dbg = document.getElementById('dbg-bar');
   if (dbg) dbg.style.display = 'none';
   requestAnimationFrame(()=>{ try { m.init(); } catch(e){ if(e&&e.message) console.warn('[VTEK] module init:', e.message); } });
@@ -3963,7 +3967,6 @@ function closeModule() {
     mv.querySelectorAll('.page').forEach(e => e.classList.remove('on'));
   }
   _activeModule = null;
-  document.body.style.overflow = '';
   const dbg = document.getElementById('dbg-bar');
   if (dbg) dbg.style.display = '';
   setTimeout(renderIndexStats, 320);
@@ -3980,14 +3983,10 @@ function showPage(p) {
 }
 
 function sw(p) {
-  showPage(p);
-  if (p==='plan') { setPayloadMode('plan'); return; }
-  if (p==='payload') { setPayloadMode('execute'); return; }
-  if (p==='hangar') rHangar();
-  else if (p==='shots') rShots();
-  else if (p==='vault') rVault();
-  else if (p==='intel') checkKeyWarning();
-  else if (p==='settings') { try{initSettings();}catch(e){} }
+  // legacy shim - route to module system
+  const modMap = {hangar:'hangar',shots:'hangar',payload:'payload',plan:'schedule',vault:'vault',intel:'intel',settings:'config'};
+  const mod = modMap[p];
+  if (mod) openModule(mod);
 }
 
 function quickAdd(action) {
@@ -4013,7 +4012,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260412-153548';
+const BUILD_ID = 'VTEK-20260412-154503';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
@@ -7871,7 +7870,7 @@ if (typeof MODULE_MAP !== 'undefined' && MODULE_MAP.hangar) {
       </div>
       <input id="pe-dur-slider" type="range" min="15" max="480" step="15" style="width:100%;accent-color:var(--y);cursor:pointer;"
         oninput="document.getElementById('pe-dur-num').value=this.value">
-      <div id="pe-dur-num" style="display:none"></div>
+      <div id="pe-dur-num-display" style="display:none"></div>
     </div>
 
     <!-- Start Time -->
