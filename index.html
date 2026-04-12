@@ -2985,7 +2985,7 @@ html, body { height:100%; overflow:hidden; }
     <div class="module-grid" style="padding-top:8px;">
 
       <!-- HANGAR -->
-      <div class="module-card" onclick="openModule('hangar')">
+      <div class="module-card" role="button" onclick="openModule('hangar')">
         <div class="mc-inner">
           <div class="mc-icon">
             <svg viewBox="0 0 22 22" width="22" height="22" fill="none" stroke="white" stroke-width="1.4">
@@ -3012,7 +3012,7 @@ html, body { height:100%; overflow:hidden; }
       </div>
 
       <!-- PAYLOAD -->
-      <div class="module-card" onclick="openModule('payload')">
+      <div class="module-card" role="button" onclick="openModule('payload')">
         <div class="mc-inner">
           <div class="mc-icon">
             <svg viewBox="0 0 22 22" width="22" height="22" fill="none" stroke="white" stroke-width="1.4">
@@ -3039,7 +3039,7 @@ html, body { height:100%; overflow:hidden; }
       </div>
 
       <!-- SCHEDULE -->
-      <div class="module-card" onclick="openModule('schedule')">
+      <div class="module-card" role="button" onclick="openModule('schedule')">
         <div class="mc-inner">
           <div class="mc-icon">
             <svg viewBox="0 0 22 22" width="22" height="22" fill="none" stroke="white" stroke-width="1.4">
@@ -3065,7 +3065,7 @@ html, body { height:100%; overflow:hidden; }
       </div>
 
       <!-- VAULT -->
-      <div class="module-card" onclick="openModule('vault')">
+      <div class="module-card" role="button" onclick="openModule('vault')">
         <div class="mc-inner">
           <div class="mc-icon">
             <svg viewBox="0 0 22 22" width="22" height="22" fill="none" stroke="white" stroke-width="1.4">
@@ -3091,7 +3091,7 @@ html, body { height:100%; overflow:hidden; }
       </div>
 
       <!-- INTEL -->
-      <div class="module-card" onclick="openModule('intel')">
+      <div class="module-card" role="button" onclick="openModule('intel')">
         <div class="mc-inner">
           <div class="mc-icon">
             <svg viewBox="0 0 22 22" width="22" height="22" fill="none" stroke="white" stroke-width="1.4">
@@ -3879,7 +3879,7 @@ html, body { height:100%; overflow:hidden; }
 let _activeModule = null;
 
 const MODULE_MAP = {
-  hangar:   { mv:'mv-hangar',   init:()=>{ rHangar(); showPage('hangar'); } },
+  hangar:   { mv:'mv-hangar',   init:()=>{ rHangar(); } },
   payload:  { mv:'mv-payload',  init:()=>{ setPayloadMode('execute'); } },
   schedule: { mv:'mv-schedule', init:()=>{
     // Show plan page directly without needing pg-payload in context
@@ -3889,8 +3889,8 @@ const MODULE_MAP = {
     S.page='plan';
     try{ initPlanMode(); }catch(e){ console.warn('plan init:',e); }
   } },
-  vault:    { mv:'mv-vault',    init:()=>{ rVault(); showPage('vault'); } },
-  intel:    { mv:'mv-intel',    init:()=>{ checkKeyWarning(); showPage('intel'); } },
+  vault:    { mv:'mv-vault',    init:()=>{ rVault(); } },
+  intel:    { mv:'mv-intel',    init:()=>{ checkKeyWarning(); } },
   config:   { mv:'mv-config',   init:()=>{ renderConfig(); } },
 };
 
@@ -7509,8 +7509,8 @@ function renderIndexStats() {
 }
 
 // Boot
-renderIndexStats();
-updateBadges();
+setTimeout(()=>{ renderIndexStats(); updateBadges(); }, 0);
+window.addEventListener('load', ()=>{ renderIndexStats(); updateBadges(); });
 
 // Pull to refresh on index
 const idxScroll = document.querySelector('.index-scroll');
