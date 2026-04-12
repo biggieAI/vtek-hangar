@@ -2701,10 +2701,10 @@ html, body { height:100%; overflow:hidden; }
 /* Status banner */
 .hng-banner {
   display: flex; align-items: center;
-  background: var(--s2); border-radius: 12px;
-  border: var(--b2); margin: 12px 16px 4px;
-  padding: 10px 0; overflow: hidden;
-  box-shadow: var(--neo-raise);
+  background: transparent;
+  margin: 8px 16px 0;
+  padding: 4px 0 12px; overflow: hidden;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
 }
 .hng-banner-cell {
   flex: 1; display: flex; flex-direction: column;
@@ -2712,16 +2712,16 @@ html, body { height:100%; overflow:hidden; }
 }
 .hng-banner-sep {
   width: 1px; align-self: stretch;
-  background: rgba(255,255,255,0.06);
-  margin: 4px 0;
+  background: rgba(255,255,255,0.04);
+  margin: 6px 0;
 }
 .hng-b-n {
-  font-family: var(--mono); font-size: 20px; font-weight: 700;
-  color: var(--t0); line-height: 1;
+  font-family: var(--mono); font-size: 26px; font-weight: 700;
+  color: var(--t0); line-height: 1; letter-spacing: -0.02em;
 }
 .hng-b-l {
-  font-family: var(--mono); font-size: 8px; font-weight: 500;
-  color: var(--t3); letter-spacing: 0.08em;
+  font-family: var(--sans); font-size: 9px; font-weight: 500;
+  color: var(--t3); letter-spacing: 0.06em; text-transform: uppercase; margin-top: 3px;
 }
 .hng-wip  { color: var(--wip); }
 .hng-blk  { color: var(--blk); }
@@ -2730,7 +2730,7 @@ html, body { height:100%; overflow:hidden; }
 /* Section headers */
 .hng-row-head {
   display: flex; align-items: center;
-  padding: 10px 16px 4px;
+  padding: 18px 16px 6px;
 }
 .hng-row-lbl {
   font-family: var(--mono); font-size: 9px; font-weight: 700;
@@ -2750,31 +2750,31 @@ html, body { height:100%; overflow:hidden; }
 /* Show cards grid — new card style matching index */
 .hng-show-grid {
   display: flex; flex-direction: column;
-  gap: 8px; padding: 0 16px 8px;
+  gap: 10px; padding: 0 16px 8px;
 }
 .hng-show-card {
-  background: var(--s2); border-radius: 14px; border: var(--b2);
-  box-shadow: var(--neo-raise); overflow: hidden; cursor: pointer;
-  transition: transform 0.12s, box-shadow 0.12s;
+  background: var(--s2); border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.04);
+  border-left: 3px solid var(--card-accent, rgba(255,255,255,0.15));
+  overflow: hidden; cursor: pointer;
+  transition: transform 0.12s, background 0.12s;
   display: flex; flex-direction: column;
 }
-.hng-show-card:active { transform: scale(0.98); box-shadow: var(--neo-inset); }
-.hng-show-card-accent {
-  height: 3px; width: 100%;
-}
+.hng-show-card:active { transform: scale(0.985); background: var(--s3); }
+.hng-show-card-accent { display: none; }
 .hng-show-card-body {
-  padding: 12px 14px 14px; display: flex; gap: 12px; align-items: flex-start;
+  padding: 16px 18px 18px; display: flex; gap: 14px; align-items: flex-start;
 }
 .hng-show-card-left { flex: 1; min-width: 0; }
 .hng-show-card-top {
   display: flex; align-items: center; gap: 8px; margin-bottom: 6px;
 }
 .hng-show-code {
-  font-family: var(--mono); font-size: 13px; font-weight: 700;
+  font-family: var(--mono); font-size: 15px; font-weight: 700;
   color: var(--t0); letter-spacing: 0.04em;
 }
 .hng-show-name {
-  font-family: var(--sans); font-size: 11px; color: var(--t2);
+  font-family: var(--sans); font-size: 12px; color: var(--t2);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .hng-show-prog-track {
@@ -2809,9 +2809,11 @@ html, body { height:100%; overflow:hidden; }
 /* Today shots list */
 .hng-today-list { padding: 0 16px 4px; display: flex; flex-direction: column; gap: 6px; }
 .hng-today-row {
-  display: flex; align-items: center; gap: 10px;
-  background: var(--s2); border-radius: 10px; border: var(--b1);
-  padding: 9px 12px; cursor: pointer;
+  display: flex; align-items: center; gap: 12px;
+  background: var(--s2); border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.04);
+  padding: 12px 16px; cursor: pointer;
+  transition: background 0.1s;
 }
 .hng-today-row:active { background: var(--s3); }
 .hng-today-code {
@@ -2924,9 +2926,10 @@ html, body { height:100%; overflow:hidden; }
   padding: 10px 0 4px; text-transform: uppercase;
 }
 .hng-shot-row {
-  display: flex; align-items: center; gap: 10px;
-  padding: 10px 12px; background: var(--s2); border-radius: 10px;
-  border: var(--b1); margin-bottom: 5px; cursor: pointer;
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 16px; background: var(--s2); border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.04);
+  margin-bottom: 6px; cursor: pointer;
   transition: background 0.1s;
 }
 .hng-shot-row:active { background: var(--s3); }
@@ -2952,7 +2955,7 @@ html, body { height:100%; overflow:hidden; }
 
 /* ── HANGAR: Blockers ── */
 .hng-blockers-list { padding: 0 16px 4px; display: flex; flex-direction: column; gap: 6px; }
-.hng-blk-row { display: flex; align-items: center; gap: 8px; padding: 8px 10px; background: var(--s2); border-left: 2px solid var(--blk); border-radius: 4px; cursor: pointer; }
+.hng-blk-row { display: flex; align-items: center; gap: 12px; padding: 13px 16px; background: var(--s2); border-left: 2px solid var(--blk); border-radius: 12px; cursor: pointer; transition: background 0.1s; }
 .hng-blk-row:active { background: var(--s3); }
 .hng-blk-code { font-family: var(--mono); font-size: 11px; color: var(--blk); font-weight: 700; flex-shrink: 0; }
 .hng-blk-show { font-family: var(--mono); font-size: 9px; color: var(--t3); flex-shrink: 0; }
@@ -3212,7 +3215,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260412-183121';
+const BUILD_ID = 'VTEK-20260412-185731';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
@@ -7224,27 +7227,26 @@ rHangar = function() {
                      : w ? `<span class="stag stag-wip" style="font-size:8px">WIP</span>`
                      : r ? `<span class="stag stag-rev" style="font-size:8px">REV</span>`
                      :     `<span class="stag stag-app" style="font-size:8px">OK</span>`;
-        return `<div class="hng-show-card" onclick="hngOpenShots('${s.id}')">
-          <div class="hng-show-card-accent" style="background:${stripe}"></div>
+        return `<div class="hng-show-card" style="--card-accent:${stripe}" onclick="hngOpenShots('${s.id}')">
           <div class="hng-show-card-body">
             <div class="hng-show-card-left">
-              <div class="hng-show-card-top">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">
                 <span class="hng-show-code">${s.code}</span>
                 ${badge}
               </div>
-              <div class="hng-show-name">${s.name || ''}</div>
-              <div class="hng-show-prog-track">
+              <div class="hng-show-name" style="color:var(--t2);margin-bottom:12px;">${s.name || ''}</div>
+              <div class="hng-show-prog-track" style="margin-bottom:12px;">
                 <div class="hng-show-prog-fill" style="width:${p}%;background:${stripe}"></div>
               </div>
-              <div class="hng-show-meta">
-                <div class="hng-show-stat"><span class="hng-show-stat-n">${ss.length}</span><span class="hng-show-stat-l">SHOTS</span></div>
-                <div class="hng-show-stat"><span class="hng-show-stat-n" style="color:var(--wip)">${w}</span><span class="hng-show-stat-l">WIP</span></div>
-                ${b ? `<div class="hng-show-stat"><span class="hng-show-stat-n" style="color:var(--blk)">${b}</span><span class="hng-show-stat-l">BLK</span></div>` : ''}
+              <div style="display:flex;gap:20px;align-items:center;">
+                <div><div style="font-family:var(--mono);font-size:18px;font-weight:700;color:var(--t0);letter-spacing:-0.02em;">${ss.length}</div><div style="font-family:var(--sans);font-size:9px;color:var(--t3);letter-spacing:0.06em;text-transform:uppercase;margin-top:2px;">SHOTS</div></div>
+                ${w?`<div><div style="font-family:var(--mono);font-size:18px;font-weight:700;color:var(--wip);letter-spacing:-0.02em;">${w}</div><div style="font-family:var(--sans);font-size:9px;color:var(--t3);letter-spacing:0.06em;text-transform:uppercase;margin-top:2px;">WIP</div></div>`:''}
+                ${b?`<div><div style="font-family:var(--mono);font-size:18px;font-weight:700;color:var(--blk);letter-spacing:-0.02em;">${b}</div><div style="font-family:var(--sans);font-size:9px;color:var(--t3);letter-spacing:0.06em;text-transform:uppercase;margin-top:2px;">BLK</div></div>`:''}
               </div>
             </div>
-            <div class="hng-show-card-right">
-              <span class="hng-show-pct">${p}%</span>
-              <span class="hng-show-pct-l">DONE</span>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;justify-content:space-between;gap:4px;flex-shrink:0;">
+              <span style="font-family:var(--mono);font-size:28px;font-weight:700;color:var(--t0);letter-spacing:-0.03em;line-height:1;">${p}%</span>
+              <span style="font-family:var(--sans);font-size:9px;color:var(--t3);letter-spacing:0.06em;text-transform:uppercase;">DONE</span>
             </div>
           </div>
         </div>`;
