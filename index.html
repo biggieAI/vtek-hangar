@@ -26,49 +26,49 @@ html, body, .shell, .page-area, .page {
 }
 
 :root {
-  /* ── SmartCrib Dark Neomorphic ── */
-  --bg:    #1a1a1c;
-  --s1:    #1f1f21;
-  --s2:    #222224;
-  --s3:    #272729;
-  --s4:    #2e2e30;
-  --s5:    #363638;
+  /* ── VTEK Minimal Dark — v17 ── */
+  --bg:    #0e0e10;
+  --s1:    #131315;
+  --s2:    #191919;
+  --s3:    #1e1e20;
+  --s4:    #252527;
+  --s5:    #2c2c2e;
 
-  /* ── NEO SHADOW VARS ── */
-  --neo-raise: 4px 6px 16px rgba(0,0,0,0.55), -1px -2px 5px rgba(255,255,255,0.04);
-  --neo-inset: 3px 4px 10px rgba(0,0,0,0.6) inset, -1px -1px 4px rgba(255,255,255,0.04) inset;
+  /* ── SHADOW ── */
+  --neo-raise: 0 2px 12px rgba(0,0,0,0.6);
+  --neo-inset: inset 0 1px 3px rgba(0,0,0,0.5);
 
-  /* ── ACCENT — light through dark ── */
-  --y:      rgba(255,255,255,0.88);  /* primary bright */
-  --y-hi:   rgba(255,255,255,1.0);   /* pure white highlight */
-  --y-mid:  rgba(255,255,255,0.60);  /* mid luminance */
-  --y-dim:  rgba(255,255,255,0.30);  /* dim rim */
-  --y-deep: rgba(255,255,255,0.10);  /* deep surface */
-  --y2:     rgba(255,255,255,0.08);  /* bloom bg */
-  --y3:     rgba(255,255,255,0.04);  /* barely there */
-  --y4:     rgba(255,255,255,0.02);  /* surface lift */
-  --y-glow: 0 0 14px rgba(255,255,255,0.18), 0 0 4px rgba(255,255,255,0.35);
-  --y-glow-sm: 0 0 8px rgba(255,255,255,0.15), 0 0 2px rgba(255,255,255,0.25);
+  /* ── ACCENT ── */
+  --y:      rgba(255,255,255,0.92);
+  --y-hi:   #ffffff;
+  --y-mid:  rgba(255,255,255,0.55);
+  --y-dim:  rgba(255,255,255,0.22);
+  --y-deep: rgba(255,255,255,0.08);
+  --y2:     rgba(255,255,255,0.06);
+  --y3:     rgba(255,255,255,0.03);
+  --y4:     rgba(255,255,255,0.015);
+  --y-glow: none;
+  --y-glow-sm: none;
 
   /* ── TEXT ── */
-  --t0: #ececee;
-  --t1: #b0b0bc;
-  --t2: #787882;
-  --t3: #52525a;
+  --t0: #f0f0f2;
+  --t1: #9a9aa6;
+  --t2: #5a5a66;
+  --t3: #3a3a44;
 
-  /* ── STATUS — monochrome luminosity ── */
-  --wip:   #8a8a8e;
-  --blk:   #505054;
-  --rev:   #686870;
-  --app:   #a0a0a6;
-  --hld:   #3c3c40;
-  --del:   #c0c0c4;
+  /* ── STATUS ── */
+  --wip:   #a0a0aa;
+  --blk:   #666670;
+  --rev:   #808088;
+  --app:   #c0c0c8;
+  --hld:   #3a3a40;
+  --del:   #d8d8e0;
 
-  /* ── BORDERS ── */
-  --b0: 1px solid rgba(255,255,255,0.03);
-  --b1: 1px solid rgba(255,255,255,0.05);
-  --b2: 1px solid rgba(255,255,255,0.06);
-  --b3: 1px solid rgba(255,255,255,0.09);
+  /* ── BORDERS — very subtle ── */
+  --b0: 1px solid rgba(255,255,255,0.025);
+  --b1: 1px solid rgba(255,255,255,0.04);
+  --b2: 1px solid rgba(255,255,255,0.055);
+  --b3: 1px solid rgba(255,255,255,0.08);
 
   /* ── FONTS ── */
   --sans: 'Inter', system-ui, sans-serif;
@@ -156,8 +156,8 @@ body {
   display: flex;
   align-items: center;
   gap: 6px;
-  background: var(--s1);
-  border-bottom: var(--b2);
+  background: var(--bg);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
   position: relative;
   z-index: 10;
   width: 100%;
@@ -259,6 +259,7 @@ body {
   max-width: 100%;
   box-sizing: border-box;
   background: var(--bg);
+  -webkit-overflow-scrolling: touch;
 }
 .page.on { display: block; }
 #pg-intel.on, #pg-vault.on, #pg-plan.on { display: flex; }
@@ -266,10 +267,10 @@ body {
 /* ── SECTION HEADERS ── */
 .sec {
   display: flex; align-items: center;
-  margin-bottom: 12px; margin-top: 20px;
+  margin-bottom: 10px; margin-top: 22px;
   width: 100%;
-  padding-bottom: 6px;
-  border-bottom: 1px solid #252525;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
 }
 .sec:first-child { margin-top: 4px; }
 .sec-l {
@@ -293,8 +294,8 @@ body {
 .show-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 8px; width: 100%; }
 .armor-card {
   background: var(--s2);
-  border: 1px solid rgba(255,255,255,0.05);
-  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.04);
+  border-radius: 14px;
   padding: 0;
   cursor: pointer;
   transition: all 0.15s;
@@ -326,7 +327,7 @@ body {
 /* ── STAT CHIPS ── */
 .stat-row { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 4px; margin-bottom: 8px; width: 100%; }
 /* stat chip top borders removed */
-.sc { background: var(--s2); border: 1px solid rgba(255,255,255,0.05); border-radius: 14px; padding: 10px 8px 9px; text-align: center; position: relative; box-shadow: 4px 6px 16px rgba(0,0,0,0.55), -1px -2px 5px rgba(255,255,255,0.04); }
+.sc { background: var(--s2); border: 1px solid rgba(255,255,255,0.04); border-radius: 10px; padding: 12px 8px 10px; text-align: center; position: relative; }
 .sc-n {
   font-family: var(--mono); font-size: 22px; font-weight: 500;
   line-height: 1; margin-bottom: 4px;
@@ -368,11 +369,11 @@ body {
 /* ── STATUS TAGS ── */
 .stag {
   display: inline-flex; align-items: center;
-  padding: 2px 10px;
+  padding: 3px 10px;
   border-radius: 20px;
   font-family: var(--mono); font-size: 9px; font-weight: 500;
-  letter-spacing: 0.04em; flex-shrink: 0; white-space: nowrap;
-  background: transparent; color: var(--t2); border: 1px solid #282828;
+  letter-spacing: 0.06em; flex-shrink: 0; white-space: nowrap;
+  background: transparent; color: var(--t2); border: 1px solid rgba(255,255,255,0.06);
 }
 .stag-wip { background: rgba(138,138,142,0.08); color: var(--wip); border: 1px solid rgba(138,138,142,0.16); }
 .stag-rev { background: rgba(104,104,112,0.07); color: #686870; border: 1px solid rgba(104,104,112,0.18); }
@@ -413,13 +414,13 @@ body {
 .shot-row {
   background: var(--s2);
   position: relative;
-  border: 1px solid rgba(255,255,255,0.05);
-  border-left: 1.5px solid var(--rc, var(--s4));
-  border-radius: 16px;
-  margin-bottom: 6px;
-  padding: 9px 14px;
-  display: flex; align-items: center; gap: 8px;
-  cursor: pointer; transition: background 0.1s;
+  border: 1px solid rgba(255,255,255,0.04);
+  border-left: 2px solid var(--rc, var(--s4));
+  border-radius: 12px;
+  margin-bottom: 5px;
+  padding: 12px 16px;
+  display: flex; align-items: center; gap: 10px;
+  cursor: pointer; transition: background 0.12s;
   width: 100%; box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
 }
@@ -451,16 +452,16 @@ body {
 /* ── TCARD — BEVELED CELL SHADING ── */
 .tcard {
   background: var(--s2);
-  border: 1px solid rgba(255,255,255,0.05);
-  border-left: 3px solid var(--cc, #333);
-  border-radius: 16px;
-  margin-bottom: 6px;
+  border: 1px solid rgba(255,255,255,0.04);
+  border-left: 2px solid var(--cc, var(--s4));
+  border-radius: 12px;
+  margin-bottom: 5px;
   position: relative;
   transition: all 0.12s;
   cursor: default; user-select: none;
   width: 100%; box-sizing: border-box; overflow: hidden;
   -webkit-tap-highlight-color: transparent;
-  box-shadow: 4px 6px 16px rgba(0,0,0,0.55), -1px -2px 5px rgba(255,255,255,0.04);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
 }
 /* tcard::before removed */
 /* tcard::after removed */
@@ -987,7 +988,7 @@ body {
   width: 100%; max-width: 480px; max-height: 90dvh;
   margin: 0 auto; background: #222224;
   border-top: none;
-  border-radius: 20px 20px 0 0;
+  border-radius: 18px 20px 0 0;
   overflow-y: auto;
   padding: 12px 20px 28px;
   padding-bottom: calc(28px + var(--safe-b));
@@ -2234,8 +2235,8 @@ html, body { height: 100%; overflow: hidden; background: #1a1a1c; color: #ececee
   display: flex; align-items: center;
   padding: calc(var(--safe-t) + 12px) 16px 12px;
   flex-shrink: 0; gap: 12px;
-  background: var(--s1);
-  border-bottom: 1px solid rgba(255,255,255,0.05);
+  background: var(--bg);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
   position: relative;
 }
 .module-topbar::after {
@@ -3209,7 +3210,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260412-181315';
+const BUILD_ID = 'VTEK-20260412-182716';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
