@@ -3138,7 +3138,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260412-154503';
+const BUILD_ID = 'VTEK-20260412-171732';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
@@ -7026,10 +7026,160 @@ if (typeof MODULE_MAP !== 'undefined' && MODULE_MAP.hangar) {
 })();
 </script>
 
+
+<!-- HANGAR SHEETS -->
+
+<!-- SHEET: ol-shot -->
+<div class="overlay" id="ol-shot">
+  <div class="sheet">
+    <div class="sh-handle"></div>
+    <div class="sh-head"><div class="sh-eye">Shots manifest</div><div class="sh-title">Log Shot</div></div>
+    <div class="sh-body">
+      <div class="f"><div class="fl">Show</div><select class="fc" id="as-show"></select></div>
+      <div class="f-row">
+        <div class="f"><div class="fl">Shot Code</div><input class="fc" id="as-code" placeholder="136_STL_0080"></div>
+        <div class="f"><div class="fl">Seq</div><input class="fc" id="as-seq" placeholder="STL"></div>
+      </div>
+      <div class="f-row">
+        <div class="f"><div class="fl">Assignee</div><input class="fc" id="as-who" placeholder="Artist"></div>
+        <div class="f"><div class="fl">Bid Days</div><input class="fc" id="as-bid" type="number" step="0.5" placeholder="2.0"></div>
+      </div>
+      <div class="f-row">
+        <div class="f"><div class="fl">Cut In</div><input class="fc" id="as-ci" placeholder="1001"></div>
+        <div class="f"><div class="fl">Cut Out</div><input class="fc" id="as-co" placeholder="1087"></div>
+      </div>
+      <div class="f"><div class="fl">Status</div>
+        <select class="fc" id="as-status">
+          <option value="hold">Hold</option><option value="wip" selected>WIP</option>
+          <option value="review">Int. Review</option><option value="delivered">Delivered</option>
+          <option value="approved">Approved</option><option value="blocked">Blocked</option>
+        </select>
+      </div>
+      <div class="f"><div class="fl">Notes</div><textarea class="fc" id="as-notes" rows="2" placeholder="Flags, retakes…"></textarea></div>
+      <div class="sh-acts"><button class="sh-ok" onclick="addShot()">CONFIRM</button><button class="sh-no" onclick="closeSheet('ol-shot')">ABORT</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- SHEET: ol-show -->
+<div class="overlay" id="ol-show">
+  <div class="sheet">
+    <div class="sh-handle"></div>
+    <div class="sh-head"><div class="sh-eye">Workspace</div><div class="sh-title">Add Show</div></div>
+    <div class="sh-body">
+      <div class="f-row">
+        <div class="f"><div class="fl">Code</div><input class="fc" id="ash-code" placeholder="CRL" style="text-transform:uppercase"></div>
+        <div class="f"><div class="fl">Name</div><input class="fc" id="ash-name" placeholder="Cerulean"></div>
+      </div>
+      <div class="f-row">
+        <div class="f"><div class="fl">Client</div><input class="fc" id="ash-client" placeholder="Netflix"></div>
+        <div class="f"><div class="fl">Delivery Date</div><input class="fc" id="ash-due" type="date"></div>
+      </div>
+      <div class="f-row">
+        <div class="f"><div class="fl">Team Size</div><input class="fc" id="ash-team" type="number" placeholder="2" min="1"></div>
+        <div class="f"><div class="fl">Weeks Remaining</div><input class="fc" id="ash-weeks" type="number" placeholder="12" min="1"></div>
+      </div>
+      <div class="sh-acts"><button class="sh-ok" onclick="addShow()">CONFIRM</button><button class="sh-no" onclick="closeSheet('ol-show')">ABORT</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- SHEET: ol-edit -->
+<div class="overlay" id="ol-edit">
+  <div class="sheet">
+    <div class="sh-handle"></div>
+    <div class="sh-head"><div class="sh-eye" id="es-eye"></div><div class="sh-title" id="es-title"></div></div>
+    <div class="sh-body">
+      <div class="f"><div class="fl">Status</div><div class="stat-opts" id="es-stats"></div></div>
+      <div class="f"><div class="fl">Assignee</div><input class="fc" id="es-who" placeholder="Artist"></div>
+      <div class="f"><div class="fl">Notes</div><textarea class="fc" id="es-notes" rows="3" placeholder="Retakes, feedback…"></textarea></div>
+      <div class="f-row">
+        <div class="f"><div class="fl">Cut In</div><input class="fc" id="es-ci"></div>
+        <div class="f"><div class="fl">Cut Out</div><input class="fc" id="es-co"></div>
+        <div class="f"><div class="fl">Bid Days</div><input class="fc" id="es-bid"></div>
+      </div>
+      <!-- Version log -->
+      <div style="border-top:1px solid var(--b0);padding-top:12px;">
+        <div style="font-family:var(--mono);font-size:8px;color:var(--t2);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;">
+          <span>Version Log</span>
+          <button onclick="logNewVersion()" style="font-family:var(--mono);font-size:8px;padding:3px 9px;background:var(--p3);box-shadow:var(--sh-rm),inset 0 0 0 1px var(--ac-bd);border:none;color:var(--ac);cursor:pointer;clip-path:polygon(0 0,100% 0,100% calc(100% - 4px),calc(100% - 4px) 100%,0 100%);letter-spacing:0.08em;">+ LOG VERSION</button>
+        </div>
+        <div style="display:flex;gap:5px;margin-bottom:8px;">
+          <input class="fc" id="es-ver-label" placeholder="v1, v2, client_review…" style="flex:1">
+          <input class="fc" id="es-ver-note" placeholder="Note (optional)" style="flex:2">
+        </div>
+        <div id="es-vlog"></div>
+      </div>
+      <div class="sh-acts"><button class="sh-ok" onclick="saveShot()">SAVE</button><button class="sh-no" onclick="closeSheet('ol-edit')">CANCEL</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- SHEET: ol-task -->
+<div class="overlay" id="ol-task">
+  <div class="sheet">
+    <div class="sh-handle"></div>
+    <div class="sh-head"><div class="sh-eye">Payload</div><div class="sh-title">Log Task</div></div>
+    <div class="sh-body">
+
+      <div style="padding:0 0 8px;">
+        <div style="font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;background:linear-gradient(160deg,#909098,#70707a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;padding:12px 16px 6px;">TEMPLATES</div>
+        <div id="task-template-grid"></div>
+      </div>
+      <div style="height:1px;background:rgba(255,255,255,0.05);margin:0 16px 4px;"></div>
+      <div class="f"><div class="fl">Show</div><select class="fc" id="at-show"></select></div>
+      <div class="f"><div class="fl">Objective</div><input class="fc" id="at-title" placeholder="What needs doing?"></div>
+      <div class="f-row">
+        <div class="f"><div class="fl">Due</div><input class="fc" id="at-due" type="date"></div>
+        <div class="f"><div class="fl">Est. Duration</div><input class="fc" id="at-dur" type="number" step="15" placeholder="mins"></div>
+      </div>
+      <div class="f"><div class="fl">Priority</div>
+        <select class="fc" id="at-pri"><option value="critical">Critical</option><option value="high">High</option><option value="med" selected>Medium</option><option value="low">Low</option></select>
+      </div>
+      <div class="f"><div class="fl">Tags</div><input class="fc" id="at-tags" placeholder="comp, paint, deliver… (comma separated)"></div>
+      <div class="f">
+        <div class="fl">Color</div>
+        <div class="color-picker-row" id="at-color-row">
+          <div class="cp-swatch on" data-c="" style="background:var(--s3);border:1px solid var(--s4)"></div>
+          <div class="cp-swatch" data-c="#c42f20" style="background:#c42f20"></div>
+          <div class="cp-swatch" data-c="#d4963a" style="background:#d4963a"></div>
+          <div class="cp-swatch" data-c="#7a9e4a" style="background:#7a9e4a"></div>
+          <div class="cp-swatch" data-c="#4a7abf" style="background:#4a7abf"></div>
+          <div class="cp-swatch" data-c="#7a5abf" style="background:#7a5abf"></div>
+        </div>
+      </div>
+      <div class="f">
+        <div class="fl">Sub-tasks</div>
+        <div id="at-subs-list"></div>
+        <div style="display:flex;gap:5px;margin-top:5px">
+          <input class="fc" id="at-sub-input" placeholder="Add sub-task…" style="flex:1" onkeydown="if(event.key==='Enter'){event.preventDefault();addSubInput();}">
+          <button class="sh-no" style="flex-shrink:0;padding:6px 10px;font-size:10px" onclick="addSubInput()">ADD</button>
+        </div>
+      </div>
+      <div class="f"><div class="fl">Notes</div><textarea class="fc" id="at-notes" rows="2" placeholder="Duration, context, links…"></textarea></div>
+      <div class="f"><div class="fl">Depends on shot</div><select class="fc" id="at-dep"><option value="">None</option></select></div>
+      <div class="sh-acts"><button class="sh-ok" onclick="addTask()">CONFIRM</button><button class="sh-no" onclick="closeSheet('ol-task')">ABORT</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- SHEET: ol-backups -->
+<div class="overlay" id="ol-backups">
+  <div class="sheet">
+    <div class="sh-handle"></div>
+    <div class="sh-head"><div class="sh-eye">Data Safety</div><div class="sh-title">Restore Backup</div></div>
+    <div class="sh-body">
+      <div style="font-family:var(--mono);font-size:8px;color:var(--t2);letter-spacing:0.1em;line-height:1.8;margin-bottom:4px">Last 20 auto-saves. Restoring will overwrite current state.</div>
+      <div id="backups-list"></div>
+      <div class="sh-acts"><button class="sh-no" onclick="closeSheet('ol-backups')">CLOSE</button></div>
+    </div>
+  </div>
+</div>
+
 </div><!-- .shell -->
 
 
-<!-- MODULE VIEWS MOVED OUTSIDE .shell (iOS fixed+overflow:hidden bug) -->
+
 <div class="module-view" id="mv-hangar">
   <div class="module-topbar">
     <button class="back-btn" id="hng-back-btn" onclick="hangarBack()">
