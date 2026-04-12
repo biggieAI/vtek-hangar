@@ -26,49 +26,49 @@ html, body, .shell, .page-area, .page {
 }
 
 :root {
-  /* ── VTEK Minimal Dark — v17 ── */
-  --bg:    #0e0e10;
-  --s1:    #131315;
-  --s2:    #191919;
-  --s3:    #1e1e20;
-  --s4:    #252527;
-  --s5:    #2c2c2e;
+  /* ── VTEK BLVCK — obsidian palette ── */
+  --bg:    #080809;
+  --s1:    #0d0d0e;
+  --s2:    #111112;
+  --s3:    #161617;
+  --s4:    #1c1c1e;
+  --s5:    #242426;
 
   /* ── SHADOW ── */
-  --neo-raise: 0 2px 12px rgba(0,0,0,0.6);
-  --neo-inset: inset 0 1px 3px rgba(0,0,0,0.5);
+  --neo-raise: 0 1px 8px rgba(0,0,0,0.8);
+  --neo-inset: inset 0 1px 2px rgba(0,0,0,0.9);
 
-  /* ── ACCENT ── */
-  --y:      rgba(255,255,255,0.92);
+  /* ── ACCENT — white, surgical ── */
+  --y:      rgba(255,255,255,0.88);
   --y-hi:   #ffffff;
-  --y-mid:  rgba(255,255,255,0.55);
-  --y-dim:  rgba(255,255,255,0.22);
-  --y-deep: rgba(255,255,255,0.08);
-  --y2:     rgba(255,255,255,0.06);
-  --y3:     rgba(255,255,255,0.03);
-  --y4:     rgba(255,255,255,0.015);
+  --y-mid:  rgba(255,255,255,0.50);
+  --y-dim:  rgba(255,255,255,0.18);
+  --y-deep: rgba(255,255,255,0.06);
+  --y2:     rgba(255,255,255,0.04);
+  --y3:     rgba(255,255,255,0.025);
+  --y4:     rgba(255,255,255,0.01);
   --y-glow: none;
   --y-glow-sm: none;
 
-  /* ── TEXT ── */
-  --t0: #f0f0f2;
-  --t1: #9a9aa6;
-  --t2: #5a5a66;
-  --t3: #3a3a44;
+  /* ── TEXT — BLVCK contrast ── */
+  --t0: #efefef;
+  --t1: #888892;
+  --t2: #484852;
+  --t3: #2e2e36;
 
-  /* ── STATUS ── */
-  --wip:   #a0a0aa;
-  --blk:   #666670;
-  --rev:   #808088;
-  --app:   #c0c0c8;
-  --hld:   #3a3a40;
-  --del:   #d8d8e0;
+  /* ── STATUS — muted on obsidian ── */
+  --wip:   #909098;
+  --blk:   #585860;
+  --rev:   #707078;
+  --app:   #b8b8c0;
+  --hld:   #303038;
+  --del:   #d0d0d8;
 
-  /* ── BORDERS — very subtle ── */
-  --b0: 1px solid rgba(255,255,255,0.025);
-  --b1: 1px solid rgba(255,255,255,0.04);
-  --b2: 1px solid rgba(255,255,255,0.055);
-  --b3: 1px solid rgba(255,255,255,0.08);
+  /* ── BORDERS — barely there ── */
+  --b0: 1px solid rgba(255,255,255,0.018);
+  --b1: 1px solid rgba(255,255,255,0.03);
+  --b2: 1px solid rgba(255,255,255,0.042);
+  --b3: 1px solid rgba(255,255,255,0.065);
 
   /* ── FONTS ── */
   --sans: 'Inter', system-ui, sans-serif;
@@ -176,11 +176,8 @@ body {
   text-transform: uppercase;
   flex-shrink: 0;
   white-space: nowrap;
-  background: linear-gradient(160deg, #ffffff 0%, #dde2f8 55%, #c0c8f0 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  filter: drop-shadow(0 0 3px rgba(255,255,255,0.5)) drop-shadow(0 0 8px rgba(210,220,255,0.2));
+  color: rgba(255,255,255,0.85);
+  filter: none;
 }
 .wm-slash { color: rgba(255,255,255,0.40); font-weight: 300; letter-spacing: 0; }
 .wm-div {
@@ -314,14 +311,14 @@ body {
 .ac-code {
   font-family: var(--sans); font-size: 20px; font-weight: 900;
   letter-spacing: -0.02em; text-transform: uppercase;
-  background: linear-gradient(160deg, #ffffff 0%, #d8dcf0 60%, #bec4e0 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  color: var(--t0);
   line-height: 1; margin-bottom: 2px;
 }
 .ac-name { font-size: 13px; color: var(--t1); margin-top: 4px; }
 .ac-client { font-size: 12px; color: var(--t2); margin-top: 2px; }
-.show-stat-num { font-family: var(--mono); font-size: 13px; font-weight: 500; background: linear-gradient(160deg, #ffffff 0%, #d8dcf0 60%, #bec4e0 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.show-stat-num { font-family: var(--mono); font-size: 13px; font-weight: 500; color: var(--t0); }
 .show-stat-key { font-size: 11px; color: var(--t2); margin-top: 1px; }
-.prog-track { height: 2px; background: var(--bg); margin-bottom: 8px; overflow: hidden; border-radius: 3px; box-shadow: 2px 3px 8px rgba(0,0,0,0.5) inset; }
+.prog-track { height: 1px; background: rgba(255,255,255,0.04); margin-bottom: 8px; overflow: hidden; border-radius: 2px; }
 .prog-fill { height: 100%; transition: width 0.4s; }
 
 /* ── STAT CHIPS ── */
@@ -331,7 +328,7 @@ body {
 .sc-n {
   font-family: var(--mono); font-size: 22px; font-weight: 500;
   line-height: 1; margin-bottom: 4px;
-  background: linear-gradient(160deg, #ffffff 0%, #d8dcf0 60%, #bec4e0 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  color: var(--t0);
 }
 .sc-l { font-family: var(--sans); font-size: 10px; font-weight: 600; color: var(--t2); letter-spacing: 0.08em; text-transform: uppercase; }
 
@@ -986,7 +983,7 @@ body {
 .overlay.open { display: flex; }
 .sheet {
   width: 100%; max-width: 480px; max-height: 90dvh;
-  margin: 0 auto; background: #222224;
+  margin: 0 auto; background: #0f0f10;
   border-top: none;
   border-radius: 18px 20px 0 0;
   overflow-y: auto;
@@ -1767,7 +1764,7 @@ body {
   padding-top: 8px;
   padding-bottom: env(safe-area-inset-bottom, 0px);
   display: flex; flex-shrink: 0;
-  background: var(--s1);
+  background: var(--bg);
   border-top: 1px solid rgba(255,255,255,0.05);
   box-shadow: 0 -8px 32px rgba(0,0,0,0.6);
   position: fixed; bottom: 0; left: 0; right: 0;
@@ -2074,7 +2071,7 @@ html, body { height: 100%; overflow: hidden; background: #1a1a1c; color: #ececee
   text-transform: uppercase;
   background: linear-gradient(160deg, #ffffff 0%, #dde2f8 55%, #c0c8f0 100%);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-  filter: drop-shadow(0 0 3px rgba(255,255,255,0.5)) drop-shadow(0 0 8px rgba(210,220,255,0.2));
+  filter: none;
 }
 .wm-slash { color: rgba(255,255,255,0.35); font-weight: 300; font-size: 15px; }
 .wm-sep {
@@ -3215,7 +3212,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260412-185731';
+const BUILD_ID = 'VTEK-20260412-191901';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
