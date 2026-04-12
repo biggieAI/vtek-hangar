@@ -1200,6 +1200,106 @@ body {
 .plan-block-lock:hover { color: rgba(255,255,255,0.7); }
 
 
+/* ── MORNING BRIEF ── */
+#morning-brief-wrap { padding: 8px 12px 0; }
+
+.brief-card {
+  background: var(--s2);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+  animation: fadeUp 0.3s ease both;
+}
+.brief-card::before {
+  content: '';
+  position: absolute; top: 0; left: 8%; right: 8%; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12) 30%, rgba(255,255,255,0.22) 50%, rgba(200,215,255,0.12) 70%, transparent);
+}
+
+.brief-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 11px 14px 10px;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.brief-header-left { display: flex; align-items: center; gap: 8px; }
+.brief-eyebrow {
+  font-family: var(--mono); font-size: 9px; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  background: linear-gradient(160deg, #ffffff 0%, #d8dcf0 60%, #bec4e0 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.brief-dot {
+  width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0;
+  background: radial-gradient(circle, #ffffff, rgba(210,220,255,0.8));
+  box-shadow: 0 0 5px rgba(255,255,255,0.5), 0 0 10px rgba(200,215,255,0.2);
+}
+.brief-dot.clear { background: rgba(80,80,86,0.6); box-shadow: none; }
+.brief-toggle {
+  font-family: var(--mono); font-size: 10px; color: var(--t3);
+  transition: transform 0.2s;
+}
+.brief-toggle.open { transform: rotate(180deg); }
+
+.brief-body { padding: 2px 0 6px; }
+
+.brief-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 8px 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  cursor: pointer; transition: background 0.1s;
+  -webkit-tap-highlight-color: transparent;
+}
+.brief-item:last-child { border-bottom: none; }
+.brief-item:active { background: rgba(255,255,255,0.03); }
+
+.brief-item-icon {
+  width: 26px; height: 26px; border-radius: 8px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.06);
+  margin-top: 1px;
+}
+.brief-item-icon.warn {
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(255,255,255,0.12);
+}
+.brief-item-icon.crit {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.18);
+  box-shadow: 0 0 8px rgba(255,255,255,0.08);
+}
+
+.brief-item-body { flex: 1; min-width: 0; }
+.brief-item-title {
+  font-size: 12px; font-weight: 500; color: var(--t0);
+  line-height: 1.3; margin-bottom: 2px;
+  background: linear-gradient(160deg, #ffffff 0%, #d8dcf0 60%, #bec4e0 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.brief-item-sub {
+  font-family: var(--mono); font-size: 10px; color: var(--t2);
+  line-height: 1.4;
+}
+.brief-item-action {
+  font-family: var(--mono); font-size: 9px; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: rgba(255,255,255,0.6); flex-shrink: 0;
+  padding: 4px 8px; border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 20px; background: rgba(255,255,255,0.04);
+  margin-top: 2px; align-self: center;
+  white-space: nowrap;
+}
+
+.brief-all-clear {
+  padding: 12px 14px; display: flex; align-items: center; gap: 8px;
+}
+.brief-clear-txt {
+  font-family: var(--mono); font-size: 10px; color: var(--t3);
+  letter-spacing: 0.06em;
+}
+
 /* ── CONFIG MODULE ── */
 .cfg-select {
   width: 100%;
@@ -2315,6 +2415,9 @@ html, body { height:100%; overflow:hidden; }
       <span class="status-date" id="idx-status-txt">LOADING...</span>
       <div class="status-pulse" id="idx-pulse"></div>
     </div>
+
+    <!-- Morning Brief -->
+    <div id="morning-brief-wrap"></div>
 
     <!-- Module cards -->
     <div class="module-grid" style="padding-top:8px;">
@@ -5779,6 +5882,227 @@ function saveConfig() {
   try { if(document.getElementById('pg-plan')?.classList.contains('on')) renderTimeline(); } catch(e){}
 }
 
+
+// ══════════════════════════════════════════════════════
+// MORNING BRIEF — pure logic, zero API
+// ══════════════════════════════════════════════════════
+
+let _briefOpen = true;
+
+function buildBrief() {
+  const items = [];
+  const todStr = tod();
+  const shows  = S.shows  || [];
+  const shots  = S.shots  || [];
+  const tasks  = S.tasks  || [];
+
+  // ── CRITICAL: overdue tasks ──
+  tasks.filter(t => !t.done && t.due && t.due < todStr)
+    .forEach(t => {
+      const show = gs(t.sid);
+      items.push({
+        level:  'crit',
+        icon:   '⚑',
+        title:  t.title,
+        sub:    'OVERDUE · ' + (show ? show.code : '') + (t.due ? ' · DUE ' + fmtDateShort(t.due) : ''),
+        action: 'VIEW',
+        tap:    () => { openModule('payload'); }
+      });
+    });
+
+  // ── CRITICAL: blocked shots ──
+  shots.filter(s => s.status === 'blocked')
+    .forEach(s => {
+      const show = shows.find(sh => sh.id === s.sid);
+      items.push({
+        level:  'crit',
+        icon:   '✕',
+        title:  s.code + ' — BLOCKED',
+        sub:    (s.notes || 'No blocker note set') + (show ? ' · ' + show.code : ''),
+        action: s.notes ? 'RESOLVE' : 'ADD NOTE',
+        tap:    () => { openModule('hangar'); }
+      });
+    });
+
+  // ── WARN: tasks due today ──
+  tasks.filter(t => !t.done && t.due === todStr)
+    .forEach(t => {
+      const show = gs(t.sid);
+      items.push({
+        level:  'warn',
+        icon:   '◎',
+        title:  t.title,
+        sub:    'DUE TODAY · ' + (t.pri || 'med').toUpperCase() + ' · ' + (t.dur || 45) + 'min' + (show ? ' · ' + show.code : ''),
+        action: 'PLAN',
+        tap:    () => { openModule('schedule'); }
+      });
+    });
+
+  // ── WARN: shots in review (need attention) ──
+  shots.filter(s => s.status === 'review')
+    .forEach(s => {
+      const show = shows.find(sh => sh.id === s.sid);
+      items.push({
+        level:  'warn',
+        icon:   '◐',
+        title:  s.code + ' — NEEDS REVIEW',
+        sub:    (show ? show.code : '') + (s.notes ? ' · ' + s.notes.slice(0, 50) : ''),
+        action: 'OPEN',
+        tap:    () => { openModule('hangar'); }
+      });
+    });
+
+  // ── NUDGE: shots with no notes ──
+  shots.filter(s => !s.notes && s.status !== 'approved' && s.status !== 'delivered')
+    .slice(0, 2)
+    .forEach(s => {
+      if (S.config.nudgesOn !== false) {
+        items.push({
+          level:  'info',
+          icon:   '✎',
+          title:  s.code + ' — NO NOTES',
+          sub:    'Shot has no notes or context added',
+          action: '+ NOTE',
+          tap:    () => { openModule('hangar'); }
+        });
+      }
+    });
+
+  // ── NUDGE: tasks with no due date ──
+  const noDue = tasks.filter(t => !t.done && !t.due);
+  if (noDue.length > 0 && S.config.nudgesOn !== false) {
+    items.push({
+      level:  'info',
+      icon:   '◷',
+      title:  noDue.length + ' task' + (noDue.length > 1 ? 's' : '') + ' with no due date',
+      sub:    noDue.slice(0,2).map(t=>t.title).join(' · ') + (noDue.length > 2 ? ' +' + (noDue.length-2) + ' more' : ''),
+      action: 'SET',
+      tap:    () => { openModule('payload'); }
+    });
+  }
+
+  // ── NUDGE: shots with no bid days ──
+  const noBid = shots.filter(s => !s.bid && s.status !== 'delivered');
+  if (noBid.length > 0 && S.config.nudgesOn !== false) {
+    items.push({
+      level:  'info',
+      icon:   '⊘',
+      title:  noBid.length + ' shot' + (noBid.length > 1 ? 's' : '') + ' missing bid days',
+      sub:    noBid.slice(0,2).map(s=>s.code).join(' · ') + (noBid.length > 2 ? ' +more' : ''),
+      action: 'ADD',
+      tap:    () => { openModule('hangar'); }
+    });
+  }
+
+  // ── NUDGE: unplanned day ──
+  const planKey = 'vtek_plan_' + new Date().toDateString();
+  const plan = JSON.parse(localStorage.getItem(planKey) || '[]');
+  const openTasks = tasks.filter(t => !t.done && t.due === todStr);
+  if (openTasks.length > 0 && plan.length === 0) {
+    items.push({
+      level:  'info',
+      icon:   '▦',
+      title:  'Day not planned',
+      sub:    openTasks.length + ' task' + (openTasks.length>1?'s':'') + ' due today — tap RACK to auto-schedule',
+      action: 'RACK',
+      tap:    () => { openModule('schedule'); setTimeout(rackDay, 400); }
+    });
+  }
+
+  return items;
+}
+
+function fmtDateShort(d) {
+  if (!d) return '';
+  const dt = new Date(d + 'T12:00:00');
+  return dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+}
+
+function renderBrief() {
+  const wrap = document.getElementById('morning-brief-wrap');
+  if (!wrap) return;
+
+  // Skip if brief disabled in config
+  if (S.config.briefOn === false) { wrap.innerHTML = ''; return; }
+
+  const items = buildBrief();
+  const hasCrit = items.some(i => i.level === 'crit');
+  const hasWarn = items.some(i => i.level === 'warn');
+
+  const levelIcon = { crit: 'crit', warn: 'warn', info: '' };
+
+  const iconSvgs = {
+    '⚑': `<svg viewBox="0 0 12 12" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 1v10M2 1l7 3-7 3"/></svg>`,
+    '✕': `<svg viewBox="0 0 12 12" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 2l8 8M10 2L2 10"/></svg>`,
+    '◎': `<svg viewBox="0 0 12 12" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="6" cy="6" r="5"/><circle cx="6" cy="6" r="2"/></svg>`,
+    '◐': `<svg viewBox="0 0 12 12" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="6" cy="6" r="5"/><path d="M6 1v10" stroke-width="1"/></svg>`,
+    '✎': `<svg viewBox="0 0 12 12" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 9l1-3 5.5-5.5 2 2L5 8l-3 1z"/></svg>`,
+    '◷': `<svg viewBox="0 0 12 12" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="6" cy="6" r="5"/><path d="M6 3v3l2 1.5"/></svg>`,
+    '⊘': `<svg viewBox="0 0 12 12" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="6" cy="6" r="5"/><path d="M3 6h6"/></svg>`,
+    '▦': `<svg viewBox="0 0 12 12" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="1" y="1" width="4" height="4" rx="1"/><rect x="7" y="1" width="4" height="4" rx="1"/><rect x="1" y="7" width="4" height="4" rx="1"/><rect x="7" y="7" width="4" height="4" rx="1"/></svg>`,
+  };
+
+  const dotClass = hasCrit || hasWarn ? 'brief-dot' : 'brief-dot clear';
+  const eyebrowTxt = hasCrit ? 'ACTION REQUIRED' : hasWarn ? 'NEEDS ATTENTION' : 'ALL CLEAR';
+
+  let bodyHtml = '';
+  if (items.length === 0) {
+    bodyHtml = `<div class="brief-all-clear">
+      <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"><path d="M3 8l3 3 7-7"/></svg>
+      <span class="brief-clear-txt">No blockers · No overdue · Day is clear</span>
+    </div>`;
+  } else {
+    // Show max 5 items — prioritize crits then warns then info
+    const sorted = [
+      ...items.filter(i=>i.level==='crit'),
+      ...items.filter(i=>i.level==='warn'),
+      ...items.filter(i=>i.level==='info'),
+    ].slice(0, 5);
+
+    bodyHtml = sorted.map((item, idx) => {
+      const svg = iconSvgs[item.icon] || '';
+      const iconLvl = levelIcon[item.level] || '';
+      return `<div class="brief-item" onclick="_briefTap(${idx})">
+        <div class="brief-item-icon ${iconLvl}">${svg}</div>
+        <div class="brief-item-body">
+          <div class="brief-item-title">${item.title}</div>
+          <div class="brief-item-sub">${item.sub}</div>
+        </div>
+        <div class="brief-item-action">${item.action}</div>
+      </div>`;
+    }).join('');
+  }
+
+  // Store taps for onclick access
+  window._briefItems = items;
+
+  wrap.innerHTML = `<div class="brief-card">
+    <div class="brief-header" onclick="toggleBrief()">
+      <div class="brief-header-left">
+        <div class="${dotClass}"></div>
+        <span class="brief-eyebrow">${eyebrowTxt}</span>
+      </div>
+      <span class="brief-toggle ${_briefOpen ? 'open' : ''}" id="brief-toggle-arrow">▾</span>
+    </div>
+    <div class="brief-body" id="brief-body" style="display:${_briefOpen?'block':'none'};">
+      ${bodyHtml}
+    </div>
+  </div>`;
+}
+
+function _briefTap(idx) {
+  const item = (window._briefItems || [])[idx];
+  if (item && item.tap) item.tap();
+}
+
+function toggleBrief() {
+  _briefOpen = !_briefOpen;
+  const body = document.getElementById('brief-body');
+  const arrow = document.getElementById('brief-toggle-arrow');
+  if (body) body.style.display = _briefOpen ? 'block' : 'none';
+  if (arrow) arrow.classList.toggle('open', _briefOpen);
+}
+
 // ── BOOT
 
 
@@ -5901,6 +6225,9 @@ function renderIndexStats() {
     {label:'TASKS',state:todayT>0?'warn':'ok'},
     {label:'INTEL',state:'ok'},
   ].map(p=>`<div class="pulse-item"><div class="pulse-dot ${p.state}"></div><span class="pulse-txt">${p.label}</span></div>`).join('');
+
+  // Render morning brief
+  try { renderBrief(); } catch(e) { console.warn('brief:', e); }
 }
 
 // Boot
