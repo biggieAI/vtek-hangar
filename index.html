@@ -1,4 +1,4 @@
-<!-- vtek-build:20260412-141022 -->
+<!-- vtek-build:20260412-141235 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -3903,6 +3903,8 @@ let _dragBlock=null, _dragStartY=0, _dragOrigSlot=0;
 let _resizeBlock=null, _resizeStartY=0, _resizeOrigDur=0;
 let _hngFilter = 'all';
 let planSchedule=[], planCalEvents=[], planSelected=null, planPoolOpen=true;
+let plView='list', plFilterTag='', plFilterShow='';
+let vaultActiveId=null, vaultMode='edit';
 // ── END HOISTED VARS ──
 
 const MODULE_MAP = {
@@ -3984,7 +3986,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260412-141022';
+const BUILD_ID = 'VTEK-20260412-141235';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
@@ -4082,12 +4084,12 @@ if(S.shows.length===0){
 }
 
 let editId=null, editTaskId=null;
-let plView='list', plFilterTag='', plFilterShow='';
+// [plView hoisted]
 let lastAiReason='', dragSrcId=null;
 let pendingSubsAdd=[], editSubsList=[];
 let plRecog=null, plListening=false;
 let intelHistory=[];
-let vaultActiveId=null, vaultMode='edit';
+// [vaultActiveId hoisted]
 let autoSyncInterval=null;
 
 // ── VERSIONED AUTO-BACKUP ──
@@ -5661,7 +5663,7 @@ function setPayloadMode(mode){
   } else {
     pp.classList.remove('on');ep.classList.add('on');
     pb&&pb.classList.remove('on');eb&&eb.classList.add('on');
-    document.getElementById('wm-p').textContent='PAYLOAD';
+    const _wmp=document.getElementById('wm-p'); if(_wmp) _wmp.textContent='PAYLOAD';
     rPayload();
   }
 }
