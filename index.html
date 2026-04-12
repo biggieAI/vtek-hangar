@@ -1,4 +1,4 @@
-<!-- vtek-build:20260412-135223 -->
+<!-- vtek-build:20260412-135603 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -3958,7 +3958,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260412-135223';
+const BUILD_ID = 'VTEK-20260412-135603';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
@@ -7487,7 +7487,7 @@ function renderIndexStats() {
   ].map(p=>`<div class="pulse-item"><div class="pulse-dot ${p.state}"></div><span class="pulse-txt">${p.label}</span></div>`).join('');
 
   // Render morning brief
-  try { renderBrief(); } catch(e) { console.warn('brief:', e); }
+  try { renderBrief(); } catch(e) { if(e && e.message) console.warn('[VTEK] brief:', e.message); }
 }
 
 // Boot
@@ -7495,11 +7495,8 @@ function renderIndexStats() {
 function bootStats() {
   try { renderIndexStats(); updateBadges(); } catch(e) { console.error('[VTEK] bootStats:', e); }
 }
-setTimeout(bootStats, 50);
-setTimeout(bootStats, 300);
-setTimeout(bootStats, 800);
+setTimeout(bootStats, 100);
 window.addEventListener('load', bootStats);
-document.addEventListener('DOMContentLoaded', bootStats);
 
 // Pull to refresh on index
 const idxScroll = document.querySelector('.index-scroll');
@@ -7919,7 +7916,7 @@ if (typeof MODULE_MAP !== 'undefined' && MODULE_MAP.hangar) {
 <script>
 (function(){
   // Only activate on ?debug param
-  if(!location.search.includes('debug')) return;
+  // debug always visible for now
   document.getElementById('dbg-btn').classList.add('show');
   
   let _dbgCount = 0;
@@ -7955,7 +7952,7 @@ if (typeof MODULE_MAP !== 'undefined' && MODULE_MAP.hangar) {
   window.addEventListener('error', e => addEntry('err', ['UNCAUGHT: ' + e.message + ' @ ' + e.filename + ':' + e.lineno]));
   window.addEventListener('unhandledrejection', e => addEntry('err', ['PROMISE: ' + (e.reason?.message || e.reason)]));
   
-  addEntry('info', ['[VTEK DEBUG] BUILD: ' + (typeof BUILD_ID !== 'undefined' ? BUILD_ID : 'UNKNOWN') + ' | S: ' + (typeof S !== 'undefined' ? 'loaded' : 'not loaded')]);
+  addEntry('info', ['BUILD: ' + (typeof BUILD_ID !== 'undefined' ? BUILD_ID : 'UNKNOWN')]);
 })();
 </script>
 
