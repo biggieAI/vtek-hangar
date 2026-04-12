@@ -3601,7 +3601,7 @@ html, body { height:100%; overflow:hidden; }
   <!-- Input area -->
   <div class="intel-bar">
     <!-- No API key warning — tap to go to config -->
-    <div class="intel-no-key-warn" id="intel-no-key-warn" onclick="sw('settings')">
+    <div class="intel-no-key-warn" id="intel-no-key-warn" onclick="openModule('config')">
       ⚠ API KEY NOT SET — TAP TO CONFIGURE
     </div>
 
@@ -4013,7 +4013,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260412-153156';
+const BUILD_ID = 'VTEK-20260412-153548';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
@@ -4241,7 +4241,7 @@ function rHangar(){
     const wip=shots.filter(sh=>sh.status==='wip').length;
     const blk=shots.filter(sh=>sh.status==='blocked').length;
     const stripe=s.color||'var(--y)';
-    return `<div class="armor-card" onclick="S.activeShow='${s.id}';sw('shots')">
+    return `<div class="armor-card" onclick="hngOpenShots('${s.id}');openModule('hangar')">
       <div class="show-stripe" style="background:${stripe}"></div>
       <div class="armor-card-content">
         <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px;">
@@ -5620,27 +5620,27 @@ function doSearch(q){
   S.shots.forEach(sh=>{
     const show=gs(sh.sid);
     const score=(sh.code.toLowerCase().includes(ql)?3:0)+(sh.notes?.toLowerCase().includes(ql)?1:0)+(sh.who?.toLowerCase().includes(ql)?1:0);
-    if(score>0) results.push({type:'shot',score,id:sh.id,title:sh.code,meta:`${show?.code||'?'} · ${SC[sh.status]?.label||sh.status}${sh.who?' · '+sh.who:''}`,color:SC[sh.status]?.col||'var(--p5)',action:`openEdit('${sh.id}');closeSearch();sw('shots');`,raw:sh});
+    if(score>0) results.push({type:'shot',score,id:sh.id,title:sh.code,meta:`${show?.code||'?'} · ${SC[sh.status]?.label||sh.status}${sh.who?' · '+sh.who:''}`,color:SC[sh.status]?.col||'var(--p5)',action:`openEdit('${sh.id}');closeSearch();openModule('hangar');`,raw:sh});
   });
 
   // Tasks
   S.tasks.filter(t=>!t.done).forEach(t=>{
     const show=gs(t.sid);
     const score=(t.title.toLowerCase().includes(ql)?3:0)+((t.tags||[]).some(g=>g.includes(ql))?2:0)+(t.notes?.toLowerCase().includes(ql)?1:0);
-    if(score>0) results.push({type:'task',score,id:t.id,title:t.title,meta:`${show?.code||'?'} · ${t.pri?.toUpperCase()}${t.due?' · '+fmt(t.due):''}`,color:t.color||'var(--s4)',action:`openTaskEdit('${t.id}');closeSearch();sw('payload');`,raw:t});
+    if(score>0) results.push({type:'task',score,id:t.id,title:t.title,meta:`${show?.code||'?'} · ${t.pri?.toUpperCase()}${t.due?' · '+fmt(t.due):''}`,color:t.color||'var(--s4)',action:`openTaskEdit('${t.id}');closeSearch();openModule('payload');`,raw:t});
   });
 
   // Vault
   (S.vaultDocs||[]).forEach(d=>{
     const score=(d.title?.toLowerCase().includes(ql)?3:0)+(d.content?.toLowerCase().includes(ql)?1:0);
-    if(score>0) results.push({type:'vault',score,id:d.id,title:d.title||'Untitled',meta:`VAULT${d.showId?' · '+gs(d.showId)?.code:''}`,color:'var(--p7)',action:`vaultOpen('${d.id}');closeSearch();sw('vault');`,raw:d});
+    if(score>0) results.push({type:'vault',score,id:d.id,title:d.title||'Untitled',meta:`VAULT${d.showId?' · '+gs(d.showId)?.code:''}`,color:'var(--p7)',action:`vaultOpen('${d.id}');closeSearch();openModule('vault');`,raw:d});
   });
 
   // Version log entries
   S.shots.forEach(sh=>{
     (sh.vlog||[]).forEach(v=>{
       const score=(v.label?.toLowerCase().includes(ql)?3:0)+(v.note?.toLowerCase().includes(ql)?1:0);
-      if(score>0){const show=gs(sh.sid);results.push({type:'version',score,id:sh.id+v.ts,title:`${sh.code} — ${v.label}`,meta:`${show?.code||'?'} · ${SC[v.status]?.label||v.status} · ${new Date(v.ts).toLocaleDateString()}`,color:SC[v.status]?.col||'var(--p5)',action:`openEdit('${sh.id}');closeSearch();sw('shots');`,raw:v});}
+      if(score>0){const show=gs(sh.sid);results.push({type:'version',score,id:sh.id+v.ts,title:`${sh.code} — ${v.label}`,meta:`${show?.code||'?'} · ${SC[v.status]?.label||v.status} · ${new Date(v.ts).toLocaleDateString()}`,color:SC[v.status]?.col||'var(--p5)',action:`openEdit('${sh.id}');closeSearch();openModule('hangar');`,raw:v});}
     });
   });
 
