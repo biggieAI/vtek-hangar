@@ -2659,6 +2659,7 @@ html, body { height:100%; overflow:hidden; }
 .module-actions-bar::-webkit-scrollbar{display:none;}
 .module-topbar{overflow:hidden;}
 .tb-btn{white-space:nowrap;flex-shrink:0;}
+.tb-icon{padding:6px 7px !important;}
 
 /* Module scroll */
 .module-scroll {
@@ -3208,7 +3209,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260412-175941';
+const BUILD_ID = 'VTEK-20260412-181315';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
@@ -4292,8 +4293,12 @@ function saveShot(){
   if(statOn){const newSt=statOn.getAttribute('onclick')?.match(/'([^']+)'\)$/)?.[1];if(newSt)sh.status=newSt;}
   console.log('[SAVE] who='+sh.who+' status='+sh.status);
   save();closeSheet('ol-edit');rHangar();toast('SHOT UPDATED');
-  if(typeof _hngDetailShotId!=='undefined'&&_hngDetailShotId===editId){const dv=document.getElementById('hv-detail');if(dv&&dv.style.display!=='none')hngOpenDetail(editId);}
-  if(S.activeShow===sh.sid){const sv=document.getElementById('hv-shots');if(sv&&sv.style.display!=='none')rShots();}
+  // Always refresh detail if it's showing for this shot
+  const _dv=document.getElementById('hv-detail');
+  if(_dv&&_dv.style.display!=='none'&&_hngDetailShotId===sh.id) hngOpenDetail(sh.id);
+  // Refresh shots list if showing
+  const _sv=document.getElementById('hv-shots');
+  if(_sv&&_sv.style.display!=='none') rShots();
 }
 function addShot(){
   const code=document.getElementById('as-code').value.trim();if(!code){toast('CODE REQUIRED');return;}
@@ -6843,8 +6848,8 @@ function hngOpenDetail(shotId) {
     pill.style.color = SC[sh.status]||'var(--t2)';
     pill.style.border = '1px solid ' + (SC[sh.status]||'var(--t2)');
   }
-  // Version display
-  const vers = sh.versions || [];
+  // Version display — vlog is the actual field
+  const vers = sh.vlog || sh.versions || [];
   const latest = vers[vers.length-1];
   set('hd-ver', latest ? latest.label : '—');
   // Status cycle
@@ -7594,11 +7599,15 @@ if (typeof MODULE_MAP !== 'undefined' && MODULE_MAP.hangar) {
     </button>
     <span class="module-title-lbl" id="hng-title">HANGAR</span>
     <div class="module-actions-bar">
-      <button class="tb-btn" onclick="rHangar();if(document.getElementById('hv-shots').style.display!='none')rShots();" title="Refresh" style="padding:6px 8px;">
+      <button class="tb-btn tb-icon" onclick="rHangar();if(document.getElementById('hv-shots').style.display!='none')rShots();" title="Refresh">
         <svg viewBox="0 0 14 14" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11.5 7A4.5 4.5 0 1 1 7 2.5c1.4 0 2.7.6 3.6 1.6"/><path d="M11.5 2.5v2h-2"/></svg>
       </button>
-      <button class="tb-btn" onclick="hngOpenTeam()">TEAM</button>
-      <button class="tb-btn" onclick="hngOpenImport()">IMPORT</button>
+      <button class="tb-btn tb-icon" onclick="hngOpenTeam()" title="Team">
+        <svg viewBox="0 0 14 14" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="5" cy="4" r="2"/><path d="M1 11c0-2.2 1.8-4 4-4s4 1.8 4 4"/><circle cx="11" cy="5" r="1.5"/><path d="M11 9.5c1.4 0 2.5.9 2.5 2"/></svg>
+      </button>
+      <button class="tb-btn tb-icon" onclick="hngOpenImport()" title="Import">
+        <svg viewBox="0 0 14 14" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M7 2v7M4 6l3 3 3-3"/><path d="M2 10v1.5a.5.5 0 00.5.5h9a.5.5 0 00.5-.5V10"/></svg>
+      </button>
       <button class="tb-btn" onclick="openSheet('ol-show')">+ SHOW</button>
       <button class="tb-btn go" onclick="openSheet('ol-shot')">+ SHOT</button>
     </div>
