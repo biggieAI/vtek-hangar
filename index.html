@@ -2622,7 +2622,7 @@ html, body { height:100%; overflow:hidden; }
 
 /* Module views slide in over index */
 .module-view {
-  position:fixed; inset:0; z-index:350;
+  position:fixed; inset:0; z-index:10001;
   display:flex; flex-direction:column;
   background:var(--bg);
   transform:translateX(100%);
@@ -3948,6 +3948,8 @@ function openModule(name) { haptic("light");
   _activeModule = name;
   mv.classList.add('open');
   document.body.style.overflow = 'hidden';
+  const dbg = document.getElementById('dbg-bar');
+  if (dbg) dbg.style.display = 'none';
   requestAnimationFrame(()=>{ try { m.init(); } catch(e){ if(e&&e.message) console.warn('[VTEK] module init:', e.message); } });
 }
 
@@ -3957,6 +3959,8 @@ function closeModule() {
   if (mv) mv.classList.remove('open');
   _activeModule = null;
   document.body.style.overflow = '';
+  const dbg = document.getElementById('dbg-bar');
+  if (dbg) dbg.style.display = '';
   setTimeout(renderIndexStats, 320);
 }
 
@@ -4003,7 +4007,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260412-152153';
+const BUILD_ID = 'VTEK-20260412-152631';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
