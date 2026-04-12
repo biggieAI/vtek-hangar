@@ -2204,6 +2204,9 @@ html, body { height:100%; overflow:hidden; }
     </div>
     <div class="topbar-right">
       <span class="topbar-stat" id="idx-date"></span>
+      <button onclick="renderIndexStats()" style="background:none;border:none;color:var(--t2);cursor:pointer;padding:6px;display:flex;align-items:center;border-radius:8px;transition:color 0.1s;" title="Refresh">
+        <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13.5 8A5.5 5.5 0 1 1 8 2.5c1.8 0 3.4.87 4.4 2.2"/><path d="M13.5 2.5v2.2h-2.2"/></svg>
+      </button>
     </div>
   </div>
 
@@ -3042,7 +3045,14 @@ let _activeModule = null;
 const MODULE_MAP = {
   hangar:   { mv:'mv-hangar',   init:()=>{ rHangar(); showPage('hangar'); } },
   payload:  { mv:'mv-payload',  init:()=>{ setPayloadMode('execute'); } },
-  schedule: { mv:'mv-schedule', init:()=>{ setPayloadMode('plan'); } },
+  schedule: { mv:'mv-schedule', init:()=>{
+    // Show plan page directly without needing pg-payload in context
+    document.querySelectorAll('.page').forEach(e=>{e.classList.remove('on');e.scrollTop=0;});
+    const pp=document.getElementById('pg-plan');
+    if(pp) pp.classList.add('on');
+    S.page='plan';
+    try{ initPlanMode(); }catch(e){ console.warn('plan init:',e); }
+  } },
   vault:    { mv:'mv-vault',    init:()=>{ rVault(); showPage('vault'); } },
   intel:    { mv:'mv-intel',    init:()=>{ checkKeyWarning(); showPage('intel'); } },
 };
@@ -4702,7 +4712,7 @@ async function initPlanMode(){
   if(dl) dl.textContent=new Date().toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}).toUpperCase();
   planSelected=null;
   loadSavedPlan();
-  await fetchCalendarEvents();
+  try{ await fetchCalendarEvents(); }catch(e){}
   renderTaskPool();
   renderTimeline();
 }
