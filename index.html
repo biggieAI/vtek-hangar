@@ -7418,6 +7418,7 @@ rHangar();
 const SLOT_H=64; // px per slot (matches min-height)
 const MINS_PER_SLOT=60;
 
+function renderPlanTimeline(){ try{ renderTimeline(); }catch(e){} }
 function startBlockDrag(e,idx){
   if(e.target.closest('.plan-block-remove')||e.target.closest('.plan-block-resize')) return;
   _dragBlock={idx};
