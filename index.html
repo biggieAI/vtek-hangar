@@ -3177,7 +3177,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260412-173738';
+const BUILD_ID = 'VTEK-20260412-174157';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
@@ -4249,6 +4249,8 @@ function saveShot(){
   sh.ci=parseInt(document.getElementById('es-ci').value)||0;sh.co=parseInt(document.getElementById('es-co').value)||0;
   sh.bid=parseFloat(document.getElementById('es-bid').value)||0;
   save();closeSheet('ol-edit');refresh();toast('SHOT UPDATED');
+  // Refresh detail view if open
+  if(typeof _hngDetailShotId!=='undefined'&&_hngDetailShotId===editId){const dv=document.getElementById('hv-detail');if(dv&&dv.style.display!=='none')hngOpenDetail(editId);}
 }
 function addShot(){
   const code=document.getElementById('as-code').value.trim();if(!code){toast('CODE REQUIRED');return;}
