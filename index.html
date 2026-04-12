@@ -2233,12 +2233,15 @@ html, body { height: 100%; overflow: hidden; background: #1a1a1c; color: #ececee
 /* ── MODULE VIEWS ── */
 .module-topbar {
   display: flex; align-items: center;
-  padding: calc(var(--safe-t) + 12px) 16px 12px;
-  flex-shrink: 0; gap: 12px;
+  padding: calc(var(--safe-t) + 12px) 12px 12px;
+  flex-shrink: 0; gap: 8px;
   background: var(--bg);
   border-bottom: 1px solid rgba(255,255,255,0.04);
   position: relative;
+  overflow: hidden;
 }
+.back-btn { flex-shrink: 0; max-width: 80px; }
+.module-title-lbl { flex-shrink: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .module-topbar::after {
   content: '';
   position: absolute; bottom: -1px; left: 8%; right: 8%; height: 1px;
@@ -2656,11 +2659,10 @@ html, body { height:100%; overflow:hidden; }
   background:linear-gradient(160deg,#ffffff 0%,#d8dcf0 60%,#bec4e0 100%);
   -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
 }
-.module-actions-bar { margin-left:auto; display:flex; gap:6px; align-items:center; overflow-x:auto; -webkit-overflow-scrolling:touch; flex-shrink:1; min-width:0; }
+.module-actions-bar { margin-left:auto; display:flex; gap:5px; align-items:center; overflow-x:auto; -webkit-overflow-scrolling:touch; flex-shrink:1; min-width:0; padding-right:2px; }
 .module-actions-bar::-webkit-scrollbar{display:none;}
-.module-topbar{overflow:hidden;}
 .tb-btn{white-space:nowrap;flex-shrink:0;}
-.tb-icon{padding:6px 7px !important;}
+.tb-icon{padding:5px 7px !important;font-size:10px;}
 
 /* Module scroll */
 .module-scroll {
@@ -3210,7 +3212,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260412-182716';
+const BUILD_ID = 'VTEK-20260412-183121';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
@@ -3427,7 +3429,7 @@ function fmtMins(m){if(!m)return'';if(m<60)return m+'min';return Math.floor(m/60
 function rHangar(){
   console.log("[VTEK] S.shows=",S.shows?.length,"S.shots=",S.shots?.length,"S.tasks=",S.tasks?.length);
   if(!S.shots||!S.shows||!S.tasks){console.warn('[VTEK] rHangar: S not ready');return;}
-  if(!document.getElementById('show-grid')){return;} // module not open yet
+  if(!document.getElementById('hng-show-grid')&&!document.getElementById('show-grid')&&!document.getElementById('hng-b-total')){return;} // module not open
   const total=S.shots.length,done=S.shots.filter(s=>s.status==='approved'||s.status==='delivered').length;
   const wip=S.shots.filter(s=>s.status==='wip').length,blk=S.shots.filter(s=>s.status==='blocked').length;
   const open=S.tasks.filter(t=>!t.done).length;
@@ -6781,6 +6783,18 @@ if (idxScroll) {
 
 // [let _hngFilter hoisted]
 
+function hngRefresh() {
+  rHangar();
+  const home   = document.getElementById('hv-home');
+  const shots  = document.getElementById('hv-shots');
+  const detail = document.getElementById('hv-detail');
+  const team   = document.getElementById('hv-team');
+  if (shots  && shots.style.display  !== 'none') rShots();
+  if (detail && detail.style.display !== 'none' && _hngDetailShotId) hngOpenDetail(_hngDetailShotId);
+  if (team   && team.style.display   !== 'none') renderHngTeam();
+  toast('↺ Refreshed');
+}
+
 // ── HANGAR NAV HELPERS ──
 let _hngDetailShotId = null;
 
@@ -7600,7 +7614,7 @@ if (typeof MODULE_MAP !== 'undefined' && MODULE_MAP.hangar) {
     </button>
     <span class="module-title-lbl" id="hng-title">HANGAR</span>
     <div class="module-actions-bar">
-      <button class="tb-btn tb-icon" onclick="rHangar();if(document.getElementById('hv-shots').style.display!='none')rShots();" title="Refresh">
+      <button class="tb-btn tb-icon" onclick="hngRefresh()" title="Refresh">
         <svg viewBox="0 0 14 14" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11.5 7A4.5 4.5 0 1 1 7 2.5c1.4 0 2.7.6 3.6 1.6"/><path d="M11.5 2.5v2h-2"/></svg>
       </button>
       <button class="tb-btn tb-icon" onclick="hngOpenTeam()" title="Team">
