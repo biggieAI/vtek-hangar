@@ -1,4 +1,4 @@
-<!-- vtek-build:20260412-141235 -->
+<!-- vtek-build:20260412-141551 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -3905,6 +3905,21 @@ let _hngFilter = 'all';
 let planSchedule=[], planCalEvents=[], planSelected=null, planPoolOpen=true;
 let plView='list', plFilterTag='', plFilterShow='';
 let vaultActiveId=null, vaultMode='edit';
+let lastAiReason='', dragSrcId=null;
+var TASK_TEMPLATES = [
+  { name:'DELIVER SHOT', desc:'Send for client approval', pri:'high', dur:60, tags:['deliver'],
+    title:'Deliver [SHOT] to client' },
+  { name:'RETAKE REVIEW', desc:'Address notes from review', pri:'high', dur:45, tags:['review'],
+    title:'Address retake notes — [SHOT]' },
+  { name:'DAILIES PREP', desc:'Prepare shots for screening', pri:'med', dur:30, tags:['dailies'],
+    title:'Prep dailies — [SHOW]' },
+  { name:'BID UPDATE', desc:'Update bid days in Vault', pri:'low', dur:15, tags:['admin'],
+    title:'Update bid sheet — [SHOW]' },
+  { name:'CLIENT CALL', desc:'Prep and attend review call', pri:'high', dur:60, tags:['client'],
+    title:'Client review call — [SHOW]' },
+  { name:'NUKE SCRIPT', desc:'Build or fix a pipeline tool', pri:'med', dur:90, tags:['pipeline'],
+    title:'Nuke script — [task]' },
+];
 // ── END HOISTED VARS ──
 
 const MODULE_MAP = {
@@ -3986,7 +4001,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260412-141235';
+const BUILD_ID = 'VTEK-20260412-141551';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
@@ -4085,7 +4100,7 @@ if(S.shows.length===0){
 
 let editId=null, editTaskId=null;
 // [plView hoisted]
-let lastAiReason='', dragSrcId=null;
+// [lastAiReason/dragSrcId hoisted]
 let pendingSubsAdd=[], editSubsList=[];
 let plRecog=null, plListening=false;
 let intelHistory=[];
@@ -4161,7 +4176,7 @@ function sw(p){
   if(pg){pg.classList.add('on');pg.scrollTop=0;}
   document.getElementById('nav-'+p).classList.add('on');
   if(p==='settings') { try{ initSettings(); }catch(e){ console.error('initSettings crash:',e); const pg=document.getElementById('pg-settings'); if(pg) pg.innerHTML='<div style="padding:24px;color:var(--blk);font-family:var(--mono);font-size:11px;">CONFIG ERROR: '+e.message+'</div>'; } }
-  document.getElementById('wm-p').textContent=PN[p]||p.toUpperCase();
+  const _el_wmp=document.getElementById('wm-p'); if(_el_wmp) _el_wmp.textContent=PN[p]||p.toUpperCase();
   S.page=p;
   if(p==='hangar')  rHangar();
   if(p==='shots')   rShots();
@@ -4202,6 +4217,7 @@ function fmtMins(m){if(!m)return'';if(m<60)return m+'min';return Math.floor(m/60
 function rHangar(){
   console.log("[VTEK] S.shows=",S.shows?.length,"S.shots=",S.shots?.length,"S.tasks=",S.tasks?.length);
   if(!S.shots||!S.shows||!S.tasks){console.warn('[VTEK] rHangar: S not ready');return;}
+  if(!document.getElementById('show-grid')){return;} // module not open yet
   const total=S.shots.length,done=S.shots.filter(s=>s.status==='approved'||s.status==='delivered').length;
   const wip=S.shots.filter(s=>s.status==='wip').length,blk=S.shots.filter(s=>s.status==='blocked').length;
   const open=S.tasks.filter(t=>!t.done).length;
@@ -5658,7 +5674,7 @@ function setPayloadMode(mode){
   if(mode==='plan'){
     ep.classList.remove('on');pp.classList.add('on');
     eb&&eb.classList.remove('on');pb&&pb.classList.add('on');
-    document.getElementById('wm-p').textContent='PLAN';
+    const _wmpPlan=document.getElementById('wm-p'); if(_wmpPlan) _wmpPlan.textContent='PLAN';
     initPlanMode();
   } else {
     pp.classList.remove('on');ep.classList.add('on');
@@ -7352,20 +7368,7 @@ function emptyState(icon, title, sub, ctaLabel, ctaFn) {
 // ══════════════════════════════════════════════════════
 // TASK TEMPLATES
 // ══════════════════════════════════════════════════════
-var TASK_TEMPLATES = [
-  { name:'DELIVER SHOT', desc:'Send for client approval', pri:'high', dur:60, tags:['deliver'],
-    title:'Deliver [SHOT] to client' },
-  { name:'RETAKE REVIEW', desc:'Address notes from review', pri:'high', dur:45, tags:['review'],
-    title:'Address retake notes — [SHOT]' },
-  { name:'DAILIES PREP', desc:'Prepare shots for screening', pri:'med', dur:30, tags:['dailies'],
-    title:'Prep dailies — [SHOW]' },
-  { name:'BID UPDATE', desc:'Update bid days in Vault', pri:'low', dur:15, tags:['admin'],
-    title:'Update bid sheet — [SHOW]' },
-  { name:'CLIENT CALL', desc:'Prep and attend review call', pri:'high', dur:60, tags:['client'],
-    title:'Client review call — [SHOW]' },
-  { name:'NUKE SCRIPT', desc:'Build or fix a pipeline tool', pri:'med', dur:90, tags:['pipeline'],
-    title:'Nuke script — [task]' },
-];
+// [TASK_TEMPLATES hoisted]
 
 function applyTemplate(idx) {
   const tpl = TASK_TEMPLATES[idx];
