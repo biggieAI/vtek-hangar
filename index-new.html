@@ -1199,6 +1199,89 @@ body {
 }
 .plan-block-lock:hover { color: rgba(255,255,255,0.7); }
 
+
+/* ── CONFIG MODULE ── */
+.cfg-select {
+  width: 100%;
+  background: var(--s3);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  color: var(--t0);
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 9px 12px;
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  outline: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23787882' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 10px;
+  padding-right: 32px;
+}
+.cfg-select:focus { border-color: rgba(255,255,255,0.2); }
+
+.cfg-input {
+  width: 100%;
+  background: var(--s3);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  color: var(--t0);
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 9px 12px;
+  outline: none;
+  transition: border-color 0.1s;
+}
+.cfg-input:focus { border-color: rgba(255,255,255,0.2); }
+.cfg-input::placeholder { color: var(--t3); }
+
+.cfg-toggle-row {
+  display: flex; align-items: center; justify-content: space-between;
+  cursor: pointer; padding: 2px 0;
+}
+
+.cfg-section {
+  margin: 0 12px 8px;
+  background: var(--s2);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+}
+.cfg-section::before {
+  content: '';
+  position: absolute; top: 0; left: 8%; right: 8%; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.10) 40%, rgba(255,255,255,0.18) 50%, rgba(200,215,255,0.10) 60%, transparent);
+}
+.cfg-section + .cfg-section { margin-top: 8px; }
+
+.cfg-sec-lbl {
+  font-family: var(--mono); font-size: 9px; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  background: linear-gradient(160deg, #909098, #70707a);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  padding: 12px 14px 4px;
+}
+.cfg-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 11px 14px; gap: 12px;
+  border-top: 1px solid rgba(255,255,255,0.04);
+  transition: background 0.1s;
+}
+.cfg-row:first-of-type { border-top: none; }
+.cfg-row[onclick]:hover, .cfg-row[onclick]:active { background: rgba(255,255,255,0.03); }
+.cfg-lbl { font-size: 13px; color: var(--t1); flex-shrink: 0; }
+.cfg-val {
+  font-family: var(--mono); font-size: 11px; color: var(--t2);
+  text-align: right; min-width: 0; overflow: hidden; text-overflow: ellipsis;
+}
+
+/* First config section gets top padding */
+#config-body > .cfg-section:first-child { margin-top: 12px; }
+#config-body > .cfg-section:last-child  { margin-bottom: 12px; }
+
 /* ── AI STACK SHORTCUTS ── */
 .ai-stack-btn {
   display: flex; flex-direction: column; align-items: center; gap: 7px;
@@ -2219,6 +2302,9 @@ html, body { height:100%; overflow:hidden; }
       <button onclick="renderIndexStats()" style="background:none;border:none;color:var(--t2);cursor:pointer;padding:6px;display:flex;align-items:center;border-radius:8px;transition:color 0.1s;" title="Refresh">
         <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13.5 8A5.5 5.5 0 1 1 8 2.5c1.8 0 3.4.87 4.4 2.2"/><path d="M13.5 2.5v2.2h-2.2"/></svg>
       </button>
+      <button onclick="openModule('config')" style="background:none;border:none;color:var(--t2);cursor:pointer;padding:6px;display:flex;align-items:center;border-radius:8px;transition:color 0.1s;" title="Config">
+        <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.1 3.1l1.4 1.4M11.5 11.5l1.4 1.4M3.1 12.9l1.4-1.4M11.5 4.5l1.4-1.4"/></svg>
+      </button>
     </div>
   </div>
 
@@ -2852,6 +2938,24 @@ html, body { height:100%; overflow:hidden; }
   </div>
 </div>
 
+
+<!-- CONFIG MODULE -->
+<div class="module-view" id="mv-config">
+  <div class="module-topbar">
+    <button class="back-btn" onclick="closeModule()">
+      <svg viewBox="0 0 12 12" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7.5 2L3.5 6l4 4"/></svg>
+      HOME
+    </button>
+    <span class="module-title-lbl">CONFIG</span>
+    <div class="module-actions-bar">
+      <button class="tb-btn go" onclick="saveConfig()">SAVE</button>
+    </div>
+  </div>
+  <div class="module-scroll" id="config-scroll">
+    <div id="config-body"></div>
+  </div>
+</div>
+
 <!-- SHEETS -->
 <div class="overlay" id="ol-shot">
   <div class="sheet">
@@ -3067,6 +3171,7 @@ const MODULE_MAP = {
   } },
   vault:    { mv:'mv-vault',    init:()=>{ rVault(); showPage('vault'); } },
   intel:    { mv:'mv-intel',    init:()=>{ checkKeyWarning(); showPage('intel'); } },
+  config:   { mv:'mv-config',   init:()=>{ renderConfig(); } },
 };
 
 function openModule(name) {
@@ -3165,6 +3270,38 @@ if(!S.shots) S.shots=[];
 if(!S.tasks) S.tasks=[];
 if(!S.vaultDocs) S.vaultDocs=[];
 if(!S.schedule) S.schedule=[];
+if(!S.config) S.config={};
+
+// ── CONFIG DEFAULTS ──
+const CFG_DEFAULTS = {
+  workStart:    9,      // hour (24h)
+  workEnd:      19,
+  lunchStart:   13,
+  lunchEnd:     14,
+  weekStart:    1,      // 0=Sun 1=Mon
+  defaultDur:   45,     // minutes
+  defaultPri:   'med',
+  shotPrefix:   '',     // e.g. 'CRL_'
+  autoRack:     true,   // auto-schedule on day start
+  rackTime:     9,      // hour to auto-rack
+  nudgesOn:     true,   // inline card nudges
+  briefOn:      true,   // morning brief on index
+  tz:           Intl.DateTimeFormat().resolvedOptions().timeZone,
+  intelModel:   'claude-haiku-4-5-20251001',
+  webhookPoll:  false,  // poll NAS for incoming tasks
+  webhookUrl:   '',
+};
+// Merge defaults with saved config
+S.config = Object.assign({}, CFG_DEFAULTS, S.config);
+
+// Apply config to plan vars
+function applyCfg(){
+  WORK_START  = S.config.workStart;
+  WORK_END    = S.config.workEnd;
+  LUNCH_START = S.config.lunchStart;
+  LUNCH_END   = S.config.lunchEnd;
+}
+applyCfg();
 
 // ── SEED demo data if shows is empty (fresh install or wiped state) ──
 if(S.shows.length===0){
@@ -4700,7 +4837,7 @@ function searchKeyNav(e){
 // PLAN MODE ENGINE — Touch-first
 // ═══════════════════════════════
 
-const WORK_START=10,WORK_END=19,LUNCH_START=13,LUNCH_END=14;
+const WORK_START=9,WORK_END=19,LUNCH_START=13,LUNCH_END=14;
 let planSchedule=[],planCalEvents=[],planSelected=null,planPoolOpen=true;
 
 function setPayloadMode(mode){
@@ -5493,6 +5630,154 @@ function reactiveRack() {
   autoRackDay(true);
 }
 
+
+
+// ══════════════════════════════════════════════
+// CONFIG MODULE
+// ══════════════════════════════════════════════
+
+function renderConfig() {
+  const body = document.getElementById('config-body');
+  if (!body) return;
+  const c = S.config;
+
+  const section = (title, rows) =>
+    `<div class="cfg-section">
+      <div class="cfg-sec-lbl">${title}</div>
+      ${rows.join('')}
+    </div>`;
+
+  const row = (label, inputHtml, hint='') =>
+    `<div class="cfg-row" style="cursor:default;flex-direction:column;align-items:stretch;gap:6px;padding:12px 14px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <span class="cfg-lbl">${label}</span>
+        ${hint ? `<span style="font-family:var(--mono);font-size:9px;color:var(--t3);">${hint}</span>` : ''}
+      </div>
+      ${inputHtml}
+    </div>`;
+
+  const timeOpts = (val) => Array.from({length:24},(_,i)=>
+    `<option value="${i}" ${i===val?'selected':''}>${String(i).padStart(2,'0')}:00</option>`
+  ).join('');
+
+  const sel = (id, val, opts) =>
+    `<select id="cfg-${id}" class="cfg-select" onchange="cfgLive('${id}',this.value)">${opts(val)}</select>`;
+
+  const tog = (id, val, label) =>
+    `<div class="cfg-toggle-row" onclick="cfgToggle('${id}')">
+      <span style="font-size:12px;color:var(--t1);">${label}</span>
+      <div class="cfg-toggle ${val?'on':''}" id="cfg-tog-${id}"></div>
+    </div>`;
+
+  const inp = (id, val, placeholder='', type='text') =>
+    `<input id="cfg-${id}" class="cfg-input" type="${type}" value="${val||''}"
+      placeholder="${placeholder}" onchange="cfgLive('${id}',this.value)">`;
+
+  const numSel = (id, val, min, max, step=5, unit='min') => {
+    const opts = [];
+    for(let v=min;v<=max;v+=step) opts.push(`<option value="${v}" ${v===val?'selected':''}>${v}${unit}</option>`);
+    return `<select id="cfg-${id}" class="cfg-select" onchange="cfgLive('${id}',parseInt(this.value))">${opts.join('')}</select>`;
+  };
+
+  body.innerHTML = [
+    section('WORK HOURS', [
+      row('Day Start', sel('workStart', c.workStart, timeOpts)),
+      row('Day End',   sel('workEnd',   c.workEnd,   timeOpts)),
+      row('Lunch Start', sel('lunchStart', c.lunchStart, timeOpts)),
+      row('Lunch End',   sel('lunchEnd',   c.lunchEnd,   timeOpts)),
+    ]),
+    section('TASKS', [
+      row('Default Duration', numSel('defaultDur', c.defaultDur, 15, 240, 15)),
+      row('Default Priority', `<select id="cfg-defaultPri" class="cfg-select" onchange="cfgLive('defaultPri',this.value)">
+        ${['high','med','low'].map(p=>`<option value="${p}" ${p===c.defaultPri?'selected':''}>${p.toUpperCase()}</option>`).join('')}
+      </select>`),
+      row('Week Starts', `<select id="cfg-weekStart" class="cfg-select" onchange="cfgLive('weekStart',parseInt(this.value))">
+        <option value="1" ${c.weekStart===1?'selected':''}>MONDAY</option>
+        <option value="0" ${c.weekStart===0?'selected':''}>SUNDAY</option>
+      </select>`),
+    ]),
+    section('SCHEDULE / RACK', [
+      row('Auto-Rack on Day Start', tog('autoRack', c.autoRack, 'Fills day automatically on first open')),
+      row('Shot Code Prefix', inp('shotPrefix', c.shotPrefix, 'e.g. CRL_'), 'Auto-prefix new shot codes'),
+    ]),
+    section('INTERFACE', [
+      row('Inline Nudges', tog('nudgesOn', c.nudgesOn, 'Flag missing data on cards')),
+      row('Morning Brief', tog('briefOn',  c.briefOn,  'Daily summary on home screen')),
+    ]),
+    section('INTEL / AI', [
+      row('Model', `<select id="cfg-intelModel" class="cfg-select" onchange="cfgLive('intelModel',this.value)">
+        <option value="claude-haiku-4-5-20251001" ${c.intelModel==='claude-haiku-4-5-20251001'?'selected':''}>HAIKU (fast · low cost)</option>
+        <option value="claude-sonnet-4-6" ${c.intelModel==='claude-sonnet-4-6'?'selected':''}>SONNET (smart · mid cost)</option>
+      </select>`),
+      row('API Key', `<div class="cfg-row" style="cursor:pointer;padding:0;" onclick="editAPIKey()">
+        <span class="cfg-lbl">Anthropic Key</span>
+        <span class="cfg-val" id="cfg-key-disp">${getKey()?'SET ('+getKey().slice(0,8)+'…)':'NOT SET'}</span>
+      </div>`),
+      row('Make.com Webhook', `<div class="cfg-row" style="cursor:pointer;padding:0;" onclick="editWebhook()">
+        <span class="cfg-lbl">Webhook URL</span>
+        <span class="cfg-val">${getWebhook()?'SET':'NOT SET'}</span>
+      </div>`),
+    ]),
+    section('INCOMING TASKS', [
+      row('Poll NAS Webhook', tog('webhookPoll', c.webhookPoll, 'Pull tasks from local webhook')),
+      row('Webhook URL', inp('webhookUrl', c.webhookUrl, 'http://192.168.x.x:PORT/tasks')),
+    ]),
+    section('DATA', [
+      `<div class="cfg-row" onclick="exportJSON()" style="cursor:pointer;">
+        <span class="cfg-lbl">Export JSON</span><span class="cfg-val">↓</span></div>`,
+      `<div class="cfg-row" onclick="openSheet('ol-backups')" style="cursor:pointer;">
+        <span class="cfg-lbl">Restore Backup</span>
+        <span class="cfg-val">${(JSON.parse(localStorage.getItem('vtek_backups')||'[]')).length} saved</span></div>`,
+      `<div class="cfg-row" onclick="resetData()" style="cursor:pointer;">
+        <span class="cfg-lbl" style="color:var(--blk)">Reset to Demo</span>
+        <span class="cfg-val" style="color:var(--blk)">✕</span></div>`,
+    ]),
+    section('ABOUT', [
+      `<div class="cfg-row" style="cursor:default;">
+        <span class="cfg-lbl">Version</span>
+        <span class="cfg-val">V//TEK v17 LUMINA</span></div>`,
+      `<div class="cfg-row" style="cursor:default;">
+        <span class="cfg-lbl">Timezone</span>
+        <span class="cfg-val" style="font-size:10px;">${c.tz}</span></div>`,
+    ]),
+  ].join('');
+}
+
+// Live update config as controls change
+function cfgLive(key, val) {
+  S.config[key] = val;
+}
+
+// Toggle boolean config values
+function cfgToggle(key) {
+  S.config[key] = !S.config[key];
+  const tog = document.getElementById('cfg-tog-' + key);
+  if (tog) tog.classList.toggle('on', S.config[key]);
+}
+
+// Save config and apply
+function saveConfig() {
+  // Read all inputs explicitly in case onchange missed
+  const reads = {
+    workStart:   'workStart',  workEnd:    'workEnd',
+    lunchStart:  'lunchStart', lunchEnd:   'lunchEnd',
+    defaultDur:  'defaultDur', defaultPri: 'defaultPri',
+    weekStart:   'weekStart',  shotPrefix: 'shotPrefix',
+    intelModel:  'intelModel', webhookUrl: 'webhookUrl',
+  };
+  Object.entries(reads).forEach(([k, id]) => {
+    const el = document.getElementById('cfg-' + id);
+    if (el) {
+      const v = el.value;
+      S.config[k] = isNaN(v) || v === '' ? v : (el.tagName==='SELECT' && el.options[0]?.value?.match(/[a-z]/) ? v : Number(v));
+    }
+  });
+  save();
+  applyCfg();
+  toast('CONFIG SAVED');
+  // Re-render timeline if schedule is open
+  try { if(document.getElementById('pg-plan')?.classList.contains('on')) renderTimeline(); } catch(e){}
+}
 
 // ── BOOT
 
