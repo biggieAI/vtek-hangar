@@ -7067,7 +7067,7 @@ function doUndo() {
 // ══════════════════════════════════════════════════════
 // SWIPE GESTURE ENGINE
 // ══════════════════════════════════════════════════════
-function initSwipe(el, opts) {
+function initSwipe(el, opts) { return; // GESTURES DISABLED
   // opts: { onSwipeLeft, onSwipeRight, leftLabel, rightLabel, leftIcon, rightIcon, leftClass, rightClass }
   let startX = 0, startY = 0, curX = 0;
   let tracking = false, axis = null;
@@ -7180,7 +7180,7 @@ function attachShotSwipes(el, shotId) {
 // ══════════════════════════════════════════════════════
 // PULL TO REFRESH
 // ══════════════════════════════════════════════════════
-function initPullToRefresh(scrollEl, onRefresh) {
+function initPullToRefresh(scrollEl, onRefresh) { return; // PULL-TO-REFRESH DISABLED
   let startY = 0, pulling = false;
   const indicator = document.createElement('div');
   indicator.className = 'ptr-indicator';
@@ -7469,7 +7469,7 @@ document.addEventListener('touchmove',e=>{onBlockDrag(e);onBlockResize(e);},{pas
 document.addEventListener('touchend',e=>{endBlockDrag(e);endBlockResize(e);});
 
 
-var _lte=0;document.addEventListener("touchstart",function(e){if(e.touches.length>1)e.preventDefault();},{passive:false});document.addEventListener("touchend",function(e){_lte=Date.now();},false);
+var _lte=0;// touchstart multi-touch prevention disableddocument.addEventListener("touchend",function(e){_lte=Date.now();},false);
 
 
 // ════════════════════════════════════
