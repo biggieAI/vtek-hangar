@@ -1,4 +1,4 @@
-<!-- vtek-build:20260412-135834 -->
+<!-- vtek-build:20260412-135852 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -3879,6 +3879,17 @@ html, body { height:100%; overflow:hidden; }
 // ════════════════════════════════════
 let _activeModule = null;
 let _briefOpen = true; // hoisted - used in renderBrief template
+// ── HOISTED VARS (TDZ prevention) ──
+let _planEditTaskId = null;
+let _planEditBlockEl = null;
+let _planQASlot={h:0,m:0};
+let _undoStack = null;
+let _undoTimer = null;
+let _searchOpen = false;
+let _dragBlock=null, _dragStartY=0, _dragOrigSlot=0;
+let _resizeBlock=null, _resizeStartY=0, _resizeOrigDur=0;
+let _hngFilter = 'all';
+// ── END HOISTED VARS ──
 
 const MODULE_MAP = {
   hangar:   { mv:'mv-hangar',   init:()=>{ rHangar(); } },
@@ -3959,7 +3970,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260412-135834';
+const BUILD_ID = 'VTEK-20260412-135852';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
@@ -5655,8 +5666,8 @@ async function initPlanMode(){
 
 
 // ── PLAN BLOCK EDIT SHEET ──
-let _planEditTaskId = null;
-let _planEditBlockEl = null;
+// [let _planEditTaskId hoisted]
+// [let _planEditBlockEl hoisted]
 
 function openPlanBlockEdit(el) {
   const taskId = el.dataset.bid;
@@ -6010,7 +6021,7 @@ function planBlockTapEl(el){
 
 
 // ── PLAN QUICK-ADD FROM EMPTY SLOT ──
-let _planQASlot={h:0,m:0};
+// [let _planQASlot hoisted]
 function planQuickAdd(h,m){
   _planQASlot={h,m};
   const timeStr=fmtTime(h,m);
@@ -7008,8 +7019,8 @@ function haptic(type='light') {
 // ══════════════════════════════════════════════════════
 // UNDO SYSTEM
 // ══════════════════════════════════════════════════════
-let _undoStack = null;
-let _undoTimer = null;
+// [let _undoStack hoisted]
+// [let _undoTimer hoisted]
 
 function pushUndo(label, restoreFn) {
   _undoStack = { label, restoreFn };
@@ -7223,7 +7234,7 @@ function setBadge(id, count) {
 // ══════════════════════════════════════════════════════
 // GLOBAL SEARCH
 // ══════════════════════════════════════════════════════
-let _searchOpen = false;
+// [let _searchOpen hoisted]
 
 function openSearch() {
   const overlay = document.getElementById('search-overlay');
@@ -7381,8 +7392,8 @@ if(accessToken){driveToken=accessToken;localStorage.setItem('vtek_drive_token',a
 rHangar();
 
 // ── PLAN BLOCK DRAG & RESIZE ──
-let _dragBlock=null, _dragStartY=0, _dragOrigSlot=0;
-let _resizeBlock=null, _resizeStartY=0, _resizeOrigDur=0;
+// [let _dragBlock hoisted]
+// [let _resizeBlock hoisted]
 const SLOT_H=64; // px per slot (matches min-height)
 const MINS_PER_SLOT=60;
 
@@ -7513,7 +7524,7 @@ if (idxScroll) {
 // HANGAR v2 — two-view module (home + shots)
 // ═══════════════════════════════════════════
 
-let _hngFilter = 'all';
+// [let _hngFilter hoisted]
 
 function hangarBack() {
   const home  = document.getElementById('hv-home');
