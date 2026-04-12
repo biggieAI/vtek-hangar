@@ -2942,6 +2942,45 @@ html, body { height:100%; overflow:hidden; }
   cursor: pointer; border: none; transition: opacity 0.1s;
 }
 .hng-shot-status-pill:active { opacity: 0.7; }
+
+/* ── HANGAR: Blockers ── */
+.hng-blockers-list { padding: 0 16px 4px; display: flex; flex-direction: column; gap: 6px; }
+.hng-blk-row { display: flex; align-items: center; gap: 8px; padding: 8px 10px; background: var(--s2); border-left: 2px solid var(--blk); border-radius: 4px; cursor: pointer; }
+.hng-blk-row:active { background: var(--s3); }
+.hng-blk-code { font-family: var(--mono); font-size: 11px; color: var(--blk); font-weight: 700; flex-shrink: 0; }
+.hng-blk-show { font-family: var(--mono); font-size: 9px; color: var(--t3); flex-shrink: 0; }
+.hng-blk-notes { font-family: var(--mono); font-size: 9px; color: var(--t2); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hng-blk-empty { font-family: var(--mono); font-size: 10px; color: var(--t3); padding: 8px 16px; }
+
+/* ── HANGAR: Shot Detail ── */
+.hng-detail-scroll { height: 100%; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 16px; }
+.hng-detail-scroll::-webkit-scrollbar { display: none; }
+.hng-detail-header { margin-bottom: 10px; }
+.hng-detail-code { font-family: var(--mono); font-size: 22px; font-weight: 700; color: var(--t0); letter-spacing: 0.06em; }
+.hng-detail-show { font-family: var(--mono); font-size: 10px; color: var(--t3); margin-top: 2px; letter-spacing: 0.08em; }
+.hng-detail-status-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.hng-detail-status-pill { padding: 4px 12px; font-family: var(--mono); font-size: 10px; font-weight: 700; border-radius: 3px; letter-spacing: 0.1em; }
+.hng-detail-actions { display: flex; gap: 6px; }
+.hng-det-btn { font-family: var(--mono); font-size: 9px; font-weight: 700; letter-spacing: 0.08em; padding: 5px 10px; border: 1px solid var(--s4); background: var(--s2); color: var(--t1); border-radius: 3px; cursor: pointer; }
+.hng-det-btn:active { background: var(--s3); }
+.hng-det-btn.danger { border-color: var(--blk); color: var(--blk); }
+.hng-detail-section-lbl { font-family: var(--mono); font-size: 8px; color: var(--t3); letter-spacing: 0.12em; margin-bottom: 6px; }
+.hng-status-cycle { display: flex; gap: 6px; flex-wrap: wrap; }
+.hng-sc-btn { font-family: var(--mono); font-size: 9px; font-weight: 700; padding: 5px 10px; border-radius: 3px; border: 1px solid var(--s4); background: var(--s2); color: var(--t2); cursor: pointer; letter-spacing: 0.06em; transition: all 0.15s; }
+.hng-sc-btn.on { color: var(--bg); }
+.hng-sc-btn:active { transform: scale(0.96); }
+.hng-detail-grid { display: flex; flex-direction: column; gap: 0; border: 1px solid var(--s3); border-radius: 4px; overflow: hidden; }
+.hng-dg-row { display: flex; align-items: center; padding: 8px 10px; border-bottom: 1px solid var(--s3); }
+.hng-dg-row:last-child { border-bottom: none; }
+.hng-dg-k { font-family: var(--mono); font-size: 9px; color: var(--t3); letter-spacing: 0.1em; width: 72px; flex-shrink: 0; }
+.hng-dg-v { font-family: var(--mono); font-size: 11px; color: var(--t0); }
+.hng-detail-notes { font-family: var(--mono); font-size: 11px; color: var(--t1); line-height: 1.6; background: var(--s2); border-radius: 4px; padding: 10px 12px; min-height: 40px; white-space: pre-wrap; }
+.hng-detail-verlog { display: flex; flex-direction: column; gap: 6px; }
+.hng-vl-row { display: flex; align-items: flex-start; gap: 8px; padding: 8px 10px; background: var(--s2); border-radius: 4px; }
+.hng-vl-n { font-family: var(--mono); font-size: 10px; color: var(--y); font-weight: 700; flex-shrink: 0; }
+.hng-vl-lbl { font-family: var(--mono); font-size: 10px; color: var(--t0); flex: 1; }
+.hng-vl-date { font-family: var(--mono); font-size: 9px; color: var(--t3); flex-shrink: 0; }
+.hng-vl-empty { font-family: var(--mono); font-size: 10px; color: var(--t3); padding: 8px 0; }
 </style>
 </head>
 <body>
@@ -3138,7 +3177,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260412-172230';
+const BUILD_ID = 'VTEK-20260412-173210';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
@@ -6688,36 +6727,128 @@ if (idxScroll) {
 
 // [let _hngFilter hoisted]
 
+// ── HANGAR NAV HELPERS ──
+let _hngDetailShotId = null;
+
+function _hngViews() {
+  return {
+    home:   document.getElementById('hv-home'),
+    shots:  document.getElementById('hv-shots'),
+    detail: document.getElementById('hv-detail'),
+    title:  document.getElementById('hng-title'),
+    lbl:    document.getElementById('hng-back-lbl'),
+  };
+}
+
+function _hngShow(which, titleTxt, lblTxt) {
+  const v = _hngViews();
+  v.home.style.display   = which === 'home'   ? '' : 'none';
+  v.shots.style.display  = which === 'shots'  ? '' : 'none';
+  v.detail.style.display = which === 'detail' ? '' : 'none';
+  if (v.title) v.title.textContent = titleTxt;
+  if (v.lbl)   v.lbl.textContent   = lblTxt;
+}
+
 function hangarBack() {
-  // If any overlay sheet is open, close it first and bail
+  // If any overlay sheet is open, close it first
   const openOverlay = document.querySelector('.overlay.open');
   if (openOverlay) { openOverlay.classList.remove('open'); return; }
-  const home  = document.getElementById('hv-home');
-  const shots = document.getElementById('hv-shots');
-  const title = document.getElementById('hng-title');
-  const backLbl = document.getElementById('hng-back-lbl');
-  if (shots && shots.style.display !== 'none') {
-    shots.style.display = 'none';
-    if (home)  home.style.display = '';
-    if (title) title.textContent = 'HANGAR';
-    if (backLbl) backLbl.textContent = 'HOME';
+  const v = _hngViews();
+  if (v.detail && v.detail.style.display !== 'none') {
+    // detail → shots
+    const show = (S.shows || []).find(s => s.id === S.activeShow);
+    _hngShow('shots', show ? show.code : 'SHOTS', 'HANGAR');
+  } else if (v.shots && v.shots.style.display !== 'none') {
+    // shots → home
+    _hngShow('home', 'HANGAR', 'HOME');
   } else {
     closeModule();
   }
 }
 
+function hngOpenDetail(shotId) {
+  _hngDetailShotId = shotId;
+  const sh   = (S.shots || []).find(s => s.id === shotId);
+  if (!sh) return;
+  const show = (S.shows || []).find(s => s.id === sh.sid);
+  const SC = { wip:'var(--wip)', review:'var(--y)', blocked:'var(--blk)', approved:'var(--app)', delivered:'var(--del)', hold:'var(--t2)' };
+  const set = (id,v) => { const el=document.getElementById(id); if(el) el.textContent=v||'—'; };
+  set('hd-code', sh.code);
+  set('hd-show', show ? show.code + (show.name ? ' — '+show.name : '') : '');
+  set('hd-who',  sh.who);
+  set('hd-due',  sh.due);
+  set('hd-pri',  sh.priority);
+  set('hd-notes',sh.notes || '—');
+  // Status pill
+  const pill = document.getElementById('hd-status-pill');
+  if (pill) {
+    pill.textContent = sh.status.toUpperCase();
+    pill.style.background = (SC[sh.status]||'var(--t2)') + '22';
+    pill.style.color = SC[sh.status]||'var(--t2)';
+    pill.style.border = '1px solid ' + (SC[sh.status]||'var(--t2)');
+  }
+  // Version display
+  const vers = sh.versions || [];
+  const latest = vers[vers.length-1];
+  set('hd-ver', latest ? latest.label : '—');
+  // Status cycle
+  const cycleEl = document.getElementById('hd-cycle');
+  if (cycleEl) {
+    const statuses = ['wip','review','approved','blocked','hold','delivered'];
+    cycleEl.innerHTML = statuses.map(st => {
+      const col = SC[st]||'var(--t2)';
+      const on  = sh.status === st;
+      return `<button class="hng-sc-btn ${on?'on':''}" style="${on?'background:'+col+';border-color:'+col+';':''}" onclick="hngSetStatus('${shotId}','${st}')">${st.toUpperCase()}</button>`;
+    }).join('');
+  }
+  // Version log
+  const logEl = document.getElementById('hd-verlog');
+  if (logEl) {
+    if (!vers.length) {
+      logEl.innerHTML = '<div class="hng-vl-empty">No versions logged</div>';
+    } else {
+      logEl.innerHTML = [...vers].reverse().map(v => `
+        <div class="hng-vl-row">
+          <span class="hng-vl-n">${v.label||'v?'}</span>
+          <span class="hng-vl-lbl">${v.note||''}</span>
+          <span class="hng-vl-date">${v.date||''}</span>
+        </div>`).join('');
+    }
+  }
+  const show2 = (S.shows||[]).find(s=>s.id===sh.sid);
+  _hngShow('detail', sh.code, show2 ? show2.code : 'SHOTS');
+}
+
+function hngSetStatus(shotId, st) {
+  const sh = (S.shots||[]).find(s=>s.id===shotId);
+  if (!sh) return;
+  sh.status = st;
+  save(); haptic('light'); toast(sh.code+' → '+st.toUpperCase());
+  hngOpenDetail(shotId); // re-render detail
+  rHangar();
+}
+
+function hngDetailEdit() {
+  if (_hngDetailShotId) openEdit(_hngDetailShotId);
+}
+
+function hngDetailDelete() {
+  if (!_hngDetailShotId) return;
+  const sh = (S.shots||[]).find(s=>s.id===_hngDetailShotId);
+  if (!sh) return;
+  if (!confirm('Delete '+sh.code+'?')) return;
+  S.shots = S.shots.filter(s=>s.id!==_hngDetailShotId);
+  save(); toast('Shot deleted'); rHangar();
+  const show = (S.shows||[]).find(s=>s.id===sh.sid);
+  _hngShow('shots', show?show.code:'SHOTS', 'HANGAR');
+  rShots();
+}
+
 function hngOpenShots(showId) {
   S.activeShow = showId;
-  const home  = document.getElementById('hv-home');
-  const shots = document.getElementById('hv-shots');
-  const title = document.getElementById('hng-title');
-  const backLbl = document.getElementById('hng-back-lbl');
-  const show  = (S.shows || []).find(s => s.id === showId);
-  if (home)    home.style.display = 'none';
-  if (shots)   shots.style.display = '';
-  if (title)   title.textContent = show ? show.code : 'SHOTS';
-  if (backLbl) backLbl.textContent = 'HANGAR';
+  const show = (S.shows || []).find(s => s.id === showId);
   _hngFilter = 'all';
+  _hngShow('shots', show ? show.code : 'SHOTS', 'HANGAR');
   rShots();
 }
 
@@ -6752,7 +6883,7 @@ function renderHngShotList() {
     h += `<div class="hng-group-head" style="color:${sc.col}">${g.l} <span style="opacity:0.5">${list.length}</span></div>`;
     h += list.map(sh => {
       const pill = `<button class="hng-shot-status-pill stag stag-${sc.cls}" onclick="event.stopPropagation();cycleHngStatus('${sh.id}')">${sc.label}</button>`;
-      return `<div class="hng-shot-row" onclick="openEdit('${sh.id}')">
+      return `<div class="hng-shot-row" onclick="hngOpenDetail('${sh.id}')">
         <span class="hng-shot-code">${sh.code}</span>
         ${sh.notes ? `<span class="hng-shot-notes">${sh.notes}</span>` : ''}
         ${sh.who ? `<span class="hng-shot-who">${sh.who}</span>` : ''}
@@ -6865,6 +6996,26 @@ rHangar = function() {
   }
   if (todayCt) todayCt.textContent = todayShots.length || '';
 
+  // Blockers callout
+  const blkList = shots.filter(s => s.status === 'blocked');
+  const blkEl   = document.getElementById('hng-blockers');
+  const blkCt   = document.getElementById('hng-blk-ct');
+  if (blkEl) {
+    if (!blkList.length) {
+      blkEl.innerHTML = '<div class="hng-blk-empty">No blockers &mdash; all clear</div>';
+    } else {
+      blkEl.innerHTML = blkList.map(sh => {
+        const show = shows.find(s => s.id === sh.sid);
+        return '<div class="hng-blk-row" onclick="hngOpenShots(\'' + sh.sid + '\')">'
+          + '<span class="hng-blk-code">' + sh.code + '</span>'
+          + '<span class="hng-blk-show">' + (show ? show.code : '') + '</span>'
+          + '<span class="hng-blk-notes">' + (sh.notes || 'No notes') + '</span>'
+          + '</div>';
+      }).join('');
+    }
+  }
+  if (blkCt) blkCt.textContent = blkList.length || '';
+
   // Also call old rHangar for anything it wired (dash-stats etc)
   if (_oldRHangar) try { _oldRHangar(); } catch(e) {}
 };
@@ -6922,15 +7073,7 @@ rShots = function() {
 // Patch MODULE_MAP.hangar init to call new rHangar
 if (typeof MODULE_MAP !== 'undefined' && MODULE_MAP.hangar) {
   MODULE_MAP.hangar.init = () => {
-    // Make sure home view is showing
-    const home  = document.getElementById('hv-home');
-    const shots = document.getElementById('hv-shots');
-    const title = document.getElementById('hng-title');
-    const backLbl = document.getElementById('hng-back-lbl');
-    if (home)    home.style.display = '';
-    if (shots)   shots.style.display = 'none';
-    if (title)   title.textContent = 'HANGAR';
-    if (backLbl) backLbl.textContent = 'HOME';
+    _hngShow('home', 'HANGAR', 'HOME');
     rHangar();
   };
 }
@@ -7194,6 +7337,7 @@ if (typeof MODULE_MAP !== 'undefined' && MODULE_MAP.hangar) {
       <button class="tb-btn" onclick="rHangar();if(document.getElementById('hv-shots').style.display!='none')rShots();" title="Refresh" style="padding:6px 8px;">
         <svg viewBox="0 0 14 14" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11.5 7A4.5 4.5 0 1 1 7 2.5c1.4 0 2.7.6 3.6 1.6"/><path d="M11.5 2.5v2h-2"/></svg>
       </button>
+      <button class="tb-btn" onclick="openSheet('ol-show')">+ SHOW</button>
       <button class="tb-btn go" onclick="openSheet('ol-shot')">+ SHOT</button>
     </div>
   </div>
@@ -7226,35 +7370,12 @@ if (typeof MODULE_MAP !== 'undefined' && MODULE_MAP.hangar) {
       </div>
       <div id="hng-today" class="hng-today-list"></div>
 
+
       <div class="hng-row-head" style="margin-top:4px;">
-        <span class="hng-row-lbl">AI STACK</span>
+        <span class="hng-row-lbl">BLOCKERS</span>
+        <span class="hng-row-ct" id="hng-blk-ct"></span>
       </div>
-      <div class="hng-ai-grid">
-        <a href="akiflow://" class="hng-ai-btn" onclick="if(!navigator.userAgent.match(/iPhone|iPad/))this.href='https://app.akiflow.com'">
-          <div class="hng-ai-icon" style="background:linear-gradient(145deg,#2d1fa3,#4f3ef5);">
-            <svg viewBox="0 0 28 28" width="22" height="22" fill="none"><path d="M14 5L22 20H6L14 5Z" fill="white" opacity="0.95"/><rect x="11" y="17" width="6" height="2.5" rx="1.2" fill="white" opacity="0.5"/></svg>
-          </div>
-          <span class="hng-ai-lbl">AKIFLOW</span>
-        </a>
-        <a href="https://app.circleback.ai" target="_blank" class="hng-ai-btn">
-          <div class="hng-ai-icon" style="background:linear-gradient(145deg,#0a2420,#0d3d34);">
-            <svg viewBox="0 0 28 28" width="22" height="22" fill="none"><circle cx="14" cy="14" r="4" fill="rgba(255,255,255,0.88)"/><path d="M8 14a6 6 0 0 1 6-6" stroke="rgba(255,255,255,0.88)" stroke-width="1.8" stroke-linecap="round" opacity="0.7"/><path d="M20 14a6 6 0 0 1-6 6" stroke="rgba(255,255,255,0.88)" stroke-width="1.8" stroke-linecap="round" opacity="0.7"/><path d="M5 14a9 9 0 0 1 9-9" stroke="rgba(255,255,255,0.88)" stroke-width="1.4" stroke-linecap="round" opacity="0.35"/><path d="M23 14a9 9 0 0 1-9 9" stroke="rgba(255,255,255,0.88)" stroke-width="1.4" stroke-linecap="round" opacity="0.35"/></svg>
-          </div>
-          <span class="hng-ai-lbl">CIRCLEBACK</span>
-        </a>
-        <a href="https://claude.ai" target="_blank" class="hng-ai-btn">
-          <div class="hng-ai-icon" style="background:linear-gradient(145deg,#c8520a,#e8813a);">
-            <svg viewBox="0 0 28 28" width="22" height="22" fill="none"><rect x="5" y="9" width="13" height="4" rx="2" fill="white" opacity="0.95"/><rect x="10" y="15" width="13" height="4" rx="2" fill="white" opacity="0.95"/><rect x="5" y="9" width="4" height="10" rx="2" fill="white" opacity="0.5"/></svg>
-          </div>
-          <span class="hng-ai-lbl">CLAUDE</span>
-        </a>
-        <a href="obsidian://" class="hng-ai-btn">
-          <div class="hng-ai-icon" style="background:linear-gradient(145deg,#1e0a3c,#3b1f6e);">
-            <svg viewBox="0 0 28 28" width="22" height="22" fill="none"><path d="M14 3L22 9L19 22L14 25L9 22L6 9Z" fill="#7c3aed" opacity="0.4"/><path d="M14 3L22 9L14 13Z" fill="#686870" opacity="0.9"/><path d="M14 3L6 9L14 13Z" fill="#c4b5fd" opacity="0.6"/><path d="M6 9L14 13L9 22Z" fill="#7c3aed" opacity="0.7"/><path d="M22 9L14 13L19 22Z" fill="#6d28d9" opacity="0.8"/><path d="M9 22L14 13L19 22L14 25Z" fill="#4c1d95" opacity="0.9"/></svg>
-          </div>
-          <span class="hng-ai-lbl">OBSIDIAN</span>
-        </a>
-      </div>
+      <div id="hng-blockers" class="hng-blockers-list"></div>
 
       <div style="height:32px;"></div>
     </div>
@@ -7275,6 +7396,50 @@ if (typeof MODULE_MAP !== 'undefined' && MODULE_MAP.hangar) {
     <div class="hng-shots-scroll">
       <div id="hng-shots-list"></div>
       <div style="height:32px;"></div>
+    </div>
+  </div>
+
+  <!-- SHOT DETAIL VIEW -->
+  <div id="hv-detail" class="hng-view" style="display:none;">
+    <div class="hng-detail-scroll">
+
+      <!-- Shot header -->
+      <div class="hng-detail-header">
+        <div class="hng-detail-code" id="hd-code">---</div>
+        <div class="hng-detail-show" id="hd-show"></div>
+      </div>
+
+      <!-- Status row -->
+      <div class="hng-detail-status-row">
+        <div id="hd-status-pill" class="hng-detail-status-pill"></div>
+        <div class="hng-detail-actions">
+          <button class="hng-det-btn" onclick="hngDetailEdit()">EDIT</button>
+          <button class="hng-det-btn danger" onclick="hngDetailDelete()">DELETE</button>
+        </div>
+      </div>
+
+      <!-- Status cycle -->
+      <div class="hng-detail-section-lbl">STATUS</div>
+      <div class="hng-status-cycle" id="hd-cycle"></div>
+
+      <!-- Details grid -->
+      <div class="hng-detail-section-lbl" style="margin-top:14px;">DETAILS</div>
+      <div class="hng-detail-grid">
+        <div class="hng-dg-row"><span class="hng-dg-k">ARTIST</span><span class="hng-dg-v" id="hd-who">—</span></div>
+        <div class="hng-dg-row"><span class="hng-dg-k">DUE</span><span class="hng-dg-v" id="hd-due">—</span></div>
+        <div class="hng-dg-row"><span class="hng-dg-k">PRIORITY</span><span class="hng-dg-v" id="hd-pri">—</span></div>
+        <div class="hng-dg-row"><span class="hng-dg-k">VERSION</span><span class="hng-dg-v" id="hd-ver">—</span></div>
+      </div>
+
+      <!-- Notes -->
+      <div class="hng-detail-section-lbl" style="margin-top:14px;">NOTES</div>
+      <div class="hng-detail-notes" id="hd-notes">—</div>
+
+      <!-- Version history -->
+      <div class="hng-detail-section-lbl" style="margin-top:14px;">VERSION LOG</div>
+      <div id="hd-verlog" class="hng-detail-verlog"></div>
+
+      <div style="height:40px;"></div>
     </div>
   </div>
 
