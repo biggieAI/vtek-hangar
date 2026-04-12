@@ -4171,6 +4171,7 @@ function fmtMins(m){if(!m)return'';if(m<60)return m+'min';return Math.floor(m/60
 // ═══════════════════════════════
 function rHangar(){
   console.log("[VTEK] S.shows=",S.shows?.length,"S.shots=",S.shots?.length,"S.tasks=",S.tasks?.length);
+  if(!S.shots||!S.shows||!S.tasks){console.warn('[VTEK] rHangar: S not ready');return;}
   const total=S.shots.length,done=S.shots.filter(s=>s.status==='approved'||s.status==='delivered').length;
   const wip=S.shots.filter(s=>s.status==='wip').length,blk=S.shots.filter(s=>s.status==='blocked').length;
   const open=S.tasks.filter(t=>!t.done).length;
@@ -7509,8 +7510,15 @@ function renderIndexStats() {
 }
 
 // Boot
-requestAnimationFrame(()=>requestAnimationFrame(()=>{ renderIndexStats(); updateBadges(); }));
-window.addEventListener('load', ()=>{ renderIndexStats(); updateBadges(); });
+// Boot stats - multiple fallback triggers
+function bootStats() {
+  try { renderIndexStats(); updateBadges(); } catch(e) { console.error('[VTEK] bootStats:', e); }
+}
+setTimeout(bootStats, 50);
+setTimeout(bootStats, 300);
+setTimeout(bootStats, 800);
+window.addEventListener('load', bootStats);
+document.addEventListener('DOMContentLoaded', bootStats);
 
 // Pull to refresh on index
 const idxScroll = document.querySelector('.index-scroll');
