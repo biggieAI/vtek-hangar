@@ -3920,6 +3920,8 @@ var TASK_TEMPLATES = [
   { name:'NUKE SCRIPT', desc:'Build or fix a pipeline tool', pri:'med', dur:90, tags:['pipeline'],
     title:'Nuke script — [task]' },
 ];
+let WORK_START=9, WORK_END=19, LUNCH_START=13, LUNCH_END=14;
+let pendingSubsAdd=[], editSubsList=[];
 // ── END HOISTED VARS ──
 
 const MODULE_MAP = {
@@ -4101,7 +4103,7 @@ if(S.shows.length===0){
 let editId=null, editTaskId=null;
 // [plView hoisted]
 // [lastAiReason/dragSrcId hoisted]
-let pendingSubsAdd=[], editSubsList=[];
+// [pendingSubsAdd/editSubsList hoisted]
 let plRecog=null, plListening=false;
 let intelHistory=[];
 // [vaultActiveId hoisted]
@@ -5665,7 +5667,7 @@ function searchKeyNav(e){
 // PLAN MODE ENGINE — Touch-first
 // ═══════════════════════════════
 
-const WORK_START=9,WORK_END=19,LUNCH_START=13,LUNCH_END=14;
+// WORK_START/END/LUNCH hoisted to top of script
 // [planSchedule/planSelected hoisted to top of script]
 
 function setPayloadMode(mode){
@@ -7521,13 +7523,18 @@ function renderIndexStats() {
   try { renderBrief(); } catch(e) { if(e && e.message) console.warn('[VTEK] brief:', e.message); }
 }
 
-// Boot
-// Boot stats - multiple fallback triggers
+// Boot stats - retry until DOM ready
 function bootStats() {
   try { renderIndexStats(); updateBadges(); } catch(e) { console.error('[VTEK] bootStats:', e); }
 }
-setTimeout(bootStats, 100);
-window.addEventListener('load', bootStats);
+function tryBoot(attempts) {
+  const el = document.getElementById('h-shows');
+  if (el && el.textContent !== '—' && el.textContent !== '') return; // already rendered
+  bootStats();
+  if (attempts > 0) setTimeout(() => tryBoot(attempts - 1), 300);
+}
+document.addEventListener('DOMContentLoaded', () => setTimeout(() => tryBoot(5), 50));
+window.addEventListener('load', () => setTimeout(() => tryBoot(3), 100));
 
 // Pull to refresh on index
 const idxScroll = document.querySelector('.index-scroll');
@@ -7921,15 +7928,16 @@ if (typeof MODULE_MAP !== 'undefined' && MODULE_MAP.hangar) {
   background: #0b0b0b;
   border-top: 1px solid rgba(255,50,50,0.5);
   display: flex; flex-direction: column;
-  height: 44px; /* collapsed - just header */
+  height: 28px; /* collapsed - just header */
   transition: height 0.2s ease;
   padding-bottom: env(safe-area-inset-bottom);
+  pointer-events: none; /* don't block clicks when collapsed */
 }
-#dbg-bar.open { height: 220px; }
+#dbg-bar.open { height: 220px; pointer-events: auto; }
 #dbg-header {
   display: flex; align-items: center; justify-content: space-between;
-  padding: 0 10px; height: 44px; flex-shrink: 0;
-  cursor: pointer;
+  padding: 0 10px; height: 28px; flex-shrink: 0;
+  cursor: pointer; pointer-events: auto;
 }
 #dbg-header > span { font-family: monospace; font-size: 10px; font-weight: 700; color: #ff4444; letter-spacing: 0.08em; }
 .dbg-hbtn { background: none; border: 1px solid rgba(255,255,255,0.15); color: #aaa; font-size: 9px; padding: 3px 7px; border-radius: 4px; cursor: pointer; font-family: monospace; }
@@ -7938,8 +7946,8 @@ if (typeof MODULE_MAP !== 'undefined' && MODULE_MAP.hangar) {
 .de { padding: 2px 0; border-bottom: 1px solid rgba(255,255,255,0.03); word-break: break-all; }
 .de.err { color: #ff5555; } .de.warn { color: #ffaa00; } .de.info { color: #66ff88; } .de.log { color: #ccc; }
 .de-ts { color: #444; margin-right: 5px; font-size: 9px; }
-/* push index content up so debug bar doesn't cover bnav */
-.index-wrap { padding-bottom: 44px !important; }
+/* push index content up so debug bar doesn't cover footer */
+.index-wrap { padding-bottom: 28px !important; }
 </style>
 <script>
 (function(){
