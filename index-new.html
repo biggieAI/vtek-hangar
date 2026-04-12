@@ -1200,6 +1200,82 @@ body {
 .plan-block-lock:hover { color: rgba(255,255,255,0.7); }
 
 
+/* ── INTEL WORKFLOWS ── */
+.intel-workflows { width: 100%; max-width: 360px; margin-bottom: 8px; }
+.intel-wf-label {
+  font-family: var(--mono); font-size: 9px; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  background: linear-gradient(160deg, #909098, #70707a);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  margin-bottom: 8px; padding: 0 2px;
+}
+.intel-wf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.intel-wf-btn {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--s2); border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 14px; padding: 10px 12px;
+  cursor: pointer; text-align: left;
+  transition: all 0.15s; position: relative; overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+.intel-wf-btn::before {
+  content: ''; position: absolute; top: 0; left: 10%; right: 10%; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.10) 40%, rgba(255,255,255,0.16) 50%, rgba(200,215,255,0.10) 60%, transparent);
+}
+.intel-wf-btn:active { transform: scale(0.97); background: var(--s3); }
+.intel-wf-btn.crit { border-color: rgba(255,255,255,0.14); }
+.intel-wf-btn.crit::before { opacity: 1.5; }
+.intel-wf-icon { flex-shrink: 0; opacity: 0.6; }
+.intel-wf-body { min-width: 0; }
+.intel-wf-name {
+  font-family: var(--mono); font-size: 9px; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  background: linear-gradient(160deg, #ffffff, #c8cce8);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  margin-bottom: 2px;
+}
+.intel-wf-desc { font-size: 9px; color: var(--t3); line-height: 1.3; }
+
+/* QUICK LOG */
+.intel-quicklog-wrap {
+  width: 100%; max-width: 360px;
+  background: var(--s2); border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 14px; padding: 10px 12px; margin-bottom: 10px;
+  position: relative; overflow: hidden;
+}
+.intel-quicklog-wrap::before {
+  content: ''; position: absolute; top: 0; left: 8%; right: 8%; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12) 40%, rgba(255,255,255,0.20) 50%, rgba(200,215,255,0.12) 60%, transparent);
+}
+.intel-quicklog-label {
+  font-family: var(--mono); font-size: 9px; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  background: linear-gradient(160deg, #909098, #70707a);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  margin-bottom: 8px;
+}
+.intel-quicklog-row { display: flex; gap: 8px; align-items: center; }
+.intel-quicklog-input {
+  flex: 1; background: var(--s3); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px; color: var(--t0); font-family: var(--mono);
+  font-size: 11px; padding: 8px 10px; outline: none;
+  transition: border-color 0.1s;
+}
+.intel-quicklog-input:focus { border-color: rgba(255,255,255,0.2); }
+.intel-quicklog-input::placeholder { color: var(--t3); }
+.intel-quicklog-btn {
+  background: rgba(255,255,255,0.88); color: #08080e;
+  border: none; border-radius: 10px; padding: 8px 14px;
+  font-family: var(--mono); font-size: 10px; font-weight: 800;
+  letter-spacing: 0.06em; cursor: pointer;
+  box-shadow: 0 0 10px rgba(255,255,255,0.15);
+}
+.intel-quicklog-btn:active { transform: scale(0.96); }
+.intel-quicklog-hint {
+  font-size: 9px; color: var(--t3); margin-top: 6px;
+  font-family: var(--mono); letter-spacing: 0.02em;
+}
+
 /* ── MORNING BRIEF ── */
 #morning-brief-wrap { padding: 8px 12px 0; }
 
@@ -2886,24 +2962,58 @@ html, body { height:100%; overflow:hidden; }
         <span>Shots &middot; Schedule &middot; Resources &middot; Actions</span>
       </div>
 
-      <!-- Pinned top 4 always visible -->
-      <div class="intel-quick-chips">
-        <button class="intel-qchip" onclick="intelQuick('What is currently blocked on all my shows? Give me a clear summary and what each is waiting on.')">
-          <span class="intel-qchip-icon">&#9650;</span><span class="intel-qchip-label">What&#39;s blocked?</span>
-        </button>
-        <button class="intel-qchip" onclick="intelQuick('Plan my day from 9am to 6pm. Prioritize by urgency, include lunch, and leave buffer between tasks.')">
-          <span class="intel-qchip-icon">&#9711;</span><span class="intel-qchip-label">Plan my day</span>
-        </button>
-        <button class="intel-qchip" onclick="intelQuick('Give me a full production status brief on CRL right now.')">
-          <span class="intel-qchip-icon">&#9672;</span><span class="intel-qchip-label">CRL status brief</span>
-        </button>
-        <button class="intel-qchip" onclick="intelQuick('Do we have enough team capacity to deliver on time? Flag any shows at risk.')">
-          <span class="intel-qchip-icon">&#11041;</span><span class="intel-qchip-label">Resource risk check</span>
-        </button>
-        <button class="intel-qchip" id="intel-setup-chip" onclick="sw('settings')" style="border-color:var(--ac-bd)">
-          <span class="intel-qchip-icon" style="color:var(--ac)">&#9881;</span>
-          <span class="intel-qchip-label" style="color:var(--ac)" id="intel-setup-label">Set up INTEL — add API key</span>
-        </button>
+      <!-- API key warning -->
+      <button class="intel-qchip" id="intel-setup-chip" onclick="openModule('config')" style="display:none;border-color:rgba(255,255,255,0.15);margin-bottom:8px;">
+        <span class="intel-qchip-icon">&#9881;</span>
+        <span class="intel-qchip-label" id="intel-setup-label">Add API key in CONFIG</span>
+      </button>
+
+      <!-- QUICK LOG -->
+      <div class="intel-quicklog-wrap">
+        <div class="intel-quicklog-label">QUICK LOG</div>
+        <div class="intel-quicklog-row">
+          <input id="intel-quicklog" class="intel-quicklog-input" placeholder="grade STL_0080 tomorrow high 2hrs..." />
+          <button class="intel-quicklog-btn" onclick="quickLog()">LOG</button>
+        </div>
+        <div class="intel-quicklog-hint">Natural language → task created instantly, no AI needed</div>
+      </div>
+
+      <!-- WORKFLOW BUTTONS -->
+      <div class="intel-workflows">
+        <div class="intel-wf-label">WORKFLOWS</div>
+        <div class="intel-wf-grid">
+
+          <button class="intel-wf-btn crit" onclick="intelWorkflow('blocker_brief')">
+            <div class="intel-wf-icon"><svg viewBox="0 0 14 14" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M7 1L13 12H1z"/><path d="M7 5v4M7 10.5v.5"/></svg></div>
+            <div class="intel-wf-body"><div class="intel-wf-name">BLOCKER BRIEF</div><div class="intel-wf-desc">What's stuck and why</div></div>
+          </button>
+
+          <button class="intel-wf-btn" onclick="intelWorkflow('status_email')">
+            <div class="intel-wf-icon"><svg viewBox="0 0 14 14" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="1" y="3" width="12" height="9" rx="1"/><path d="M1 3l6 5 6-5"/></svg></div>
+            <div class="intel-wf-body"><div class="intel-wf-name">STATUS EMAIL</div><div class="intel-wf-desc">Client-ready progress update</div></div>
+          </button>
+
+          <button class="intel-wf-btn" onclick="intelWorkflow('bid_check')">
+            <div class="intel-wf-icon"><svg viewBox="0 0 14 14" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 11l3-8 4 6 2-3 3 5H2z"/></svg></div>
+            <div class="intel-wf-body"><div class="intel-wf-name">BID CHECK</div><div class="intel-wf-desc">Over-budget shots flagged</div></div>
+          </button>
+
+          <button class="intel-wf-btn" onclick="intelWorkflow('risk_alert')">
+            <div class="intel-wf-icon"><svg viewBox="0 0 14 14" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="7" cy="7" r="6"/><path d="M7 4v4M7 9.5v.5"/></svg></div>
+            <div class="intel-wf-body"><div class="intel-wf-name">RISK ALERT</div><div class="intel-wf-desc">Delivery risk by velocity</div></div>
+          </button>
+
+          <button class="intel-wf-btn" onclick="intelWorkflow('daily_plan')">
+            <div class="intel-wf-icon"><svg viewBox="0 0 14 14" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="1" y="2" width="12" height="11" rx="1"/><path d="M1 6h12M5 2v4M9 2v4"/></svg></div>
+            <div class="intel-wf-body"><div class="intel-wf-name">DAILY PLAN</div><div class="intel-wf-desc">Today's priorities briefed</div></div>
+          </button>
+
+          <button class="intel-wf-btn" onclick="intelWorkflow('shot_notes')">
+            <div class="intel-wf-icon"><svg viewBox="0 0 14 14" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 2h10v10H2z"/><path d="M4 5h6M4 7h6M4 9h4"/></svg></div>
+            <div class="intel-wf-body"><div class="intel-wf-name">SHOT NOTES</div><div class="intel-wf-desc">Compile all shot context</div></div>
+          </button>
+
+        </div>
       </div>
 
       <button class="intel-expand-btn" id="intel-expand-btn" onclick="togglePromptGroups()">
@@ -4434,9 +4544,82 @@ function addShow(){
 // INTEL ENGINE
 // ═══════════════════════════════
 
-function buildContext(){
-  const blk=S.shots.filter(s=>s.status==='blocked');
-  return 'You are INTEL — the AI inside VTEK HANGAR, personal VFX production tracker for Ruben Rodas (Biggie), VFX Compositor & Supervisor at CBFX.\n\nLIVE STATE:\nShows: '+S.shows.map(s=>s.code+' ('+s.name+', '+(s.teamSize||2)+' artists, '+(s.weeksLeft||12)+'wks left)').join(' | ')+'\nShots: '+S.shots.map(sh=>{const show=gs(sh.sid);return (show?.code||'?')+'/'+sh.code+':'+sh.status;}).join(' | ')+'\nOpen tasks: '+(S.tasks.filter(t=>!t.done).map(t=>'['+t.pri+'] '+t.title+(t.dur?' '+t.dur+'min':'')).join(' | ')||'None')+'\nBlocked: '+(blk.map(sh=>sh.code).join(', ')||'None')+'\nSchedule: '+(S.schedule.length?S.schedule.map(b=>b.time+' '+b.title).join(', '):'Not planned')+'\n\nSuggest actions via JSON at END only:\n{"actions":[{"type":"update_shot","id":"code","status":"wip"},{"type":"add_task","sid":"show_id","title":"task","pri":"high","dur":30},{"type":"plan_day","start":"09:00","end":"18:00"}]}';
+function buildContext() {
+  const todStr = tod();
+  const shows  = S.shows  || [];
+  const shots  = S.shots  || [];
+  const tasks  = S.tasks  || [];
+  const docs   = S.vaultDocs || [];
+
+  // ── SHOWS ──
+  const showLines = shows.map(sh => {
+    const shShots = shots.filter(s => s.sid === sh.id);
+    const done  = shShots.filter(s => s.status === 'approved' || s.status === 'delivered').length;
+    const blk   = shShots.filter(s => s.status === 'blocked').length;
+    const wip   = shShots.filter(s => s.status === 'wip').length;
+    const pct   = shShots.length ? Math.round(done/shShots.length*100) : 0;
+    const bidTotal = shShots.reduce((a,s) => a+(s.bid||0), 0);
+    return `${sh.code} "${sh.name}" — ${shShots.length} shots, ${pct}% done, ${wip} WIP, ${blk} BLK, ${sh.weeksLeft||'?'} wks left, bid ${bidTotal}d total`;
+  }).join('\n');
+
+  // ── SHOTS (compressed) ──
+  const shotLines = shots.map(s => {
+    const sh = shows.find(x => x.id === s.sid);
+    const note = s.notes ? ' ['+s.notes.slice(0,60)+']' : '';
+    return `${sh?.code||'?'} ${s.code} ${s.status.toUpperCase()} bid:${s.bid||0}d${note}`;
+  }).join('\n');
+
+  // ── TASKS ──
+  const taskLines = tasks.filter(t => !t.done).map(t => {
+    const sh = shows.find(x => x.id === t.sid);
+    const overdue = t.due && t.due < todStr ? ' OVERDUE' : t.due === todStr ? ' DUE-TODAY' : '';
+    return `[${t.pri.toUpperCase()}]${overdue} "${t.title}" ${t.dur||45}min${t.due ? ' due:'+t.due : ''}${sh ? ' ('+sh.code+')' : ''}`;
+  }).join('\n');
+
+  // ── SCHEDULE ──
+  const planKey = 'vtek_plan_' + new Date().toDateString();
+  const plan = JSON.parse(localStorage.getItem(planKey) || '[]');
+  const planLines = plan.map(e => {
+    const t = tasks.find(x => x.id === e.taskId);
+    return `${e.startH}:${String(e.startM).padStart(2,'0')} ${t?.title||'?'} (${e.durMins}min)`;
+  }).join(', ') || 'Not planned';
+
+  // ── VAULT DOCS ──
+  const vaultLines = docs.slice(0,10).map(d =>
+    `"${d.title}"${d.tags?.length ? ' ['+d.tags.join(',')+']' : ''}`
+  ).join(', ') || 'None';
+
+  // ── CONFIG ──
+  const cfg = S.config || {};
+
+  return `You are INTEL — embedded AI in V//TEK HANGAR, the personal VFX production OS for Ruben Rodas (Biggie), VFX Compositor & Supervisor at CBFX (Chicken Bone FX). You have full live context of all shows, shots, tasks and schedule. Be direct, concise, production-savvy. No corporate fluff.
+
+TODAY: ${todStr} | Work: ${cfg.workStart||9}:00–${cfg.workEnd||19}:00
+
+═══ SHOWS ═══
+${showLines || 'None'}
+
+═══ SHOTS ═══
+${shotLines || 'None'}
+
+═══ OPEN TASKS ═══
+${taskLines || 'None'}
+
+═══ TODAY'S SCHEDULE ═══
+${planLines}
+
+═══ VAULT DOCS ═══
+${vaultLines}
+
+═══ ACTIONS ═══
+You can trigger app actions by ending your response with a JSON block:
+{"actions":[
+  {"type":"add_task","sid":"SHOW_ID","title":"task name","pri":"high|med|low","dur":45,"due":"YYYY-MM-DD"},
+  {"type":"update_shot","id":"SHOT_ID","status":"wip|review|approved|blocked|delivered"},
+  {"type":"add_note","shotId":"SHOT_ID","note":"text"},
+  {"type":"rack_day"}
+]}
+Only include actions when directly relevant. Never fabricate shot IDs.`;
 }
 
 // ── INPUT HELPERS ──
@@ -4504,7 +4687,7 @@ async function sendIntel(){
   try{
     const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',
       headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:buildContext(),messages:intelHistory})});
+      body:JSON.stringify({model:(S.config?.intelModel||'claude-haiku-4-5-20251001'),max_tokens:1500,system:buildContext(),messages:intelHistory})});
     if(!res.ok){ const e=await res.json().catch(()=>({error:{message:res.statusText}})); throw new Error(e.error?.message||res.statusText); }
     const data=await res.json();
     const reply=data.content?.[0]?.text||'(no response)';
@@ -6101,6 +6284,214 @@ function toggleBrief() {
   const arrow = document.getElementById('brief-toggle-arrow');
   if (body) body.style.display = _briefOpen ? 'block' : 'none';
   if (arrow) arrow.classList.toggle('open', _briefOpen);
+}
+
+
+// ══════════════════════════════════════════════════════
+// INTEL WORKFLOWS + QUICK LOG
+// ══════════════════════════════════════════════════════
+
+// Pre-built workflow prompts — pre-digested context, optimized for Haiku
+const WORKFLOWS = {
+  blocker_brief: () => {
+    const blk = (S.shots||[]).filter(s=>s.status==='blocked');
+    const rev = (S.shots||[]).filter(s=>s.status==='review');
+    return `BLOCKED SHOTS (${blk.length}):
+${blk.map(s=>`• ${s.code}: ${s.notes||'No blocker note'}`).join('\n')||'None'}
+
+IN REVIEW (${rev.length}):
+${rev.map(s=>`• ${s.code}: ${s.notes||'No notes'}`).join('\n')||'None'}
+
+Summarize what's blocking delivery, who needs to act, and what the next step is for each. Be specific and direct. Flag anything that threatens delivery.`;
+  },
+
+  status_email: () => {
+    const shows = S.shows||[];
+    const shots = S.shots||[];
+    const summary = shows.map(sh=>{
+      const ss = shots.filter(s=>s.sid===sh.id);
+      const done = ss.filter(s=>['approved','delivered'].includes(s.status)).length;
+      const blk  = ss.filter(s=>s.status==='blocked').length;
+      const wip  = ss.filter(s=>s.status==='wip').length;
+      const pct  = ss.length ? Math.round(done/ss.length*100) : 0;
+      return `${sh.name} (${sh.code}): ${pct}% complete, ${ss.length} shots, ${wip} WIP, ${blk} blocked`;
+    }).join('\n');
+    return `Write a brief, professional production status email to the client/supervisor. Tone: confident, factual, no fluff. Include what's done, what's in progress, what's blocked and what we need from them if anything.
+
+CURRENT STATE:
+${summary}
+
+Format: Subject line + 3-4 paragraph email. Keep it under 200 words.`;
+  },
+
+  bid_check: () => {
+    const shots = S.shots||[];
+    const shows = S.shows||[];
+    const lines = shots.map(s=>{
+      const sh = shows.find(x=>x.id===s.sid);
+      return `${sh?.code||'?'} ${s.code} bid:${s.bid||0}d status:${s.status} notes:${s.notes||'—'}`;
+    });
+    return `BID STATUS:
+${lines.join('\n')}
+
+Analyze bid vs status. Flag shots that appear to be over budget (e.g. still WIP with notes suggesting complexity beyond original bid). Estimate which shots are at risk of going over. Be specific.`;
+  },
+
+  risk_alert: () => {
+    const shows = S.shows||[];
+    const shots = S.shots||[];
+    const tasks = S.tasks||[];
+    const todStr = tod();
+    const overdue = tasks.filter(t=>!t.done&&t.due&&t.due<todStr).length;
+    const blk = shots.filter(s=>s.status==='blocked').length;
+    const showData = shows.map(sh=>{
+      const ss = shots.filter(s=>s.sid===sh.id);
+      const done = ss.filter(s=>['approved','delivered'].includes(s.status)).length;
+      const remaining = ss.length - done;
+      return `${sh.code}: ${remaining} shots remaining, ${sh.weeksLeft||'?'} weeks left, due ${sh.due||'unknown'}`;
+    }).join('\n');
+    return `DELIVERY RISK ANALYSIS:
+${showData}
+Overdue tasks: ${overdue}
+Blocked shots: ${blk}
+
+Calculate pace: if shows are on track, behind, or critically late. Estimate actual delivery date at current velocity. Flag the highest risk show and what would need to change to hit delivery. Be blunt.`;
+  },
+
+  daily_plan: () => {
+    const todStr = tod();
+    const tasks = (S.tasks||[]).filter(t=>!t.done);
+    const todayTasks = tasks.filter(t=>t.due===todStr);
+    const highPri = tasks.filter(t=>t.pri==='high'&&t.due!==todStr);
+    const planKey = 'vtek_plan_'+new Date().toDateString();
+    const plan = JSON.parse(localStorage.getItem(planKey)||'[]');
+    const cfg = S.config||{};
+    return `TODAY (${todStr}) — Work ${cfg.workStart||9}:00–${cfg.workEnd||19}:00
+
+DUE TODAY (${todayTasks.length}):
+${todayTasks.map(t=>`• [${t.pri}] ${t.title} — ${t.dur||45}min`).join('\n')||'None'}
+
+HIGH PRIORITY (${highPri.length}):
+${highPri.slice(0,5).map(t=>`• ${t.title} due:${t.due||'?'} — ${t.dur||45}min`).join('\n')||'None'}
+
+SCHEDULE BUILT (${plan.length} blocks):
+${plan.map(e=>{const t=(S.tasks||[]).find(x=>x.id===e.taskId);return e.startH+':'+String(e.startM).padStart(2,'0')+' '+t?.title+' '+e.durMins+'min';}).join(', ')||'Not planned yet'}
+
+Give me a clear, prioritized briefing for today. What do I absolutely need to finish? What can slip? Any conflicts or risks I should know about right now?`;
+  },
+
+  shot_notes: () => {
+    const shots = S.shots||[];
+    const shows = S.shows||[];
+    const withNotes = shots.filter(s=>s.notes);
+    return `ALL SHOT NOTES:
+${withNotes.map(s=>{
+  const sh=shows.find(x=>x.id===s.sid);
+  return `${sh?.code||'?'} ${s.code} [${s.status}]: ${s.notes}`;
+}).join('\n')||'No shot notes found'}
+
+Compile this into a clean shot-by-shot context document. Group by show. Summarize key technical issues, client notes, and anything flagged. This is for the Vault.`;
+  },
+};
+
+function intelWorkflow(name) {
+  const fn = WORKFLOWS[name];
+  if (!fn) return;
+  const prompt = fn();
+  intelQuick(prompt);
+}
+
+// ── QUICK LOG — NLP task creation, no API ──
+function quickLog() {
+  const inp = document.getElementById('intel-quicklog');
+  const raw = (inp?.value || '').trim();
+  if (!raw) return;
+
+  const lower = raw.toLowerCase();
+  const todStr = tod();
+
+  // ── Parse due date ──
+  let due = '';
+  if (/tomorrow/.test(lower)) {
+    const d = new Date(); d.setDate(d.getDate()+1);
+    due = d.toISOString().split('T')[0];
+  } else if (/today/.test(lower)) {
+    due = todStr;
+  } else if (/monday|mon/.test(lower))  { due = nextWeekday(1); }
+  else if (/tuesday|tue/.test(lower))   { due = nextWeekday(2); }
+  else if (/wednesday|wed/.test(lower)) { due = nextWeekday(3); }
+  else if (/thursday|thu/.test(lower))  { due = nextWeekday(4); }
+  else if (/friday|fri/.test(lower))    { due = nextWeekday(5); }
+  // date format YYYY-MM-DD or MM/DD
+  const dateMatch = raw.match(/\b(\d{4}-\d{2}-\d{2}|\d{1,2}\/\d{1,2})\b/);
+  if (dateMatch && !due) {
+    if (dateMatch[1].includes('-')) {
+      due = dateMatch[1];
+    } else {
+      const [m,d] = dateMatch[1].split('/');
+      due = new Date().getFullYear()+'-'+String(m).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+    }
+  }
+
+  // ── Parse priority ──
+  let pri = S.config?.defaultPri || 'med';
+  if (/\bhigh\b|urgent|asap|critical/.test(lower)) pri = 'high';
+  else if (/\blow\b|whenever|backlog/.test(lower))  pri = 'low';
+  else if (/\bmed\b|medium|normal/.test(lower))    pri = 'med';
+
+  // ── Parse duration ──
+  let dur = S.config?.defaultDur || 45;
+  const durMatch = raw.match(/(\d+)\s*h(?:r|ours?)?/i);
+  const minMatch = raw.match(/(\d+)\s*m(?:in)?/i);
+  if (durMatch)      dur = parseInt(durMatch[1]) * 60;
+  else if (minMatch) dur = parseInt(minMatch[1]);
+
+  // ── Parse show ──
+  let sid = (S.shows||[])[0]?.id || '';
+  (S.shows||[]).forEach(sh => {
+    if (lower.includes(sh.code.toLowerCase())) sid = sh.id;
+  });
+
+  // ── Build title — strip parsed tokens ──
+  let title = raw
+    .replace(/(tomorrow|today|monday|tuesday|wednesday|thursday|friday|mon|tue|wed|thu|fri)/gi, '')
+    .replace(/(\d+)\s*h(?:r|ours?)?/gi, '')
+    .replace(/(\d+)\s*m(?:in)?/gi, '')
+    .replace(/\b(high|low|med|medium|urgent|asap|critical|normal|backlog|whenever)\b/gi, '')
+    .replace(/\b\d{4}-\d{2}-\d{2}\b/, '')
+    .replace(/\b\d{1,2}\/\d{1,2}\b/, '')
+    .replace(/\s+/g, ' ').trim();
+
+  if (!title) { toast('NEED A TITLE'); return; }
+
+  // Capitalize first letter
+  title = title.charAt(0).toUpperCase() + title.slice(1);
+
+  const task = {
+    id: 't'+Date.now(),
+    sid, title, due, pri, dur,
+    tags: [], color: '', notes: '',
+    subtasks: [], dep: '',
+    done: false, expanded: false,
+  };
+
+  if (!S.tasks) S.tasks = [];
+  S.tasks.unshift(task);
+  save();
+
+  if (inp) inp.value = '';
+  toast('✓ LOGGED: ' + title.slice(0,30));
+
+  // If schedule open, reactive rack
+  try { reactiveRack(); } catch(e) {}
+}
+
+function nextWeekday(target) {
+  const d = new Date();
+  const current = d.getDay();
+  const diff = (target - current + 7) % 7 || 7;
+  d.setDate(d.getDate() + diff);
+  return d.toISOString().split('T')[0];
 }
 
 // ── BOOT
