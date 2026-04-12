@@ -3926,17 +3926,19 @@ let pendingSubsAdd=[], editSubsList=[];
 
 const MODULE_MAP = {
   hangar:   { mv:'mv-hangar',   init:()=>{ rHangar(); } },
-  payload:  { mv:'mv-payload',  init:()=>{ setPayloadMode('execute'); } },
+  payload:  { mv:'mv-payload',  init:()=>{ const _p=document.getElementById('pg-payload');if(_p)_p.classList.add('on'); setPayloadMode('execute'); } },
   schedule: { mv:'mv-schedule', init:()=>{
     // Show plan page directly without needing pg-payload in context
-    document.querySelectorAll('.page').forEach(e=>{e.classList.remove('on');e.scrollTop=0;});
+    // scoped - only touch pages inside mv-schedule
+    const _mvSched=document.getElementById('mv-schedule');
+    if(_mvSched) _mvSched.querySelectorAll('.page').forEach(e=>{e.classList.remove('on');e.scrollTop=0;});
     const pp=document.getElementById('pg-plan');
     if(pp) pp.classList.add('on');
     S.page='plan';
     try{ initPlanMode(); }catch(e){ if(e&&e.message) console.warn('[VTEK] plan init:', e.message); }
   } },
-  vault:    { mv:'mv-vault',    init:()=>{ rVault(); } },
-  intel:    { mv:'mv-intel',    init:()=>{ checkKeyWarning(); } },
+  vault:    { mv:'mv-vault',    init:()=>{ const _p=document.getElementById('pg-vault');if(_p)_p.classList.add('on'); rVault(); } },
+  intel:    { mv:'mv-intel',    init:()=>{ const _p=document.getElementById('pg-intel');if(_p)_p.classList.add('on'); checkKeyWarning(); } },
   config:   { mv:'mv-config',   init:()=>{ renderConfig(); } },
 };
 
@@ -3956,7 +3958,10 @@ function openModule(name) { haptic("light");
 function closeModule() {
   if (!_activeModule) return;
   const mv = document.getElementById('mv-' + _activeModule);
-  if (mv) mv.classList.remove('open');
+  if (mv) {
+    mv.classList.remove('open');
+    mv.querySelectorAll('.page').forEach(e => e.classList.remove('on'));
+  }
   _activeModule = null;
   document.body.style.overflow = '';
   const dbg = document.getElementById('dbg-bar');
@@ -3965,7 +3970,8 @@ function closeModule() {
 }
 
 function showPage(p) {
-  document.querySelectorAll('.page').forEach(e=>{ e.classList.remove('on'); e.scrollTop=0; });
+  // only touch top-level pages, not ones inside module-views
+  document.querySelectorAll('.page').forEach(e=>{ if(!e.closest('.module-view')) { e.classList.remove('on'); e.scrollTop=0; } });
   const pg = document.getElementById('pg-'+p);
   if (pg) pg.classList.add('on');
   S.page = p;
@@ -4007,7 +4013,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260412-152631';
+const BUILD_ID = 'VTEK-20260412-153156';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
@@ -4176,7 +4182,7 @@ function migrateTasks(){
 // ═══════════════════════════════
 const PN={hangar:'HANGAR',shots:'SHOTS',payload:'PAYLOAD',plan:'PLAN',vault:'VAULT',intel:'INTEL',settings:'CONFIG'};
 function sw(p){
-  document.querySelectorAll('.page').forEach(e=>{e.classList.remove('on');e.scrollTop=0;});
+  document.querySelectorAll('.page').forEach(e=>{ if(!e.closest('.module-view')) { e.classList.remove('on'); e.scrollTop=0; } });
   document.querySelectorAll('.nb').forEach(e=>e.classList.remove('on'));
   const pg=document.getElementById('pg-'+p);
   if(pg){pg.classList.add('on');pg.scrollTop=0;}
