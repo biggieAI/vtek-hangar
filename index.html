@@ -237,7 +237,7 @@ body {
   border: none;
   color: #ffffff;
   font-weight: 700;
-  box-shadow: inset 0 2px 0 rgba(255,210,140,0.30), inset 0 -2px 0 rgba(0,0,0,0.55), 0 4px 20px rgba(217,68,21,0.65), 0 0 0 1px rgba(217,68,21,0.30);
+  box-shadow: inset 0 2px 0 rgba(255,210,140,0.30), inset 0 -2px 0 rgba(0,0,0,0.55), 0 3px 8px rgba(100,25,6,0.70);
 }
 .tb-btn.go:hover { background: var(--accent-red-hi); }
 .tb-icon-btn {
@@ -2732,7 +2732,7 @@ html, body { height:100%; overflow:hidden; }
   color: var(--t3); letter-spacing: 0.06em; text-transform: uppercase; margin-top: 3px;
 }
 .hng-wip  { color: rgba(255,255,255,0.45); }
-.hng-blk  { color: #d94415; text-shadow: 0 0 10px rgba(217,68,21,0.50); }
+.hng-blk  { color: #d94415; text-shadow: 1px 2px 0 rgba(100,25,6,0.70); }
 .hng-done { color: rgba(255,255,255,0.65); }
 
 /* Section headers */
@@ -2764,7 +2764,7 @@ html, body { height:100%; overflow:hidden; }
   background: var(--s2); border-radius: 14px;
   border: 1px solid rgba(255,255,255,0.05);
   border-left: 4px solid #d94415;
-  box-shadow: inset 0 2px 0 rgba(255,180,100,0.10), inset 0 -2px 0 rgba(0,0,0,0.70), 0 6px 24px rgba(0,0,0,0.70), -2px 0 16px rgba(217,68,21,0.18);
+  box-shadow: inset 0 2px 0 rgba(255,180,100,0.10), inset 0 -2px 0 rgba(0,0,0,0.70), 0 6px 24px rgba(0,0,0,0.70);
   overflow: hidden; cursor: pointer;
   transition: transform 0.12s, background 0.12s;
   display: flex; flex-direction: column;
@@ -2971,7 +2971,7 @@ html, body { height:100%; overflow:hidden; }
 .hng-blockers-list { padding: 0 16px 4px; display: flex; flex-direction: column; gap: 6px; }
 .hng-blk-row { display: flex; align-items: center; gap: 12px; padding: 13px 16px; background: var(--s2); border-left: 2px solid rgba(255,255,255,0.15); border-radius: 12px; cursor: pointer; transition: background 0.1s; box-shadow: inset 0 2px 0 rgba(255,160,80,0.08), inset 0 -2px 0 rgba(0,0,0,0.60), 0 3px 10px rgba(0,0,0,0.55); }
 .hng-blk-row:active { background: var(--s3); }
-.hng-blk-code { font-family: var(--mono); font-size: 11px; color: #d94415; font-weight: 700; flex-shrink: 0; text-shadow: 0 0 8px rgba(217,68,21,0.40); }
+.hng-blk-code { font-family: var(--mono); font-size: 11px; color: #d94415; font-weight: 700; flex-shrink: 0; text-shadow: 1px 2px 0 rgba(100,25,6,0.70); }
 .hng-blk-show { font-family: var(--mono); font-size: 9px; color: var(--t3); flex-shrink: 0; }
 .hng-blk-notes { font-family: var(--mono); font-size: 9px; color: var(--t2); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .hng-blk-empty { font-family: var(--mono); font-size: 10px; color: var(--t3); padding: 8px 16px; }
@@ -3288,7 +3288,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260413-122955';
+const BUILD_ID = 'VTEK-20260413-123210';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
@@ -7348,7 +7348,7 @@ rHangar = function() {
           <div class="hng-show-card-body">
             <div class="hng-show-card-left">
               <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
-                <span style="font-family:var(--mono);font-size:17px;font-weight:900;color:#f05522;letter-spacing:0.06em;text-shadow:0 0 16px rgba(217,68,21,0.60),0 0 32px rgba(217,68,21,0.25);">${s.code}</span>
+                <span style="font-family:var(--mono);font-size:17px;font-weight:900;color:#f05522;letter-spacing:0.06em;text-shadow:1px 2px 0 rgba(120,30,8,0.80);">${s.code}</span>
                 ${badge}
               </div>
               <div style="font-family:var(--sans);font-size:11px;color:rgba(255,255,255,0.22);margin-bottom:14px;font-weight:400;letter-spacing:0.01em;">${s.name || ''}</div>
