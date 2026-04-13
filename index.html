@@ -235,8 +235,8 @@ body {
 .tb-btn.go {
   background: var(--accent-red);
   border: none;
-  color: #ffffff;
-  font-weight: 700;
+  color: #0c0b09;
+  font-weight: 800;
   box-shadow: inset 0 2px 0 rgba(255,210,140,0.30), inset 0 -2px 0 rgba(0,0,0,0.55), 0 3px 8px rgba(100,25,6,0.70);
 }
 .tb-btn.go:hover { background: var(--accent-red-hi); }
@@ -383,7 +383,7 @@ body {
 .stag-wip { background: rgba(138,138,142,0.08); color: var(--wip); border: 1px solid rgba(138,138,142,0.16); }
 .stag-rev { background: rgba(104,104,112,0.07); color: #686870; border: 1px solid rgba(104,104,112,0.18); }
 .stag-app { background: rgba(160,160,166,0.07); color: #a0a0a6; border: 1px solid rgba(160,160,166,0.18); }
-.stag-blk { background: rgba(217,68,21,0.12); color: #f05522; border: 1px solid rgba(217,68,21,0.35); }
+.stag-blk { background: #d94415; color: #0c0b09; border: none; font-weight: 700; }
 .stag-hld { background: var(--s3); color: var(--t2); border: var(--b2); }
 .stag-del { background: rgba(192,192,196,0.10); color: var(--del); border: 1px solid rgba(192,192,196,0.22); }
 
@@ -3288,7 +3288,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260413-123210';
+const BUILD_ID = 'VTEK-20260413-123428';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
