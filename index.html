@@ -27,12 +27,12 @@ html, body, .shell, .page-area, .page {
 
 :root {
   /* ── VTEK BLVCK — luma-stepped obsidian ── */
-  --bg:    #0c0b09;   /* warm black floor */
-  --s1:    #131210;   /* topbar/nav */
-  --s2:    #1e1c19;   /* cards — warm charcoal */
-  --s3:    #272420;   /* hover state */
-  --s4:    #302d29;   /* inputs / raised */
-  --s5:    #3d3a35;   /* borders */
+  --bg:    #090808;   /* warm black floor — one shade darker */
+  --s1:    #0f0e0c;   /* topbar/nav */
+  --s2:    #181614;   /* cards — warm charcoal */
+  --s3:    #201e1b;   /* hover state */
+  --s4:    #282522;   /* inputs / raised */
+  --s5:    #333028;   /* borders */
 
   /* ── SHADOW ── */
   --neo-raise: 0 1px 8px rgba(0,0,0,0.8);
@@ -3289,7 +3289,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260413-123453';
+const BUILD_ID = 'VTEK-20260413-123814';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
