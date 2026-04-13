@@ -27,12 +27,12 @@ html, body, .shell, .page-area, .page {
 
 :root {
   /* ── VTEK BLVCK — luma-stepped obsidian ── */
-  --bg:    #060a0e;   /* crystal void — deep navy black */
-  --s1:    #0b1018;   /* dark facet */
-  --s2:    #101820;   /* crystal surface */
-  --s3:    #172030;   /* lit facet — hover */
-  --s4:    #1e2a3a;   /* raised crystal plane */
-  --s5:    #283848;   /* edge catch */
+  --bg:    #04060e;   /* deep saturated void */
+  --s1:    #080d18;   /* dark facet */
+  --s2:    #0d1422;   /* crystal surface */
+  --s3:    #121c30;   /* lit facet — hover */
+  --s4:    #18243e;   /* raised crystal plane */
+  --s5:    #202e50;   /* edge catch */
 
   /* ── SHADOW ── */
   --neo-raise: 0 1px 8px rgba(0,0,0,0.8);
@@ -51,10 +51,10 @@ html, body, .shell, .page-area, .page {
   --y-glow-sm: none;
 
   /* ── TEXT ── */
-  --t0: #e8eef4;   /* ice white — primary */
-  --t1: #7a90a8;   /* crystal mid */
-  --t2: #3a5068;   /* deep teal ghost */
-  --t3: #1e3044;   /* void ghost */
+  --t0: #dde6f8;   /* ice white — primary */
+  --t1: #5878a8;   /* deep blue-gray */
+  --t2: #2a3d60;   /* navy ghost */
+  --t3: #141e38;   /* void ghost */
 
   /* ── STATUS — muted on obsidian ── */
   --wip:   #909098;
@@ -65,15 +65,15 @@ html, body, .shell, .page-area, .page {
   --del:   #d0d0d8;
 
   /* ── ACCENT COLOR — one color, one purpose ── */
-  --accent:     #1a8fa8;   /* crystal teal — primary */
-  --accent-hi:  #2ab8d8;   /* ice cyan — highlight */
-  --accent-dim: #0d4a5c;   /* deep teal shadow */
-  --accent-ice: #8cd4e8;   /* crystal face catch light */
-  --accent-bg:  #071520;   /* navy depth bg tint */
+  --accent:     #1456c8;   /* deep royal blue — primary */
+  --accent-hi:  #2068e8;   /* electric blue — highlight */
+  --accent-dim: #0a2860;   /* void blue shadow */
+  --accent-ice: #6aa0f0;   /* crystal face catch light */
+  --accent-bg:  #050e28;   /* deep navy bg tint */
   /* legacy aliases */
-  --accent-red: #1a8fa8;
-  --accent-red-hi: #2ab8d8;
-  --accent-glow: rgba(26,143,168,0.40);
+  --accent-red: #1456c8;
+  --accent-red-hi: #2068e8;
+  --accent-glow: rgba(20,86,200,0.50);
 
   /* ── BORDERS ── */
   --b0: 1px solid rgba(255,255,255,0.025);
@@ -242,7 +242,7 @@ body {
   border: none;
   color: #0c0b09;
   font-weight: 800;
-  box-shadow: inset 0 2px 0 rgba(140,212,232,0.20), inset 0 -2px 0 rgba(0,0,0,0.55), 0 3px 8px rgba(6,30,48,0.80);
+  box-shadow: inset 0 2px 0 rgba(106,160,240,0.18), inset 0 -2px 0 rgba(0,0,0,0.55), 0 3px 8px rgba(4,10,40,0.90);
 }
 .tb-btn.go:hover { background: var(--accent-red-hi); }
 .tb-icon-btn {
@@ -388,7 +388,7 @@ body {
 .stag-wip { background: rgba(138,138,142,0.08); color: var(--wip); border: 1px solid rgba(138,138,142,0.16); }
 .stag-rev { background: rgba(104,104,112,0.07); color: #686870; border: 1px solid rgba(104,104,112,0.18); }
 .stag-app { background: rgba(160,160,166,0.07); color: #a0a0a6; border: 1px solid rgba(160,160,166,0.18); }
-.stag-blk { background: #1a8fa8; color: #060a0e; border: none; font-weight: 700; }
+.stag-blk { background: #1456c8; color: #04060e; border: none; font-weight: 700; }
 .stag-hld { background: var(--s3); color: var(--t2); border: var(--b2); }
 .stag-del { background: rgba(192,192,196,0.10); color: var(--del); border: 1px solid rgba(192,192,196,0.22); }
 
@@ -2738,7 +2738,7 @@ html, body { height:100%; overflow:hidden; }
   color: var(--t3); letter-spacing: 0.06em; text-transform: uppercase; margin-top: 3px;
 }
 .hng-wip  { color: rgba(255,255,255,0.45); }
-.hng-blk  { color: #2ab8d8; text-shadow: 1px 2px 0 rgba(6,30,48,0.80); }
+.hng-blk  { color: #2068e8; text-shadow: 1px 2px 0 rgba(4,10,40,0.90); }
 .hng-done { color: rgba(255,255,255,0.65); }
 
 /* Section headers */
@@ -2769,15 +2769,15 @@ html, body { height:100%; overflow:hidden; }
 .hng-show-card {
   background: var(--s2); border-radius: 14px;
   border: 1px solid rgba(255,255,255,0.05);
-  border-left: 4px solid #1a8fa8;
-  box-shadow: inset 0 2px 0 rgba(140,212,232,0.06), inset 0 -2px 0 rgba(0,0,0,0.80), 0 4px 16px rgba(0,0,0,0.75);
+  border-left: 4px solid #1456c8;
+  box-shadow: inset 0 2px 0 rgba(106,160,240,0.06), inset 0 -2px 0 rgba(0,0,0,0.80), 0 4px 16px rgba(0,0,0,0.75);
   overflow: hidden; cursor: pointer;
   transition: transform 0.12s, background 0.12s;
   display: flex; flex-direction: column;
-  box-shadow: inset 0 2px 0 rgba(140,212,232,0.06), inset 0 -2px 0 rgba(0,0,0,0.80), 0 4px 16px rgba(0,0,0,0.75);
+  box-shadow: inset 0 2px 0 rgba(106,160,240,0.06), inset 0 -2px 0 rgba(0,0,0,0.80), 0 4px 16px rgba(0,0,0,0.75);
 }
 .hng-show-card:active { transform: scale(0.985); background: var(--s3); }
-.hng-show-card:hover { background: var(--s3); border-left-color: #2ab8d8; }
+.hng-show-card:hover { background: var(--s3); border-left-color: #2068e8; }
 .hng-show-card-accent { display: none; }
 .hng-show-card-body {
   padding: 16px 18px 18px; display: flex; gap: 14px; align-items: flex-start;
@@ -2977,7 +2977,7 @@ html, body { height:100%; overflow:hidden; }
 .hng-blockers-list { padding: 0 16px 4px; display: flex; flex-direction: column; gap: 6px; }
 .hng-blk-row { display: flex; align-items: center; gap: 12px; padding: 13px 16px; background: var(--s2); border-left: 2px solid rgba(255,255,255,0.15); border-radius: 12px; cursor: pointer; transition: background 0.1s; box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), inset 0 -2px 0 rgba(0,0,0,0.70), 0 2px 6px rgba(0,0,0,0.55); }
 .hng-blk-row:active { background: var(--s3); }
-.hng-blk-code { font-family: var(--mono); font-size: 11px; color: #2ab8d8; font-weight: 700; flex-shrink: 0; text-shadow: 1px 2px 0 rgba(6,30,48,0.80); }
+.hng-blk-code { font-family: var(--mono); font-size: 11px; color: #2068e8; font-weight: 700; flex-shrink: 0; text-shadow: 1px 2px 0 rgba(4,10,40,0.90); }
 .hng-blk-show { font-family: var(--mono); font-size: 9px; color: var(--t3); flex-shrink: 0; }
 .hng-blk-notes { font-family: var(--mono); font-size: 9px; color: var(--t2); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .hng-blk-empty { font-family: var(--mono); font-size: 10px; color: var(--t3); padding: 8px 16px; }
@@ -3036,7 +3036,7 @@ html, body { height:100%; overflow:hidden; }
 .hng-import-label { font-family:var(--mono); font-size:9px; color:var(--t3); letter-spacing:0.1em; }
 .hng-import-ta { width:100%; min-height:140px; background:var(--s2); border:1px solid var(--s3); border-radius:4px; padding:10px 12px; font-family:var(--mono); font-size:10px; color:var(--t0); resize:vertical; box-sizing:border-box; }
 .hng-import-ta:focus { outline:none; border-color:var(--y); }
-.hng-import-btn { width:100%; margin-top:10px; padding:12px; background:var(--accent-red); border:none; border-radius:6px; font-family:var(--mono); font-size:10px; font-weight:800; letter-spacing:0.1em; color:#060a0e; cursor:pointer; box-shadow: inset 0 2px 0 rgba(140,212,232,0.15), inset 0 -2px 0 rgba(0,0,0,0.40); }
+.hng-import-btn { width:100%; margin-top:10px; padding:12px; background:var(--accent-red); border:none; border-radius:6px; font-family:var(--mono); font-size:10px; font-weight:800; letter-spacing:0.1em; color:#060a0e; cursor:pointer; box-shadow: inset 0 2px 0 rgba(106,160,240,0.14), inset 0 -2px 0 rgba(0,0,0,0.40); }
 .hng-import-btn:active { background:var(--s4); }
 .hng-import-result-ok { font-family:var(--mono); font-size:10px; color:var(--app); line-height:1.8; background:var(--s2); padding:10px 12px; border-radius:4px; border-left:2px solid var(--app); }
 .hng-import-result-err { font-family:var(--mono); font-size:10px; color:var(--blk); line-height:1.8; background:var(--s2); padding:10px 12px; border-radius:4px; border-left:2px solid var(--blk); }
@@ -3295,7 +3295,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260413-131556';
+const BUILD_ID = 'VTEK-20260413-131749';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
@@ -7355,7 +7355,7 @@ rHangar = function() {
           <div class="hng-show-card-body">
             <div class="hng-show-card-left">
               <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
-                <span style="font-family:var(--mono);font-size:17px;font-weight:900;color:#2ab8d8;letter-spacing:0.06em;text-shadow:1px 2px 0 rgba(6,30,48,0.90);">${s.code}</span>
+                <span style="font-family:var(--mono);font-size:17px;font-weight:900;color:#2068e8;letter-spacing:0.06em;text-shadow:1px 2px 0 rgba(4,10,40,0.95);">${s.code}</span>
                 ${badge}
               </div>
               <div style="font-family:var(--sans);font-size:11px;color:rgba(255,255,255,0.22);margin-bottom:14px;font-weight:400;letter-spacing:0.01em;">${s.name || ''}</div>
