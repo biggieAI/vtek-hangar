@@ -26,71 +26,52 @@ html, body, .shell, .page-area, .page {
 }
 
 :root {
-  /* ── VTEK BLVCK — luma-stepped obsidian ── */
-  --bg:    #07080f;   /* 10% blue over black */
-  --s1:    #0c0e17;   /* +1 step */
-  --s2:    #11141f;   /* cards */
-  --s3:    #171b28;   /* hover */
-  --s4:    #1e2332;   /* raised */
-  --s5:    #262d40;   /* edge */
-
-  /* ── SHADOW ── */
-  --neo-raise: 0 1px 8px rgba(0,0,0,0.8);
-  --neo-inset: inset 0 1px 2px rgba(0,0,0,0.9);
-
-  /* ── ACCENT — white, surgical ── */
-  --y:      rgba(255,255,255,0.88);
+  /* VTEK STEALTH MATTE v17 */
+  --bg:    #070708;
+  --s1:    #0d0d0f;
+  --s2:    #121214;
+  --s3:    #181819;
+  --s4:    #1e1e20;
+  --s5:    #252528;
+  --neo-raise: 0 1px 8px rgba(0,0,0,0.9);
+  --neo-inset: inset 0 1px 2px rgba(0,0,0,0.95);
+  --y:      rgba(255,255,255,0.90);
   --y-hi:   #ffffff;
-  --y-mid:  rgba(255,255,255,0.50);
-  --y-dim:  rgba(255,255,255,0.18);
-  --y-deep: rgba(255,255,255,0.06);
+  --y-mid:  rgba(255,255,255,0.52);
+  --y-dim:  rgba(255,255,255,0.20);
+  --y-deep: rgba(255,255,255,0.07);
   --y2:     rgba(255,255,255,0.04);
   --y3:     rgba(255,255,255,0.025);
   --y4:     rgba(255,255,255,0.01);
   --y-glow: none;
   --y-glow-sm: none;
-
-  /* ── TEXT ── */
-  --t0: #dde6f8;   /* ice white — primary */
-  --t1: #5878a8;   /* deep blue-gray */
-  --t2: #2a3d60;   /* navy ghost */
-  --t3: #141e38;   /* void ghost */
-
-  /* ── STATUS — muted on obsidian ── */
-  --wip:   #909098;
-  --blk:   #585860;
-  --rev:   #707078;
-  --app:   #b8b8c0;
-  --hld:   #303038;
-  --del:   #d0d0d8;
-
-  /* ── ACCENT COLOR — one color, one purpose ── */
-  --accent:     #3d6e9e;   /* steel blue — readable primary */
-  --accent-hi:  #5590c0;   /* bright steel — highlight */
-  --accent-dim: #152840;   /* shadow */
-  --accent-ice: #80b0d8;   /* catch light */
-  --accent-bg:  #0a1525;   /* bg tint */
-  /* legacy aliases */
-  --accent-red: #3d6e9e;
-  --accent-red-hi: #5590c0;
-  --accent-glow: rgba(61,110,158,0.50);
-
-  /* ── BORDERS ── */
-  --b0: 1px solid rgba(255,255,255,0.025);
-  --b1: 1px solid rgba(255,255,255,0.042);
-  --b2: 1px solid rgba(255,255,255,0.060);
-  --b3: 1px solid rgba(255,255,255,0.090);
-
-  /* ── FONTS ── */
+  --t0: #e8e8e4;
+  --t1: #5a5a5e;
+  --t2: #2e2e32;
+  --t3: #18181a;
+  --wip:   #848480;
+  --blk:   #505050;
+  --rev:   #686864;
+  --app:   #a8a8a4;
+  --hld:   #282828;
+  --del:   #c8c8c4;
+  --accent:     #b8924a;
+  --accent-hi:  #d4a85c;
+  --accent-dim: #2a1e0a;
+  --accent-ice: #e0c080;
+  --accent-bg:  #120d04;
+  --accent-red: #b8924a;
+  --accent-red-hi: #d4a85c;
+  --accent-glow: rgba(184,146,74,0.40);
+  --b0: 1px solid rgba(255,255,255,0.022);
+  --b1: 1px solid rgba(255,255,255,0.038);
+  --b2: 1px solid rgba(255,255,255,0.055);
+  --b3: 1px solid rgba(255,255,255,0.085);
   --sans: 'Inter', system-ui, sans-serif;
   --mono: 'JetBrains Mono', monospace;
-
-  /* ── NAV ── */
   --nav-h: 56px;
   --safe-b: env(safe-area-inset-bottom, 0px);
   --safe-t: env(safe-area-inset-top, 0px);
-
-  /* ── COMPAT with old vars ── */
   --accent: var(--y);
   --s-blk: var(--blk);
   --s-wip: var(--wip);
@@ -113,12 +94,12 @@ html, body, .shell, .page-area, .page {
   --step3: var(--s3);
   --pill: var(--s3);
   --p0:var(--bg); --p1:var(--s1); --p2:var(--s2);
-  --p3:var(--s3); --p4:#2e2e30; --p5:#363638; --p6:#3e3e40; --p7:#464648;
+  --p3:var(--s3); --p4:#2a2a2c; --p5:#323234; --p6:#3a3a3c; --p7:#424244;
   --t-compat0:var(--t0); --t-compat1:var(--t1); --t-compat2:var(--t2); --t-compat3:var(--t3);
   --ac: var(--y);
   --ac-lo: var(--y3);
   --ac-md: var(--y2);
-  --ac-bd: rgba(255,255,255,0.19);
+  --ac-bd: rgba(255,255,255,0.20);
   --b-compat0: rgba(255,255,255,0.04);
   --b-compat1: rgba(255,255,255,0.08);
   --b-compat2: rgba(255,255,255,0.14);
@@ -388,7 +369,7 @@ body {
 .stag-wip { background: rgba(138,138,142,0.08); color: var(--wip); border: 1px solid rgba(138,138,142,0.16); }
 .stag-rev { background: rgba(104,104,112,0.07); color: #686870; border: 1px solid rgba(104,104,112,0.18); }
 .stag-app { background: rgba(160,160,166,0.07); color: #a0a0a6; border: 1px solid rgba(160,160,166,0.18); }
-.stag-blk { background: #3d6e9e; color: #06090f; border: none; font-weight: 700; }
+.stag-blk { background: rgba(255,255,255,0.88); color: #070708; border: none; font-weight: 700; }
 .stag-hld { background: var(--s3); color: var(--t2); border: var(--b2); }
 .stag-del { background: rgba(192,192,196,0.10); color: var(--del); border: 1px solid rgba(192,192,196,0.22); }
 
@@ -2738,7 +2719,7 @@ html, body { height:100%; overflow:hidden; }
   color: var(--t3); letter-spacing: 0.06em; text-transform: uppercase; margin-top: 3px;
 }
 .hng-wip  { color: rgba(255,255,255,0.45); }
-.hng-blk  { color: #5590c0; text-shadow: 1px 2px 0 rgba(8,16,28,0.90); }
+.hng-blk  { color: rgba(255,255,255,0.82); text-shadow: 1px 2px 0 rgba(0,0,0,0.95); }
 .hng-done { color: rgba(255,255,255,0.65); }
 
 /* Section headers */
@@ -2769,7 +2750,7 @@ html, body { height:100%; overflow:hidden; }
 .hng-show-card {
   background: var(--s2); border-radius: 14px;
   border: 1px solid rgba(255,255,255,0.05);
-  border-left: 4px solid #3d6e9e;
+  border-left: 4px solid rgba(255,255,255,0.15);
   box-shadow: inset 0 2px 0 rgba(106,144,184,0.06), inset 0 -2px 0 rgba(0,0,0,0.80), 0 4px 16px rgba(0,0,0,0.75);
   overflow: hidden; cursor: pointer;
   transition: transform 0.12s, background 0.12s;
@@ -2777,7 +2758,7 @@ html, body { height:100%; overflow:hidden; }
   box-shadow: inset 0 2px 0 rgba(106,144,184,0.06), inset 0 -2px 0 rgba(0,0,0,0.80), 0 4px 16px rgba(0,0,0,0.75);
 }
 .hng-show-card:active { transform: scale(0.985); background: var(--s3); }
-.hng-show-card:hover { background: var(--s3); border-left-color: #5590c0; }
+.hng-show-card:hover { background: var(--s3); border-left-color: rgba(255,255,255,0.40); }
 .hng-show-card-accent { display: none; }
 .hng-show-card-body {
   padding: 16px 18px 18px; display: flex; gap: 14px; align-items: flex-start;
@@ -2977,7 +2958,7 @@ html, body { height:100%; overflow:hidden; }
 .hng-blockers-list { padding: 0 16px 4px; display: flex; flex-direction: column; gap: 6px; }
 .hng-blk-row { display: flex; align-items: center; gap: 12px; padding: 13px 16px; background: var(--s2); border-left: 2px solid rgba(255,255,255,0.15); border-radius: 12px; cursor: pointer; transition: background 0.1s; box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), inset 0 -2px 0 rgba(0,0,0,0.70), 0 2px 6px rgba(0,0,0,0.55); }
 .hng-blk-row:active { background: var(--s3); }
-.hng-blk-code { font-family: var(--mono); font-size: 11px; color: #5590c0; font-weight: 700; flex-shrink: 0; text-shadow: 1px 2px 0 rgba(8,16,28,0.90); }
+.hng-blk-code { font-family: var(--mono); font-size: 11px; color: rgba(255,255,255,0.78); font-weight: 700; flex-shrink: 0; text-shadow: 1px 2px 0 rgba(0,0,0,0.95); }
 .hng-blk-show { font-family: var(--mono); font-size: 9px; color: var(--t3); flex-shrink: 0; }
 .hng-blk-notes { font-family: var(--mono); font-size: 9px; color: var(--t2); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .hng-blk-empty { font-family: var(--mono); font-size: 10px; color: var(--t3); padding: 8px 16px; }
@@ -3295,7 +3276,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260413-133512';
+const BUILD_ID = 'VTEK-20260413-174000';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
@@ -7355,7 +7336,7 @@ rHangar = function() {
           <div class="hng-show-card-body">
             <div class="hng-show-card-left">
               <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
-                <span style="font-family:var(--mono);font-size:17px;font-weight:900;color:#5590c0;letter-spacing:0.06em;text-shadow:1px 2px 0 rgba(8,16,28,0.95);">${s.code}</span>
+                <span style="font-family:var(--mono);font-size:17px;font-weight:900;color:rgba(255,255,255,0.88);letter-spacing:0.06em;text-shadow:1px 2px 0 rgba(0,0,0,0.95);">${s.code}</span>
                 ${badge}
               </div>
               <div style="font-family:var(--sans);font-size:11px;color:rgba(255,255,255,0.22);margin-bottom:14px;font-weight:400;letter-spacing:0.01em;">${s.name || ''}</div>
