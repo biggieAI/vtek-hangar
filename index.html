@@ -27,12 +27,12 @@ html, body, .shell, .page-area, .page {
 
 :root {
   /* VTEK STEALTH MATTE v17 */
-  --bg:    #070708;
-  --s1:    #0d0d0f;
-  --s2:    #121214;
-  --s3:    #181819;
-  --s4:    #1e1e20;
-  --s5:    #252528;
+  --bg:    #050506;
+  --s1:    #0a0a0c;
+  --s2:    #101012;
+  --s3:    #161618;
+  --s4:    #1c1c1f;
+  --s5:    #242428;
   --neo-raise: 0 1px 8px rgba(0,0,0,0.9);
   --neo-inset: inset 0 1px 2px rgba(0,0,0,0.95);
   --y:      rgba(255,255,255,0.90);
@@ -63,10 +63,10 @@ html, body, .shell, .page-area, .page {
   --accent-red: #b8924a;
   --accent-red-hi: #d4a85c;
   --accent-glow: rgba(184,146,74,0.40);
-  --b0: 1px solid rgba(255,255,255,0.022);
-  --b1: 1px solid rgba(255,255,255,0.038);
-  --b2: 1px solid rgba(255,255,255,0.055);
-  --b3: 1px solid rgba(255,255,255,0.085);
+  --b0: 1px solid rgba(255,255,255,0.030);
+  --b1: 1px solid rgba(255,255,255,0.055);
+  --b2: 1px solid rgba(255,255,255,0.075);
+  --b3: 1px solid rgba(255,255,255,0.120);
   --sans: 'Inter', system-ui, sans-serif;
   --mono: 'JetBrains Mono', monospace;
   --nav-h: 56px;
@@ -168,7 +168,7 @@ body {
   text-transform: uppercase;
   flex-shrink: 0;
   white-space: nowrap;
-  color: rgba(255,255,255,0.85);
+  color: #d4a85c;
   filter: none;
 }
 .wm-slash { color: rgba(255,255,255,0.40); font-weight: 300; letter-spacing: 0; }
@@ -176,7 +176,7 @@ body {
   font-family: var(--sans);
   font-size: 11px;
   font-weight: 400;
-  background: linear-gradient(160deg, rgba(255,255,255,0.45), rgba(200,215,255,0.25));
+  background: linear-gradient(160deg, #d4a85c 0%, #a87a36 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -187,7 +187,7 @@ body {
   font-family: var(--sans);
   font-size: 11px;
   font-weight: 500;
-  background: linear-gradient(160deg, #c8cce8 0%, #9a9ebe 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;;
+  background: linear-gradient(160deg, #c8a050 0%, #8a6428 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
   letter-spacing: 0.02em;
   text-transform: uppercase;
   white-space: nowrap;
@@ -2065,19 +2065,19 @@ html, body { height: 100%; overflow: hidden; background: #1a1a1c; color: #ececee
 .wm-logo {
   font-size: 15px; font-weight: 900; letter-spacing: -0.01em;
   text-transform: uppercase;
-  background: linear-gradient(160deg, #ffffff 0%, #dde2f8 55%, #c0c8f0 100%);
+  background: linear-gradient(160deg, #e8c070 0%, #b8924a 55%, #8a6428 100%);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
   filter: none;
 }
 .wm-slash { color: rgba(255,255,255,0.35); font-weight: 300; font-size: 15px; }
 .wm-sep {
   font-size: 12px; color: var(--t3); margin: 0 8px;
-  background: linear-gradient(160deg, rgba(255,255,255,0.35), rgba(200,215,255,0.2));
+  background: linear-gradient(160deg, rgba(184,146,74,0.60), rgba(184,146,74,0.25));
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
 .wm-page {
   font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
-  background: linear-gradient(160deg, #c0c4e0 0%, #9098bc 100%);
+  background: linear-gradient(160deg, #c8a050 0%, #8a6428 100%);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
 .topbar-right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
@@ -2650,7 +2650,7 @@ html, body { height:100%; overflow:hidden; }
 .back-btn:active { color:var(--t1); }
 .module-title-lbl {
   font-size:11px; font-weight:800; letter-spacing:0.12em; text-transform:uppercase;
-  background:linear-gradient(160deg,#ffffff 0%,#d8dcf0 60%,#bec4e0 100%);
+  background:linear-gradient(160deg,#e8c070 0%,#b8924a 55%,#8a6428 100%);
   -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
 }
 .module-actions-bar { margin-left:auto; display:flex; gap:4px; align-items:center; overflow-x:auto; -webkit-overflow-scrolling:touch; flex-shrink:0; min-width:0; padding-right:2px; }
@@ -3276,7 +3276,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260413-174000';
+const BUILD_ID = 'VTEK-20260413-180500';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
