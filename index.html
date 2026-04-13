@@ -3023,6 +3023,45 @@ html, body { height:100%; overflow:hidden; }
 .hng-import-btn:active { background:var(--s4); }
 .hng-import-result-ok { font-family:var(--mono); font-size:10px; color:var(--app); line-height:1.8; background:var(--s2); padding:10px 12px; border-radius:4px; border-left:2px solid var(--app); }
 .hng-import-result-err { font-family:var(--mono); font-size:10px; color:var(--blk); line-height:1.8; background:var(--s2); padding:10px 12px; border-radius:4px; border-left:2px solid var(--blk); }
+
+/* ════════════════════════════
+   STAGGER ENTRANCE ANIMATIONS
+════════════════════════════ */
+@keyframes vtek-fade-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes vtek-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.stagger-child {
+  opacity: 0;
+  animation: vtek-fade-up 0.22s cubic-bezier(0.22,1,0.36,1) forwards;
+}
+.stagger-child:nth-child(1)  { animation-delay: 0.03s; }
+.stagger-child:nth-child(2)  { animation-delay: 0.07s; }
+.stagger-child:nth-child(3)  { animation-delay: 0.11s; }
+.stagger-child:nth-child(4)  { animation-delay: 0.14s; }
+.stagger-child:nth-child(5)  { animation-delay: 0.17s; }
+.stagger-child:nth-child(6)  { animation-delay: 0.19s; }
+.stagger-child:nth-child(7)  { animation-delay: 0.21s; }
+.stagger-child:nth-child(8)  { animation-delay: 0.23s; }
+.stagger-child:nth-child(9)  { animation-delay: 0.24s; }
+.stagger-child:nth-child(n+10) { animation-delay: 0.25s; }
+
+.stagger-banner {
+  opacity: 0;
+  animation: vtek-fade-in 0.18s ease forwards 0.02s;
+}
+.stagger-section {
+  opacity: 0;
+  animation: vtek-fade-up 0.20s cubic-bezier(0.22,1,0.36,1) forwards;
+}
+
+/* reset on re-trigger — JS removes and re-adds the class */
+.stagger-child.no-anim { animation: none; opacity: 1; }
 </style>
 </head>
 <body>
@@ -3219,7 +3258,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260412-220846';
+const BUILD_ID = 'VTEK-20260413-121344';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
@@ -6790,6 +6829,44 @@ if (idxScroll) {
 
 // [let _hngFilter hoisted]
 
+
+// ══════════════════════════════════════
+// STAGGER ENTRANCE SYSTEM
+// ══════════════════════════════════════
+function staggerIn(containerSelector, childSelector) {
+  const containers = typeof containerSelector === 'string'
+    ? document.querySelectorAll(containerSelector)
+    : [containerSelector];
+  containers.forEach(container => {
+    if (!container) return;
+    const children = childSelector
+      ? container.querySelectorAll(childSelector)
+      : container.children;
+    Array.from(children).forEach(el => {
+      el.classList.remove('stagger-child');
+      void el.offsetWidth; // force reflow
+      el.classList.add('stagger-child');
+    });
+  });
+}
+
+function staggerView(viewEl) {
+  if (!viewEl) return;
+  // Animate direct stagger-able children
+  const targets = viewEl.querySelectorAll(
+    '.hng-show-card, .hng-today-row, .hng-blk-row, ' +
+    '.hng-shot-row, .hng-team-member, .hng-vl-row, ' +
+    '.hng-detail-header, .hng-detail-status-row, .hng-status-cycle, ' +
+    '.hng-detail-grid, .hng-detail-notes, .hng-detail-verlog, ' +
+    '.hng-banner, .hng-row-head, .hng-detail-section-lbl'
+  );
+  targets.forEach(el => {
+    el.classList.remove('stagger-child');
+    void el.offsetWidth;
+    el.classList.add('stagger-child');
+  });
+}
+
 function hngRefresh() {
   rHangar();
   const home   = document.getElementById('hv-home');
@@ -6826,6 +6903,12 @@ function _hngShow(which, titleTxt, lblTxt) {
   if (imp)    imp.style.display    = which === 'import' ? '' : 'none';
   if (v.title) v.title.textContent = titleTxt;
   if (v.lbl)   v.lbl.textContent   = lblTxt;
+  // Stagger the incoming view
+  requestAnimationFrame(() => {
+    const views = { home: v.home, shots: v.shots, detail: v.detail, team, import: imp };
+    const active = views[which];
+    if (active) staggerView(active);
+  });
 }
 
 function hangarBack() {
@@ -7266,6 +7349,8 @@ rHangar = function() {
       }).join('');
     }
   }
+  // stagger show cards
+  requestAnimationFrame(()=>staggerIn(document.getElementById('hng-show-grid')));
 
   // Today's shots
   const todStr = tod();
@@ -7290,6 +7375,7 @@ rHangar = function() {
     }
   }
   if (todayCt) todayCt.textContent = todayShots.length || '';
+  requestAnimationFrame(()=>staggerIn(document.getElementById('hng-today')));
 
   // Blockers callout
   const blkList = shots.filter(s => s.status === 'blocked');
@@ -7363,6 +7449,7 @@ rShots = function() {
   }
 
   renderHngShotList();
+  requestAnimationFrame(()=>staggerIn(document.getElementById('hng-shots-list')));
 };
 
 // Patch MODULE_MAP.hangar init to call new rHangar
