@@ -27,12 +27,12 @@ html, body, .shell, .page-area, .page {
 
 :root {
   /* ── VTEK BLVCK — luma-stepped obsidian ── */
-  --bg:    #090808;   /* warm black floor — one shade darker */
-  --s1:    #0f0e0c;   /* topbar/nav */
-  --s2:    #181614;   /* cards — warm charcoal */
-  --s3:    #201e1b;   /* hover state */
-  --s4:    #282522;   /* inputs / raised */
-  --s5:    #333028;   /* borders */
+  --bg:    #060505;   /* warm black floor */
+  --s1:    #0c0b09;   /* topbar/nav */
+  --s2:    #131110;   /* cards */
+  --s3:    #1a1815;   /* hover state */
+  --s4:    #22201c;   /* inputs / raised */
+  --s5:    #2c2924;   /* borders */
 
   /* ── SHADOW ── */
   --neo-raise: 0 1px 8px rgba(0,0,0,0.8);
@@ -309,7 +309,7 @@ body {
   -webkit-tap-highlight-color: transparent;
   position: relative;
 }
-.armor-card:hover { background: #212121; border-color: #333; }
+.armor-card:hover { background: var(--s3); border-color: #333; }
 .armor-card:active { background: var(--s3); border-color: rgba(255,255,255,0.13); }
 .armor-card-inner { display: none; }
 .show-stripe { height: 2px; width: 100%; background: linear-gradient(90deg, transparent 0%, rgba(200,215,255,0.3) 10%, rgba(255,255,255,0.7) 35%, rgba(255,255,255,0.9) 50%, rgba(255,255,255,0.7) 65%, rgba(200,215,255,0.3) 90%, transparent 100%) !important; box-shadow: 0 0 6px rgba(255,255,255,0.35), 0 0 14px rgba(200,215,255,0.2); }
@@ -341,7 +341,7 @@ body {
 .sc-l { font-family: var(--sans); font-size: 10px; font-weight: 600; color: var(--t2); letter-spacing: 0.08em; text-transform: uppercase; }
 
 /* ── DOSSIER ── */
-.dossier { background: var(--s2); border: 1px solid #252525; border-radius: 4px; margin-bottom: 12px; width: 100%; overflow: hidden; position: relative; }
+.dossier { background: var(--s2); border: 1px solid rgba(255,255,255,0.05); border-radius: 4px; margin-bottom: 12px; width: 100%; overflow: hidden; position: relative; }
 .dos-border { display: none; } .dos-inner { display: block; position: absolute; inset: 0; pointer-events: none; }
 .dos-content { padding: 12px 14px; }
 .dos-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 12px; }
@@ -407,7 +407,7 @@ body {
 .shot-group-hd {
   display: flex; align-items: center; justify-content: space-between;
   padding: 10px 14px 8px;
-  background: var(--bg); border-bottom: 1px solid #222;
+  background: var(--bg); border-bottom: 1px solid rgba(255,255,255,0.04);
   border-left: 3px solid transparent;
 }
 .shot-group-hd:hover { border-left-color: rgba(255,255,255,0.13); }
@@ -430,9 +430,9 @@ body {
   width: 100%; box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
 }
-.shot-row:hover { background: #212121; }
+.shot-row:hover { background: var(--s3); }
 .shot-row:nth-child(even) { background: var(--s1); }
-.shot-row:nth-child(even):hover { background: #222; }
+.shot-row:nth-child(even):hover { background: var(--s3); }
 .shot-row:active { background: var(--s3); }
 .shot-row:last-child { border-bottom: none; }
 .sr-code { font-family: var(--mono); font-size: 12px; font-weight: 500; background: linear-gradient(160deg, #ffffff 0%, #d8dcf0 60%, #bec4e0 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; letter-spacing: 0.04em; text-transform: uppercase; }
@@ -825,7 +825,7 @@ body {
   box-shadow: 3px 5px 12px rgba(0,0,0,0.5), -1px -2px 4px rgba(255,255,255,0.04);
 }
 .vault-doc-row:hover { background: var(--s1); }
-.vault-doc-row:active { background: #222; }
+.vault-doc-row:active { background: var(--s3); }
 .vault-doc-row.on { background: rgba(255,255,255,0.07); }
 .vault-doc-icon { display: none; }
 .vault-doc-info { flex: 1; min-width: 0; }
@@ -853,7 +853,7 @@ body {
   gap: 10px;
   padding: 10px 16px;
   background: var(--s1);
-  border-bottom: 1px solid #252525;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
   flex-shrink: 0;
 }
 .vault-editor-panel.fullscreen .vault-fs-bar { display: flex; }
@@ -978,7 +978,7 @@ body {
 
 /* ── CONFIG ── */
 .cfg-block { overflow: hidden; margin-bottom: 2px; }
-.cfg-hd { padding: 10px 0 8px; font-family: var(--sans); font-size: 9px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--t2); border-bottom: 1px solid #252525; margin-top: 8px; }
+.cfg-hd { padding: 10px 0 8px; font-family: var(--sans); font-size: 9px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--t2); border-bottom: 1px solid rgba(255,255,255,0.05); margin-top: 8px; }
 .cfg-row { background: var(--s2); position: relative; border: 1px solid rgba(255,255,255,0.05); border-radius: 14px; margin-bottom: 6px; padding: 13px 14px; display: flex; align-items: center; justify-content: space-between; gap: 10px; cursor: pointer; box-shadow: 3px 5px 12px rgba(0,0,0,0.5), -1px -2px 4px rgba(255,255,255,0.04); transition: all 0.1s; }
 .cfg-row:hover { padding-left: 4px; color: var(--t0); background: var(--s1); }
 .cfg-key { font-family: var(--sans); font-size: 14px; color: var(--t0); font-weight: 500; }
@@ -1473,7 +1473,7 @@ body {
 .ai-stack-icon {
   width: 52px; height: 52px; border-radius: 14px;
   display: flex; align-items: center; justify-content: center;
-  border: 1px solid #252525;
+  border: 1px solid rgba(255,255,255,0.05);
   box-shadow: 0 2px 8px rgba(0,0,0,0.4);
 }
 .ai-stack-lbl {
@@ -1622,7 +1622,7 @@ body {
   display: flex; align-items: center; justify-content: space-between;
   padding: 10px 16px;
   background: var(--s1);
-  border-bottom: 1px solid #252525;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
   cursor: pointer;
   flex-shrink: 0;
   -webkit-tap-highlight-color: transparent;
@@ -1662,7 +1662,7 @@ body {
   display: flex; align-items: center; gap: 10px;
   padding: 10px 12px;
   background: var(--s2);
-  border: 1px solid #252525;
+  border: 1px solid rgba(255,255,255,0.05);
   border-left: 3px solid var(--tc, var(--s4));
   border-radius: 3px;
   cursor: pointer;
@@ -1699,7 +1699,7 @@ body {
   display: flex; align-items: center; justify-content: space-between;
   padding: 10px 16px 8px;
   background: var(--s1);
-  border-bottom: 1px solid #252525;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
   cursor: pointer;
   flex-shrink: 0;
   -webkit-tap-highlight-color: transparent;
@@ -1748,7 +1748,7 @@ body {
 .plan-sheet-hd {
   display: flex; align-items: center; justify-content: space-between;
   padding: 6px 16px 10px; flex-shrink: 0;
-  border-bottom: 1px solid #252525;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 .plan-sheet-title {
   font-family: var(--sans); font-size: 12px; font-weight: 800;
@@ -3289,7 +3289,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260413-123814';
+const BUILD_ID = 'VTEK-20260413-124012';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
@@ -3540,7 +3540,7 @@ function rHangar(){
     <div class="sc"><div class="sc-n" style="color:var(--s-blk)">${blk}</div><div class="sc-l">Blocked</div></div>
     <div class="sc"><div class="sc-n" style="color:var(--s-app)">${done}</div><div class="sc-l">Done</div></div>`;
   document.getElementById('dash-dos').innerHTML=`
-    <div style="background:var(--s2);border:1px solid #252525;border-radius:4px;padding:12px 14px;margin-bottom:8px;">
+    <div style="background:var(--s2);border:1px solid rgba(255,255,255,0.05);border-radius:4px;padding:12px 14px;margin-bottom:8px;">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
         <span style="font-family:var(--sans);font-size:9px;font-weight:800;letter-spacing:0.12em;color:var(--t2);text-transform:uppercase;">ALL SHOWS — MANIFEST</span>
         <span style="font-family:var(--mono);font-size:9px;color:var(--t2);">${new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}).toUpperCase()}</span>
