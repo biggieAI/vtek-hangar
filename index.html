@@ -3038,26 +3038,26 @@ html, body { height:100%; overflow:hidden; }
 
 .stagger-child {
   opacity: 0;
-  animation: vtek-fade-up 0.22s cubic-bezier(0.22,1,0.36,1) forwards;
+  animation: vtek-fade-up 0.44s cubic-bezier(0.22,1,0.36,1) forwards;
 }
-.stagger-child:nth-child(1)  { animation-delay: 0.03s; }
-.stagger-child:nth-child(2)  { animation-delay: 0.07s; }
-.stagger-child:nth-child(3)  { animation-delay: 0.11s; }
-.stagger-child:nth-child(4)  { animation-delay: 0.14s; }
-.stagger-child:nth-child(5)  { animation-delay: 0.17s; }
-.stagger-child:nth-child(6)  { animation-delay: 0.19s; }
-.stagger-child:nth-child(7)  { animation-delay: 0.21s; }
-.stagger-child:nth-child(8)  { animation-delay: 0.23s; }
-.stagger-child:nth-child(9)  { animation-delay: 0.24s; }
-.stagger-child:nth-child(n+10) { animation-delay: 0.25s; }
+.stagger-child:nth-child(1)  { animation-delay: 0.06s; }
+.stagger-child:nth-child(2)  { animation-delay: 0.14s; }
+.stagger-child:nth-child(3)  { animation-delay: 0.22s; }
+.stagger-child:nth-child(4)  { animation-delay: 0.28s; }
+.stagger-child:nth-child(5)  { animation-delay: 0.34s; }
+.stagger-child:nth-child(6)  { animation-delay: 0.38s; }
+.stagger-child:nth-child(7)  { animation-delay: 0.42s; }
+.stagger-child:nth-child(8)  { animation-delay: 0.46s; }
+.stagger-child:nth-child(9)  { animation-delay: 0.48s; }
+.stagger-child:nth-child(n+10) { animation-delay: 0.50s; }
 
 .stagger-banner {
   opacity: 0;
-  animation: vtek-fade-in 0.18s ease forwards 0.02s;
+  animation: vtek-fade-in 0.36s ease forwards 0.04s;
 }
 .stagger-section {
   opacity: 0;
-  animation: vtek-fade-up 0.20s cubic-bezier(0.22,1,0.36,1) forwards;
+  animation: vtek-fade-up 0.40s cubic-bezier(0.22,1,0.36,1) forwards;
 }
 
 /* reset on re-trigger — JS removes and re-adds the class */
@@ -3258,7 +3258,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260413-121344';
+const BUILD_ID = 'VTEK-20260413-121537';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
