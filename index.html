@@ -3028,36 +3028,37 @@ html, body { height:100%; overflow:hidden; }
    STAGGER ENTRANCE ANIMATIONS
 ════════════════════════════ */
 @keyframes vtek-fade-up {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
+  0%   { opacity: 0; transform: translateY(16px); }
+  60%  { opacity: 1; }
+  100% { opacity: 1; transform: translateY(0); }
 }
 @keyframes vtek-fade-in {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
 }
 
 .stagger-child {
   opacity: 0;
-  animation: vtek-fade-up 0.44s cubic-bezier(0.22,1,0.36,1) forwards;
+  animation: vtek-fade-up 0.65s cubic-bezier(0.16,1,0.3,1) forwards;
 }
-.stagger-child:nth-child(1)  { animation-delay: 0.06s; }
-.stagger-child:nth-child(2)  { animation-delay: 0.14s; }
-.stagger-child:nth-child(3)  { animation-delay: 0.22s; }
-.stagger-child:nth-child(4)  { animation-delay: 0.28s; }
-.stagger-child:nth-child(5)  { animation-delay: 0.34s; }
-.stagger-child:nth-child(6)  { animation-delay: 0.38s; }
-.stagger-child:nth-child(7)  { animation-delay: 0.42s; }
-.stagger-child:nth-child(8)  { animation-delay: 0.46s; }
-.stagger-child:nth-child(9)  { animation-delay: 0.48s; }
-.stagger-child:nth-child(n+10) { animation-delay: 0.50s; }
+.stagger-child:nth-child(1)  { animation-delay: 0.08s; }
+.stagger-child:nth-child(2)  { animation-delay: 0.18s; }
+.stagger-child:nth-child(3)  { animation-delay: 0.28s; }
+.stagger-child:nth-child(4)  { animation-delay: 0.36s; }
+.stagger-child:nth-child(5)  { animation-delay: 0.43s; }
+.stagger-child:nth-child(6)  { animation-delay: 0.49s; }
+.stagger-child:nth-child(7)  { animation-delay: 0.54s; }
+.stagger-child:nth-child(8)  { animation-delay: 0.58s; }
+.stagger-child:nth-child(9)  { animation-delay: 0.61s; }
+.stagger-child:nth-child(n+10) { animation-delay: 0.63s; }
 
 .stagger-banner {
   opacity: 0;
-  animation: vtek-fade-in 0.36s ease forwards 0.04s;
+  animation: vtek-fade-in 0.55s cubic-bezier(0.16,1,0.3,1) forwards 0.05s;
 }
 .stagger-section {
   opacity: 0;
-  animation: vtek-fade-up 0.40s cubic-bezier(0.22,1,0.36,1) forwards;
+  animation: vtek-fade-up 0.60s cubic-bezier(0.16,1,0.3,1) forwards;
 }
 
 /* reset on re-trigger — JS removes and re-adds the class */
@@ -3258,7 +3259,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260413-121537';
+const BUILD_ID = 'VTEK-20260413-121737';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
