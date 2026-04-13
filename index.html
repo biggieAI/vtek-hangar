@@ -2632,7 +2632,7 @@ html, body { height:100%; overflow:hidden; }
   display:flex; flex-direction:column;
   background:var(--bg);
   transform:translate3d(100%,0,0);
-  box-shadow:-8px 0 32px rgba(0,0,0,0.80);
+
   transition:transform 0.28s cubic-bezier(0.32,0.72,0,1);
   will-change:transform;
   -webkit-backface-visibility:hidden;
@@ -2765,11 +2765,11 @@ html, body { height:100%; overflow:hidden; }
   background: var(--s2); border-radius: 14px;
   border: 1px solid rgba(255,255,255,0.05);
   border-left: 4px solid #d94415;
-  box-shadow: inset 0 2px 0 rgba(255,200,140,0.08), inset 0 -2px 0 rgba(0,0,0,0.80), 0 8px 28px rgba(0,0,0,0.80), 0 1px 0 rgba(255,255,255,0.04);
+  box-shadow: inset 0 2px 0 rgba(255,200,140,0.08), inset 0 -2px 0 rgba(0,0,0,0.80), 0 4px 16px rgba(0,0,0,0.75);
   overflow: hidden; cursor: pointer;
   transition: transform 0.12s, background 0.12s;
   display: flex; flex-direction: column;
-  box-shadow: inset 0 2px 0 rgba(255,200,140,0.08), inset 0 -2px 0 rgba(0,0,0,0.80), 0 8px 28px rgba(0,0,0,0.80), 0 1px 0 rgba(255,255,255,0.04);
+  box-shadow: inset 0 2px 0 rgba(255,200,140,0.08), inset 0 -2px 0 rgba(0,0,0,0.80), 0 4px 16px rgba(0,0,0,0.75);
 }
 .hng-show-card:active { transform: scale(0.985); background: var(--s3); }
 .hng-show-card:hover { background: var(--s3); border-left-color: #f05522; }
@@ -3290,7 +3290,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260413-125953';
+const BUILD_ID = 'VTEK-20260413-130319';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
