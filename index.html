@@ -55,14 +55,14 @@ html, body, .shell, .page-area, .page {
   --app:   #a8a8a4;
   --hld:   #282828;
   --del:   #c8c8c4;
-  --accent:     #b8924a;
-  --accent-hi:  #d4a85c;
-  --accent-dim: #2a1e0a;
-  --accent-ice: #e0c080;
+  --accent:     #9a7c52;
+  --accent-hi:  #c8a878;
+  --accent-dim: #221a0e;
+  --accent-ice: #d4bc98;
   --accent-bg:  #120d04;
-  --accent-red: #b8924a;
-  --accent-red-hi: #d4a85c;
-  --accent-glow: rgba(184,146,74,0.40);
+  --accent-red: #9a7c52;
+  --accent-red-hi: #c8a878;
+  --accent-glow: rgba(154,124,82,0.35);
   --b0: 1px solid rgba(255,255,255,0.030);
   --b1: 1px solid rgba(255,255,255,0.055);
   --b2: 1px solid rgba(255,255,255,0.075);
@@ -176,7 +176,7 @@ body {
   font-family: var(--sans);
   font-size: 11px;
   font-weight: 400;
-  background: linear-gradient(160deg, #d4a85c 0%, #a87a36 100%);
+  background: linear-gradient(160deg, #c8a878 0%, #8c6e48 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -187,7 +187,7 @@ body {
   font-family: var(--sans);
   font-size: 11px;
   font-weight: 500;
-  background: linear-gradient(160deg, #c8a050 0%, #8a6428 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  background: linear-gradient(160deg, #b89870 0%, #7a5e38 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
   letter-spacing: 0.02em;
   text-transform: uppercase;
   white-space: nowrap;
@@ -203,7 +203,7 @@ body {
   border: var(--b2);
   border-radius: 6px;
   background: var(--s2);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), inset 0 -2px 0 rgba(0,0,0,0.65), 0 1px 3px rgba(0,0,0,0.50);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.09), inset 0 -2px 0 rgba(0,0,0,0.80), 0 2px 6px rgba(0,0,0,0.75);
   font-family: var(--sans);
   font-size: 11px;
   font-weight: 600;
@@ -223,7 +223,7 @@ body {
   border: none;
   color: #0c0b09;
   font-weight: 800;
-  box-shadow: inset 0 2px 0 rgba(106,144,184,0.12), inset 0 -2px 0 rgba(0,0,0,0.55), 0 3px 8px rgba(8,16,28,0.85);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.22), inset 0 -2px 0 rgba(0,0,0,0.70), 0 3px 10px rgba(0,0,0,0.85);
 }
 .tb-btn.go:hover { background: var(--accent-red-hi); }
 .tb-icon-btn {
@@ -312,7 +312,7 @@ body {
 .ac-client { font-size: 12px; color: var(--t2); margin-top: 2px; }
 .show-stat-num { font-family: var(--mono); font-size: 13px; font-weight: 500; color: var(--t0); }
 .show-stat-key { font-size: 11px; color: var(--t2); margin-top: 1px; }
-.prog-track { height: 2px; background: rgba(255,255,255,0.06); margin-bottom: 8px; overflow: hidden; border-radius: 2px; }
+.prog-track { height: 2px; background: rgba(255,255,255,0.04); margin-bottom: 8px; overflow: hidden; border-radius: 2px; }
 .prog-fill { height: 100%; transition: width 0.4s; }
 
 /* ── STAT CHIPS ── */
@@ -506,7 +506,7 @@ body {
 .sub-txt { font-size: 12px; color: var(--t1); }
 .sub-txt.on { color: var(--t2); text-decoration: line-through; }
 .sub-prog { height: 1px; background: var(--s4); margin: 2px 0; overflow: hidden; border-radius: 0; }
-.sub-prog-fill { height: 100%; background: linear-gradient(90deg, transparent 0%, rgba(200,215,255,0.4) 15%, rgba(255,255,255,0.95) 40%, rgba(255,255,255,1.0) 50%, rgba(255,255,255,0.95) 60%, rgba(200,215,255,0.4) 85%, transparent 100%); }
+.sub-prog-fill { height: 100%; background: linear-gradient(90deg, transparent 0%, rgba(154,124,82,0.5) 20%, rgba(200,165,105,0.90) 50%, rgba(154,124,82,0.5) 80%, transparent 100%); }
 .tcard-expand-inline { display: flex; justify-content: flex-end; padding: 2px 0 0; width: 100%; }
 .expand-btn {
   font-family: var(--mono); font-size: 9px; font-weight: 600;
@@ -1067,7 +1067,7 @@ body {
 .res-crit { background: rgba(80,80,84,0.12); color: var(--blk); border: 1px solid rgba(80,80,84,0.25); }
 .res-bar-track { height: 2px; background: var(--s4); overflow: hidden; border-radius: 0; margin-bottom: 8px; }
 .res-bar-fill { height: 100%; transition: width 0.4s; }
-.res-bar-ok { background: var(--app); }
+.res-bar-ok { background: linear-gradient(90deg, rgba(154,124,82,0.7), rgba(200,165,105,0.85)); }
 .res-bar-warn { background: var(--wip); }
 .res-bar-crit { background: var(--blk); }
 .res-bar-lbl { font-family: var(--sans); font-size: 10px; color: var(--t2); }
@@ -1221,7 +1221,7 @@ body {
 .intel-wf-name {
   font-family: var(--mono); font-size: 9px; font-weight: 700;
   letter-spacing: 0.08em; text-transform: uppercase;
-  background: linear-gradient(160deg, #ffffff, #c8cce8);
+  background: linear-gradient(160deg, #e0dcd4, #a89880);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
   margin-bottom: 2px;
 }
@@ -1514,7 +1514,7 @@ body {
 .prog-lbl { font-family: var(--sans); font-size: 11px; font-weight: 600; color: var(--t2); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px; }
 .prog-pct { font-family: var(--mono); font-size: 11px; color: var(--t1); }
 .prog-bar { height: 2px; background: var(--s4); overflow: hidden; margin-bottom: 6px; }
-.prog-fill { height: 100%; background: linear-gradient(90deg, transparent 0%, rgba(200,215,255,0.4) 15%, rgba(255,255,255,0.95) 40%, rgba(255,255,255,1.0) 50%, rgba(255,255,255,0.95) 60%, rgba(200,215,255,0.4) 85%, transparent 100%); box-shadow: 0 0 8px rgba(255,255,255,0.55), 0 0 18px rgba(200,215,255,0.30), 0 0 32px rgba(180,200,255,0.15); transition: width 0.4s; }
+.prog-fill { height: 100%; background: linear-gradient(90deg, transparent 0%, rgba(154,124,82,0.5) 15%, rgba(210,174,120,0.95) 40%, rgba(220,185,130,1.0) 50%, rgba(210,174,120,0.95) 60%, rgba(154,124,82,0.5) 85%, transparent 100%); box-shadow: 0 0 6px rgba(184,146,74,0.40), 0 0 14px rgba(154,124,82,0.20); transition: width 0.4s; }
 
 
 /* ── HALFTONE DOT PATTERN ── */
@@ -2065,27 +2065,30 @@ html, body { height: 100%; overflow: hidden; background: #1a1a1c; color: #ececee
 .wm-logo {
   font-size: 15px; font-weight: 900; letter-spacing: -0.01em;
   text-transform: uppercase;
-  background: linear-gradient(160deg, #e8c070 0%, #b8924a 55%, #8a6428 100%);
+  background: linear-gradient(160deg, #c8a878 0%, #8c6e48 55%, #5e4428 100%);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
   filter: none;
 }
 .wm-slash { color: rgba(255,255,255,0.35); font-weight: 300; font-size: 15px; }
 .wm-sep {
   font-size: 12px; color: var(--t3); margin: 0 8px;
-  background: linear-gradient(160deg, rgba(184,146,74,0.60), rgba(184,146,74,0.25));
+  background: linear-gradient(160deg, rgba(154,124,82,0.65), rgba(154,124,82,0.22));
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
 .wm-page {
   font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
-  background: linear-gradient(160deg, #c8a050 0%, #8a6428 100%);
+  background: linear-gradient(160deg, #b89870 0%, #7a5e38 100%);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
 .topbar-right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
 .topbar-stat {
-  font-family: var(--mono); font-size: 9px; color: var(--t3);
+  font-family: var(--mono); font-size: 9px; color: var(--t2);
   letter-spacing: 0.06em; text-transform: uppercase;
-  padding: 3px 8px; border: 1px solid rgba(255,255,255,0.06);
-  border-radius: 20px; background: rgba(255,255,255,0.03);
+  padding: 3px 8px;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 3px;
+  background: var(--s2);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), inset 0 -1px 0 rgba(0,0,0,0.60);
 }
 
 /* ── INDEX PAGE ── */
@@ -2162,7 +2165,7 @@ html, body { height: 100%; overflow: hidden; background: #1a1a1c; color: #ececee
 .mc-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 6px; }
 .mc-name {
   font-size: 11px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase;
-  background: linear-gradient(160deg, #ffffff 0%, #d8dcf0 60%, #bec4e0 100%);
+  background: linear-gradient(160deg, #d4b888 0%, #8c6e48 55%, #4e3820 100%);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
   line-height: 1;
 }
@@ -2181,7 +2184,7 @@ html, body { height: 100%; overflow: hidden; background: #1a1a1c; color: #ececee
 .mc-stat { display: flex; flex-direction: column; gap: 1px; }
 .mc-stat-n {
   font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--t0);
-  background: linear-gradient(160deg, #ffffff, #c8cce8);
+  background: linear-gradient(160deg, #e0dcd4, #a89880);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
   line-height: 1;
 }
@@ -2296,7 +2299,7 @@ html, body { height: 100%; overflow: hidden; background: #1a1a1c; color: #ececee
 }
 .placeholder-name {
   font-size: 11px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase;
-  background: linear-gradient(160deg, #ffffff, #c8cce8);
+  background: linear-gradient(160deg, #e0dcd4, #a89880);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
 .placeholder-desc { font-size: 13px; color: var(--t2); line-height: 1.6; max-width: 280px; }
@@ -2550,7 +2553,7 @@ html, body { height: 100%; overflow: hidden; background: #1a1a1c; color: #ececee
 .module-empty-icon { opacity: 0.2; margin-bottom: 4px; }
 .module-empty-title {
   font-size: 14px; font-weight: 600;
-  background: linear-gradient(160deg, #ffffff, #c8cce8);
+  background: linear-gradient(160deg, #e0dcd4, #a89880);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
 .module-empty-sub { font-size: 12px; color: var(--t3); line-height: 1.6; max-width: 260px; }
@@ -2582,7 +2585,7 @@ html, body { height: 100%; overflow: hidden; background: #1a1a1c; color: #ececee
 .template-name {
   font-family: var(--mono); font-size: 9px; font-weight: 700;
   letter-spacing: 0.08em; text-transform: uppercase;
-  background: linear-gradient(160deg, #ffffff, #c8cce8);
+  background: linear-gradient(160deg, #e0dcd4, #a89880);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
   margin-bottom: 2px;
 }
@@ -2650,7 +2653,7 @@ html, body { height:100%; overflow:hidden; }
 .back-btn:active { color:var(--t1); }
 .module-title-lbl {
   font-size:11px; font-weight:800; letter-spacing:0.12em; text-transform:uppercase;
-  background:linear-gradient(160deg,#e8c070 0%,#b8924a 55%,#8a6428 100%);
+  background:linear-gradient(160deg,#d4b888 0%,#8c6e48 55%,#4e3820 100%);
   -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
 }
 .module-actions-bar { margin-left:auto; display:flex; gap:4px; align-items:center; overflow-x:auto; -webkit-overflow-scrolling:touch; flex-shrink:0; min-width:0; padding-right:2px; }
@@ -2707,12 +2710,12 @@ html, body { height:100%; overflow:hidden; }
 }
 .hng-banner-sep {
   width: 1px; align-self: stretch;
-  background: rgba(255,255,255,0.06);
-  margin: 6px 0;
+  background: rgba(255,255,255,0.09);
+  margin: 4px 0;
 }
 .hng-b-n {
   font-family: var(--mono); font-size: 26px; font-weight: 700;
-  color: #ffffff; line-height: 1; letter-spacing: -0.02em;
+  color: #e0dcd4; line-height: 1; letter-spacing: -0.02em;
 }
 .hng-b-l {
   font-family: var(--sans); font-size: 9px; font-weight: 500;
@@ -2748,17 +2751,16 @@ html, body { height:100%; overflow:hidden; }
   gap: 10px; padding: 0 16px 8px;
 }
 .hng-show-card {
-  background: var(--s2); border-radius: 14px;
-  border: 1px solid rgba(255,255,255,0.05);
-  border-left: 4px solid rgba(255,255,255,0.15);
-  box-shadow: inset 0 2px 0 rgba(106,144,184,0.06), inset 0 -2px 0 rgba(0,0,0,0.80), 0 4px 16px rgba(0,0,0,0.75);
+  background: var(--s2); border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.055);
+  border-left: 3px solid rgba(255,255,255,0.10);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.07), inset 0 -2px 0 rgba(0,0,0,0.85), 0 6px 20px rgba(0,0,0,0.85);
   overflow: hidden; cursor: pointer;
   transition: transform 0.12s, background 0.12s;
   display: flex; flex-direction: column;
-  box-shadow: inset 0 2px 0 rgba(106,144,184,0.06), inset 0 -2px 0 rgba(0,0,0,0.80), 0 4px 16px rgba(0,0,0,0.75);
 }
 .hng-show-card:active { transform: scale(0.985); background: var(--s3); }
-.hng-show-card:hover { background: var(--s3); border-left-color: rgba(255,255,255,0.40); }
+.hng-show-card:hover { background: var(--s3); border-left-color: rgba(180,148,90,0.55); }
 .hng-show-card-accent { display: none; }
 .hng-show-card-body {
   padding: 16px 18px 18px; display: flex; gap: 14px; align-items: flex-start;
@@ -2776,7 +2778,7 @@ html, body { height:100%; overflow:hidden; }
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .hng-show-prog-track {
-  height: 3px; background: var(--s4); border-radius: 2px;
+  height: 2px; background: rgba(255,255,255,0.04); border-radius: 1px;
   overflow: hidden; margin: 8px 0 6px;
 }
 .hng-show-prog-fill { height: 100%; border-radius: 2px; transition: width 0.4s ease; }
@@ -2796,7 +2798,7 @@ html, body { height:100%; overflow:hidden; }
 }
 .hng-show-pct {
   font-family: var(--mono); font-size: 22px; font-weight: 900; line-height: 1;
-  background: linear-gradient(160deg,#fff,rgba(200,210,255,0.7));
+  background: linear-gradient(160deg,#e8e4dc,rgba(180,165,145,0.85));
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   background-clip: text;
 }
@@ -3070,15 +3072,15 @@ html, body { height:100%; overflow:hidden; }
 /* Core slab mixin — apply to any card surface */
 .slab {
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.08),   /* top edge highlight */
-    inset 0 -1px 0 rgba(0,0,0,0.50),        /* bottom edge shadow */
-    0 4px 16px rgba(0,0,0,0.60);            /* lift shadow */
+    inset 0 1px 0 rgba(255,255,255,0.11),
+    inset 0 -2px 0 rgba(0,0,0,0.85),
+    0 6px 22px rgba(0,0,0,0.92);
 }
 .slab-sm {
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.06),
-    inset 0 -1px 0 rgba(0,0,0,0.40),
-    0 2px 8px rgba(0,0,0,0.50);
+    inset 0 1px 0 rgba(255,255,255,0.08),
+    inset 0 -2px 0 rgba(0,0,0,0.70),
+    0 3px 12px rgba(0,0,0,0.80);
 }
 </style>
 </head>
@@ -3276,7 +3278,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260413-180500';
+const BUILD_ID = 'VTEK-20260413-190000';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
@@ -3515,7 +3517,7 @@ function rHangar(){
         <div class="ac-name" style="margin-bottom:10px;font-size:11px;">${s.name}</div>
         <div class="prog-track"><div class="prog-fill" style="width:${p}%;background:${stripe}"></div></div>
         <div style="display:flex;gap:12px;margin-top:8px;">
-          <div><div class="show-stat-num" style="font-size:16px;font-weight:700;background:linear-gradient(160deg,#ffffff,rgba(200,210,255,0.8));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">${p}%</div><div class="show-stat-key" style="font-size:9px;">DONE</div></div>
+          <div><div class="show-stat-num" style="font-size:16px;font-weight:700;background:linear-gradient(160deg,#e0dcd4,rgba(160,148,128,0.8));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">${p}%</div><div class="show-stat-key" style="font-size:9px;">DONE</div></div>
           <div><div class="show-stat-num" style="font-size:16px;">${shots.length}</div><div class="show-stat-key" style="font-size:9px;">SHOTS</div></div>
           ${blk?`<div><div class="show-stat-num" style="font-size:16px;color:var(--blk)">${blk}</div><div class="show-stat-key" style="font-size:9px;color:var(--blk);">BLK</div></div>`:''}
         </div>
@@ -7341,7 +7343,7 @@ rHangar = function() {
               </div>
               <div style="font-family:var(--sans);font-size:11px;color:rgba(255,255,255,0.22);margin-bottom:14px;font-weight:400;letter-spacing:0.01em;">${s.name || ''}</div>
               <div class="hng-show-prog-track" style="margin-bottom:14px;">
-                <div class="hng-show-prog-fill" style="width:${p}%;background:rgba(255,255,255,0.85)"></div>
+                <div class="hng-show-prog-fill" style="width:${p}%;background:linear-gradient(90deg,rgba(100,78,48,0.4) 0%,rgba(200,165,105,0.90) 50%,rgba(100,78,48,0.4) 100%)"></div>
               </div>
               <div style="display:flex;gap:22px;align-items:baseline;">
                 <div>
