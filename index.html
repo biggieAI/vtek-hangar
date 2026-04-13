@@ -27,12 +27,12 @@ html, body, .shell, .page-area, .page {
 
 :root {
   /* ── VTEK BLVCK — luma-stepped obsidian ── */
-  --bg:    #04060e;   /* deep saturated void */
-  --s1:    #080d18;   /* dark facet */
-  --s2:    #0d1422;   /* crystal surface */
-  --s3:    #121c30;   /* lit facet — hover */
-  --s4:    #18243e;   /* raised crystal plane */
-  --s5:    #202e50;   /* edge catch */
+  --bg:    #07080f;   /* 10% blue over black */
+  --s1:    #0c0e17;   /* +1 step */
+  --s2:    #11141f;   /* cards */
+  --s3:    #171b28;   /* hover */
+  --s4:    #1e2332;   /* raised */
+  --s5:    #262d40;   /* edge */
 
   /* ── SHADOW ── */
   --neo-raise: 0 1px 8px rgba(0,0,0,0.8);
@@ -3295,7 +3295,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260413-131749';
+const BUILD_ID = 'VTEK-20260413-132246';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
