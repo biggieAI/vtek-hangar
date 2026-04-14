@@ -3081,6 +3081,10 @@ html, body { height:100%; overflow:hidden; }
     inset 0 -1px 0 rgba(0,0,0,0.60),
     0 3px 14px rgba(0,0,0,0.85);
 }
+
+.pl-sec-dot{width:3px;height:3px;border-radius:50%;background:#21e1df;flex-shrink:0;margin-right:6px;}
+.pl-sec{display:flex;align-items:center;gap:0;margin-bottom:4px;}
+.pl-sec-rule{flex:1;height:1px;background:linear-gradient(90deg,rgba(255,255,255,0.08) 0%,transparent 100%);margin-left:8px;}
 </style>
 </head>
 <body>
@@ -3170,7 +3174,7 @@ let _dragBlock=null, _dragStartY=0, _dragOrigSlot=0;
 let _resizeBlock=null, _resizeStartY=0, _resizeOrigDur=0;
 let _hngFilter = 'all';
 let planSchedule=[], planCalEvents=[], planSelected=null, planPoolOpen=true;
-let plView='list', plFilterTag='', plFilterShow='';
+let plView='all', plFilterTag='', plFilterShow='';
 let vaultActiveId=null, vaultMode='edit';
 let lastAiReason='', dragSrcId=null;
 var TASK_TEMPLATES = [
@@ -3277,7 +3281,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260413-245000';
+const BUILD_ID = 'VTEK-20260414-100000';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
@@ -7571,6 +7575,10 @@ if (typeof MODULE_MAP !== 'undefined' && MODULE_MAP.hangar) {
   const el = document.getElementById('dbg-build-id');
   if(el) el.textContent = bid;
 })();
+
+function plQuickLog(){var inp=document.getElementById('pl-qa-input');var v=inp.value.trim();if(!v)return;var id='t'+Date.now();S.tasks.unshift({id:id,sid:S.shows[0]?S.shows[0].id:'',title:v,due:'',pri:'med',dur:30,tags:[],color:'',notes:'',subtasks:[],dep:'',done:false,expanded:false});inp.value='';save();rPayload();toast('LOGGED');haptic('light');}
+function plVoiceLog(){toast('USE INTEL VOICE LOG');}
+function aiSortTasks(){var key=getKey();if(!key){toast('ADD API KEY IN CONFIG');return;}var open=S.tasks.filter(function(t){return !t.done;});if(!open.length){toast('NO OPEN TASKS');return;}toast('INTEL SORTING...');fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:400,messages:[{role:'user',content:'Sort these VFX tasks by urgency. Today:'+tod()+'\n'+open.map(function(t,i){return i+'. id:'+t.id+' pri:'+t.pri+' due:'+(t.due||'none')+' title:"'+t.title+'"';}).join('\n')+'\nReply ONLY JSON: {"order":["id1","id2",...],"reason":"one sentence"}'}]})}).then(function(r){return r.json();}).then(function(data){var txt=((data.content&&data.content[0]&&data.content[0].text)||'{}').replace(/```json|```/g,'').trim();var p=JSON.parse(txt);if(p.order){var sorted=p.order.map(function(id){return S.tasks.find(function(t){return t.id===id;});}).filter(Boolean);S.tasks=sorted.concat(S.tasks.filter(function(t){return t.done;}));lastAiReason=p.reason||'';save();rPayload();toast('INTEL SORTED');}}).catch(function(){toast('SORT FAILED');});}
 </script>
 
 
@@ -7913,7 +7921,55 @@ if (typeof MODULE_MAP !== 'undefined' && MODULE_MAP.hangar) {
 </div>
 
 <!-- STUBS for other modules referenced in JS (keep DOM happy) -->
-<div class="module-view" id="mv-payload"></div>
+<div class="module-view" id="mv-payload">
+  <div class="module-topbar">
+    <button class="back-btn" onclick="closeModule()">
+      <svg viewBox="0 0 12 12" width="13" height="13" fill="none" stroke="#21e1df" stroke-width="2.0"><path d="M7.5 2L3.5 6l4 4"/></svg>
+      <span>HOME</span>
+    </button>
+    <span class="module-title-lbl">PAYLOAD</span>
+    <div class="module-actions-bar">
+      <button class="tb-btn go" onclick="openSheet('ol-task')">+ TASK</button>
+    </div>
+  </div>
+  <div class="module-content page" id="pg-payload">
+    <div class="content-pad">
+      <div class="pl-toolbar">
+        <div class="pl-views">
+          <button class="pl-vbtn on" id="plv-all" onclick="setPlView('all')">ALL</button>
+          <button class="pl-vbtn" id="plv-today" onclick="setPlView('today')">TODAY</button>
+          <button class="pl-vbtn" id="plv-show" onclick="setPlView('show')">BY SHOW</button>
+          <button class="pl-vbtn" id="plv-tag" onclick="setPlView('tag')">BY TAG</button>
+        </div>
+        <div class="pl-actions">
+          <button class="pl-act-btn" onclick="aiSortTasks()">
+            <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" width="11" height="11"><circle cx="7" cy="7" r="5"/><path d="M7 4.5V7l1.5 1.5"/></svg>
+            AI SORT
+          </button>
+        </div>
+      </div>
+      <div class="pl-quickadd">
+        <div class="pl-qa-wrap">
+          <svg viewBox="0 0 14 14" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.4" style="color:var(--t2);flex-shrink:0"><rect x="2" y="2" width="10" height="10" rx="2"/><path d="M7 5v4M5 7h4"/></svg>
+          <input class="pl-qa-input" id="pl-qa-input" placeholder="Quick log a task..." onkeydown="if(event.key==='Enter')plQuickLog()">
+          <button class="pl-qa-mic" onclick="plVoiceLog()" title="Voice">
+            <svg viewBox="0 0 14 14" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="4.5" y="1" width="5" height="8" rx="2.5"/><path d="M2 8c0 2.8 10 2.8 10 0M7 12v-1.5"/></svg>
+          </button>
+        </div>
+        <button class="pl-qa-send" onclick="plQuickLog()">LOG</button>
+      </div>
+      <div class="pl-filters" id="pl-filters"></div>
+      <div id="payload-dos"><div id="sched-section"></div></div>
+      <div class="pl-sec" style="margin-bottom:8px;">
+        <span class="pl-sec-dot"></span>
+        <span class="pl-sec-lbl">TASKS</span>
+        <span class="pl-sec-rule"></span>
+      </div>
+      <div id="task-list"></div>
+      <div style="height:40px;"></div>
+    </div>
+  </div>
+</div>
 <div class="module-view" id="mv-schedule"></div>
 <div class="module-view" id="mv-vault"></div>
 <div class="module-view" id="mv-intel"></div>
