@@ -3351,7 +3351,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260414-120000';
+const BUILD_ID = 'VTEK-20260414-130000';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
@@ -4850,7 +4850,7 @@ function openSheet(id){
   if(id==='ol-shot'){document.getElementById('as-show').innerHTML=S.shows.map(s=>`<option value="${s.id}">${s.code} — ${s.name}</option>`).join('');attachTeamDatalist('as-who');}
   if(id==='ol-task'){
     document.getElementById('at-show').innerHTML=S.shows.map(s=>`<option value="${s.id}">${s.code} — ${s.name}</option>`).join('');
-    const tg=document.getElementById('task-template-grid');if(tg)tg.innerHTML=renderTemplateGrid();
+    const tg=document.getElementById('task-template-grid');if(tg)tg.innerHTML=renderTemplateGrid();var _dl=document.getElementById('dl-tags');if(_dl){var _allTags=['comp','roto','paint','grade','deliver','review','dailies','pipeline','admin','client','note',...new Set(S.tasks.flatMap(function(t){return t.tags||[];}))];_dl.innerHTML=[...new Set(_allTags)].map(function(t){return '<option value="'+t+'">'+t+'</option>';}).join('');}
     document.getElementById('at-due').value=tod();pendingSubsAdd=[];
     const sl=document.getElementById('at-subs-list');if(sl)sl.innerHTML='';
     const depSel=document.getElementById('at-dep');const activeSid=document.getElementById('at-show')?.value||S.shows[0]?.id;
@@ -7763,7 +7763,7 @@ function aiSortTasks(){var key=getKey();if(!key){toast('ADD API KEY IN CONFIG');
       <div class="f"><div class="fl">Priority</div>
         <select class="fc" id="at-pri"><option value="critical">Critical</option><option value="high">High</option><option value="med" selected>Medium</option><option value="low">Low</option></select>
       </div>
-      <div class="f"><div class="fl">Tags</div><input class="fc" id="at-tags" placeholder="comp, roto, paint, grade, deliver"><div class="fh">Comma-separated · used for filtering</div></div>
+      <div class="f"><div class="fl">Tags</div><input class="fc" id="at-tags" placeholder="comp, roto, paint, grade, deliver" list="dl-tags" autocomplete="off"><datalist id="dl-tags"></datalist><div class="fh">Comma-separated · used for filtering</div></div>
       <div class="f">
         <div class="fl">Color</div>
         <div class="color-picker-row" id="at-color-row">
