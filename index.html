@@ -3086,6 +3086,9 @@ html, body { height:100%; overflow:hidden; }
 .pl-sec-dot{width:3px;height:3px;border-radius:50%;background:#21e1df;flex-shrink:0;margin-right:6px;}
 .pl-sec{display:flex;align-items:center;gap:0;margin-bottom:4px;}
 .pl-sec-rule{flex:1;height:1px;background:linear-gradient(90deg,rgba(255,255,255,0.08) 0%,transparent 100%);margin-left:8px;}
+
+.tag-suggest-chip{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;border:1px solid rgba(255,255,255,0.10);background:rgba(255,255,255,0.04);font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:0.06em;text-transform:lowercase;color:var(--t1);cursor:pointer;transition:all 0.1s;-webkit-tap-highlight-color:transparent;}
+.tag-suggest-chip:hover,.tag-suggest-chip:active{background:rgba(255,255,255,0.10);color:var(--t0);border-color:rgba(255,255,255,0.20);}
 </style>
 </head>
 <body>
@@ -3351,7 +3354,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260414-130000';
+const BUILD_ID = 'VTEK-20260414-140000';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
@@ -4850,7 +4853,7 @@ function openSheet(id){
   if(id==='ol-shot'){document.getElementById('as-show').innerHTML=S.shows.map(s=>`<option value="${s.id}">${s.code} — ${s.name}</option>`).join('');attachTeamDatalist('as-who');}
   if(id==='ol-task'){
     document.getElementById('at-show').innerHTML=S.shows.map(s=>`<option value="${s.id}">${s.code} — ${s.name}</option>`).join('');
-    const tg=document.getElementById('task-template-grid');if(tg)tg.innerHTML=renderTemplateGrid();var _dl=document.getElementById('dl-tags');if(_dl){var _allTags=['comp','roto','paint','grade','deliver','review','dailies','pipeline','admin','client','note',...new Set(S.tasks.flatMap(function(t){return t.tags||[];}))];_dl.innerHTML=[...new Set(_allTags)].map(function(t){return '<option value="'+t+'">'+t+'</option>';}).join('');}
+    const tg=document.getElementById('task-template-grid');if(tg)tg.innerHTML=renderTemplateGrid();renderTagChips();
     document.getElementById('at-due').value=tod();pendingSubsAdd=[];
     const sl=document.getElementById('at-subs-list');if(sl)sl.innerHTML='';
     const depSel=document.getElementById('at-dep');const activeSid=document.getElementById('at-show')?.value||S.shows[0]?.id;
@@ -7650,6 +7653,23 @@ if (typeof MODULE_MAP !== 'undefined' && MODULE_MAP.hangar) {
 function plQuickLog(){var inp=document.getElementById('pl-qa-input');var v=inp.value.trim();if(!v)return;var id='t'+Date.now();S.tasks.unshift({id:id,sid:S.shows[0]?S.shows[0].id:'',title:v,due:'',pri:'med',dur:30,tags:[],color:'',notes:'',subtasks:[],dep:'',done:false,expanded:false});inp.value='';save();rPayload();toast('LOGGED');haptic('light');}
 function plVoiceLog(){toast('USE INTEL VOICE LOG');}
 function aiSortTasks(){var key=getKey();if(!key){toast('ADD API KEY IN CONFIG');return;}var open=S.tasks.filter(function(t){return !t.done;});if(!open.length){toast('NO OPEN TASKS');return;}toast('INTEL SORTING...');fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:400,messages:[{role:'user',content:'Sort these VFX tasks by urgency. Today:'+tod()+'\n'+open.map(function(t,i){return i+'. id:'+t.id+' pri:'+t.pri+' due:'+(t.due||'none')+' title:"'+t.title+'"';}).join('\n')+'\nReply ONLY JSON: {"order":["id1","id2",...],"reason":"one sentence"}'}]})}).then(function(r){return r.json();}).then(function(data){var txt=((data.content&&data.content[0]&&data.content[0].text)||'{}').replace(/```json|```/g,'').trim();var p=JSON.parse(txt);if(p.order){var sorted=p.order.map(function(id){return S.tasks.find(function(t){return t.id===id;});}).filter(Boolean);S.tasks=sorted.concat(S.tasks.filter(function(t){return t.done;}));lastAiReason=p.reason||'';save();rPayload();toast('INTEL SORTED');}}).catch(function(){toast('SORT FAILED');});}
+
+function renderTagChips(){
+  var chipEl=document.getElementById('at-tag-chips');if(!chipEl)return;
+  var preset=['comp','roto','paint','grade','deliver','review','dailies','pipeline','admin','client','note'];
+  var existing=new Set(S.tasks.flatMap(function(t){return t.tags||[];}));
+  var all=[...new Set([...preset,...existing])];
+  chipEl.innerHTML=all.map(function(t){
+    return '<button type="button" class="tag-suggest-chip" onclick="addTagChip(''+t+'')">'+t+'</button>';
+  }).join('');
+}
+function addTagChip(tag){
+  var inp=document.getElementById('at-tags');if(!inp)return;
+  var cur=inp.value.split(',').map(function(s){return s.trim();}).filter(Boolean);
+  if(cur.indexOf(tag)===-1){cur.push(tag);}
+  inp.value=cur.join(', ');
+  haptic('light');
+}
 </script>
 
 
@@ -7763,7 +7783,7 @@ function aiSortTasks(){var key=getKey();if(!key){toast('ADD API KEY IN CONFIG');
       <div class="f"><div class="fl">Priority</div>
         <select class="fc" id="at-pri"><option value="critical">Critical</option><option value="high">High</option><option value="med" selected>Medium</option><option value="low">Low</option></select>
       </div>
-      <div class="f"><div class="fl">Tags</div><input class="fc" id="at-tags" placeholder="comp, roto, paint, grade, deliver" list="dl-tags" autocomplete="off"><datalist id="dl-tags"></datalist><div class="fh">Comma-separated · used for filtering</div></div>
+      <div class="f"><div class="fl">Tags</div><input class="fc" id="at-tags" placeholder="comp, roto, paint, grade, deliver" autocomplete="off"><div class="fh">Tap to add · comma-separated</div><div id="at-tag-chips" style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px;"></div></div>
       <div class="f">
         <div class="fl">Color</div>
         <div class="color-picker-row" id="at-color-row">
