@@ -1000,6 +1000,7 @@ body {
 .f { display: flex; flex-direction: column; gap: 6px; }
 .f-row { display: flex; gap: 8px; }
 .fl { font-family: var(--sans); font-size: 11px; font-weight: 600; color: var(--t2); letter-spacing: 0.06em; text-transform: uppercase; }
+.fh { font-family: var(--mono); font-size: 9px; color: var(--t2); letter-spacing: 0.04em; margin-top: -3px; opacity: 0.7; line-height: 1.4; }
 .fc { background: var(--s2); border: var(--b2); border-radius: 3px; padding: 10px 12px; font-family: var(--sans); font-size: 14px; color: var(--t0); width: 100%; outline: none; transition: border-color 0.12s; resize: none; appearance: none; }
 .fc:focus { border-color: rgba(255,255,255,0.27); }
 .fc::placeholder { color: var(--t2); font-size: 13px; }
@@ -3276,7 +3277,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260413-242000';
+const BUILD_ID = 'VTEK-20260413-245000';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
@@ -7581,18 +7582,18 @@ if (typeof MODULE_MAP !== 'undefined' && MODULE_MAP.hangar) {
     <div class="sh-handle"></div>
     <div class="sh-head"><div class="sh-eye">Shots manifest</div><div class="sh-title">Log Shot</div></div>
     <div class="sh-body">
-      <div class="f"><div class="fl">Show</div><select class="fc" id="as-show"></select></div>
+      <div class="f"><div class="fl">Show</div><select class="fc" id="as-show"></select><div class="fh">Active show this shot belongs to</div></div>
       <div class="f-row">
-        <div class="f"><div class="fl">Shot Code</div><input class="fc" id="as-code" placeholder="136_STL_0080"></div>
-        <div class="f"><div class="fl">Seq</div><input class="fc" id="as-seq" placeholder="STL"></div>
+        <div class="f"><div class="fl">Shot Code</div><input class="fc" id="as-code" placeholder="136_STL_0080"><div class="fh">SEQ_TYPE_#### — e.g. 136_INT_0010</div></div>
+        <div class="f"><div class="fl">Seq</div><input class="fc" id="as-seq" placeholder="STL"><div class="fh">3-letter sequence ID</div></div>
       </div>
       <div class="f-row">
-        <div class="f"><div class="fl">Assignee</div><input class="fc" id="as-who" placeholder="Artist"></div>
-        <div class="f"><div class="fl">Bid Days</div><input class="fc" id="as-bid" type="number" step="0.5" placeholder="2.0"></div>
+        <div class="f"><div class="fl">Assignee</div><input class="fc" id="as-who" placeholder="Artist"><div class="fh">Primary compositor on this shot</div></div>
+        <div class="f"><div class="fl">Bid Days</div><input class="fc" id="as-bid" type="number" step="0.5" placeholder="2.0"><div class="fh">Typical: 1.5–5d per shot</div></div>
       </div>
       <div class="f-row">
-        <div class="f"><div class="fl">Cut In</div><input class="fc" id="as-ci" placeholder="1001"></div>
-        <div class="f"><div class="fl">Cut Out</div><input class="fc" id="as-co" placeholder="1087"></div>
+        <div class="f"><div class="fl">Cut In</div><input class="fc" id="as-ci" placeholder="1001"><div class="fh">First frame of the cut</div></div>
+        <div class="f"><div class="fl">Cut Out</div><input class="fc" id="as-co" placeholder="1087"><div class="fh">Last frame — diff = handle</div></div>
       </div>
       <div class="f"><div class="fl">Status</div>
         <select class="fc" id="as-status">
@@ -7600,8 +7601,9 @@ if (typeof MODULE_MAP !== 'undefined' && MODULE_MAP.hangar) {
           <option value="review">Int. Review</option><option value="delivered">Delivered</option>
           <option value="approved">Approved</option><option value="blocked">Blocked</option>
         </select>
+        <div class="fh">WIP = active · Hold = not started · Blocked = waiting on upstream</div>
       </div>
-      <div class="f"><div class="fl">Notes</div><textarea class="fc" id="as-notes" rows="2" placeholder="Flags, retakes…"></textarea></div>
+      <div class="f"><div class="fl">Notes</div><textarea class="fc" id="as-notes" rows="2" placeholder="Flags, retakes, known issues…"></textarea><div class="fh">Retake notes, client flags, technical blockers</div></div>
       <div class="sh-acts"><button class="sh-ok" onclick="addShot()">CONFIRM</button><button class="sh-no" onclick="closeSheet('ol-shot')">ABORT</button></div>
     </div>
   </div>
@@ -7614,16 +7616,16 @@ if (typeof MODULE_MAP !== 'undefined' && MODULE_MAP.hangar) {
     <div class="sh-head"><div class="sh-eye">Workspace</div><div class="sh-title">Add Show</div></div>
     <div class="sh-body">
       <div class="f-row">
-        <div class="f"><div class="fl">Code</div><input class="fc" id="ash-code" placeholder="CRL" style="text-transform:uppercase"></div>
-        <div class="f"><div class="fl">Name</div><input class="fc" id="ash-name" placeholder="Cerulean"></div>
+        <div class="f"><div class="fl">Code</div><input class="fc" id="ash-code" placeholder="CRL" style="text-transform:uppercase"><div class="fh">2–4 letters · e.g. CRL, AIG, DXR</div></div>
+        <div class="f"><div class="fl">Name</div><input class="fc" id="ash-name" placeholder="Cerulean"><div class="fh">Full show or project title</div></div>
       </div>
       <div class="f-row">
-        <div class="f"><div class="fl">Client</div><input class="fc" id="ash-client" placeholder="Netflix"></div>
-        <div class="f"><div class="fl">Delivery Date</div><input class="fc" id="ash-due" type="date"></div>
+        <div class="f"><div class="fl">Client</div><input class="fc" id="ash-client" placeholder="Netflix"><div class="fh">Studio, network or direct client</div></div>
+        <div class="f"><div class="fl">Delivery Date</div><input class="fc" id="ash-due" type="date"><div class="fh">Hard lock date for final delivery</div></div>
       </div>
       <div class="f-row">
-        <div class="f"><div class="fl">Team Size</div><input class="fc" id="ash-team" type="number" placeholder="2" min="1"></div>
-        <div class="f"><div class="fl">Weeks Remaining</div><input class="fc" id="ash-weeks" type="number" placeholder="12" min="1"></div>
+        <div class="f"><div class="fl">Team Size</div><input class="fc" id="ash-team" type="number" placeholder="2" min="1"><div class="fh">Active compers on this show</div></div>
+        <div class="f"><div class="fl">Weeks Remaining</div><input class="fc" id="ash-weeks" type="number" placeholder="12" min="1"><div class="fh">Weeks from today to delivery</div></div>
       </div>
       <div class="sh-acts"><button class="sh-ok" onclick="addShow()">CONFIRM</button><button class="sh-no" onclick="closeSheet('ol-show')">ABORT</button></div>
     </div>
@@ -7637,12 +7639,12 @@ if (typeof MODULE_MAP !== 'undefined' && MODULE_MAP.hangar) {
     <div class="sh-head"><div class="sh-eye" id="es-eye"></div><div class="sh-title" id="es-title"></div></div>
     <div class="sh-body">
       <div class="f"><div class="fl">Status</div><div class="stat-opts" id="es-stats"></div></div>
-      <div class="f"><div class="fl">Assignee</div><input class="fc" id="es-who" placeholder="Artist"></div>
-      <div class="f"><div class="fl">Notes</div><textarea class="fc" id="es-notes" rows="3" placeholder="Retakes, feedback…"></textarea></div>
+      <div class="f"><div class="fl">Assignee</div><input class="fc" id="es-who" placeholder="Artist"><div class="fh">Compositor currently owning this shot</div></div>
+      <div class="f"><div class="fl">Notes</div><textarea class="fc" id="es-notes" rows="3" placeholder="Retakes, feedback, client notes…"></textarea><div class="fh">Client feedback, retake count, technical flags</div></div>
       <div class="f-row">
-        <div class="f"><div class="fl">Cut In</div><input class="fc" id="es-ci"></div>
-        <div class="f"><div class="fl">Cut Out</div><input class="fc" id="es-co"></div>
-        <div class="f"><div class="fl">Bid Days</div><input class="fc" id="es-bid"></div>
+        <div class="f"><div class="fl">Cut In</div><input class="fc" id="es-ci"><div class="fh">First frame</div></div>
+        <div class="f"><div class="fl">Cut Out</div><input class="fc" id="es-co"><div class="fh">Last frame</div></div>
+        <div class="f"><div class="fl">Bid Days</div><input class="fc" id="es-bid"><div class="fh">1.5–5d typical</div></div>
       </div>
       <!-- Version log -->
       <div style="border-top:1px solid var(--b0);padding-top:12px;">
@@ -7651,8 +7653,8 @@ if (typeof MODULE_MAP !== 'undefined' && MODULE_MAP.hangar) {
           <button onclick="logNewVersion()" style="font-family:var(--mono);font-size:8px;padding:3px 9px;background:var(--p3);box-shadow:var(--sh-rm),inset 0 0 0 1px var(--ac-bd);border:none;color:var(--ac);cursor:pointer;clip-path:polygon(0 0,100% 0,100% calc(100% - 4px),calc(100% - 4px) 100%,0 100%);letter-spacing:0.08em;">+ LOG VERSION</button>
         </div>
         <div style="display:flex;gap:5px;margin-bottom:8px;">
-          <input class="fc" id="es-ver-label" placeholder="v1, v2, client_review…" style="flex:1">
-          <input class="fc" id="es-ver-note" placeholder="Note (optional)" style="flex:2">
+          <input class="fc" id="es-ver-label" placeholder="v1 · v2 · client_review" style="flex:1">
+          <input class="fc" id="es-ver-note" placeholder="What changed? e.g. grain pass, retime" style="flex:2">
         </div>
         <div id="es-vlog"></div>
       </div>
@@ -7674,15 +7676,15 @@ if (typeof MODULE_MAP !== 'undefined' && MODULE_MAP.hangar) {
       </div>
       <div style="height:1px;background:rgba(255,255,255,0.05);margin:0 16px 4px;"></div>
       <div class="f"><div class="fl">Show</div><select class="fc" id="at-show"></select></div>
-      <div class="f"><div class="fl">Objective</div><input class="fc" id="at-title" placeholder="What needs doing?"></div>
+      <div class="f"><div class="fl">Objective</div><input class="fc" id="at-title" placeholder="e.g. Deliver 136_INT_0010 by EOD"><div class="fh">One clear action — verb first</div></div>
       <div class="f-row">
         <div class="f"><div class="fl">Due</div><input class="fc" id="at-due" type="date"></div>
-        <div class="f"><div class="fl">Est. Duration</div><input class="fc" id="at-dur" type="number" step="15" placeholder="mins"></div>
+        <div class="f"><div class="fl">Est. Duration</div><input class="fc" id="at-dur" type="number" step="15" placeholder="90"><div class="fh">Minutes · 60=1hr · 480=full day</div></div>
       </div>
       <div class="f"><div class="fl">Priority</div>
         <select class="fc" id="at-pri"><option value="critical">Critical</option><option value="high">High</option><option value="med" selected>Medium</option><option value="low">Low</option></select>
       </div>
-      <div class="f"><div class="fl">Tags</div><input class="fc" id="at-tags" placeholder="comp, paint, deliver… (comma separated)"></div>
+      <div class="f"><div class="fl">Tags</div><input class="fc" id="at-tags" placeholder="comp, roto, paint, grade, deliver"><div class="fh">Comma-separated · used for filtering</div></div>
       <div class="f">
         <div class="fl">Color</div>
         <div class="color-picker-row" id="at-color-row">
@@ -7702,8 +7704,8 @@ if (typeof MODULE_MAP !== 'undefined' && MODULE_MAP.hangar) {
           <button class="sh-no" style="flex-shrink:0;padding:6px 10px;font-size:10px" onclick="addSubInput()">ADD</button>
         </div>
       </div>
-      <div class="f"><div class="fl">Notes</div><textarea class="fc" id="at-notes" rows="2" placeholder="Duration, context, links…"></textarea></div>
-      <div class="f"><div class="fl">Depends on shot</div><select class="fc" id="at-dep"><option value="">None</option></select></div>
+      <div class="f"><div class="fl">Notes</div><textarea class="fc" id="at-notes" rows="2" placeholder="Context, links, references…"></textarea><div class="fh">Frame range, reference links, client comments</div></div>
+      <div class="f"><div class="fl">Depends on shot</div><select class="fc" id="at-dep"><option value="">None</option></select><div class="fh">Blocks this task until that shot ships</div></div>
       <div class="sh-acts"><button class="sh-ok" onclick="addTask()">CONFIRM</button><button class="sh-no" onclick="closeSheet('ol-task')">ABORT</button></div>
     </div>
   </div>
