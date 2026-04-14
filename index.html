@@ -2641,10 +2641,10 @@ html, body { height:100%; overflow:hidden; }
 }
 .back-btn {
   display:flex; align-items:center; gap:5px;
-  background:none; border:none; color:#f4f7fa;
-  -webkit-text-fill-color:#f4f7fa;
-  font-family:'JetBrains Mono',monospace; font-size:14px; font-weight:800;
-  letter-spacing:0.10em; text-transform:uppercase;
+  background:none; border:none; color:var(--t1);
+  -webkit-text-fill-color:var(--t1);
+  font-family:'JetBrains Mono',monospace; font-size:10px; font-weight:600;
+  letter-spacing:0.08em; text-transform:uppercase;
   cursor:pointer; padding:4px 0; flex-shrink:0;
   -webkit-tap-highlight-color:transparent; transition:color 0.1s;
 }
@@ -3276,7 +3276,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260413-241000';
+const BUILD_ID = 'VTEK-20260413-242000';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
