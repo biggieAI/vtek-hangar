@@ -161,7 +161,7 @@ body {
 }
 
 /* Wordmark */
-.wordmark { display: flex; align-items: center; user-select: none; flex-shrink: 1; min-width: 0; overflow: visible; gap: 0; }
+.wordmark { display: flex; align-items: center; user-select: none; flex-shrink: 1; min-width: 0; overflow: visible; gap: 0; line-height: 1; }
 .wm-logo {
   font-family: 'JetBrains Mono', monospace;
   font-size: 14px;
@@ -174,7 +174,7 @@ body {
   display: flex;
   align-items: center;
 }
-.wm-chev { font-family: system-ui, -apple-system, sans-serif; font-size: 16px; font-weight: 700; color: #21e1df; -webkit-text-fill-color: #21e1df; margin-right: 4px; line-height: 1; flex-shrink: 0; vertical-align: middle; }
+.wm-chev { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; font-weight: 700; color: #21e1df; -webkit-text-fill-color: #21e1df; margin-right: 4px; line-height: 1; flex-shrink: 0; display: flex; align-items: center; }
 .wm-div {
   font-family: var(--sans);
   font-size: 11px;
@@ -2070,7 +2070,7 @@ html, body { height: 100%; overflow: hidden; background: #1a1a1c; color: #ececee
   -webkit-text-fill-color: unset;
   display: flex; align-items: center;
 }
-.wm-chev { font-family: system-ui, -apple-system, sans-serif; font-size: 16px; font-weight: 700; color: #21e1df; -webkit-text-fill-color: #21e1df; margin-right: 4px; line-height: 1; flex-shrink: 0; vertical-align: middle; }
+.wm-chev { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; font-weight: 700; color: #21e1df; -webkit-text-fill-color: #21e1df; margin-right: 4px; line-height: 1; flex-shrink: 0; display: flex; align-items: center; }
 .wm-sep {
   font-size: 11px; color: rgba(255,255,255,0.18); margin: 0 10px;
   -webkit-text-fill-color: rgba(255,255,255,0.18);
@@ -2244,13 +2244,14 @@ html, body { height: 100%; overflow: hidden; background: #1a1a1c; color: #ececee
 }
 .back-btn {
   display: flex; align-items: center; gap: 6px;
-  background: none; border: none; color: var(--t2);
+  background: none; border: none; color: var(--t1);
   font-family: var(--mono); font-size: 10px; font-weight: 500;
   letter-spacing: 0.06em; text-transform: uppercase;
   cursor: pointer; padding: 0; flex-shrink: 0;
   transition: color 0.1s;
 }
-.back-btn:active { color: var(--t1); }
+.back-btn svg { color: #21e1df; stroke: #21e1df; }
+.back-btn:active { color: var(--t0); }
 .module-title {
   font-size: 11px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase;
   background: linear-gradient(160deg, #dce8f0 0%, #7f90a2 55%, #2a3d50 100%);
@@ -2640,13 +2641,14 @@ html, body { height:100%; overflow:hidden; }
 }
 .back-btn {
   display:flex; align-items:center; gap:5px;
-  background:none; border:none; color:var(--t2);
+  background:none; border:none; color:var(--t1);
   font-family:var(--mono); font-size:10px; font-weight:600;
   letter-spacing:0.06em; text-transform:uppercase;
   cursor:pointer; padding:4px 0; flex-shrink:0;
   -webkit-tap-highlight-color:transparent; transition:color 0.1s;
 }
-.back-btn:active { color:var(--t1); }
+.back-btn svg { color: #21e1df; stroke: #21e1df; }
+.back-btn:active { color:var(--t0); }
 .module-title-lbl {
   font-size:11px; font-weight:800; letter-spacing:0.12em; text-transform:uppercase;
   background:linear-gradient(160deg,#f4f7fa 0%,#c8cdd8 55%,#717783 100%);
@@ -3273,7 +3275,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260413-233000';
+const BUILD_ID = 'VTEK-20260413-235000';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
@@ -7726,7 +7728,7 @@ if (typeof MODULE_MAP !== 'undefined' && MODULE_MAP.hangar) {
 <div class="module-view" id="mv-hangar">
   <div class="module-topbar">
     <button class="back-btn" id="hng-back-btn" onclick="hangarBack()">
-      <svg viewBox="0 0 12 12" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7.5 2L3.5 6l4 4"/></svg>
+      <svg viewBox="0 0 12 12" width="13" height="13" fill="none" stroke="#21e1df" stroke-width="2.0"><path d="M7.5 2L3.5 6l4 4"/></svg>
       <span id="hng-back-lbl">HOME</span>
     </button>
     <span class="module-title-lbl" id="hng-title">HANGAR</span>
