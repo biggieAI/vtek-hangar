@@ -3110,34 +3110,103 @@ html, body { height:100%; overflow:hidden; }
       <div class="status-pulse" id="idx-pulse"></div>
     </div>
 
-    <!-- HANGAR CARD ONLY -->
     <div class="module-grid" style="padding-top:8px;">
+
+      <!-- HANGAR -->
       <div class="module-card" role="button" onclick="openModule('hangar')">
         <div class="mc-inner">
           <div class="mc-icon">
-            <svg viewBox="0 0 22 22" width="22" height="22" fill="none" stroke="white" stroke-width="1.4">
-              <path d="M11 2L20 7v8l-9 5-9-5V7z"/>
-              <path d="M11 2v13M2 7l9 5 9-5"/>
-            </svg>
+            <svg viewBox="0 0 22 22" width="22" height="22" fill="none" stroke="white" stroke-width="1.4"><path d="M11 2L20 7v8l-9 5-9-5V7z"/><path d="M11 2v13M2 7l9 5 9-5"/></svg>
           </div>
           <div class="mc-body">
-            <div class="mc-header">
-              <span class="mc-name">HANGAR</span>
-              <span class="mc-tag">PROJECT</span>
-            </div>
+            <div class="mc-header"><span class="mc-name">HANGAR</span><span class="mc-tag">PROJECT</span></div>
             <div class="mc-desc">Active shows, shot tracking, delivery status and blockers.</div>
-            <div class="mc-stats" id="idx-hangar-stats">
+            <div class="mc-stats">
               <div class="mc-stat"><span class="mc-stat-n" id="h-shows">—</span><span class="mc-stat-l">SHOWS</span></div>
               <div class="mc-stat-div"></div>
               <div class="mc-stat"><span class="mc-stat-n" id="h-shots">—</span><span class="mc-stat-l">SHOTS</span></div>
               <div class="mc-stat-div"></div>
-              <div class="mc-stat"><span class="mc-stat-n" id="h-tasks">—</span><span class="mc-stat-l">TASKS</span></div>
+              <div class="mc-stat"><span class="mc-stat-n" id="h-blk">—</span><span class="mc-stat-l">BLK</span></div>
             </div>
           </div>
         </div>
       </div>
+
+      <!-- PAYLOAD -->
+      <div class="module-card" role="button" onclick="openModule('payload')">
+        <div class="mc-inner">
+          <div class="mc-icon">
+            <svg viewBox="0 0 22 22" width="22" height="22" fill="none" stroke="white" stroke-width="1.4"><rect x="3" y="3" width="16" height="16" rx="2"/><path d="M7 11l3 3 5-5"/></svg>
+          </div>
+          <div class="mc-body">
+            <div class="mc-header"><span class="mc-name">PAYLOAD</span><span class="mc-tag">TASKS</span></div>
+            <div class="mc-desc">Daily execution queue. Tasks ranked by priority and due date.</div>
+            <div class="mc-stats">
+              <div class="mc-stat"><span class="mc-stat-n" id="p-open">—</span><span class="mc-stat-l">OPEN</span></div>
+              <div class="mc-stat-div"></div>
+              <div class="mc-stat"><span class="mc-stat-n" id="p-today">—</span><span class="mc-stat-l">TODAY</span></div>
+              <div class="mc-stat-div"></div>
+              <div class="mc-stat"><span class="mc-stat-n" id="p-done">—</span><span class="mc-stat-l">DONE</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCHEDULE -->
+      <div class="module-card" role="button" onclick="openModule('schedule')">
+        <div class="mc-inner">
+          <div class="mc-icon">
+            <svg viewBox="0 0 22 22" width="22" height="22" fill="none" stroke="white" stroke-width="1.4"><rect x="3" y="4" width="16" height="15" rx="2"/><path d="M3 9h16M8 2v4M14 2v4"/></svg>
+          </div>
+          <div class="mc-body">
+            <div class="mc-header"><span class="mc-name">SCHEDULE</span><span class="mc-tag">PLAN</span></div>
+            <div class="mc-desc">Time-blocked day plan. AI-assisted scheduling and waypoints.</div>
+            <div class="mc-stats">
+              <div class="mc-stat"><span class="mc-stat-n" id="s-planned">—</span><span class="mc-stat-l">BLOCKS</span></div>
+              <div class="mc-stat-div"></div>
+              <div class="mc-stat"><span class="mc-stat-n" id="s-hrs">—</span><span class="mc-stat-l">HRS</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VAULT -->
+      <div class="module-card" role="button" onclick="openModule('vault')">
+        <div class="mc-inner">
+          <div class="mc-icon">
+            <svg viewBox="0 0 22 22" width="22" height="22" fill="none" stroke="white" stroke-width="1.4"><path d="M4 4h14v14H4zM4 9h14M9 9v9"/></svg>
+          </div>
+          <div class="mc-body">
+            <div class="mc-header"><span class="mc-name">VAULT</span><span class="mc-tag">DOCS</span></div>
+            <div class="mc-desc">Bids, pipeline docs, show notes and reference materials.</div>
+            <div class="mc-stats">
+              <div class="mc-stat"><span class="mc-stat-n" id="v-docs">—</span><span class="mc-stat-l">DOCS</span></div>
+              <div class="mc-stat-div"></div>
+              <div class="mc-stat"><span class="mc-stat-n" id="v-updated">—</span><span class="mc-stat-l">UPDATED</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- INTEL -->
+      <div class="module-card" role="button" onclick="openModule('intel')">
+        <div class="mc-inner">
+          <div class="mc-icon">
+            <svg viewBox="0 0 22 22" width="22" height="22" fill="none" stroke="white" stroke-width="1.4"><circle cx="11" cy="11" r="8"/><path d="M11 7v5l3 3"/></svg>
+          </div>
+          <div class="mc-body">
+            <div class="mc-header"><span class="mc-name">INTEL</span><span class="mc-tag">AI</span></div>
+            <div class="mc-desc">AI workflows with full production context. Voice logging.</div>
+            <div class="mc-stats">
+              <div class="mc-stat"><span class="mc-stat-n">4</span><span class="mc-stat-l">WORKFLOWS</span></div>
+              <div class="mc-stat-div"></div>
+              <div class="mc-stat"><span class="mc-stat-n" id="intel-key-status">--</span><span class="mc-stat-l">API</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
-    <!-- END HANGAR CARD -->
 
     <div style="height:120px;"></div>
   </div>
@@ -3281,7 +3350,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260414-100000';
+const BUILD_ID = 'VTEK-20260414-110000';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
