@@ -3381,7 +3381,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260415-130000';
+const BUILD_ID = 'VTEK-20260415-140000';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
@@ -7903,6 +7903,51 @@ function closeFilterDrop(){
   </div>
 </div>
 
+
+<!-- SHEET: ol-edit-task -->
+<div class="overlay" id="ol-edit-task">
+  <div class="sheet">
+    <div class="sh-handle"></div>
+    <div class="sh-head"><div class="sh-eye" id="et-eye"></div><div class="sh-title" id="et-title-head">Edit Task</div></div>
+    <div class="sh-body">
+      <div class="f"><div class="fl">Objective</div><input class="fc" id="et-title" placeholder="Task title"><div class="fh">One clear action — verb first</div></div>
+      <div class="f-row">
+        <div class="f"><div class="fl">Due</div><input class="fc" id="et-due" type="date"></div>
+        <div class="f"><div class="fl">Duration</div><input class="fc" id="et-dur" type="number" step="15" placeholder="45"><div class="fh">Minutes</div></div>
+      </div>
+      <div class="f"><div class="fl">Priority</div>
+        <select class="fc" id="et-pri"><option value="critical">Critical</option><option value="high">High</option><option value="med">Medium</option><option value="low">Low</option></select>
+      </div>
+      <div class="f"><div class="fl">Tags</div><input class="fc" id="et-tags" placeholder="comp, roto, deliver" autocomplete="off"><div class="fh">Comma-separated</div></div>
+      <div class="f">
+        <div class="fl">Color</div>
+        <div class="color-picker-row" id="et-color-row">
+          <div class="cp-swatch on" data-c="" style="background:var(--s3);border:1px solid var(--s4)"></div>
+          <div class="cp-swatch" data-c="#c42f20" style="background:#c42f20"></div>
+          <div class="cp-swatch" data-c="#d4963a" style="background:#d4963a"></div>
+          <div class="cp-swatch" data-c="#7a9e4a" style="background:#7a9e4a"></div>
+          <div class="cp-swatch" data-c="#4a7abf" style="background:#4a7abf"></div>
+          <div class="cp-swatch" data-c="#7a5abf" style="background:#7a5abf"></div>
+        </div>
+      </div>
+      <div class="f">
+        <div class="fl">Sub-tasks</div>
+        <div id="et-subs-list"></div>
+        <div style="display:flex;gap:5px;margin-top:5px">
+          <input class="fc" id="et-sub-input" placeholder="Add sub-task…" style="flex:1" onkeydown="if(event.key==='Enter'){event.preventDefault();addSubEdit();}">
+          <button class="sh-no" style="flex-shrink:0;padding:6px 10px;font-size:10px" onclick="addSubEdit()">ADD</button>
+        </div>
+      </div>
+      <div class="f"><div class="fl">Notes</div><textarea class="fc" id="et-notes" rows="2" placeholder="Context, links, references…"></textarea></div>
+      <div class="f"><div class="fl">Depends on shot</div><select class="fc" id="et-dep"><option value="">None</option></select><div class="fh">Blocks until that shot ships</div></div>
+      <div class="sh-acts">
+        <button class="sh-ok" onclick="saveTaskEdit()">SAVE</button>
+        <button class="sh-no danger" onclick="deleteTask()">DELETE</button>
+        <button class="sh-no" onclick="closeSheet('ol-edit-task')">ABORT</button>
+      </div>
+    </div>
+  </div>
+</div>
 </div><!-- .shell -->
 
 
