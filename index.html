@@ -3384,7 +3384,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260415-160000';
+const BUILD_ID = 'VTEK-20260415-170000';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
@@ -3938,6 +3938,7 @@ function renderTCard(t){
   const dep=t.dep?S.shots.find(sh=>sh.id===t.dep):null,depBlocked=dep&&dep.status==='blocked';
   const expanded=t.expanded||false;
   const showPri=t.pri==='critical'||t.pri==='high';
+  const isSel=typeof _msSelected!=='undefined'&&_msSelected.has(t.id);
   let html=`<div class="tcard ${t.done?'done-c':''} ${isSel?'ms-selected':''}" id="tc-${t.id}" style="--cc:${cc}" onclick="tcCircleTap('${t.id}',this)">
     <div class="tcard-main">
       <div class="tcard-chk ${t.done?'on':''} ${isSel?'ms-chk':''}" onclick="event.stopPropagation();tcCircleTap('${t.id}',this.closest('.tcard'))">${t.done&&!isSel?'\xe2\x9c\x93':isSel?'\xe2\x9c\x93':''}</div></div>
