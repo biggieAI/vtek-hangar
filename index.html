@@ -3169,7 +3169,7 @@ html, body { height:100%; overflow:hidden; }
       <div class="module-card" role="button" onclick="openModule('payload')">
         <div class="mc-inner">
           <div class="mc-icon">
-            <svg viewBox="0 0 22 22" width="22" height="22" fill="none" stroke="white" stroke-width="1.4"><rect x="3" y="3" width="16" height="16" rx="2"/><path d="M7 11l3 3 5-5"/></svg>
+            <svg viewBox="0 0 22 22" width="22" height="22" fill="none" stroke="white" stroke-width="1.4"><path d="M4 6h9M4 11h6M4 16h8"/><path d="M15 8l3 3-3 3M18 11h-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
           <div class="mc-body">
             <div class="mc-header"><span class="mc-name">PAYLOAD</span><span class="mc-tag">TASKS</span></div>
@@ -3384,7 +3384,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260415-150000';
+const BUILD_ID = 'VTEK-20260415-160000';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
@@ -3938,11 +3938,9 @@ function renderTCard(t){
   const dep=t.dep?S.shots.find(sh=>sh.id===t.dep):null,depBlocked=dep&&dep.status==='blocked';
   const expanded=t.expanded||false;
   const showPri=t.pri==='critical'||t.pri==='high';
-  let html=`<div class="tcard ${t.done?'done-c':''}" id="tc-${t.id}" draggable="true" style="--cc:${cc}"
-    ondragstart="onDragStart(event,'${t.id}')" ondragover="onDragOver(event,'${t.id}')"
-    ondrop="onDrop(event,'${t.id}')" ondragleave="onDragLeave(event,'${t.id}')">
-    <div class="tcard-main" onclick="tcCircleTap('${t.id}',this.closest('.tcard'))">
-      <div class="tcard-chk ${t.done?'on':''}" onclick="event.stopPropagation();tcCircleTap('${t.id}',this.closest('.tcard'))">${t.done?'✓':''}</div>
+  let html=`<div class="tcard ${t.done?'done-c':''} ${isSel?'ms-selected':''}" id="tc-${t.id}" style="--cc:${cc}" onclick="tcCircleTap('${t.id}',this)">
+    <div class="tcard-main">
+      <div class="tcard-chk ${t.done?'on':''} ${isSel?'ms-chk':''}" onclick="event.stopPropagation();tcCircleTap('${t.id}',this.closest('.tcard'))">${t.done&&!isSel?'\xe2\x9c\x93':isSel?'\xe2\x9c\x93':''}</div></div>
       <div class="tcard-body">
         <div class="tcard-title">${t.title}</div>
         <div class="tcard-meta">
@@ -4918,7 +4916,8 @@ function openSheet(id){
 }
 function closeSheet(id){document.getElementById(id).classList.remove('open');}
 document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',function(e){
-  if(e.target!==o) return;
+  var sheet=o.querySelector('.sheet');
+  if(sheet&&sheet.contains(e.target)) return;
   if(o.id==='ol-edit-task'){tryCloseEditTask();return;}
   o.classList.remove('open');
 }));
@@ -7707,7 +7706,15 @@ if (typeof MODULE_MAP !== 'undefined' && MODULE_MAP.hangar) {
 
 function plQuickLog(){var inp=document.getElementById('pl-qa-input');var v=inp.value.trim();if(!v)return;var id='t'+Date.now();S.tasks.unshift({id:id,sid:S.shows[0]?S.shows[0].id:'',title:v,due:'',pri:'med',dur:30,tags:[],color:'',notes:'',subtasks:[],dep:'',done:false,expanded:false});inp.value='';save();rPayload();toast('LOGGED');haptic('light');}
 function plVoiceLog(){toast('USE INTEL VOICE LOG');}
-function aiSortTasks(){var key=getKey();if(!key){toast('ADD API KEY IN CONFIG');return;}var open=S.tasks.filter(function(t){return !t.done;});if(!open.length){toast('NO OPEN TASKS');return;}toast('INTEL SORTING...');fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:400,messages:[{role:'user',content:'Sort these VFX tasks by urgency. Today:'+tod()+'\n'+open.map(function(t,i){return i+'. id:'+t.id+' pri:'+t.pri+' due:'+(t.due||'none')+' title:"'+t.title+'"';}).join('\n')+'\nReply ONLY JSON: {"order":["id1","id2",...],"reason":"one sentence"}'}]})}).then(function(r){return r.json();}).then(function(data){var txt=((data.content&&data.content[0]&&data.content[0].text)||'{}').replace(/```json|```/g,'').trim();var p=JSON.parse(txt);if(p.order){var sorted=p.order.map(function(id){return S.tasks.find(function(t){return t.id===id;});}).filter(Boolean);S.tasks=sorted.concat(S.tasks.filter(function(t){return t.done;}));lastAiReason=p.reason||'';save();rPayload();toast('INTEL SORTED');}}).catch(function(){toast('SORT FAILED');});}
+function aiSortTasks(){var key=getKey();if(!key){
+  var entered=prompt('Enter Anthropic API key (sk-ant-...):');
+  if(!entered||!entered.trim()){toast('API KEY REQUIRED');return;}
+  entered=entered.trim();
+  localStorage.setItem('vtek_api',entered);
+  var disp=document.getElementById('api-disp');if(disp)disp.textContent=entered;
+  key=entered;
+  toast('KEY SAVED');
+}var open=S.tasks.filter(function(t){return !t.done;});if(!open.length){toast('NO OPEN TASKS');return;}toast('INTEL SORTING...');fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:400,messages:[{role:'user',content:'Sort these VFX tasks by urgency. Today:'+tod()+'\n'+open.map(function(t,i){return i+'. id:'+t.id+' pri:'+t.pri+' due:'+(t.due||'none')+' title:"'+t.title+'"';}).join('\n')+'\nReply ONLY JSON: {"order":["id1","id2",...],"reason":"one sentence"}'}]})}).then(function(r){return r.json();}).then(function(data){var txt=((data.content&&data.content[0]&&data.content[0].text)||'{}').replace(/```json|```/g,'').trim();var p=JSON.parse(txt);if(p.order){var sorted=p.order.map(function(id){return S.tasks.find(function(t){return t.id===id;});}).filter(Boolean);S.tasks=sorted.concat(S.tasks.filter(function(t){return t.done;}));lastAiReason=p.reason||'';save();rPayload();toast('INTEL SORTED');}}).catch(function(){toast('SORT FAILED');});}
 
 function renderTagChips(){
   var chipEl=document.getElementById('at-tag-chips');if(!chipEl)return;
