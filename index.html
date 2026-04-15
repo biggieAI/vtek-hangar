@@ -3116,11 +3116,11 @@ html, body { height:100%; overflow:hidden; }
 .pl-fchip{flex-shrink:0;padding:5px 14px;border:1px solid rgba(255,255,255,0.08);border-radius:20px;background:transparent;font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:var(--t1);cursor:pointer;white-space:nowrap;-webkit-tap-highlight-color:transparent;}
 .pl-fchip.on{background:rgba(33,225,223,0.12);color:#21e1df;border-color:rgba(33,225,223,0.35);}
 
-.tcard-edit-hint{flex-shrink:0;color:var(--t2);opacity:0.45;margin-left:4px;align-self:center;padding:8px;margin-right:-8px;cursor:pointer;border-radius:4px;transition:opacity 0.1s;}
-.tcard-edit-hint:active{opacity:1;background:rgba(255,255,255,0.06);}
+.tcard-edit-hint{flex-shrink:0;color:var(--t1);opacity:0.75;margin-left:6px;align-self:center;padding:10px;margin-right:-10px;cursor:pointer;border-radius:6px;transition:all 0.1s;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);}
+.tcard-edit-hint:active{opacity:1;background:rgba(255,255,255,0.12);border-color:rgba(255,255,255,0.18);}
 
-#ol-edit-task .sh-handle{height:24px;width:80px;cursor:pointer;}
-#ol-edit-task .sh-handle::after{content:"tap to close";font-family:var(--mono);font-size:8px;color:var(--t2);letter-spacing:0.1em;display:block;text-align:center;padding-top:2px;}
+#ol-edit-task .sh-handle{height:28px;width:80px;cursor:pointer;}
+#ol-edit-task .sh-handle::after{content:"tap to close";font-family:var(--mono);font-size:8px;color:var(--t2);letter-spacing:0.1em;display:block;text-align:center;padding-top:4px;}
 </style>
 </head>
 <body>
@@ -3387,7 +3387,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260415-180000';
+const BUILD_ID = 'VTEK-20260415-190000';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
@@ -3959,12 +3959,12 @@ function renderTCard(t){
           ${(hasSubs||hasNotes)&&expanded?`<button class="expand-btn" onclick="event.stopPropagation();toggleExpand('${t.id}')">▲ LESS</button>`:''}
         </div>
       </div>
-      ${!t.done?`<div class="tcard-edit-hint" onclick="event.stopPropagation();openTaskEdit('${t.id}')"><svg viewBox="0 0 12 12" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 2l3 3-5 5H2V7l5-5z"/></svg></div>`:''}
+      ${!t.done?`<div class="tcard-edit-hint" onclick="event.stopPropagation();openTaskEdit('${t.id}')"><svg viewBox="0 0 12 12" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 2l3 3-5 5H2V7l5-5z"/></svg></div>`:''}
     </div>`;
   if(hasSubs){const pct=Math.round(subDone/subs.length*100);html+=`<div class="sub-prog"><div class="sub-prog-fill" style="width:${pct}%"></div></div>`;}
   if(expanded){
-    if(hasSubs)html+=`<div class="tcard-subs" onclick="event.stopPropagation()">${subs.map((s,i)=>`<div class="sub-row ${s.done?'done-s':''}"><button class="sub-chk ${s.done?'on':''}" onclick="event.stopPropagation();toggleSub('${t.id}',${i})">${s.done?'✓':''}</button><span class="sub-txt">${s.title}</span></div>`).join('')}</div>`;
-    if(hasNotes)html+=`<div class="tcard-notes" onclick="event.stopPropagation()">${t.notes}</div>`;
+    if(hasSubs)html+=`<div class="tcard-subs">${subs.map((s,i)=>`<div class="sub-row ${s.done?'done-s':''}"><button class="sub-chk ${s.done?'on':''}" onclick="event.stopPropagation();toggleSub('${t.id}',${i})">${s.done?'✓':''}</button><span class="sub-txt">${s.title}</span></div>`).join('')}</div>`;
+    if(hasNotes)html+=`<div class="tcard-notes">${t.notes}</div>`;
   }
   html+=`</div>`;return html;
 }
@@ -4919,18 +4919,21 @@ function openSheet(id){
   document.getElementById(id).classList.add('open');
 }
 function closeSheet(id){document.getElementById(id).classList.remove('open');}
-document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',function(e){
-  var sheet=o.querySelector('.sheet');
-  if(sheet&&sheet.contains(e.target)) return;
-  if(o.id==='ol-edit-task'){tryCloseEditTask();return;}
-  o.classList.remove('open');
-}));
-// tap handle bar to close edit sheet
+document.// Generic overlays: click backdrop to close
+querySelectorAll('.overlay').forEach(function(o){
+  o.addEventListener('click',function(e){
+    var sheet=o.querySelector('.sheet');
+    if(sheet&&sheet.contains(e.target)) return;
+    if(o.id==='ol-edit-task'){tryCloseEditTask();return;}
+    o.classList.remove('open');
+  });
+});
+// Edit task: wire backdrop div and handle tap
 document.addEventListener('DOMContentLoaded',function(){
+  var bd=document.getElementById('et-backdrop');
+  if(bd) bd.onclick=function(){tryCloseEditTask();};
   var h=document.querySelector('#ol-edit-task .sh-handle');
   if(h) h.onclick=function(e){e.stopPropagation();tryCloseEditTask();};
-  var h2=document.querySelector('#ol-edit-task .sh-head');
-  // also make sh-handle bigger for easy tap
 });
 
 function refresh(){
@@ -7950,7 +7953,8 @@ function tryCloseEditTask(){
 
 <!-- SHEET: ol-edit-task -->
 <div class="overlay" id="ol-edit-task">
-  <div class="sheet">
+  <div id="et-backdrop" style="position:absolute;inset:0;z-index:0;"></div>
+  <div class="sheet" style="position:relative;z-index:1;">
     <div class="sh-handle"></div>
     <div class="sh-head"><div class="sh-eye" id="et-eye"></div><div class="sh-title" id="et-title-head">Edit Task</div></div>
     <div class="sh-body">
