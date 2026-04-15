@@ -3115,6 +3115,9 @@ html, body { height:100%; overflow:hidden; }
 .pl-filter-drop{position:absolute;left:0;right:0;top:calc(100% + 4px);background:var(--s2);border:1px solid rgba(255,255,255,0.10);border-radius:6px;z-index:500;padding:10px;box-shadow:0 8px 24px rgba(0,0,0,0.7);}
 .pl-fchip{flex-shrink:0;padding:5px 14px;border:1px solid rgba(255,255,255,0.08);border-radius:20px;background:transparent;font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:var(--t1);cursor:pointer;white-space:nowrap;-webkit-tap-highlight-color:transparent;}
 .pl-fchip.on{background:rgba(33,225,223,0.12);color:#21e1df;border-color:rgba(33,225,223,0.35);}
+
+.tcard-edit-hint{flex-shrink:0;color:var(--t2);opacity:0.45;margin-left:4px;align-self:center;padding:8px;margin-right:-8px;cursor:pointer;border-radius:4px;transition:opacity 0.1s;}
+.tcard-edit-hint:active{opacity:1;background:rgba(255,255,255,0.06);}
 </style>
 </head>
 <body>
@@ -3381,7 +3384,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260415-140000';
+const BUILD_ID = 'VTEK-20260415-150000';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
@@ -3938,7 +3941,7 @@ function renderTCard(t){
   let html=`<div class="tcard ${t.done?'done-c':''}" id="tc-${t.id}" draggable="true" style="--cc:${cc}"
     ondragstart="onDragStart(event,'${t.id}')" ondragover="onDragOver(event,'${t.id}')"
     ondrop="onDrop(event,'${t.id}')" ondragleave="onDragLeave(event,'${t.id}')">
-    <div class="tcard-main" onclick="openTaskEdit('${t.id}')" oncontextmenu="event.preventDefault();msToggle('${t.id}',this.closest('.tcard'))">
+    <div class="tcard-main" onclick="tcCircleTap('${t.id}',this.closest('.tcard'))">
       <div class="tcard-chk ${t.done?'on':''}" onclick="event.stopPropagation();tcCircleTap('${t.id}',this.closest('.tcard'))">${t.done?'✓':''}</div>
       <div class="tcard-body">
         <div class="tcard-title">${t.title}</div>
@@ -3954,7 +3957,7 @@ function renderTCard(t){
           ${(hasSubs||hasNotes)&&expanded?`<button class="expand-btn" onclick="event.stopPropagation();toggleExpand('${t.id}')">▲ LESS</button>`:''}
         </div>
       </div>
-      ${!t.done?`<div class="tcard-edit-hint"><svg viewBox="0 0 12 12" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 2l3 3-5 5H2V7l5-5z"/></svg></div>`:''}
+      ${!t.done?`<div class="tcard-edit-hint" onclick="event.stopPropagation();openTaskEdit('${t.id}')"><svg viewBox="0 0 12 12" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 2l3 3-5 5H2V7l5-5z"/></svg></div>`:''}
     </div>`;
   if(hasSubs){const pct=Math.round(subDone/subs.length*100);html+=`<div class="sub-prog"><div class="sub-prog-fill" style="width:${pct}%"></div></div>`;}
   if(expanded){
@@ -4004,7 +4007,14 @@ function openTaskEdit(id){
   setTimeout(()=>{initColorPicker('et-color-row');const row=document.getElementById('et-color-row');if(row)row.querySelectorAll('.cp-swatch').forEach(sw=>{sw.classList.toggle('on',sw.dataset.c===t.color);});},50);
   const depSel=document.getElementById('et-dep');
   depSel.innerHTML=`<option value="">None</option>`+S.shots.filter(sh=>sh.sid===t.sid).map(sh=>`<option value="${sh.id}" ${t.dep===sh.id?'selected':''}>${sh.code}</option>`).join('');
+  _etDirty=false;
   openSheet('ol-edit-task');
+  setTimeout(function(){
+    ['et-title','et-due','et-dur','et-pri','et-tags','et-notes'].forEach(function(fid){
+      var el=document.getElementById(fid);
+      if(el){el.oninput=_etMarkDirty;el.onchange=_etMarkDirty;}
+    });
+  },150);
 }
 function saveTaskEdit(){
   const t=S.tasks.find(t=>t.id===editTaskId);if(!t)return;
@@ -4018,7 +4028,7 @@ function saveTaskEdit(){
   const pickedColor=getSelectedColor('et-color-row'); if(pickedColor!==undefined) t.color=pickedColor;
   t.dep=document.getElementById('et-dep').value;
   t.subtasks=[...editSubsList];
-  save();closeSheet('ol-edit-task');rPayload();toast('TASK UPDATED');
+  _etDirty=false;save();closeSheet('ol-edit-task');rPayload();toast('TASK UPDATED');
 }
 function deleteTask(){if(!confirm('DELETE?'))return;S.tasks=S.tasks.filter(t=>t.id!==editTaskId);save();closeSheet('ol-edit-task');rPayload();toast('TASK DELETED');}
 
@@ -4907,7 +4917,11 @@ function openSheet(id){
   document.getElementById(id).classList.add('open');
 }
 function closeSheet(id){document.getElementById(id).classList.remove('open');}
-document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
+document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',function(e){
+  if(e.target!==o) return;
+  if(o.id==='ol-edit-task'){tryCloseEditTask();return;}
+  o.classList.remove('open');
+}));
 
 function refresh(){
   if(S.page==='hangar')rHangar();
@@ -7750,6 +7764,18 @@ function closeFilterDrop(){
   var d=document.getElementById("pl-filter-drop");
   if(d)d.style.display="none";
 }
+
+var _etDirty=false;
+function _etMarkDirty(){_etDirty=true;}
+function tryCloseEditTask(){
+  if(_etDirty){
+    if(confirm("Unsaved changes. Exit without saving?")){
+      _etDirty=false;closeSheet("ol-edit-task");
+    }
+  }else{
+    closeSheet("ol-edit-task");
+  }
+}
 </script>
 
 
@@ -7943,7 +7969,7 @@ function closeFilterDrop(){
       <div class="sh-acts">
         <button class="sh-ok" onclick="saveTaskEdit()">SAVE</button>
         <button class="sh-no danger" onclick="deleteTask()">DELETE</button>
-        <button class="sh-no" onclick="closeSheet('ol-edit-task')">ABORT</button>
+        <button class="sh-no" onclick="tryCloseEditTask()">ABORT</button>
       </div>
     </div>
   </div>
