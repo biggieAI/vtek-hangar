@@ -3106,6 +3106,14 @@ html, body { height:100%; overflow:hidden; }
 .ms-btn.done { background: var(--accent); color: #000; }
 .ms-btn.del { background: rgba(196,47,32,0.18); color: #e05a45; border: 1px solid rgba(196,47,32,0.3); }
 .ms-btn.cancel { background: transparent; color: var(--t1); border: 1px solid rgba(255,255,255,0.10); margin-left: auto; }
+
+.tcard-chk.ms-chk{background:#21e1df!important;border-color:#21e1df!important;color:#000!important;}
+
+.pl-filter-drop-btn{display:flex;align-items:center;gap:7px;width:100%;padding:8px 12px;background:var(--s2);border:1px solid rgba(255,255,255,0.08);border-radius:4px;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:0.10em;color:var(--t1);cursor:pointer;text-align:left;-webkit-tap-highlight-color:transparent;}
+.pl-filter-drop-btn:active{background:var(--s3);}
+.pl-filter-drop{position:absolute;left:0;right:0;top:calc(100% + 4px);background:var(--s2);border:1px solid rgba(255,255,255,0.10);border-radius:6px;z-index:500;padding:10px;box-shadow:0 8px 24px rgba(0,0,0,0.7);}
+.pl-fchip{flex-shrink:0;padding:5px 14px;border:1px solid rgba(255,255,255,0.08);border-radius:20px;background:transparent;font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:var(--t1);cursor:pointer;white-space:nowrap;-webkit-tap-highlight-color:transparent;}
+.pl-fchip.on{background:rgba(33,225,223,0.12);color:#21e1df;border-color:rgba(33,225,223,0.35);}
 </style>
 </head>
 <body>
@@ -3371,7 +3379,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260414-180000';
+const BUILD_ID = 'VTEK-20260414-190000';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
@@ -3854,6 +3862,9 @@ function plFilter(type,val){
   if(type==='tag'){plFilterTag=val;plFilterShow='';}
   else if(type==='show'){plFilterShow=val;plFilterTag='';}
   else{plFilterTag='';plFilterShow='';}
+  closeFilterDrop();
+  var lbl=document.getElementById('pl-filter-label');
+  if(lbl)lbl.textContent=(plFilterTag||plFilterShow)?(plFilterTag||plFilterShow).toUpperCase():'ALL TASKS';
   rPayload();
 }
 
@@ -3925,8 +3936,8 @@ function renderTCard(t){
   let html=`<div class="tcard ${t.done?'done-c':''}" id="tc-${t.id}" draggable="true" style="--cc:${cc}"
     ondragstart="onDragStart(event,'${t.id}')" ondragover="onDragOver(event,'${t.id}')"
     ondrop="onDrop(event,'${t.id}')" ondragleave="onDragLeave(event,'${t.id}')">
-    <div class="tcard-main" onclick="_msActive?msToggle('${t.id}',this.closest('.tcard')):openTaskEdit('${t.id}')" oncontextmenu="event.preventDefault();msToggle('${t.id}',this.closest('.tcard'))" ontouchstart="tcTouchStart(event,'${t.id}')" ontouchend="tcTouchEnd(event)">
-      <div class="tcard-chk ${t.done?'on':''}" onclick="event.stopPropagation();toggleTask('${t.id}')">${t.done?'✓':''}</div>
+    <div class="tcard-main" onclick="openTaskEdit('${t.id}')" oncontextmenu="event.preventDefault();msToggle('${t.id}',this.closest('.tcard'))">
+      <div class="tcard-chk ${t.done?'on':''}" onclick="event.stopPropagation();tcCircleTap('${t.id}',this.closest('.tcard'))">${t.done?'✓':''}</div>
       <div class="tcard-body">
         <div class="tcard-title">${t.title}</div>
         <div class="tcard-meta">
@@ -7726,6 +7737,17 @@ function tcTouchStart(e,id){
   _lpTimer=setTimeout(function(){_lpTimer=null;var card=e.target.closest(".tcard");if(card)msToggle(id,card);},500);
 }
 function tcTouchEnd(e){if(_lpTimer){clearTimeout(_lpTimer);_lpTimer=null;}}
+
+function tcCircleTap(id,cardEl){var t=S.tasks.find(function(x){return x.id===id;});if(!t)return;if(t.done){toggleTask(id);return;}msToggle(id,cardEl);}
+
+function toggleFilterDrop(){
+  var d=document.getElementById("pl-filter-drop");
+  if(d)d.style.display=d.style.display==="none"?"block":"none";
+}
+function closeFilterDrop(){
+  var d=document.getElementById("pl-filter-drop");
+  if(d)d.style.display="none";
+}
 </script>
 
 
@@ -8105,7 +8127,16 @@ function tcTouchEnd(e){if(_lpTimer){clearTimeout(_lpTimer);_lpTimer=null;}}
         </div>
         <button class="pl-qa-send" onclick="plQuickLog()">LOG</button>
       </div>
-      <div class="pl-filters" id="pl-filters"></div>
+      <div style="margin-bottom:10px;position:relative;">
+        <button class="pl-filter-drop-btn" id="pl-filter-drop-btn" onclick="toggleFilterDrop()">
+          <svg viewBox="0 0 14 14" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:0.5"><path d="M2 4h10M4 7h6M6 10h2"/></svg>
+          <span id="pl-filter-label">ALL TASKS</span>
+          <svg viewBox="0 0 10 10" width="9" height="9" fill="none" stroke="currentColor" stroke-width="1.6" style="margin-left:auto"><path d="M2 3.5l3 3 3-3"/></svg>
+        </button>
+        <div class="pl-filter-drop" id="pl-filter-drop" style="display:none;">
+          <div id="pl-filters" style="display:flex;flex-wrap:wrap;gap:6px;padding:4px 0;"></div>
+        </div>
+      </div>
       <div id="payload-dos"><div id="sched-section"></div></div>
       <div id="task-list"></div>
       <div style="height:40px;"></div>
