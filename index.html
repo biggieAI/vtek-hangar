@@ -3354,7 +3354,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260414-140000';
+const BUILD_ID = 'VTEK-20260414-150000';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
@@ -7660,7 +7660,7 @@ function renderTagChips(){
   var existing=new Set(S.tasks.flatMap(function(t){return t.tags||[];}));
   var all=[...new Set([...preset,...existing])];
   chipEl.innerHTML=all.map(function(t){
-    return '<button type="button" class="tag-suggest-chip" onclick="addTagChip(''+t+'')">'+t+'</button>';
+    return '<button type="button" class="tag-suggest-chip" onclick="addTagChip(&quot;' + t + '&quot;)">' + t + '</button>';
   }).join('');
 }
 function addTagChip(tag){
