@@ -3387,7 +3387,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260415-190000';
+const BUILD_ID = 'VTEK-20260415-200000';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
@@ -8238,7 +8238,142 @@ function tryCloseEditTask(){
     </div>
   </div>
 </div>
-<div class="module-view" id="mv-schedule"></div>
+<div class="module-view" id="mv-schedule">
+  <div class="module-topbar">
+    <button class="module-back-btn" onclick="closeModule()">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8L10 13" stroke="#21e1df" stroke-width="1.5" stroke-linecap="square"/></svg>
+    </button>
+    <span class="module-topbar-label">VTEK // SCHEDULE</span>
+    <div style="width:32px"></div>
+  </div>
+  <div class="module-scroll">
+    <div class="page" id="pg-plan">
+      <div class="plan-header">
+        <div class="plan-date" id="plan-date-label">TODAY</div>
+        <div class="plan-header-actions">
+          <button class="plan-action-btn" id="rack-btn-top" onclick="autoRackDay()">AUTO-RACK</button>
+          <button class="plan-action-btn plan-commit-btn" onclick="commitPlan()">COMMIT</button>
+        </div>
+      </div>
+      <div class="plan-cal-status" id="plan-cal-status">
+        <span id="plan-cal-txt" style="color:var(--t2);font-size:10px;font-family:var(--mono);letter-spacing:0.05em;">CAL SYNC READY</span>
+        <button class="plan-action-btn" style="margin-left:auto;padding:4px 8px;font-size:9px;" onclick="fetchCalendarEvents()">SYNC CAL</button>
+      </div>
+      <div class="plan-rack-banner" id="plan-rack-banner" style="display:none;">
+        <span id="plan-rack-txt">AUTO-RACK scheduled your day.</span>
+        <button class="plan-rack-close" onclick="document.getElementById('plan-rack-banner').style.display='none'">&#x2715;</button>
+        <button class="plan-action-btn" id="plan-rack-btn" style="margin-top:6px;display:block;" onclick="autoRackDay()">RE-RACK</button>
+      </div>
+      <div class="plan-pool-section" id="plan-pool-section">
+        <div class="plan-drawer-toggle" id="plan-drawer-toggle" onclick="togglePlanDrawer()">
+          <span class="plan-drawer-label">TASK POOL</span>
+          <span class="plan-drawer-count" id="plan-pool-count"></span>
+          <span class="plan-drawer-hint">TAP TO EXPAND</span>
+          <span class="plan-drawer-arrow">&#9650;</span>
+        </div>
+        <div class="plan-drawer-body" id="plan-drawer-body">
+          <div class="plan-drawer-list" id="plan-task-pool"></div>
+          <button class="plan-task-sheet-btn" onclick="openPlanTaskSheet()">
+            <span class="plan-task-sheet-label">ALL TASKS</span>
+            <span class="plan-sheet-count" id="plan-sheet-count"></span>
+            <span class="plan-task-sheet-hint">tap to browse</span>
+            <span class="plan-sheet-arrow">&#9660;</span>
+          </button>
+        </div>
+      </div>
+      <div class="plan-timeline" id="plan-timeline"></div>
+      <div class="plan-commit-status" id="plan-commit-status" style="display:none;">
+        <span id="plan-commit-txt"></span>
+        <span style="margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--t2);" id="plan-total-time"></span>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="plan-task-sheet-overlay" onclick="closePlanTaskSheet()"></div>
+<div id="plan-task-sheet">
+  <div class="plan-sheet-grab" onclick="closePlanTaskSheet()"></div>
+  <div class="plan-sheet-hd">
+    <span class="plan-sheet-title">TASK POOL <span id="plan-sheet-count-inner"></span></span>
+    <button class="plan-sheet-close" onclick="closePlanTaskSheet()">&#x2715;</button>
+  </div>
+  <div class="plan-sheet-list" id="plan-sheet-list"></div>
+</div>
+<div id="plan-qa-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:10150;" onclick="closePlanQA()"></div>
+<div id="plan-qa-sheet" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:10160;background:var(--s1);border-top:1px solid rgba(255,255,255,0.18);flex-direction:column;transform:translateY(100%);transition:transform 0.28s cubic-bezier(0.16,1,0.3,1);">
+  <div style="width:36px;height:4px;background:rgba(255,255,255,0.18);border-radius:2px;margin:10px auto 0;"></div>
+  <div style="padding:12px 16px 6px;display:flex;align-items:center;justify-content:space-between;">
+    <span style="font-family:var(--mono);font-size:11px;font-weight:700;color:var(--t0);letter-spacing:0.08em;">PLACE TASK</span>
+    <span id="plan-qa-time" style="font-family:var(--mono);font-size:10px;color:var(--t1);"></span>
+    <button style="background:none;border:none;color:var(--t2);font-size:14px;cursor:pointer;" onclick="closePlanQA()">&#x2715;</button>
+  </div>
+  <div style="padding:0 16px 10px;">
+    <input id="plan-qa-input" type="text" placeholder="Task name or pick below..." style="width:100%;box-sizing:border-box;background:var(--s2);border:var(--b2);color:var(--t0);font-family:var(--sans);font-size:13px;padding:9px 12px;outline:none;" autocomplete="off" />
+    <div style="display:flex;align-items:center;gap:8px;margin-top:8px;">
+      <label style="font-family:var(--sans);font-size:10px;color:var(--t2);letter-spacing:0.06em;">DURATION</label>
+      <input id="plan-qa-dur" type="number" min="5" max="480" step="5" value="30" style="width:60px;background:var(--s2);border:var(--b2);color:var(--t0);font-family:var(--mono);font-size:12px;padding:5px 8px;outline:none;" />
+      <span style="font-family:var(--sans);font-size:10px;color:var(--t2);">min</span>
+      <button style="margin-left:auto;padding:7px 18px;background:var(--accent);border:none;color:#000;font-family:var(--sans);font-size:11px;font-weight:700;letter-spacing:0.06em;cursor:pointer;" onclick="confirmPlanQA()">PLACE</button>
+    </div>
+  </div>
+  <div style="padding:0 16px;border-top:var(--b1);max-height:200px;overflow-y:auto;scrollbar-width:none;">
+    <div id="plan-qa-tasklist"></div>
+  </div>
+  <div style="height:calc(env(safe-area-inset-bottom,0px) + 12px);"></div>
+</div>
+<div id="plan-edit-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:10170;" onclick="closePlanEdit()"></div>
+<div id="plan-edit-sheet" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:10180;background:var(--s1);border-top:1px solid rgba(255,255,255,0.18);transform:translateY(100%);transition:transform 0.28s cubic-bezier(0.16,1,0.3,1);">
+  <div style="width:36px;height:4px;background:rgba(255,255,255,0.18);border-radius:2px;margin:10px auto 0;"></div>
+  <div style="padding:12px 16px 8px;display:flex;align-items:center;justify-content:space-between;border-bottom:var(--b1);">
+    <span style="font-family:var(--mono);font-size:11px;font-weight:700;color:var(--t0);letter-spacing:0.08em;">EDIT BLOCK</span>
+    <button style="background:none;border:none;color:var(--t2);font-size:14px;cursor:pointer;" onclick="closePlanEdit()">&#x2715;</button>
+  </div>
+  <div style="padding:14px 16px;display:flex;flex-direction:column;gap:12px;max-height:60dvh;overflow-y:auto;scrollbar-width:none;">
+    <div>
+      <label style="font-family:var(--sans);font-size:9px;font-weight:700;letter-spacing:0.1em;color:var(--t2);text-transform:uppercase;display:block;margin-bottom:4px;">TASK</label>
+      <input id="pe-title" type="text" style="width:100%;box-sizing:border-box;background:var(--s2);border:var(--b2);color:var(--t0);font-family:var(--sans);font-size:13px;padding:9px 12px;outline:none;" />
+    </div>
+    <div>
+      <label style="font-family:var(--sans);font-size:9px;font-weight:700;letter-spacing:0.1em;color:var(--t2);text-transform:uppercase;display:block;margin-bottom:4px;">DURATION (MIN)</label>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <input id="pe-dur-slider" type="range" min="5" max="480" step="5" value="30" style="flex:1;" />
+        <input id="pe-dur-num" type="number" min="5" max="480" step="5" value="30" style="width:56px;background:var(--s2);border:var(--b2);color:var(--t0);font-family:var(--mono);font-size:12px;padding:5px 8px;outline:none;" />
+      </div>
+    </div>
+    <div>
+      <label style="font-family:var(--sans);font-size:9px;font-weight:700;letter-spacing:0.1em;color:var(--t2);text-transform:uppercase;display:block;margin-bottom:4px;">START TIME</label>
+      <div style="display:flex;gap:8px;">
+        <select id="pe-start-h" style="background:var(--s2);border:var(--b2);color:var(--t0);font-family:var(--mono);font-size:12px;padding:6px 8px;outline:none;flex:1;"></select>
+        <select id="pe-start-m" style="background:var(--s2);border:var(--b2);color:var(--t0);font-family:var(--mono);font-size:12px;padding:6px 8px;outline:none;width:80px;"><option value="0">:00</option><option value="30">:30</option></select>
+      </div>
+    </div>
+    <div>
+      <label style="font-family:var(--sans);font-size:9px;font-weight:700;letter-spacing:0.1em;color:var(--t2);text-transform:uppercase;display:block;margin-bottom:4px;">PRIORITY</label>
+      <div id="pe-pri-group" style="display:flex;gap:6px;">
+        <button class="pe-pri-btn" data-pri="critical" onclick="setPlanEditPri('critical')" style="flex:1;padding:6px 4px;border:var(--b2);background:var(--s2);color:var(--t1);font-family:var(--sans);font-size:9px;font-weight:700;letter-spacing:0.06em;cursor:pointer;">CRIT</button>
+        <button class="pe-pri-btn" data-pri="high" onclick="setPlanEditPri('high')" style="flex:1;padding:6px 4px;border:var(--b2);background:var(--s2);color:var(--t1);font-family:var(--sans);font-size:9px;font-weight:700;letter-spacing:0.06em;cursor:pointer;">HIGH</button>
+        <button class="pe-pri-btn" data-pri="med" onclick="setPlanEditPri('med')" style="flex:1;padding:6px 4px;border:var(--b2);background:var(--s2);color:var(--t1);font-family:var(--sans);font-size:9px;font-weight:700;letter-spacing:0.06em;cursor:pointer;">MED</button>
+        <button class="pe-pri-btn" data-pri="low" onclick="setPlanEditPri('low')" style="flex:1;padding:6px 4px;border:var(--b2);background:var(--s2);color:var(--t1);font-family:var(--sans);font-size:9px;font-weight:700;letter-spacing:0.06em;cursor:pointer;">LOW</button>
+      </div>
+    </div>
+    <div>
+      <label style="font-family:var(--sans);font-size:9px;font-weight:700;letter-spacing:0.1em;color:var(--t2);text-transform:uppercase;display:block;margin-bottom:4px;">DUE DATE</label>
+      <input id="pe-due" type="date" style="width:100%;box-sizing:border-box;background:var(--s2);border:var(--b2);color:var(--t0);font-family:var(--mono);font-size:12px;padding:8px 12px;outline:none;" />
+    </div>
+    <div>
+      <label style="font-family:var(--sans);font-size:9px;font-weight:700;letter-spacing:0.1em;color:var(--t2);text-transform:uppercase;display:block;margin-bottom:4px;">TAGS</label>
+      <input id="pe-tags" type="text" placeholder="tag1, tag2" style="width:100%;box-sizing:border-box;background:var(--s2);border:var(--b2);color:var(--t0);font-family:var(--sans);font-size:12px;padding:8px 12px;outline:none;" />
+    </div>
+    <div>
+      <label style="font-family:var(--sans);font-size:9px;font-weight:700;letter-spacing:0.1em;color:var(--t2);text-transform:uppercase;display:block;margin-bottom:4px;">NOTES</label>
+      <textarea id="pe-notes" rows="3" style="width:100%;box-sizing:border-box;background:var(--s2);border:var(--b2);color:var(--t0);font-family:var(--sans);font-size:12px;padding:8px 12px;outline:none;resize:vertical;"></textarea>
+    </div>
+  </div>
+  <div style="display:flex;gap:8px;padding:12px 16px;border-top:var(--b1);">
+    <button style="flex:1;padding:10px;border:var(--b2);background:var(--s2);color:var(--t1);font-family:var(--sans);font-size:11px;font-weight:700;letter-spacing:0.06em;cursor:pointer;" onclick="closePlanEdit()">CANCEL</button>
+    <button style="flex:2;padding:10px;border:none;background:var(--accent);color:#000;font-family:var(--sans);font-size:11px;font-weight:700;letter-spacing:0.06em;cursor:pointer;" onclick="savePlanBlockEdit()">SAVE BLOCK</button>
+  </div>
+  <div style="height:calc(env(safe-area-inset-bottom,0px) + 8px);"></div>
+</div>
 <div class="module-view" id="mv-vault"></div>
 <div class="module-view" id="mv-intel"></div>
 <div class="module-view" id="mv-config"></div>
