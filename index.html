@@ -3118,6 +3118,9 @@ html, body { height:100%; overflow:hidden; }
 
 .tcard-edit-hint{flex-shrink:0;color:var(--t2);opacity:0.45;margin-left:4px;align-self:center;padding:8px;margin-right:-8px;cursor:pointer;border-radius:4px;transition:opacity 0.1s;}
 .tcard-edit-hint:active{opacity:1;background:rgba(255,255,255,0.06);}
+
+#ol-edit-task .sh-handle{height:24px;width:80px;cursor:pointer;}
+#ol-edit-task .sh-handle::after{content:"tap to close";font-family:var(--mono);font-size:8px;color:var(--t2);letter-spacing:0.1em;display:block;text-align:center;padding-top:2px;}
 </style>
 </head>
 <body>
@@ -3384,7 +3387,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260415-170000';
+const BUILD_ID = 'VTEK-20260415-180000';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
@@ -3941,7 +3944,7 @@ function renderTCard(t){
   const isSel=typeof _msSelected!=='undefined'&&_msSelected.has(t.id);
   let html=`<div class="tcard ${t.done?'done-c':''} ${isSel?'ms-selected':''}" id="tc-${t.id}" style="--cc:${cc}" onclick="tcCircleTap('${t.id}',this)">
     <div class="tcard-main">
-      <div class="tcard-chk ${t.done?'on':''} ${isSel?'ms-chk':''}" onclick="event.stopPropagation();tcCircleTap('${t.id}',this.closest('.tcard'))">${t.done&&!isSel?'\xe2\x9c\x93':isSel?'\xe2\x9c\x93':''}</div></div>
+      <div class="tcard-chk ${t.done?'on':''} ${isSel?'ms-chk':''}" onclick="event.stopPropagation();tcCircleTap('${t.id}',this.closest('.tcard'))">${t.done&&!isSel?'✓':isSel?'✓':''}</div>
       <div class="tcard-body">
         <div class="tcard-title">${t.title}</div>
         <div class="tcard-meta">
@@ -3951,7 +3954,7 @@ function renderTCard(t){
           ${showPri?`<span class="pri-badge ${t.pri}">${t.pri.toUpperCase()}</span>`:''}
           ${(t.tags||[]).map(tag=>`<span class="tag-chip" onclick="event.stopPropagation();plFilter('tag','${tag}')">${tag}</span>`).join('')}
           ${dep?`<span class="dep-badge ${depBlocked?'blocked-dep':''}">→ ${dep.code}${depBlocked?' ⚠':''}</span>`:''}
-          ${t.done?`<button class="restore-btn" onclick="event.stopPropagation();toggleTask('${t.id}')">&#x21BA; RESTORE</button>`:''}
+          ${t.done&&!isSel?`<button class="restore-btn" onclick="event.stopPropagation();toggleTask('${t.id}')">&#x21BA; RESTORE</button>`:''}
           ${(hasSubs||hasNotes)&&!expanded?`<button class="expand-btn" onclick="event.stopPropagation();toggleExpand('${t.id}')">▼ ${hasSubs?subDone+'/'+subs.length+' SUB':'NOTES'}</button>`:''}
           ${(hasSubs||hasNotes)&&expanded?`<button class="expand-btn" onclick="event.stopPropagation();toggleExpand('${t.id}')">▲ LESS</button>`:''}
         </div>
@@ -3960,8 +3963,8 @@ function renderTCard(t){
     </div>`;
   if(hasSubs){const pct=Math.round(subDone/subs.length*100);html+=`<div class="sub-prog"><div class="sub-prog-fill" style="width:${pct}%"></div></div>`;}
   if(expanded){
-    if(hasSubs)html+=`<div class="tcard-subs">${subs.map((s,i)=>`<div class="sub-row ${s.done?'done-s':''}"><button class="sub-chk ${s.done?'on':''}" onclick="toggleSub('${t.id}',${i})">${s.done?'✓':''}</button><span class="sub-txt">${s.title}</span></div>`).join('')}</div>`;
-    if(hasNotes)html+=`<div class="tcard-notes">${t.notes}</div>`;
+    if(hasSubs)html+=`<div class="tcard-subs" onclick="event.stopPropagation()">${subs.map((s,i)=>`<div class="sub-row ${s.done?'done-s':''}"><button class="sub-chk ${s.done?'on':''}" onclick="event.stopPropagation();toggleSub('${t.id}',${i})">${s.done?'✓':''}</button><span class="sub-txt">${s.title}</span></div>`).join('')}</div>`;
+    if(hasNotes)html+=`<div class="tcard-notes" onclick="event.stopPropagation()">${t.notes}</div>`;
   }
   html+=`</div>`;return html;
 }
@@ -4922,6 +4925,13 @@ document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',func
   if(o.id==='ol-edit-task'){tryCloseEditTask();return;}
   o.classList.remove('open');
 }));
+// tap handle bar to close edit sheet
+document.addEventListener('DOMContentLoaded',function(){
+  var h=document.querySelector('#ol-edit-task .sh-handle');
+  if(h) h.onclick=function(e){e.stopPropagation();tryCloseEditTask();};
+  var h2=document.querySelector('#ol-edit-task .sh-head');
+  // also make sh-handle bigger for easy tap
+});
 
 function refresh(){
   if(S.page==='hangar')rHangar();
