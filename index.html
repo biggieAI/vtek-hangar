@@ -3360,7 +3360,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260414-160000';
+const BUILD_ID = 'VTEK-20260414-170000';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
@@ -5063,12 +5063,12 @@ function setPayloadMode(mode){
   const ep=document.getElementById('pg-payload'),pp=document.getElementById('pg-plan');
   const eb=document.getElementById('pmode-execute'),pb=document.getElementById('pmode-plan');
   if(mode==='plan'){
-    ep.classList.remove('on');pp.classList.add('on');
+    if(ep) ep.classList.remove('on');if(pp) pp.classList.add('on');
     eb&&eb.classList.remove('on');pb&&pb.classList.add('on');
     const _wmpPlan=document.getElementById('wm-p'); if(_wmpPlan) _wmpPlan.textContent='PLAN';
     initPlanMode();
   } else {
-    pp.classList.remove('on');ep.classList.add('on');
+    if(pp) pp.classList.remove('on');if(ep) ep.classList.add('on');
     pb&&pb.classList.remove('on');eb&&eb.classList.add('on');
     const _wmp=document.getElementById('wm-p'); if(_wmp) _wmp.textContent='PAYLOAD';
     rPayload();
