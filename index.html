@@ -3381,7 +3381,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260415-120000';
+const BUILD_ID = 'VTEK-20260415-130000';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
@@ -3992,7 +3992,7 @@ function addTask(){
 
 function openTaskEdit(id){
   editTaskId=id;const t=S.tasks.find(t=>t.id===id);const sv=gs(t.sid);
-  document.getElementById('et-eye').textContent=sv?`${sv.code} // ${sv.name}`:'';
+  const _eye=document.getElementById('et-eye');if(_eye)_eye.textContent=sv?`${sv.code} // ${sv.name}`:'';
   document.getElementById('et-title-head').textContent=t.title.slice(0,30);
   document.getElementById('et-title').value=t.title;
   document.getElementById('et-due').value=t.due||'';
