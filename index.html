@@ -3089,6 +3089,12 @@ html, body { height:100%; overflow:hidden; }
 
 .tag-suggest-chip{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;border:1px solid rgba(255,255,255,0.10);background:rgba(255,255,255,0.04);font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:0.06em;text-transform:lowercase;color:var(--t1);cursor:pointer;transition:all 0.1s;-webkit-tap-highlight-color:transparent;}
 .tag-suggest-chip:hover,.tag-suggest-chip:active{background:rgba(255,255,255,0.10);color:var(--t0);border-color:rgba(255,255,255,0.20);}
+
+.tcard-main { cursor: pointer; }
+.tcard-edit-hint { flex-shrink:0; color:var(--t2); opacity:0.4; margin-left:4px; align-self:flex-start; margin-top:2px; }
+.restore-btn { font-family:var(--mono); font-size:9px; font-weight:700; letter-spacing:0.08em; color:var(--t1); background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.10); border-radius:20px; padding:2px 8px; cursor:pointer; margin-left:auto; }
+.restore-btn:active { background:rgba(255,255,255,0.12); }
+.done-c { opacity: 0.20; }
 </style>
 </head>
 <body>
@@ -3354,7 +3360,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260414-150000';
+const BUILD_ID = 'VTEK-20260414-160000';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
@@ -3871,9 +3877,18 @@ function rTaskList(){
     const dn=tasks.filter(t=>t.done);
     if(dn.length)html+=`<div class="pl-sec" style="margin-top:14px"><span class="pl-sec-lbl">Completed</span><span class="pl-sec-rule"></span></div>`+dn.map(t=>renderTCard(t)).join('');
   }else{
-    const open=tasks.filter(t=>!t.done),dn=tasks.filter(t=>t.done);
-    html+=open.map(t=>renderTCard(t)).join('');
-    if(dn.length)html+=`<div class="pl-sec" style="margin-top:14px"><span class="pl-sec-lbl">Completed</span><span class="pl-sec-rule"></span></div>`+dn.map(t=>renderTCard(t)).join('');
+    const priGroups=[{key:'critical',label:'CRITICAL'},{key:'high',label:'HIGH'},{key:'med',label:'MED'},{key:'low',label:'LOW'}];
+    const open=tasks.filter(t=>!t.done);
+    let hasAny=false;
+    priGroups.forEach(function(g){
+      var gt=open.filter(function(t){return t.pri===g.key;});
+      if(!gt.length)return;
+      hasAny=true;
+      html+=`<div class="pl-sec"><span class="pl-sec-dot"></span><span class="pl-sec-lbl">${g.label}</span><span class="pl-sec-rule"></span></div>`;
+      html+=gt.map(t=>renderTCard(t)).join('');
+    });
+    const dn=tasks.filter(t=>t.done);
+    if(dn.length)html+=`<div class="pl-sec" style="margin-top:14px"><span class="pl-sec-dot"></span><span class="pl-sec-lbl">COMPLETED</span><span class="pl-sec-rule"></span></div>`+dn.map(t=>renderTCard(t)).join('');
     if(!tasks.length)html=emptyState('<svg viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="white" stroke-width="1.2"><rect x="4" y="4" width="24" height="24" rx="3"/><path d="M10 16l4 4 8-8"/></svg>','ALL CLEAR','No open tasks. Tap + TASK to add one or use QUICK LOG in INTEL.','+ TASK',"openSheet(\'ol-task\')")
   }
   listEl.innerHTML=html;
@@ -3895,24 +3910,27 @@ function renderTCard(t){
   const hasSubs=subs.length>0,hasNotes=t.notes&&t.notes.trim();
   const dep=t.dep?S.shots.find(sh=>sh.id===t.dep):null,depBlocked=dep&&dep.status==='blocked';
   const expanded=t.expanded||false;
+  const showPri=t.pri==='critical'||t.pri==='high';
   let html=`<div class="tcard ${t.done?'done-c':''}" id="tc-${t.id}" draggable="true" style="--cc:${cc}"
     ondragstart="onDragStart(event,'${t.id}')" ondragover="onDragOver(event,'${t.id}')"
     ondrop="onDrop(event,'${t.id}')" ondragleave="onDragLeave(event,'${t.id}')">
-    <div class="tcard-main">
-      <div class="tcard-chk ${t.done?'on':''}" onclick="toggleTask('${t.id}')">${t.done?'✓':''}</div>
+    <div class="tcard-main" onclick="openTaskEdit('${t.id}')">
+      <div class="tcard-chk ${t.done?'on':''}" onclick="event.stopPropagation();toggleTask('${t.id}')">${t.done?'✓':''}</div>
       <div class="tcard-body">
-        <div class="tcard-title" onclick="openTaskEdit('${t.id}')">${t.title}</div>
+        <div class="tcard-title">${t.title}</div>
         <div class="tcard-meta">
           ${show?`<span class="tcard-show">${show.code}</span>`:''}
           ${t.due?`<span class="tcard-due ${late?'ov':soon?'soon':''}">${late?'⚠ OVERDUE':fmt(t.due)}</span>`:''}
           ${t.dur?`<span class="tcard-dur">${fmtMins(t.dur)}</span>`:''}
-          <span class="pri-badge ${t.pri}">${t.pri.toUpperCase()}</span>
-          ${(t.tags||[]).map(tag=>`<span class="tag-chip" onclick="plFilter('tag','${tag}')">${tag}</span>`).join('')}
+          ${showPri?`<span class="pri-badge ${t.pri}">${t.pri.toUpperCase()}</span>`:''}
+          ${(t.tags||[]).map(tag=>`<span class="tag-chip" onclick="event.stopPropagation();plFilter('tag','${tag}')">${tag}</span>`).join('')}
           ${dep?`<span class="dep-badge ${depBlocked?'blocked-dep':''}">→ ${dep.code}${depBlocked?' ⚠':''}</span>`:''}
-          ${(hasSubs||hasNotes)&&!expanded?`<button class="expand-btn" style="margin-left:auto" onclick="toggleExpand('${t.id}')">▼ ${hasSubs?subDone+'/'+subs.length+' SUB':'NOTES'}</button>`:''}
-          ${(hasSubs||hasNotes)&&expanded?`<button class="expand-btn" style="margin-left:auto" onclick="toggleExpand('${t.id}')">▲ LESS</button>`:''}
+          ${t.done?`<button class="restore-btn" onclick="event.stopPropagation();toggleTask('${t.id}')">&#x21BA; RESTORE</button>`:''}
+          ${(hasSubs||hasNotes)&&!expanded?`<button class="expand-btn" onclick="event.stopPropagation();toggleExpand('${t.id}')">▼ ${hasSubs?subDone+'/'+subs.length+' SUB':'NOTES'}</button>`:''}
+          ${(hasSubs||hasNotes)&&expanded?`<button class="expand-btn" onclick="event.stopPropagation();toggleExpand('${t.id}')">▲ LESS</button>`:''}
         </div>
       </div>
+      ${!t.done?`<div class="tcard-edit-hint"><svg viewBox="0 0 12 12" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 2l3 3-5 5H2V7l5-5z"/></svg></div>`:''}
     </div>`;
   if(hasSubs){const pct=Math.round(subDone/subs.length*100);html+=`<div class="sub-prog"><div class="sub-prog-fill" style="width:${pct}%"></div></div>`;}
   if(expanded){
@@ -3921,7 +3939,6 @@ function renderTCard(t){
   }
   html+=`</div>`;return html;
 }
-
 function toggleExpand(id){const t=S.tasks.find(t=>t.id===id);if(!t)return;t.expanded=!t.expanded;save();rTaskList();}
 function toggleSub(tid,i){const t=S.tasks.find(t=>t.id===tid);if(!t||!t.subtasks)return;t.subtasks[i].done=!t.subtasks[i].done;save();rTaskList();}
 function toggleTask(id){const t=S.tasks.find(t=>t.id===id);if(!t)return;t.done=!t.done;save();refresh();haptic(t.done?"success":"light");}
@@ -6552,10 +6569,10 @@ function attachTaskSwipes(el, taskId) {
         });
       }
     },
-    leftLabel: 'SCHEDULE',
-    leftClass: 'defer-action',
-    leftIcon: '<svg viewBox="0 0 14 14" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="1" y="2" width="12" height="11" rx="1"/><path d="M1 6h12M5 2v4M9 2v4"/></svg>',
-    onSwipeLeft: () => { openModule('schedule'); setTimeout(rackDay, 400); },
+    leftLabel: 'EDIT',
+    leftClass: 'edit-action',
+    leftIcon: '<svg viewBox="0 0 14 14" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 2l3 3-7 7H2V9l7-7z"/></svg>',
+    onSwipeLeft: () => { openTaskEdit(taskId); },
   });
 }
 
