@@ -1,3 +1,4 @@
+<!-- vtek-build:1776227447 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -3127,7 +3128,7 @@ html, body { height:100%; overflow:hidden; }
     </div>
     <div class="topbar-right">
       <span class="topbar-stat" id="idx-date"></span>
-      <button onclick="renderIndexStats();updateBadges();" style="background:none;border:none;color:var(--t2);cursor:pointer;padding:6px;display:flex;align-items:center;border-radius:8px;" title="Refresh">
+      <button onclick="renderIndexStats();updateBadges();toast('REFRESHED');" style="background:none;border:none;color:var(--t2);cursor:pointer;padding:6px;display:flex;align-items:center;border-radius:8px;" title="Refresh">
         <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13.5 8A5.5 5.5 0 1 1 8 2.5c1.8 0 3.4.87 4.4 2.2"/><path d="M13.5 2.5v2.2h-2.2"/></svg>
       </button>
     </div>
@@ -3334,6 +3335,7 @@ function closeModule() {
     mv.querySelectorAll('.page').forEach(e => e.classList.remove('on'));
   }
   _activeModule = null;
+  if(typeof msClear==='function') msClear();
   const dbg = document.getElementById('dbg-bar');
   if (dbg) dbg.style.display = '';
   setTimeout(renderIndexStats, 320);
@@ -3379,7 +3381,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260414-190000';
+const BUILD_ID = 'VTEK-20260415-100000';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
