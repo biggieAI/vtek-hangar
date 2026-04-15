@@ -587,7 +587,7 @@ body {
 .pl-qa-send:hover { background: rgba(255,255,255,0.88); }
 
 /* ── FILTER CHIPS ── */
-.pl-filters { display: flex; gap: 4px; margin-bottom: 10px; overflow-x: auto; scrollbar-width: none; flex-wrap: wrap; }
+.pl-filters { display: flex; gap: 4px; margin-bottom: 10px; overflow-x: auto; scrollbar-width: none; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; }
 .pl-fchip {
   flex-shrink: 0; padding: 3px 10px; border: none; border-radius: 2px;
   background: transparent; font-family: var(--sans); font-size: 10px; font-weight: 600;
@@ -3095,6 +3095,17 @@ html, body { height:100%; overflow:hidden; }
 .restore-btn { font-family:var(--mono); font-size:9px; font-weight:700; letter-spacing:0.08em; color:var(--t1); background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.10); border-radius:20px; padding:2px 8px; cursor:pointer; margin-left:auto; }
 .restore-btn:active { background:rgba(255,255,255,0.12); }
 .done-c { opacity: 0.20; }
+
+/* MULTI-SELECT */
+.tcard.ms-selected { margin-left: 14px; border-left: 3px solid #21e1df; background: rgba(33,225,223,0.06); transition: margin 0.15s ease; }
+.tcard.ms-selected .tcard-chk { background: #21e1df; border-color: #21e1df; color: #000; }
+.ms-bar { position: fixed; bottom: 0; left: 0; right: 0; z-index: 10200; background: var(--s2); border-top: 1px solid rgba(255,255,255,0.10); padding: 12px 16px; display: flex; align-items: center; gap: 8px; transform: translateY(100%); transition: transform 0.22s cubic-bezier(0.16,1,0.3,1); }
+.ms-bar.open { transform: translateY(0); }
+.ms-count { font-family: var(--mono); font-size: 11px; font-weight: 700; color: #21e1df; letter-spacing: 0.08em; flex: 1; }
+.ms-btn { padding: 8px 16px; border-radius: 4px; border: none; font-family: var(--sans); font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; }
+.ms-btn.done { background: var(--accent); color: #000; }
+.ms-btn.del { background: rgba(196,47,32,0.18); color: #e05a45; border: 1px solid rgba(196,47,32,0.3); }
+.ms-btn.cancel { background: transparent; color: var(--t1); border: 1px solid rgba(255,255,255,0.10); margin-left: auto; }
 </style>
 </head>
 <body>
@@ -3360,7 +3371,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260414-170000';
+const BUILD_ID = 'VTEK-20260414-180000';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
@@ -3914,7 +3925,7 @@ function renderTCard(t){
   let html=`<div class="tcard ${t.done?'done-c':''}" id="tc-${t.id}" draggable="true" style="--cc:${cc}"
     ondragstart="onDragStart(event,'${t.id}')" ondragover="onDragOver(event,'${t.id}')"
     ondrop="onDrop(event,'${t.id}')" ondragleave="onDragLeave(event,'${t.id}')">
-    <div class="tcard-main" onclick="openTaskEdit('${t.id}')">
+    <div class="tcard-main" onclick="_msActive?msToggle('${t.id}',this.closest('.tcard')):openTaskEdit('${t.id}')" oncontextmenu="event.preventDefault();msToggle('${t.id}',this.closest('.tcard'))" ontouchstart="tcTouchStart(event,'${t.id}')" ontouchend="tcTouchEnd(event)">
       <div class="tcard-chk ${t.done?'on':''}" onclick="event.stopPropagation();toggleTask('${t.id}')">${t.done?'✓':''}</div>
       <div class="tcard-body">
         <div class="tcard-title">${t.title}</div>
@@ -7687,6 +7698,34 @@ function addTagChip(tag){
   inp.value=cur.join(', ');
   haptic('light');
 }
+
+var _msActive=false,_msSelected=new Set(),_lpTimer=null;
+function msToggle(id,el){
+  if(!_msActive){_msActive=true;document.getElementById("ms-bar").classList.add("open");}
+  if(_msSelected.has(id)){_msSelected.delete(id);el.classList.remove("ms-selected");}
+  else{_msSelected.add(id);el.classList.add("ms-selected");}
+  var c=document.getElementById("ms-count");if(c)c.textContent=_msSelected.size+" SELECTED";
+  if(_msSelected.size===0)msClear();
+  haptic("light");
+}
+function msClear(){
+  _msActive=false;_msSelected.clear();
+  document.getElementById("ms-bar").classList.remove("open");
+  document.querySelectorAll(".tcard.ms-selected").forEach(function(el){el.classList.remove("ms-selected");});
+}
+function msBatchDone(){
+  var cnt=_msSelected.size;
+  _msSelected.forEach(function(id){var t=S.tasks.find(function(x){return x.id===id;});if(t)t.done=true;});
+  save();msClear();rPayload();haptic("success");toast(cnt+" COMPLETED");
+}
+function msBatchDelete(){
+  S.tasks=S.tasks.filter(function(t){return!_msSelected.has(t.id);});
+  save();msClear();rPayload();toast("DELETED");
+}
+function tcTouchStart(e,id){
+  _lpTimer=setTimeout(function(){_lpTimer=null;var card=e.target.closest(".tcard");if(card)msToggle(id,card);},500);
+}
+function tcTouchEnd(e){if(_lpTimer){clearTimeout(_lpTimer);_lpTimer=null;}}
 </script>
 
 
@@ -8068,11 +8107,6 @@ function addTagChip(tag){
       </div>
       <div class="pl-filters" id="pl-filters"></div>
       <div id="payload-dos"><div id="sched-section"></div></div>
-      <div class="pl-sec" style="margin-bottom:8px;">
-        <span class="pl-sec-dot"></span>
-        <span class="pl-sec-lbl">TASKS</span>
-        <span class="pl-sec-rule"></span>
-      </div>
       <div id="task-list"></div>
       <div style="height:40px;"></div>
     </div>
@@ -8083,5 +8117,12 @@ function addTagChip(tag){
 <div class="module-view" id="mv-intel"></div>
 <div class="module-view" id="mv-config"></div>
 
+
+<div class="ms-bar" id="ms-bar">
+  <span class="ms-count" id="ms-count">0 SELECTED</span>
+  <button class="ms-btn done" onclick="msBatchDone()">COMPLETE</button>
+  <button class="ms-btn del" onclick="msBatchDelete()">DELETE</button>
+  <button class="ms-btn cancel" onclick="msClear()">CANCEL</button>
+</div>
 </body>
 </html>
