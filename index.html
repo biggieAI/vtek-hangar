@@ -3258,17 +3258,6 @@ html, body { height:100%; overflow:hidden; }
 </div>
 <!-- END INDEX -->
 
-<!-- DEBUG BAR -->
-<div id="dbg-bar" style="flex-shrink:0;background:#0a0d0a;border-top:1px solid #1a3a1a;font-family:monospace;font-size:10px;">
-  <div id="dbg-collapsed" style="height:28px;display:flex;align-items:center;padding:0 10px;gap:10px;touch-action:manipulation;-webkit-user-select:none;user-select:none;">
-    <button onclick="(function(){var e=document.getElementById('dbg-expanded');e.style.display=e.style.display=='none'?'block':'none';})()" style="background:none;border:none;color:#0f0;font-size:10px;cursor:pointer;font-family:monospace;padding:0;touch-action:manipulation;-webkit-user-select:none;user-select:none;min-width:44px;min-height:28px;">&gt; DBG</button>
-    <span id="dbg-build-id" style="color:#555;font-size:9px;flex:1;">VTEK-BUILD</span>
-    <button onclick="navigator.clipboard&&navigator.clipboard.writeText(document.getElementById('dbg-log').innerText).then(function(){document.getElementById('dbg-copy-btn').textContent='COPIED';})" id="dbg-copy-btn" style="background:#1a2a1a;border:1px solid #2a4a2a;color:#0f0;padding:2px 8px;font-size:9px;cursor:pointer;font-family:monospace;touch-action:manipulation;-webkit-user-select:none;user-select:none;min-height:24px;">COPY</button>
-  </div>
-  <div id="dbg-expanded" style="display:none;max-height:160px;overflow-y:auto;border-top:1px solid #1a3a1a;-webkit-overflow-scrolling:touch;">
-    <div id="dbg-log" style="color:#0f0;line-height:1.5;white-space:pre-wrap;padding:4px 10px;font-size:9px;"></div>
-  </div>
-</div>
 
 <script>
 // ════════════════════════════════════
@@ -8351,153 +8340,17 @@ function tryCloseEditTask(){
 </div>
 <div id="toast" style="position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(30,32,41,0.95);border:1px solid rgba(255,255,255,0.12);color:#f4f7fa;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:0.10em;padding:8px 20px;border-radius:4px;opacity:0;transition:all 0.2s;pointer-events:none;z-index:99999;white-space:nowrap;"></div>
 
-<!-- VTEK DEBUG CONSOLE -->
-<div id="vdbg-btn" onclick="vdbgToggle()" style="
-  position:fixed;bottom:calc(env(safe-area-inset-bottom,0px)+72px);right:12px;
-  z-index:99998;width:36px;height:36px;
-  background:#0a0f1a;border:1px solid rgba(33,225,223,0.4);
-  display:flex;align-items:center;justify-content:center;
-  font-family:monospace;font-size:9px;font-weight:800;color:#21e1df;
-  letter-spacing:0.04em;cursor:pointer;
-  box-shadow:0 0 0 1px rgba(33,225,223,0.15);
-  -webkit-user-select:none;user-select:none;touch-action:manipulation;
-">DBG</div>
-<div id="vdbg-panel" style="
-  display:none;position:fixed;bottom:calc(env(safe-area-inset-bottom,0px)+112px);
-  left:8px;right:8px;z-index:99997;
-  background:rgba(4,6,14,0.97);border:1px solid rgba(33,225,223,0.25);
-  font-family:'JetBrains Mono',monospace;font-size:10px;
-  max-height:52vh;flex-direction:column;
-">
-  <div style="display:flex;align-items:center;padding:6px 10px;border-bottom:1px solid rgba(255,255,255,0.08);flex-shrink:0;">
-    <span style="color:#21e1df;font-size:9px;font-weight:800;letter-spacing:0.1em;flex:1;">VTEK // DEBUG CONSOLE</span>
-    <button onclick="vdbgClear()" style="background:none;border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.5);font-size:8px;padding:2px 6px;cursor:pointer;font-family:inherit;margin-right:6px;-webkit-user-select:none;user-select:none;">CLR</button>
-    <button onclick="vdbgToggle()" style="background:none;border:none;color:rgba(255,255,255,0.4);font-size:12px;cursor:pointer;-webkit-user-select:none;user-select:none;">&#x2715;</button>
+
+<!-- DEBUG BAR -->
+<div id="dbg-bar" style="flex-shrink:0;background:#0a0d0a;border-top:1px solid #1a3a1a;font-family:monospace;font-size:10px;">
+  <div id="dbg-collapsed" style="height:28px;display:flex;align-items:center;padding:0 10px;gap:10px;touch-action:manipulation;-webkit-user-select:none;user-select:none;">
+    <button onclick="(function(){var e=document.getElementById('dbg-expanded');e.style.display=e.style.display=='none'?'block':'none';})()" style="background:none;border:none;color:#0f0;font-size:10px;cursor:pointer;font-family:monospace;padding:0;touch-action:manipulation;-webkit-user-select:none;user-select:none;min-width:44px;min-height:28px;">&gt; DBG</button>
+    <span id="dbg-build-id" style="color:#555;font-size:9px;flex:1;">VTEK-BUILD</span>
+    <button onclick="navigator.clipboard&&navigator.clipboard.writeText(document.getElementById('dbg-log').innerText).then(function(){document.getElementById('dbg-copy-btn').textContent='COPIED';})" id="dbg-copy-btn" style="background:#1a2a1a;border:1px solid #2a4a2a;color:#0f0;padding:2px 8px;font-size:9px;cursor:pointer;font-family:monospace;touch-action:manipulation;-webkit-user-select:none;user-select:none;min-height:24px;">COPY</button>
   </div>
-  <div id="vdbg-log" style="overflow-y:auto;flex:1;padding:4px 0;scrollbar-width:none;"></div>
+  <div id="dbg-expanded" style="display:none;max-height:160px;overflow-y:auto;border-top:1px solid #1a3a1a;-webkit-overflow-scrolling:touch;">
+    <div id="dbg-log" style="color:#0f0;line-height:1.5;white-space:pre-wrap;padding:4px 10px;font-size:9px;"></div>
+  </div>
 </div>
-<script>
-(function(){
-  var MAX=120;
-  var entries=[];
-  var open=false;
-
-  function ts(){var d=new Date();return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')+':'+String(d.getSeconds()).padStart(2,'0');}
-
-  window.vdbgLog=function(type,msg,color){
-    var s=ts()+' '+msg;
-    entries.push({s:s,c:color||'#c8cdd8'});
-    if(entries.length>MAX)entries.shift();
-    if(open)vdbgRender();
-  };
-
-  function vdbgRender(){
-    var el=document.getElementById('vdbg-log');
-    if(!el)return;
-    el.innerHTML=entries.map(function(e){
-      return '<div style="padding:2px 10px;border-bottom:1px solid rgba(255,255,255,0.04);color:'+e.c+';white-space:pre-wrap;word-break:break-all;">'+e.s+'</div>';
-    }).join('');
-    el.scrollTop=el.scrollHeight;
-  }
-
-  window.vdbgToggle=function(){
-    var p=document.getElementById('vdbg-panel');
-    var b=document.getElementById('vdbg-btn');
-    if(!p)return;
-    open=!open;
-    p.style.display=open?'flex':'none';
-    b.style.borderColor=open?'#21e1df':'rgba(33,225,223,0.4)';
-    if(open)vdbgRender();
-  };
-
-  window.vdbgClear=function(){entries=[];vdbgRender();};
-
-  // Intercept console
-  var _log=console.log,_warn=console.warn,_err=console.error;
-  console.log=function(){var m=Array.from(arguments).join(' ');_log.apply(console,arguments);vdbgLog('log','[log] '+m,'#8ea8c0');};
-  console.warn=function(){var m=Array.from(arguments).join(' ');_warn.apply(console,arguments);vdbgLog('warn','[WRN] '+m,'#e8b84b');};
-  console.error=function(){var m=Array.from(arguments).join(' ');_err.apply(console,arguments);vdbgLog('err','[ERR] '+m,'#e85c4b');};
-
-  // Patch key functions after DOM ready
-  document.addEventListener('DOMContentLoaded',function(){
-    setTimeout(function(){
-
-      // openModule
-      if(typeof openModule==='function'){
-        var _om=openModule;
-        window.openModule=function(name){
-          vdbgLog('fn','openModule('+name+') _active='+window._activeModule,'#21e1df');
-          _om(name);
-          vdbgLog('fn','  -> _active now='+window._activeModule,'#21e1df');
-        };
-      }
-
-      // closeModule
-      if(typeof closeModule==='function'){
-        var _cm=closeModule;
-        window.closeModule=function(){
-          vdbgLog('fn','closeModule() _active='+window._activeModule,'#f4c06a');
-          var opens=document.querySelectorAll('.module-view.open');
-          vdbgLog('fn','  open views='+opens.length+' ['+Array.from(opens).map(function(e){return e.id;}).join(',')+']','#f4c06a');
-          _cm();
-          vdbgLog('fn','  -> _active now='+window._activeModule,'#f4c06a');
-        };
-      }
-
-      // planChipClick
-      if(typeof planChipClick==='function'){
-        var _pcc=planChipClick;
-        window.planChipClick=function(el){
-          vdbgLog('fn','planChipClick tid='+el.dataset.tid+' planSelected='+JSON.stringify(window.planSelected),'#a8d4a8');
-          _pcc(el);
-          vdbgLog('fn','  -> planSelected now='+JSON.stringify(window.planSelected),'#a8d4a8');
-        };
-      }
-
-      // onSlotTap
-      if(typeof onSlotTap==='function'){
-        var _ost=onSlotTap;
-        window.onSlotTap=function(h,m){
-          vdbgLog('fn','onSlotTap('+h+':'+String(m).padStart(2,'0')+') planSelected='+JSON.stringify(window.planSelected),'#a8d4a8');
-          _ost(h,m);
-        };
-      }
-
-      // autoRackDay
-      if(typeof autoRackDay==='function'){
-        var _ard=autoRackDay;
-        window.autoRackDay=function(silent){
-          vdbgLog('fn','autoRackDay(silent='+silent+') tasks='+((window.S&&window.S.tasks)||[]).length,'#d4a8e8');
-          _ard(silent);
-          vdbgLog('fn','  -> planSchedule.length='+(window.planSchedule||[]).length,'#d4a8e8');
-        };
-      }
-
-      // commitPlan
-      if(typeof commitPlan==='function'){
-        var _cp=commitPlan;
-        window.commitPlan=function(){
-          vdbgLog('fn','commitPlan() schedule.len='+(window.planSchedule||[]).length,'#d4a8e8');
-          _cp();
-        };
-      }
-
-      // selectPlanTask
-      if(typeof selectPlanTask==='function'){
-        var _spt=selectPlanTask;
-        window.selectPlanTask=function(id,title,dur){
-          vdbgLog('fn','selectPlanTask('+id+', "'+title+'", '+dur+')','#a8d4a8');
-          _spt(id,title,dur);
-          vdbgLog('fn','  -> planSelected='+JSON.stringify(window.planSelected),'#a8d4a8');
-        };
-      }
-
-      vdbgLog('sys','VTEK DBG READY. _activeModule='+window._activeModule,'#21e1df');
-      vdbgLog('sys','S.tasks='+((window.S&&window.S.tasks)||[]).length+' S.shows='+((window.S&&window.S.shows)||[]).length,'#21e1df');
-
-    },800);
-  });
-})();
-</script>
 </body>
 </html>
