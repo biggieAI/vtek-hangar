@@ -3180,7 +3180,7 @@ html, body { height:100%; overflow:hidden; }
       </div>
 
       <!-- PAYLOAD -->
-      <div class="module-card" role="button" onclick="openModule('payload')">
+      <div class="module-card" role="button" onclick="window.location.href='./payload.html'">
         <div class="mc-inner">
           <div class="mc-icon">
             <svg viewBox="0 0 22 22" width="22" height="22" fill="none" stroke="white" stroke-width="1.4"><path d="M4 6h9M4 11h6M4 16h8"/><path d="M15 8l3 3-3 3M18 11h-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -3218,7 +3218,7 @@ html, body { height:100%; overflow:hidden; }
       </div>
 
       <!-- VAULT -->
-      <div class="module-card" role="button" onclick="openModule('vault')">
+      <div class="module-card" role="button" onclick="window.location.href='./vault.html'">
         <div class="mc-inner">
           <div class="mc-icon">
             <svg viewBox="0 0 22 22" width="22" height="22" fill="none" stroke="white" stroke-width="1.4"><path d="M4 4h14v14H4zM4 9h14M9 9v9"/></svg>
@@ -3236,7 +3236,7 @@ html, body { height:100%; overflow:hidden; }
       </div>
 
       <!-- INTEL -->
-      <div class="module-card" role="button" onclick="openModule('intel')">
+      <div class="module-card" role="button" onclick="window.location.href='./intel.html'">
         <div class="mc-inner">
           <div class="mc-icon">
             <svg viewBox="0 0 22 22" width="22" height="22" fill="none" stroke="white" stroke-width="1.4"><circle cx="11" cy="11" r="8"/><path d="M11 7v5l3 3"/></svg>
@@ -3387,9 +3387,9 @@ function sw(p) {
 function quickAdd(action) {
   const a = {
     shot:  ()=>{ openModule('hangar');  setTimeout(()=>openSheet('ol-shot'),350); },
-    task:  ()=>{ openModule('payload'); setTimeout(()=>openSheet('ol-task'),350); },
-    note:  ()=>{ openModule('vault');   setTimeout(()=>vaultNewDoc(),350); },
-    intel: ()=>openModule('intel'),
+    task:  ()=>{ window.location.href='./payload.html'; setTimeout(()=>openSheet('ol-task'),350); },
+    note:  ()=>{ window.location.href='./vault.html';   setTimeout(()=>vaultNewDoc(),350); },
+    intel: ()=>window.location.href='./intel.html',
   };
   if (a[action]) a[action]();
 }
@@ -3407,7 +3407,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260416-380000';
+const BUILD_ID = 'VTEK-20260416-390000';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
@@ -5077,13 +5077,13 @@ function doSearch(q){
   S.tasks.filter(t=>!t.done).forEach(t=>{
     const show=gs(t.sid);
     const score=(t.title.toLowerCase().includes(ql)?3:0)+((t.tags||[]).some(g=>g.includes(ql))?2:0)+(t.notes?.toLowerCase().includes(ql)?1:0);
-    if(score>0) results.push({type:'task',score,id:t.id,title:t.title,meta:`${show?.code||'?'} · ${t.pri?.toUpperCase()}${t.due?' · '+fmt(t.due):''}`,color:t.color||'var(--s4)',action:`openTaskEdit('${t.id}');closeSearch();openModule('payload');`,raw:t});
+    if(score>0) results.push({type:'task',score,id:t.id,title:t.title,meta:`${show?.code||'?'} · ${t.pri?.toUpperCase()}${t.due?' · '+fmt(t.due):''}`,color:t.color||'var(--s4)',action:`openTaskEdit('${t.id}');closeSearch();window.location.href='./payload.html';`,raw:t});
   });
 
   // Vault
   (S.vaultDocs||[]).forEach(d=>{
     const score=(d.title?.toLowerCase().includes(ql)?3:0)+(d.content?.toLowerCase().includes(ql)?1:0);
-    if(score>0) results.push({type:'vault',score,id:d.id,title:d.title||'Untitled',meta:`VAULT${d.showId?' · '+gs(d.showId)?.code:''}`,color:'var(--p7)',action:`vaultOpen('${d.id}');closeSearch();openModule('vault');`,raw:d});
+    if(score>0) results.push({type:'vault',score,id:d.id,title:d.title||'Untitled',meta:`VAULT${d.showId?' · '+gs(d.showId)?.code:''}`,color:'var(--p7)',action:`vaultOpen('${d.id}');closeSearch();window.location.href='./vault.html';`,raw:d});
   });
 
   // Version log entries
@@ -6150,7 +6150,7 @@ function buildBrief() {
         title:  t.title,
         sub:    'OVERDUE · ' + (show ? show.code : '') + (t.due ? ' · DUE ' + fmtDateShort(t.due) : ''),
         action: 'VIEW',
-        tap:    () => { openModule('payload'); }
+        tap:    () => { window.location.href='./payload.html'; }
       });
     });
 
@@ -6221,7 +6221,7 @@ function buildBrief() {
       title:  noDue.length + ' task' + (noDue.length > 1 ? 's' : '') + ' with no due date',
       sub:    noDue.slice(0,2).map(t=>t.title).join(' · ') + (noDue.length > 2 ? ' +' + (noDue.length-2) + ' more' : ''),
       action: 'SET',
-      tap:    () => { openModule('payload'); }
+      tap:    () => { window.location.href='./payload.html'; }
     });
   }
 
@@ -6841,7 +6841,7 @@ function renderSearchResults(q) {
     html += '<div class="search-group-label">TASKS</div>';
     html += tasks.slice(0,5).map(t => {
       const sh = shows.find(x => x.id === t.sid);
-      return `<div class="search-result-item" onclick="closeSearch();openModule('payload')">
+      return `<div class="search-result-item" onclick="closeSearch();window.location.href='./payload.html'">
         ${taskIcon}
         <div class="sr-body">
           <div class="sr-title">${t.title}</div>
@@ -6854,7 +6854,7 @@ function renderSearchResults(q) {
 
   if (docs.length) {
     html += '<div class="search-group-label">VAULT</div>';
-    html += docs.slice(0,4).map(d => `<div class="search-result-item" onclick="closeSearch();openModule('vault')">
+    html += docs.slice(0,4).map(d => `<div class="search-result-item" onclick="closeSearch();window.location.href='./vault.html'">
       ${docIcon}
       <div class="sr-body">
         <div class="sr-title">${d.title}</div>
