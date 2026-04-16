@@ -72,10 +72,9 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 }
 .actions{margin-left:auto;display:flex;gap:6px;}
 .tb-btn{
-  padding:6px 10px;
-  background:linear-gradient(180deg,var(--s4),var(--s3));
-  border:var(--b2);
-  box-shadow:var(--slab);
+  padding:6px 12px;
+  background:var(--s3);
+  border:1px solid rgba(255,255,255,0.08);
   color:var(--t0);
   font-family:var(--sans);font-size:10px;font-weight:700;
   letter-spacing:0.05em;
@@ -131,15 +130,15 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 .pool.open .pool-body{display:block;}
 .chip{
   display:flex;flex-direction:column;gap:5px;
-  padding:10px 14px;
-  background:linear-gradient(155deg,var(--s3) 0%,var(--s2) 100%);
-  border:var(--b1);
+  padding:12px 16px;
+  background:var(--s2);
+  border:1px solid rgba(255,255,255,0.05);
   border-left:3px solid var(--tc,var(--accent));
-  box-shadow:var(--slab);
-  margin:2px 0;
+  margin:4px 12px;
   cursor:pointer;
   touch-action:manipulation;
   -webkit-user-select:none;user-select:none;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);
 }
 .chip.scheduled{opacity:0.38;}
 .chip.selected{
@@ -188,15 +187,15 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
   pointer-events:none;font-weight:300;
 }
 .block{
-  background:linear-gradient(155deg,var(--s3) 0%,var(--s2) 100%);
-  border:var(--b2);
+  background:var(--s2);
+  border:1px solid rgba(255,255,255,0.05);
   border-left:3px solid var(--bc,var(--accent));
-  box-shadow:var(--slab);
-  padding:8px 10px;
+  padding:10px 12px;
   margin:2px 0;
   display:flex;align-items:center;gap:8px;
   cursor:pointer;
   touch-action:manipulation;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);
 }
 .block-body{flex:1;min-width:0;}
 .block-title{font-size:12px;font-weight:600;color:var(--t0);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
@@ -564,7 +563,7 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 
 <script>
 'use strict';
-const BUILD='VTEK-SCHED-20260416-002';
+const BUILD='VTEK-SCHED-20260416-003';
 
 const _dbgEl=document.getElementById('dbg-log');
 function dbg(msg){const t=new Date().toTimeString().slice(0,8);_dbgEl.textContent+=t+' '+msg+'\n';_dbgEl.scrollTop=_dbgEl.scrollHeight;}
