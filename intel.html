@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>VTEK // Intel</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+:root{
+  --bg:#1a1a1c;--s1:#1f1f21;--s2:#222224;--s3:#272729;--s4:#2e2e30;--s5:#353537;
+  --t0:#ececee;--t1:#b0b0bc;--t2:#787882;--t3:#505058;
+  --accent:rgba(244,247,250,0.92);--accent-hi:#f4f7fa;--teal:#21e1df;
+  --hi:#e85c4b;
+  --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,monospace;
+  --sans:'Inter',-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  --b1:1px solid rgba(255,255,255,0.07);--b2:1px solid rgba(255,255,255,0.10);--b3:1px solid rgba(255,255,255,0.15);
+  --safe-t:env(safe-area-inset-top,0px);--safe-b:env(safe-area-inset-bottom,0px);
+}
+html,body{background:var(--bg);color:var(--t0);font-family:var(--sans);font-size:14px;line-height:1.4;overflow:hidden;height:100dvh;width:100vw;}
+body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-available;overflow:hidden;}
+.topbar{display:flex;align-items:center;gap:8px;padding:calc(var(--safe-t)+12px) 12px 12px;background:var(--s1);border-bottom:var(--b1);flex-shrink:0;touch-action:manipulation;position:relative;}
+.topbar::after{content:'';position:absolute;bottom:-1px;left:8%;right:8%;height:1px;background:linear-gradient(90deg,transparent,rgba(200,220,232,0.5) 50%,transparent);opacity:0.3;}
+.back-btn{display:flex;align-items:center;gap:6px;background:none;border:none;color:var(--t1);font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:0.08em;padding:10px 10px 10px 8px;min-height:44px;min-width:44px;cursor:pointer;touch-action:manipulation;-webkit-user-select:none;user-select:none;}
+.back-btn svg,.back-btn span{pointer-events:none;}
+.title{font-family:var(--mono);font-size:14px;font-weight:800;letter-spacing:0.10em;color:var(--accent-hi);}
+.actions{margin-left:auto;display:flex;gap:4px;}
+.tb-btn{padding:6px 12px;background:var(--s3);border:var(--b2);color:var(--t0);font-family:var(--sans);font-size:10px;font-weight:700;letter-spacing:0.05em;cursor:pointer;min-height:32px;border-radius:8px;touch-action:manipulation;-webkit-user-select:none;user-select:none;}
+
+/* CHAT */
+.chat-area{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:12px 14px 80px;display:flex;flex-direction:column;gap:10px;}
+.msg{max-width:88%;word-wrap:break-word;line-height:1.55;}
+.msg.user{align-self:flex-end;background:var(--s3);border:var(--b2);border-radius:14px 14px 4px 14px;padding:10px 14px;font-size:13px;}
+.msg.ai{align-self:flex-start;background:var(--s2);border:var(--b1);border-radius:14px 14px 14px 4px;padding:10px 14px;font-size:13px;}
+.msg.thinking{opacity:0.5;font-style:italic;color:var(--t1);}
+.msg-time{font-family:var(--mono);font-size:9px;color:var(--t3);margin-top:4px;}
+
+/* WORKFLOWS */
+.wf-section{padding:16px 14px 8px;}
+.wf-label{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:0.12em;color:var(--t2);margin-bottom:8px;}
+.wf-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.wf-btn{
+  display:flex;align-items:center;gap:10px;
+  background:var(--s2);border:var(--b2);border-radius:10px;
+  padding:12px;cursor:pointer;touch-action:manipulation;
+  -webkit-user-select:none;user-select:none;
+}
+.wf-btn:active{background:var(--s3);}
+.wf-icon{font-size:18px;flex-shrink:0;}
+.wf-name{font-family:var(--mono);font-size:10px;font-weight:700;color:var(--t0);letter-spacing:0.04em;}
+.wf-desc{font-size:10px;color:var(--t2);margin-top:2px;}
+
+/* INPUT BAR */
+.input-bar{
+  flex-shrink:0;
+  padding:10px 12px calc(var(--safe-b)+10px);
+  background:var(--s1);border-top:var(--b1);
+  display:flex;align-items:flex-end;gap:8px;
+}
+.intel-input{
+  flex:1;background:var(--s2);border:var(--b2);color:var(--t0);
+  font-family:var(--sans);font-size:13px;padding:10px 12px;
+  outline:none;border-radius:10px;resize:none;
+  max-height:100px;overflow-y:auto;line-height:1.4;
+  -webkit-overflow-scrolling:touch;
+}
+.intel-input::placeholder{color:var(--t2);}
+.send-btn{
+  width:40px;height:40px;flex-shrink:0;
+  background:var(--accent-hi);border:none;border-radius:10px;
+  color:#000;font-size:16px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  touch-action:manipulation;-webkit-user-select:none;user-select:none;
+}
+.send-btn:disabled{background:var(--s4);color:var(--t2);}
+
+/* KEY SETUP */
+.key-banner{display:none;padding:10px 14px;background:rgba(232,92,75,0.08);border-bottom:1px solid rgba(232,92,75,0.2);}
+.key-banner.show{display:flex;align-items:center;gap:10px;}
+.key-banner-txt{font-size:11px;color:var(--hi);flex:1;}
+.key-input{flex:1;background:var(--s2);border:var(--b2);color:var(--t0);font-family:var(--mono);font-size:11px;padding:6px 10px;outline:none;border-radius:6px;}
+.key-save{background:#fff;color:#000;border:none;font-family:var(--mono);font-size:10px;font-weight:800;padding:6px 12px;border-radius:6px;cursor:pointer;touch-action:manipulation;}
+
+.toast{position:fixed;bottom:calc(var(--safe-b)+60px);left:50%;transform:translateX(-50%) translateY(20px);background:var(--s4);border:var(--b2);color:var(--t0);font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:0.10em;padding:9px 20px;opacity:0;transition:all 0.2s;pointer-events:none;white-space:nowrap;z-index:600;border-radius:20px;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.dbg{flex-shrink:0;background:#0a0d0a;border-top:1px solid #1a3a1a;font-family:monospace;font-size:10px;}
+.dbg-hd{height:28px;display:flex;align-items:center;padding:0 10px;gap:10px;touch-action:manipulation;}
+.dbg-btn{background:none;border:none;color:#0f0;font-size:10px;font-family:monospace;cursor:pointer;min-width:44px;min-height:28px;padding:0;}
+.dbg-id{color:#555;font-size:9px;flex:1;}
+.dbg-copy{background:#1a2a1a;border:1px solid #2a4a2a;color:#0f0;padding:2px 8px;font-size:9px;font-family:monospace;cursor:pointer;min-height:24px;}
+.dbg-body{display:none;max-height:140px;overflow-y:auto;border-top:1px solid #1a3a1a;}
+.dbg.open .dbg-body{display:block;}
+.dbg-log{color:#0f0;line-height:1.5;white-space:pre-wrap;padding:4px 10px;font-size:9px;}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <button class="back-btn" onclick="window.location.href='./'">
+    <svg viewBox="0 0 12 12" width="13" height="13" fill="none" stroke="#21e1df" stroke-width="2"><path d="M7.5 2L3.5 6l4 4"/></svg>
+    <span>HOME</span>
+  </button>
+  <span class="title">INTEL</span>
+  <div class="actions">
+    <button class="tb-btn" onclick="clearChat()">CLEAR</button>
+    <button class="tb-btn" onclick="toggleKeySetup()">API KEY</button>
+  </div>
+</div>
+
+<div class="key-banner" id="key-banner">
+  <span class="key-banner-txt">&#x26A0; No API key set</span>
+  <input class="key-input" id="key-input" type="password" placeholder="sk-ant-...">
+  <button class="key-save" onclick="saveKey()">SAVE</button>
+</div>
+
+<div class="chat-area" id="chat-area">
+  <!-- Workflows shown when chat is empty -->
+  <div class="wf-section" id="wf-section">
+    <div class="wf-label">WORKFLOWS</div>
+    <div class="wf-grid">
+      <div class="wf-btn" onclick="runWF('status')">
+        <span class="wf-icon">&#x1F4CA;</span>
+        <div><div class="wf-name">STATUS</div><div class="wf-desc">Show summary</div></div>
+      </div>
+      <div class="wf-btn" onclick="runWF('blockers')">
+        <span class="wf-icon">&#x1F6A8;</span>
+        <div><div class="wf-name">BLOCKERS</div><div class="wf-desc">Identify risks</div></div>
+      </div>
+      <div class="wf-btn" onclick="runWF('priorities')">
+        <span class="wf-icon">&#x1F3AF;</span>
+        <div><div class="wf-name">PRIORITIES</div><div class="wf-desc">Sort my tasks</div></div>
+      </div>
+      <div class="wf-btn" onclick="runWF('plan')">
+        <span class="wf-icon">&#x1F5D3;</span>
+        <div><div class="wf-name">DAY PLAN</div><div class="wf-desc">Build schedule</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="input-bar">
+  <textarea class="intel-input" id="intel-input" placeholder="Ask anything about your shows, shots, tasks..." rows="1"
+    onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();send();}"
+    oninput="autoResize(this)"></textarea>
+  <button class="send-btn" id="send-btn" onclick="send()">&#x279C;</button>
+</div>
+
+<div id="toast" class="toast"></div>
+<div class="dbg" id="dbg">
+  <div class="dbg-hd">
+    <button class="dbg-btn" onclick="document.getElementById('dbg').classList.toggle('open')">&gt; DBG</button>
+    <span class="dbg-id">VTEK-INTEL-20260416-001</span>
+    <button class="dbg-copy" onclick="navigator.clipboard&&navigator.clipboard.writeText(document.getElementById('dbg-log').textContent);this.textContent='COPIED';setTimeout(()=>this.textContent='COPY',1500)">COPY</button>
+  </div>
+  <div class="dbg-body"><div class="dbg-log" id="dbg-log"></div></div>
+</div>
+
+<script>
+'use strict';
+const LS='vtek9';
+let S=JSON.parse(localStorage.getItem(LS)||'null')||{shows:[],shots:[],tasks:[]};
+let history=[];
+let msgCount=0;
+
+function dbg(m){const el=document.getElementById('dbg-log');el.textContent+=new Date().toTimeString().slice(0,8)+' '+m+'\n';}
+window.addEventListener('error',e=>dbg('ERR:'+e.message));
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);}
+function getKey(){return localStorage.getItem('vtek_claude_key')||'';}
+function saveKey(){const k=document.getElementById('key-input').value.trim();if(k){localStorage.setItem('vtek_claude_key',k);toast('API KEY SAVED');document.getElementById('key-banner').classList.remove('show');}else{toast('ENTER A KEY');}}
+function toggleKeySetup(){const b=document.getElementById('key-banner');b.classList.toggle('show');if(b.classList.contains('show'))document.getElementById('key-input').focus();}
+function autoResize(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,100)+'px';}
+
+function buildContext(){
+  const tod=new Date().toISOString().slice(0,10);
+  const openTasks=(S.tasks||[]).filter(t=>!t.done);
+  const blkShots=(S.shots||[]).filter(s=>s.status==='blocked');
+  return `You are INTEL, a VFX production AI for CBFX (Chicken Bone FX). Today: ${tod}.
+Shows: ${(S.shows||[]).map(s=>s.code+' ('+s.name+')').join(', ')||'none'}.
+Shots: ${(S.shots||[]).length} total, ${blkShots.length} blocked.
+Open tasks: ${openTasks.length}. High priority: ${openTasks.filter(t=>t.pri==='high').length}.
+Be concise, production-focused, use VFX terminology. Max 300 words unless detail requested.`;
+}
+
+function addMsg(role,text,thinking=false){
+  const id='m'+Date.now()+msgCount++;
+  const chat=document.getElementById('chat-area');
+  const wf=document.getElementById('wf-section');
+  if(wf)wf.style.display='none';
+  const div=document.createElement('div');
+  div.className='msg '+role+(thinking?' thinking':'');
+  div.id=id;
+  div.textContent=thinking?'Thinking...':text;
+  chat.appendChild(div);
+  chat.scrollTop=chat.scrollHeight;
+  return id;
+}
+
+function updateMsg(id,text){
+  const el=document.getElementById(id);
+  if(el){el.textContent=text;el.classList.remove('thinking');document.getElementById('chat-area').scrollTop=9999;}
+}
+
+async function send(){
+  const key=getKey();
+  const inp=document.getElementById('intel-input');
+  const text=(inp.value||'').trim();
+  if(!text)return;
+  if(!key){toggleKeySetup();toast('SET API KEY FIRST');return;}
+  inp.value='';autoResize(inp);
+  addMsg('user',text);
+  history.push({role:'user',content:text});
+  const thinkId=addMsg('ai','',true);
+  document.getElementById('send-btn').disabled=true;
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':key,
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({
+        model:'claude-haiku-4-5-20251001',
+        max_tokens:1000,
+        system:buildContext(),
+        messages:history
+      })
+    });
+    if(!res.ok){const e=await res.json().catch(()=>({}));throw new Error(e.error?.message||res.statusText);}
+    const data=await res.json();
+    const reply=data.content?.[0]?.text||'(no response)';
+    history.push({role:'assistant',content:reply});
+    updateMsg(thinkId,reply);
+    dbg('[INTEL] replied, tokens='+data.usage?.output_tokens);
+  }catch(e){updateMsg(thinkId,'Error: '+e.message);dbg('[INTEL] err: '+e.message);}
+  finally{document.getElementById('send-btn').disabled=false;}
+}
+
+const WF_PROMPTS={
+  status:'Give me a quick production status summary across all shows.',
+  blockers:'What are the current blockers and what should I do about them?',
+  priorities:'Based on my tasks and shots, what should I focus on first today?',
+  plan:'Build me a day plan for today using my open tasks.'
+};
+
+function runWF(type){
+  document.getElementById('intel-input').value=WF_PROMPTS[type]||'';
+  send();
+}
+
+function clearChat(){
+  history=[];
+  const chat=document.getElementById('chat-area');
+  chat.innerHTML='';
+  const wf=document.createElement('div');
+  wf.id='wf-section';
+  wf.className='wf-section';
+  wf.innerHTML=document.querySelector('.wf-grid')?'':'<div class="wf-label">WORKFLOWS</div><div class="wf-grid"><div class="wf-btn" onclick="runWF(\'status\')"><span class="wf-icon">&#x1F4CA;</span><div><div class="wf-name">STATUS</div><div class="wf-desc">Show summary</div></div></div><div class="wf-btn" onclick="runWF(\'blockers\')"><span class="wf-icon">&#x1F6A8;</span><div><div class="wf-name">BLOCKERS</div><div class="wf-desc">Identify risks</div></div></div><div class="wf-btn" onclick="runWF(\'priorities\')"><span class="wf-icon">&#x1F3AF;</span><div><div class="wf-name">PRIORITIES</div><div class="wf-desc">Sort my tasks</div></div></div><div class="wf-btn" onclick="runWF(\'plan\')"><span class="wf-icon">&#x1F5D3;</span><div><div class="wf-name">DAY PLAN</div><div class="wf-desc">Build schedule</div></div></div></div>';
+  chat.appendChild(wf);
+  toast('CLEARED');
+}
+
+if(!getKey())document.getElementById('key-banner').classList.add('show');
+dbg('[INIT] intel ready, key='+(getKey()?'SET':'MISSING'));
+</script>
+</body>
+</html>
