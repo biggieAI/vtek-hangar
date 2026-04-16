@@ -634,7 +634,7 @@ body {
 .plan-commit-btn:hover { background: var(--y2); }
 .plan-rack-banner { padding: 10px 16px; background: var(--s2); border-bottom: var(--b2); font-family: var(--sans); font-size: 12px; color: var(--t1); line-height: 1.5; flex-shrink: 0; position: relative; padding-right: 36px; }
 .plan-rack-close { position: absolute; top: 8px; right: 10px; background: none; border: none; color: var(--t2); cursor: pointer; font-size: 14px; }
-.plan-pool-section { flex-shrink: 0; border-bottom: var(--b2); background: var(--s1); }
+.plan-pool-section { flex-shrink: 0; border-bottom: var(--b2); background: var(--s1); touch-action: manipulation; }
 .plan-pool-header { display: flex; align-items: center; gap: 8px; padding: 8px 16px; cursor: pointer; user-select: none; }
 .plan-pool-label { font-family: var(--sans); font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--t2); flex-shrink: 0; }
 .plan-pool-hint { flex: 1; font-family: var(--sans); font-size: 9px; color: var(--t3); letter-spacing: 0.06em; text-transform: uppercase; text-align: center; }
@@ -1615,6 +1615,9 @@ body {
   cursor: pointer;
   flex-shrink: 0;
   -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
 }
 .plan-drawer-label {
   font-family: var(--sans); font-size: 10px; font-weight: 800;
@@ -2635,6 +2638,7 @@ html, body { height:100%; overflow:hidden; }
   flex-shrink:0; background:var(--s1);
   border-bottom:1px solid rgba(255,255,255,0.05);
   position:relative;
+  touch-action:manipulation;
 }
 .module-topbar::after {
   content:''; position:absolute; bottom:-1px; left:8%; right:8%; height:1px;
@@ -2673,6 +2677,7 @@ html, body { height:100%; overflow:hidden; }
   padding-bottom:calc(env(safe-area-inset-bottom,0px) + 20px);
   overscroll-behavior:contain;
   -webkit-overflow-scrolling:touch;
+  touch-action:pan-y;
 }
 .module-scroll::-webkit-scrollbar { display:none; }
 
@@ -3405,7 +3410,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260416-291000';
+const BUILD_ID = 'VTEK-20260416-292000';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
