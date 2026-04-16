@@ -2617,13 +2617,13 @@ html, body { height:100%; overflow:hidden; }
   display:flex; flex-direction:column;
   background:var(--bg);
   transform:translate3d(100%,0,0);
-
+  pointer-events:none;
   transition:transform 0.28s cubic-bezier(0.32,0.72,0,1);
   will-change:transform;
   -webkit-backface-visibility:hidden;
   backface-visibility:hidden;
 }
-.module-view.open { transform:translate3d(0,0,0); }
+.module-view.open { transform:translate3d(0,0,0); pointer-events:auto; }
 
 /* Module topbar */
 .module-topbar {
@@ -3329,7 +3329,6 @@ function openModule(name) {
   _activeModule = name;
   mv.classList.add('open');
   console.log('[OM] .open added to', m.mv);
-  var _dbgEx=document.getElementById('dbg-expanded'); if(_dbgEx) _dbgEx.style.display='block';
   requestAnimationFrame(()=>{ try { m.init(); } catch(e){ if(e&&e.message) console.warn('[VTEK] module init:', e.message); } });
 }
 
@@ -3398,7 +3397,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260416-261000';
+const BUILD_ID = 'VTEK-20260416-263000';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
