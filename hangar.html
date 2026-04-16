@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>VTEK // Hangar</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+:root{
+  --bg:#07080f;--s1:#0a0b13;--s2:#11141f;--s3:#161a28;--s4:#1e2333;--s5:#252a3a;
+  --t0:#c8cdd8;--t1:#8390a2;--t2:#525a68;--t3:#3a414e;
+  --accent:#3d6e9e;--accent-hi:#5590c0;--teal:#21e1df;
+  --warn:#f4c06a;--hi:#e85c4b;--ok:#7dd3a0;--wip:#5590c0;--blk:#e85c4b;
+  --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,monospace;
+  --sans:-apple-system,BlinkMacSystemFont,'SF Pro Text',system-ui,sans-serif;
+  --b1:1px solid rgba(255,255,255,0.055);
+  --b2:1px solid rgba(255,255,255,0.085);
+  --safe-t:env(safe-area-inset-top,0px);--safe-b:env(safe-area-inset-bottom,0px);
+}
+html,body{background:var(--bg);color:var(--t0);font-family:var(--sans);font-size:14px;line-height:1.4;overflow:hidden;height:100dvh;width:100vw;}
+body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-available;overflow:hidden;}
+
+.topbar{
+  display:flex;align-items:center;gap:8px;
+  padding:calc(var(--safe-t) + 12px) 12px 12px;
+  background:var(--s1);border-bottom:var(--b1);
+  flex-shrink:0;touch-action:manipulation;position:relative;
+}
+.topbar::after{
+  content:'';position:absolute;bottom:-1px;left:8%;right:8%;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(127,144,162,0.3) 15%,rgba(255,255,255,0.5) 50%,rgba(127,144,162,0.3) 85%,transparent);
+  opacity:0.4;
+}
+.back-btn{
+  display:flex;align-items:center;gap:6px;
+  background:none;border:none;color:var(--t1);
+  font-family:var(--mono);font-size:10px;font-weight:600;
+  letter-spacing:0.08em;text-transform:uppercase;
+  padding:10px 10px 10px 8px;min-height:44px;min-width:44px;
+  cursor:pointer;touch-action:manipulation;
+  -webkit-user-select:none;user-select:none;
+}
+.back-btn svg,.back-btn span{pointer-events:none;}
+.title{
+  font-family:var(--mono);font-size:14px;font-weight:800;
+  letter-spacing:0.10em;color:#f4f7fa;
+}
+.actions{margin-left:auto;display:flex;gap:4px;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.actions::-webkit-scrollbar{display:none;}
+.tb-btn{
+  padding:6px 10px;
+  background:var(--s3);border:var(--b2);
+  color:var(--t0);
+  font-family:var(--sans);font-size:10px;font-weight:700;
+  letter-spacing:0.05em;cursor:pointer;min-height:32px;
+  touch-action:manipulation;-webkit-user-select:none;user-select:none;
+  flex-shrink:0;white-space:nowrap;
+}
+.tb-btn.primary{background:#fff;color:#000;border-color:#fff;}
+.tb-btn.icon{min-width:34px;padding:6px 8px;}
+
+.main{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;touch-action:pan-y;padding:0 0 40px;}
+
+/* STATS BANNER */
+.stats{
+  display:flex;align-items:center;
+  padding:14px 16px;gap:0;
+  border-bottom:var(--b1);
+  background:var(--s1);
+}
+.stat{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;}
+.stat-n{font-family:var(--mono);font-size:22px;font-weight:800;color:var(--t0);line-height:1;}
+.stat-l{font-family:var(--sans);font-size:9px;font-weight:700;color:var(--t2);letter-spacing:0.08em;}
+.stat-div{width:1px;height:32px;background:rgba(255,255,255,0.05);}
+
+/* SECTION */
+.section{padding:18px 16px 4px;}
+.section-hd{display:flex;align-items:center;margin-bottom:8px;}
+.section-lbl{
+  font-family:var(--sans);font-size:10px;font-weight:700;
+  color:var(--t2);letter-spacing:0.12em;flex:1;
+}
+.section-add{
+  background:var(--s3);border:var(--b2);
+  color:var(--t1);font-family:var(--mono);font-size:9px;
+  padding:4px 10px;cursor:pointer;font-weight:700;
+  letter-spacing:0.04em;min-height:28px;
+  touch-action:manipulation;-webkit-user-select:none;user-select:none;
+}
+
+/* SHOW CARDS */
+.show-grid{display:flex;flex-direction:column;gap:8px;}
+.show-card{
+  background:var(--s2);
+  border:1px solid rgba(255,255,255,0.05);
+  border-left:3px solid var(--sc,var(--accent));
+  padding:14px 16px;
+  cursor:pointer;touch-action:manipulation;
+  -webkit-user-select:none;user-select:none;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);
+}
+.show-row{display:flex;align-items:center;gap:8px;}
+.show-code{font-family:var(--mono);font-size:18px;font-weight:800;color:#f4f7fa;letter-spacing:0.04em;}
+.show-pill{
+  font-family:var(--mono);font-size:9px;font-weight:700;
+  padding:2px 8px;background:var(--s4);color:var(--t1);letter-spacing:0.08em;
+}
+.show-pill.blk{background:#fff;color:#000;}
+.show-pill.wip{background:var(--wip);color:#000;}
+.show-pct{margin-left:auto;font-family:var(--mono);font-size:22px;font-weight:800;color:var(--t0);line-height:1;}
+.show-pct-l{font-family:var(--sans);font-size:8px;color:var(--t2);letter-spacing:0.08em;margin-left:4px;}
+.show-name{font-size:12px;color:var(--t1);margin-top:2px;}
+.show-stats{display:flex;gap:18px;margin-top:10px;padding-top:10px;border-top:var(--b1);}
+.show-stat{display:flex;flex-direction:column;gap:1px;}
+.show-stat-n{font-family:var(--mono);font-size:18px;font-weight:800;color:var(--t0);}
+.show-stat-l{font-family:var(--sans);font-size:8px;color:var(--t2);letter-spacing:0.08em;}
+
+/* SHOT ROWS */
+.shot-row{
+  display:flex;align-items:center;gap:10px;
+  padding:12px 16px;
+  background:var(--s1);
+  border-top:var(--b1);
+  cursor:pointer;touch-action:manipulation;
+  -webkit-user-select:none;user-select:none;
+}
+.shot-id{font-family:var(--mono);font-size:13px;color:var(--t0);font-weight:600;}
+.shot-show{font-family:var(--mono);font-size:10px;color:var(--t2);}
+.shot-st{
+  margin-left:auto;
+  font-family:var(--mono);font-size:9px;font-weight:700;
+  padding:3px 10px;background:var(--s3);color:var(--t1);letter-spacing:0.06em;
+  text-transform:uppercase;
+}
+.shot-st.wip{background:var(--wip);color:#000;}
+.shot-st.blk{background:var(--blk);color:#000;}
+.shot-st.review{background:var(--warn);color:#000;}
+.shot-st.approved,.shot-st.delivered{background:var(--ok);color:#000;}
+
+/* SHOT DETAIL / TABS */
+.shot-tabs{display:flex;gap:4px;padding:12px 16px 0;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.shot-tabs::-webkit-scrollbar{display:none;}
+.stab{
+  padding:6px 14px;background:var(--s3);border:var(--b2);
+  color:var(--t1);font-family:var(--mono);font-size:11px;font-weight:700;
+  letter-spacing:0.06em;cursor:pointer;flex-shrink:0;
+  touch-action:manipulation;-webkit-user-select:none;user-select:none;
+}
+.stab.on{background:#fff;color:#000;border-color:#fff;}
+
+.hero{
+  padding:14px 16px 14px;background:var(--s1);border-bottom:var(--b1);
+  display:flex;align-items:center;gap:14px;
+}
+.hero-pct{font-family:var(--mono);font-size:32px;font-weight:800;color:var(--t0);line-height:1;}
+.hero-meta{flex:1;}
+.hero-show{font-family:var(--mono);font-size:16px;font-weight:800;color:#f4f7fa;letter-spacing:0.04em;}
+.hero-name{font-size:12px;color:var(--t1);margin-top:2px;}
+
+.filter-chips{display:flex;gap:4px;padding:10px 16px;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.filter-chips::-webkit-scrollbar{display:none;}
+.fchip{
+  padding:4px 10px;background:var(--s3);border:var(--b2);
+  color:var(--t2);font-family:var(--mono);font-size:9px;font-weight:700;
+  letter-spacing:0.06em;cursor:pointer;flex-shrink:0;
+  touch-action:manipulation;-webkit-user-select:none;user-select:none;
+}
+.fchip.on{background:var(--s5);color:var(--t0);border-color:rgba(255,255,255,0.2);}
+
+/* EMPTY */
+.empty{padding:40px 24px;text-align:center;color:var(--t2);}
+.empty-title{font-size:14px;color:var(--t0);margin-bottom:4px;}
+.empty-sub{font-size:11px;color:var(--t2);}
+
+/* TOAST */
+.toast{
+  position:fixed;bottom:calc(var(--safe-b) + 48px);
+  left:50%;transform:translateX(-50%) translateY(20px);
+  background:var(--s3);border:var(--b2);color:var(--t0);
+  font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:0.10em;
+  padding:8px 20px;opacity:0;transition:all 0.2s;
+  pointer-events:none;white-space:nowrap;z-index:600;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* DBG */
+.dbg{flex-shrink:0;background:#0a0d0a;border-top:1px solid #1a3a1a;font-family:monospace;font-size:10px;}
+.dbg-hd{height:28px;display:flex;align-items:center;padding:0 10px;gap:10px;touch-action:manipulation;-webkit-user-select:none;user-select:none;}
+.dbg-btn{background:none;border:none;color:#0f0;font-size:10px;font-family:monospace;cursor:pointer;min-width:44px;min-height:28px;padding:0;}
+.dbg-id{color:#555;font-size:9px;flex:1;}
+.dbg-copy{background:#1a2a1a;border:1px solid #2a4a2a;color:#0f0;padding:2px 8px;font-size:9px;font-family:monospace;cursor:pointer;min-height:24px;}
+.dbg-body{display:none;max-height:180px;overflow-y:auto;border-top:1px solid #1a3a1a;-webkit-overflow-scrolling:touch;}
+.dbg.open .dbg-body{display:block;}
+.dbg-log{color:#0f0;line-height:1.5;white-space:pre-wrap;padding:4px 10px;font-size:9px;}
+
+.hide{display:none !important;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <button class="back-btn" id="back-btn">
+    <svg viewBox="0 0 12 12" width="13" height="13" fill="none" stroke="#21e1df" stroke-width="2"><path d="M7.5 2L3.5 6l4 4"/></svg>
+    <span id="back-lbl">HOME</span>
+  </button>
+  <span class="title" id="title-lbl">HANGAR</span>
+  <div class="actions">
+    <button class="tb-btn icon" id="refresh-btn">&#x21bb;</button>
+    <button class="tb-btn icon" id="team-btn">&#x1F465;</button>
+    <button class="tb-btn" id="show-btn">+ SHOW</button>
+    <button class="tb-btn primary" id="shot-btn">+ SHOT</button>
+  </div>
+</div>
+
+<div class="main" id="main">
+  <!-- HOME VIEW -->
+  <div id="v-home">
+    <div class="stats">
+      <div class="stat"><span class="stat-n" id="s-total">-</span><span class="stat-l">SHOTS</span></div>
+      <div class="stat-div"></div>
+      <div class="stat"><span class="stat-n" id="s-wip">-</span><span class="stat-l">WIP</span></div>
+      <div class="stat-div"></div>
+      <div class="stat"><span class="stat-n" id="s-rev">-</span><span class="stat-l">REV</span></div>
+      <div class="stat-div"></div>
+      <div class="stat"><span class="stat-n" id="s-blk">-</span><span class="stat-l">BLK</span></div>
+      <div class="stat-div"></div>
+      <div class="stat"><span class="stat-n" id="s-done">-</span><span class="stat-l">DONE</span></div>
+    </div>
+
+    <div class="section">
+      <div class="section-hd">
+        <span class="section-lbl">ACTIVE SHOWS</span>
+      </div>
+      <div class="show-grid" id="show-grid"></div>
+    </div>
+
+    <div class="section">
+      <div class="section-hd">
+        <span class="section-lbl">TODAY</span>
+        <span class="section-lbl" id="today-count" style="flex:0;margin-left:auto;font-family:var(--mono);color:var(--t1);">0</span>
+      </div>
+    </div>
+    <div id="today-list"></div>
+
+    <div class="section">
+      <div class="section-hd">
+        <span class="section-lbl">BLOCKERS</span>
+        <span class="section-lbl" id="blk-count" style="flex:0;margin-left:auto;font-family:var(--mono);color:var(--hi);">0</span>
+      </div>
+    </div>
+    <div id="blk-list"></div>
+  </div>
+
+  <!-- SHOTS VIEW -->
+  <div id="v-shots" class="hide">
+    <div class="hero">
+      <div class="hero-pct" id="hero-pct">0%</div>
+      <div class="hero-meta">
+        <div class="hero-show" id="hero-show">SHOW</div>
+        <div class="hero-name" id="hero-name"></div>
+      </div>
+    </div>
+    <div class="shot-tabs" id="shot-tabs"></div>
+    <div class="filter-chips" id="filter-chips">
+      <button class="fchip on" data-f="all">ALL</button>
+      <button class="fchip" data-f="wip">WIP</button>
+      <button class="fchip" data-f="review">REVIEW</button>
+      <button class="fchip" data-f="blocked">BLOCKED</button>
+      <button class="fchip" data-f="approved">APPROVED</button>
+      <button class="fchip" data-f="delivered">DELIVERED</button>
+    </div>
+    <div id="shots-list"></div>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<div class="dbg" id="dbg">
+  <div class="dbg-hd">
+    <button class="dbg-btn" id="dbg-toggle">&gt; DBG</button>
+    <span class="dbg-id" id="dbg-id"></span>
+    <button class="dbg-copy" id="dbg-copy">COPY</button>
+  </div>
+  <div class="dbg-body"><div class="dbg-log" id="dbg-log"></div></div>
+</div>
+
+<script>
+'use strict';
+const BUILD='VTEK-HANGAR-20260416-001';
+
+const _dbgEl=document.getElementById('dbg-log');
+function dbg(msg){const t=new Date().toTimeString().slice(0,8);_dbgEl.textContent+=t+' '+msg+'\n';_dbgEl.scrollTop=_dbgEl.scrollHeight;}
+window.addEventListener('error',e=>dbg('ERR: '+e.message+' @ '+e.lineno));
+
+const LS_STATE='vtek9';
+let S=JSON.parse(localStorage.getItem(LS_STATE)||'null')||{shows:[],shots:[],tasks:[],team:[]};
+if(!S.shows)S.shows=[];if(!S.shots)S.shots=[];if(!S.tasks)S.tasks=[];if(!S.team)S.team=[];
+if(!S.activeShow&&S.shows[0])S.activeShow=S.shows[0].id;
+
+let view='home';
+let filter='all';
+
+function save(){localStorage.setItem(LS_STATE,JSON.stringify(S));}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);}
+function gs(id){return S.shows.find(s=>s.id===id);}
+function tod(){return new Date().toISOString().slice(0,10);}
+
+function showView(v){
+  view=v;
+  document.getElementById('v-home').classList.toggle('hide',v!=='home');
+  document.getElementById('v-shots').classList.toggle('hide',v!=='shots');
+  const tl=document.getElementById('title-lbl');
+  const bl=document.getElementById('back-lbl');
+  if(v==='home'){tl.textContent='HANGAR';bl.textContent='HOME';}
+  else if(v==='shots'){const sh=gs(S.activeShow);tl.textContent=sh?sh.code:'SHOTS';bl.textContent='HANGAR';}
+  dbg('[VIEW] '+v);
+}
+
+function renderHome(){
+  const total=S.shots.length;
+  const wip=S.shots.filter(s=>s.status==='wip').length;
+  const rev=S.shots.filter(s=>s.status==='review').length;
+  const blk=S.shots.filter(s=>s.status==='blocked').length;
+  const done=S.shots.filter(s=>s.status==='approved'||s.status==='delivered').length;
+  document.getElementById('s-total').textContent=total;
+  document.getElementById('s-wip').textContent=wip;
+  document.getElementById('s-rev').textContent=rev;
+  document.getElementById('s-blk').textContent=blk;
+  document.getElementById('s-done').textContent=done;
+
+  // Show cards
+  const grid=document.getElementById('show-grid');
+  if(!S.shows.length){grid.innerHTML='<div class="empty"><div class="empty-title">No shows yet</div><div class="empty-sub">Tap + SHOW to add one</div></div>';}
+  else{
+    grid.innerHTML=S.shows.map(sh=>{
+      const shots=S.shots.filter(s=>s.sid===sh.id);
+      const wip=shots.filter(s=>s.status==='wip').length;
+      const blk=shots.filter(s=>s.status==='blocked').length;
+      const done=shots.filter(s=>s.status==='approved'||s.status==='delivered').length;
+      const pct=shots.length?Math.round(done/shots.length*100):0;
+      const pill=blk?'<span class="show-pill blk">BLK</span>':(wip?'<span class="show-pill wip">WIP</span>':'<span class="show-pill">OK</span>');
+      return '<div class="show-card" style="--sc:'+(sh.color||'var(--accent)')+'" data-sid="'+sh.id+'">'+
+        '<div class="show-row">'+
+          '<span class="show-code">'+sh.code+'</span>'+
+          pill+
+          '<span class="show-pct">'+pct+'%</span><span class="show-pct-l">DONE</span>'+
+        '</div>'+
+        '<div class="show-name">'+(sh.name||'')+'</div>'+
+        '<div class="show-stats">'+
+          '<div class="show-stat"><span class="show-stat-n">'+shots.length+'</span><span class="show-stat-l">SHOTS</span></div>'+
+          (wip?'<div class="show-stat"><span class="show-stat-n">'+wip+'</span><span class="show-stat-l">WIP</span></div>':'')+
+          (blk?'<div class="show-stat"><span class="show-stat-n">'+blk+'</span><span class="show-stat-l">BLK</span></div>':'')+
+        '</div>'+
+      '</div>';
+    }).join('');
+  }
+
+  // Today
+  const today=tod();
+  const todayShots=S.shots.filter(s=>s.due===today);
+  document.getElementById('today-count').textContent=todayShots.length;
+  document.getElementById('today-list').innerHTML=todayShots.length?
+    todayShots.map(sh=>shotRow(sh)).join(''):
+    '<div style="padding:10px 16px;color:var(--t2);font-size:11px;">Nothing due today</div>';
+
+  // Blockers
+  const blkShots=S.shots.filter(s=>s.status==='blocked');
+  document.getElementById('blk-count').textContent=blkShots.length;
+  document.getElementById('blk-list').innerHTML=blkShots.length?
+    blkShots.map(sh=>shotRow(sh)).join(''):
+    '<div style="padding:10px 16px;color:var(--t2);font-size:11px;">No blockers</div>';
+}
+
+function shotRow(sh){
+  const show=gs(sh.sid);
+  return '<div class="shot-row" data-shid="'+sh.id+'">'+
+    '<span class="shot-id">'+(sh.code||sh.id)+'</span>'+
+    '<span class="shot-show">'+(show?show.code:'')+'</span>'+
+    '<span class="shot-st '+(sh.status||'')+'">'+(sh.status||'-').toUpperCase()+'</span>'+
+  '</div>';
+}
+
+function renderShots(){
+  const tabs=document.getElementById('shot-tabs');
+  tabs.innerHTML=S.shows.map(s=>'<button class="stab'+(S.activeShow===s.id?' on':'')+'" data-sid="'+s.id+'">'+s.code+'</button>').join('');
+  const show=gs(S.activeShow);
+  let shots=S.shots.filter(sh=>sh.sid===S.activeShow);
+  const total=shots.length;
+  const done=shots.filter(sh=>sh.status==='approved'||sh.status==='delivered').length;
+  const pct=total?Math.round(done/total*100):0;
+  document.getElementById('hero-pct').textContent=pct+'%';
+  document.getElementById('hero-show').textContent=show?show.code:'';
+  document.getElementById('hero-name').textContent=show?show.name:'';
+  if(filter!=='all')shots=shots.filter(sh=>sh.status===filter);
+  const list=document.getElementById('shots-list');
+  list.innerHTML=shots.length?shots.map(sh=>shotRow(sh)).join(''):'<div class="empty"><div class="empty-title">No shots</div></div>';
+  document.querySelectorAll('.fchip').forEach(c=>c.classList.toggle('on',c.dataset.f===filter));
+}
+
+// ACTIONS
+function hangarBack(){
+  if(view==='home'){dbg('[BACK] to index');window.location.href='./';}
+  else{showView('home');renderHome();}
+}
+function addShow(){
+  const code=prompt('Show code (e.g. CRL)');if(!code)return;
+  const name=prompt('Show name')||code;
+  const id='s'+Date.now();
+  S.shows.push({id,code:code.toUpperCase(),name,color:'var(--accent)'});
+  if(!S.activeShow)S.activeShow=id;
+  save();renderHome();toast('SHOW ADDED');
+}
+function addShot(){
+  if(!S.shows.length){toast('ADD A SHOW FIRST');return;}
+  const sid=S.activeShow||S.shows[0].id;
+  const code=prompt('Shot code (e.g. 136_STL_0080)');if(!code)return;
+  S.shots.push({id:'sh'+Date.now(),sid,code,status:'wip',due:tod()});
+  save();renderHome();if(view==='shots')renderShots();toast('SHOT ADDED');
+}
+
+// WIRING
+document.getElementById('back-btn').addEventListener('click',hangarBack);
+document.getElementById('refresh-btn').addEventListener('click',()=>{renderHome();if(view==='shots')renderShots();toast('REFRESHED');});
+document.getElementById('team-btn').addEventListener('click',()=>{toast('TEAM VIEW COMING SOON');});
+document.getElementById('show-btn').addEventListener('click',addShow);
+document.getElementById('shot-btn').addEventListener('click',addShot);
+
+document.getElementById('show-grid').addEventListener('click',function(e){
+  const card=e.target.closest('.show-card');if(!card)return;
+  S.activeShow=card.dataset.sid;save();
+  showView('shots');renderShots();
+});
+
+document.getElementById('shot-tabs').addEventListener('click',function(e){
+  const t=e.target.closest('.stab');if(!t)return;
+  S.activeShow=t.dataset.sid;save();renderShots();
+});
+
+document.getElementById('filter-chips').addEventListener('click',function(e){
+  const c=e.target.closest('.fchip');if(!c)return;
+  filter=c.dataset.f;renderShots();
+});
+
+document.getElementById('main').addEventListener('click',function(e){
+  const sr=e.target.closest('.shot-row');if(!sr)return;
+  const shot=S.shots.find(s=>s.id===sr.dataset.shid);if(!shot)return;
+  // Cycle status for now
+  const cycle=['wip','review','blocked','approved','delivered'];
+  const i=cycle.indexOf(shot.status);
+  shot.status=cycle[(i+1)%cycle.length];
+  save();
+  if(view==='home')renderHome();else renderShots();
+  toast(shot.code+' \u2192 '+shot.status.toUpperCase());
+});
+
+// DBG
+document.getElementById('dbg-toggle').addEventListener('click',function(){document.getElementById('dbg').classList.toggle('open');});
+document.getElementById('dbg-copy').addEventListener('click',function(){if(navigator.clipboard)navigator.clipboard.writeText(_dbgEl.textContent);this.textContent='COPIED';setTimeout(()=>this.textContent='COPY',1500);});
+
+// INIT
+document.getElementById('dbg-id').textContent=BUILD;
+dbg('[INIT] shows='+S.shows.length+' shots='+S.shots.length);
+renderHome();
+dbg('[INIT] done');
+</script>
+</body>
+</html>
