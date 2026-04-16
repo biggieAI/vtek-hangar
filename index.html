@@ -693,6 +693,9 @@ body {
   display: flex; flex-direction: column; gap: 3px;
   cursor: pointer; position: relative;
   transition: background 0.15s;
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
 }
 .plan-slot-body:hover {
   background: rgba(255,255,255,0.03);
@@ -1653,6 +1656,9 @@ body {
   cursor: pointer;
   transition: background 0.12s;
   -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
 }
 .plan-drawer-item:hover { background: var(--s3); }
 .plan-drawer-item.selected { border-left-color: var(--y); background: rgba(255,255,255,0.05); }
@@ -3400,7 +3406,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260416-271000';
+const BUILD_ID = 'VTEK-20260416-280000';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
@@ -8310,24 +8316,22 @@ function tryCloseEditTask(){
       <button class="tb-btn" onclick="commitPlan()" style="font-size:9px;padding:4px 10px;">COMMIT</button>
     </div>
   </div>
-  <div class="module-scroll">
-    <div class="page on" id="pg-plan" style="display:flex;flex-direction:column;">
-      <div class="plan-header">
-        <div class="plan-date" id="plan-date-label">TODAY</div>
-      </div>
-      <div class="plan-pool-section" id="plan-pool-section">
-        <div class="plan-drawer-toggle" id="plan-drawer-toggle" onclick="togglePlanDrawer()">
-          <span class="plan-drawer-label">TASK POOL</span>
-          <span class="plan-drawer-count" id="plan-pool-count"></span>
-          <span class="plan-drawer-hint">TAP TO EXPAND</span>
-          <span class="plan-drawer-arrow">&#9660;</span>
-        </div>
-        <div class="plan-drawer-body" id="plan-drawer-body">
-          <div class="plan-drawer-list" id="plan-task-pool"></div>
-        </div>
-      </div>
-      <div class="plan-timeline" id="plan-timeline"></div>
+  <div class="plan-header" style="flex-shrink:0;">
+    <div class="plan-date" id="plan-date-label">TODAY</div>
+  </div>
+  <div class="plan-pool-section" id="plan-pool-section" style="flex-shrink:0;">
+    <div class="plan-drawer-toggle" id="plan-drawer-toggle" onclick="togglePlanDrawer()" style="touch-action:manipulation;-webkit-user-select:none;user-select:none;">
+      <span class="plan-drawer-label">TASK POOL</span>
+      <span class="plan-drawer-count" id="plan-pool-count"></span>
+      <span class="plan-drawer-hint">TAP TO EXPAND</span>
+      <span class="plan-drawer-arrow">&#9660;</span>
     </div>
+    <div class="plan-drawer-body" id="plan-drawer-body">
+      <div class="plan-drawer-list" id="plan-task-pool"></div>
+    </div>
+  </div>
+  <div class="module-scroll" style="flex:1;">
+    <div class="plan-timeline" id="plan-timeline"></div>
   </div>
 </div>
 
