@@ -3250,15 +3250,14 @@ html, body { height:100%; overflow:hidden; }
 <!-- END INDEX -->
 
 <!-- DEBUG BAR -->
-<div id="dbg-bar" style="position:fixed;bottom:0;left:0;right:0;z-index:99999;background:#111;border-top:1px solid #333;font-family:monospace;font-size:11px;">
-  <div id="dbg-collapsed" style="height:28px;display:flex;align-items:center;padding:0 12px;gap:12px;cursor:pointer;pointer-events:auto;" onclick="document.getElementById('dbg-expanded').style.display=document.getElementById('dbg-expanded').style.display=='none'?'block':'none'">
-    <span style="color:#0f0;">▶</span>
-    <span id="dbg-build-id" style="color:#aaa;">VTEK-BUILD</span>
-    <span style="color:#555;font-size:10px;">tap to expand</span>
+<div id="dbg-bar" style="position:fixed;bottom:0;left:0;right:0;z-index:99999;background:#0a0d0a;border-top:1px solid #1a3a1a;font-family:monospace;font-size:10px;">
+  <div id="dbg-collapsed" style="height:28px;display:flex;align-items:center;padding:0 10px;gap:10px;touch-action:manipulation;-webkit-user-select:none;user-select:none;">
+    <button onclick="(function(){var e=document.getElementById('dbg-expanded');e.style.display=e.style.display=='none'?'block':'none';})()" style="background:none;border:none;color:#0f0;font-size:10px;cursor:pointer;font-family:monospace;padding:0;touch-action:manipulation;-webkit-user-select:none;user-select:none;min-width:44px;min-height:28px;">&gt; DBG</button>
+    <span id="dbg-build-id" style="color:#555;font-size:9px;flex:1;">VTEK-BUILD</span>
+    <button onclick="navigator.clipboard&&navigator.clipboard.writeText(document.getElementById('dbg-log').innerText).then(function(){document.getElementById('dbg-copy-btn').textContent='COPIED';})" id="dbg-copy-btn" style="background:#1a2a1a;border:1px solid #2a4a2a;color:#0f0;padding:2px 8px;font-size:9px;cursor:pointer;font-family:monospace;touch-action:manipulation;-webkit-user-select:none;user-select:none;min-height:24px;">COPY</button>
   </div>
-  <div id="dbg-expanded" style="display:none;max-height:200px;overflow-y:auto;padding:8px 12px;">
-    <button onclick="navigator.clipboard&&navigator.clipboard.writeText(document.getElementById('dbg-log').innerText)" style="background:#222;border:1px solid #444;color:#0f0;padding:4px 10px;font-size:10px;cursor:pointer;margin-bottom:6px;">COPY ALL</button>
-    <div id="dbg-log" style="color:#0f0;line-height:1.6;white-space:pre-wrap;"></div>
+  <div id="dbg-expanded" style="display:none;max-height:160px;overflow-y:auto;border-top:1px solid #1a3a1a;-webkit-overflow-scrolling:touch;">
+    <div id="dbg-log" style="color:#0f0;line-height:1.5;white-space:pre-wrap;padding:4px 10px;font-size:9px;"></div>
   </div>
 </div>
 
@@ -3328,6 +3327,7 @@ function openModule(name) {
   _activeModule = name;
   mv.classList.add('open');
   console.log('[OM] .open added to', m.mv);
+  var _dbgEx=document.getElementById('dbg-expanded'); if(_dbgEx) _dbgEx.style.display='block';
   requestAnimationFrame(()=>{ try { m.init(); } catch(e){ if(e&&e.message) console.warn('[VTEK] module init:', e.message); } });
 }
 
@@ -3394,7 +3394,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260416-210000';
+const BUILD_ID = 'VTEK-20260416-220000';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
