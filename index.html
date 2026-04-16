@@ -2674,6 +2674,8 @@ html, body { height:100%; overflow:hidden; }
 .module-scroll {
   flex:1; overflow-y:auto; overflow-x:hidden; scrollbar-width:none;
   padding-bottom:calc(env(safe-area-inset-bottom,0px) + 20px);
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
 }
 .module-scroll::-webkit-scrollbar { display:none; }
 
@@ -3256,7 +3258,7 @@ html, body { height:100%; overflow:hidden; }
 <!-- END INDEX -->
 
 <!-- DEBUG BAR -->
-<div id="dbg-bar" style="position:fixed;bottom:0;left:0;right:0;z-index:99999;background:#0a0d0a;border-top:1px solid #1a3a1a;font-family:monospace;font-size:10px;">
+<div id="dbg-bar" style="position:fixed;bottom:0;left:0;right:0;z-index:99999;background:#0a0d0a;border-top:1px solid #1a3a1a;font-family:monospace;font-size:10px;pointer-events:auto;isolation:isolate;">
   <div id="dbg-collapsed" style="height:28px;display:flex;align-items:center;padding:0 10px;gap:10px;touch-action:manipulation;-webkit-user-select:none;user-select:none;">
     <button onclick="(function(){var e=document.getElementById('dbg-expanded');e.style.display=e.style.display=='none'?'block':'none';})()" style="background:none;border:none;color:#0f0;font-size:10px;cursor:pointer;font-family:monospace;padding:0;touch-action:manipulation;-webkit-user-select:none;user-select:none;min-width:44px;min-height:28px;">&gt; DBG</button>
     <span id="dbg-build-id" style="color:#555;font-size:9px;flex:1;">VTEK-BUILD</span>
@@ -3406,7 +3408,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260416-280000';
+const BUILD_ID = 'VTEK-20260416-281000';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
@@ -8331,7 +8333,7 @@ function tryCloseEditTask(){
     </div>
   </div>
   <div class="module-scroll" style="flex:1;">
-    <div class="plan-timeline" id="plan-timeline"></div>
+    <div class="plan-timeline" id="plan-timeline" style="padding-bottom:64px;"></div>
   </div>
 </div>
 
