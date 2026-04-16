@@ -9,10 +9,10 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 :root{
-  --bg:#07080f;--s1:#0a0b13;--s2:#11141f;--s3:#161a28;--s4:#1e2333;--s5:#252a3a;
+  --bg:#000003;--s1:#0a0b10;--s2:#14161d;--s3:#1e2029;--s4:#292d36;--s5:#363b47;
   --t0:#c8cdd8;--t1:#8390a2;--t2:#525a68;--t3:#3a414e;
-  --accent:#3d6e9e;--accent-hi:#5590c0;--teal:#21e1df;
-  --warn:#f4c06a;--hi:#e85c4b;--ok:#7dd3a0;--wip:#5590c0;--blk:#e85c4b;
+  --accent:#e8edf2;--accent-hi:#f4f7fa;--teal:#21e1df;
+  --warn:#f4c06a;--hi:#e85c4b;--ok:#7dd3a0;--wip:#e8edf2;--blk:#e85c4b;
   --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,monospace;
   --sans:-apple-system,BlinkMacSystemFont,'SF Pro Text',system-ui,sans-serif;
   --b1:1px solid rgba(255,255,255,0.055);
@@ -288,7 +288,7 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 
 <script>
 'use strict';
-const BUILD='VTEK-HANGAR-20260416-001';
+const BUILD='VTEK-HANGAR-20260416-002';
 
 const _dbgEl=document.getElementById('dbg-log');
 function dbg(msg){const t=new Date().toTimeString().slice(0,8);_dbgEl.textContent+=t+' '+msg+'\n';_dbgEl.scrollTop=_dbgEl.scrollHeight;}
