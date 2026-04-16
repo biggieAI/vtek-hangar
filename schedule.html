@@ -17,10 +17,10 @@
   --s5:#363b47;
   --s6:#42485a;
   --t0:#c8cdd8;
-  --t1:#8390a2;
-  --t2:#525a68;
-  --t3:#3a414e;
-  --accent:#e8edf2;
+  --t1:#525a68;
+  --t2:#282d38;
+  --t3:#141820;
+  --accent:rgba(244,247,250,0.92);
   --accent-hi:#f4f7fa;
   --teal:#21e1df;
   --warn:#f4c06a;
@@ -133,13 +133,14 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
   display:flex;flex-direction:column;gap:6px;
   padding:12px 14px;
   background:var(--s2);
-  border:1px solid rgba(255,255,255,0.06);
-  border-left:3px solid var(--tc,rgba(255,255,255,0.15));
-  border-radius:10px;
+  border:1px solid rgba(255,255,255,0.04);
+  border-left:2px solid var(--tc,var(--s4));
+  border-radius:12px;
   margin:4px 12px;
   cursor:pointer;
   touch-action:manipulation;
   -webkit-user-select:none;user-select:none;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.05),0 2px 6px rgba(0,0,0,0.5);
 }
 .chip.scheduled{opacity:0.38;}
 .chip.selected{
@@ -190,14 +191,15 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 }
 .block{
   background:var(--s2);
-  border:1px solid rgba(255,255,255,0.06);
-  border-left:3px solid var(--bc,rgba(255,255,255,0.15));
-  border-radius:8px;
+  border:1px solid rgba(255,255,255,0.04);
+  border-left:2px solid var(--bc,var(--s4));
+  border-radius:10px;
   padding:10px 12px;
   margin:3px 0;
   display:flex;align-items:center;gap:8px;
   cursor:pointer;
   touch-action:manipulation;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.04),0 2px 6px rgba(0,0,0,0.5);
 }
 .block-body{flex:1;min-width:0;}
 .block-title{font-size:12px;font-weight:600;color:var(--t0);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
@@ -611,7 +613,7 @@ function renderPool(){
   const unsched=tasks.filter(t=>!scheduled.has(t.id));
   count.textContent=unsched.length;
   if(!tasks.length){body.innerHTML='<div style="padding:16px;text-align:center;color:var(--t2);font-size:10px;">NO OPEN TASKS</div>';return;}
-  const priCol={high:'#e85c4b',med:'#f4c06a',low:'var(--t2)',none:'var(--t3)'};
+  const priCol={high:'#e85c4b',med:'#d4a850',low:'var(--t1)',none:'var(--t2)'};
   body.innerHTML=tasks.map(t=>{
     const show=(S.shows||[]).find(s=>s.id===t.sid);
     const col=t.color||(show&&show.color)||'rgba(255,255,255,0.14)';
