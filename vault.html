@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>VTEK // Vault</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+:root{
+  --bg:#1a1a1c;--s1:#1f1f21;--s2:#222224;--s3:#272729;--s4:#2e2e30;--s5:#353537;
+  --t0:#ececee;--t1:#b0b0bc;--t2:#787882;--t3:#505058;
+  --accent:rgba(244,247,250,0.92);--accent-hi:#f4f7fa;--teal:#21e1df;
+  --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,monospace;
+  --sans:'Inter',-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  --b1:1px solid rgba(255,255,255,0.07);--b2:1px solid rgba(255,255,255,0.10);
+  --safe-t:env(safe-area-inset-top,0px);--safe-b:env(safe-area-inset-bottom,0px);
+}
+html,body{background:var(--bg);color:var(--t0);font-family:var(--sans);font-size:14px;line-height:1.4;overflow:hidden;height:100dvh;width:100vw;}
+body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-available;overflow:hidden;}
+.topbar{display:flex;align-items:center;gap:8px;padding:calc(var(--safe-t)+12px) 12px 12px;background:var(--s1);border-bottom:var(--b1);flex-shrink:0;touch-action:manipulation;position:relative;}
+.topbar::after{content:'';position:absolute;bottom:-1px;left:8%;right:8%;height:1px;background:linear-gradient(90deg,transparent,rgba(200,220,232,0.5) 50%,transparent);opacity:0.3;}
+.back-btn{display:flex;align-items:center;gap:6px;background:none;border:none;color:var(--t1);font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:0.08em;padding:10px 10px 10px 8px;min-height:44px;min-width:44px;cursor:pointer;touch-action:manipulation;-webkit-user-select:none;user-select:none;}
+.back-btn svg,.back-btn span{pointer-events:none;}
+.title{font-family:var(--mono);font-size:14px;font-weight:800;letter-spacing:0.10em;color:var(--accent-hi);}
+.actions{margin-left:auto;display:flex;gap:4px;}
+.tb-btn{padding:6px 12px;background:var(--s3);border:var(--b2);color:var(--t0);font-family:var(--sans);font-size:10px;font-weight:700;letter-spacing:0.05em;cursor:pointer;min-height:32px;border-radius:8px;touch-action:manipulation;-webkit-user-select:none;user-select:none;}
+.tb-btn.primary{background:#fff;color:#000;border-color:#fff;}
+.main{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;touch-action:pan-y;}
+
+/* VAULT LIST */
+.vault-new-row{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;border-bottom:var(--b1);touch-action:manipulation;-webkit-user-select:none;user-select:none;}
+.vault-new-row:active{background:var(--s2);}
+.vault-new-icon{width:32px;height:32px;border-radius:8px;background:var(--s3);border:var(--b2);display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--t1);flex-shrink:0;}
+.vault-new-label{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--t1);letter-spacing:0.06em;}
+.vault-list-section{padding-top:4px;}
+.vault-list-sec-lbl{font-family:var(--mono);font-size:9px;font-weight:700;color:var(--t3);letter-spacing:0.12em;padding:14px 16px 6px;}
+.vault-doc-row{display:flex;align-items:center;gap:12px;padding:12px 16px;cursor:pointer;border-top:var(--b1);touch-action:manipulation;-webkit-user-select:none;user-select:none;}
+.vault-doc-row:active,.vault-doc-row.on{background:var(--s2);}
+.vault-doc-icon{width:32px;height:32px;border-radius:8px;background:var(--s3);border:var(--b2);display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--t2);flex-shrink:0;}
+.vault-doc-info{flex:1;min-width:0;}
+.vault-doc-title{font-size:13px;font-weight:600;color:var(--t0);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.vault-doc-meta{font-family:var(--mono);font-size:10px;color:var(--t2);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.vault-doc-chevron{color:var(--t3);font-size:12px;flex-shrink:0;}
+
+/* EDITOR */
+.editor-view{display:flex;flex-direction:column;flex:1;min-height:0;}
+.editor-topbar{display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:var(--b1);background:var(--s1);flex-shrink:0;}
+.editor-back{background:none;border:none;color:var(--teal);font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:0.06em;padding:8px;cursor:pointer;touch-action:manipulation;}
+.editor-title-in{flex:1;background:none;border:none;color:var(--t0);font-family:var(--sans);font-size:14px;font-weight:700;padding:0 4px;outline:none;}
+.editor-save{background:#fff;color:#000;border:none;font-family:var(--mono);font-size:10px;font-weight:800;padding:7px 14px;border-radius:8px;cursor:pointer;letter-spacing:0.06em;touch-action:manipulation;}
+.editor-del{background:none;border:var(--b2);color:var(--t2);font-family:var(--mono);font-size:10px;font-weight:700;padding:7px 10px;border-radius:8px;cursor:pointer;letter-spacing:0.06em;touch-action:manipulation;}
+.editor-textarea{flex:1;width:100%;background:transparent;border:none;color:var(--t0);font-family:var(--sans);font-size:14px;line-height:1.7;padding:16px;outline:none;resize:none;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+
+.toast{position:fixed;bottom:calc(var(--safe-b)+48px);left:50%;transform:translateX(-50%) translateY(20px);background:var(--s4);border:var(--b2);color:var(--t0);font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:0.10em;padding:9px 20px;opacity:0;transition:all 0.2s;pointer-events:none;white-space:nowrap;z-index:600;border-radius:20px;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.dbg{flex-shrink:0;background:#0a0d0a;border-top:1px solid #1a3a1a;font-family:monospace;font-size:10px;}
+.dbg-hd{height:28px;display:flex;align-items:center;padding:0 10px;gap:10px;touch-action:manipulation;}
+.dbg-btn{background:none;border:none;color:#0f0;font-size:10px;font-family:monospace;cursor:pointer;min-width:44px;min-height:28px;padding:0;}
+.dbg-id{color:#555;font-size:9px;flex:1;}
+.dbg-copy{background:#1a2a1a;border:1px solid #2a4a2a;color:#0f0;padding:2px 8px;font-size:9px;font-family:monospace;cursor:pointer;min-height:24px;}
+.dbg-body{display:none;max-height:140px;overflow-y:auto;border-top:1px solid #1a3a1a;}
+.dbg.open .dbg-body{display:block;}
+.dbg-log{color:#0f0;line-height:1.5;white-space:pre-wrap;padding:4px 10px;font-size:9px;}
+.hide{display:none!important;}
+</style>
+</head>
+<body>
+<div class="topbar" id="top-bar">
+  <button class="back-btn" id="back-btn">
+    <svg viewBox="0 0 12 12" width="13" height="13" fill="none" stroke="#21e1df" stroke-width="2"><path d="M7.5 2L3.5 6l4 4"/></svg>
+    <span id="back-lbl">HOME</span>
+  </button>
+  <span class="title" id="title-lbl">VAULT</span>
+  <div class="actions" id="list-actions">
+    <button class="tb-btn primary" onclick="newDoc()">+ NEW</button>
+  </div>
+  <div class="actions hide" id="edit-actions">
+    <button class="editor-del" id="del-btn" onclick="deleteDoc()">DELETE</button>
+    <button class="editor-save" onclick="saveDoc()">SAVE</button>
+  </div>
+</div>
+
+<div class="main" id="main">
+  <!-- LIST VIEW -->
+  <div id="v-list">
+    <div class="vault-new-row" onclick="newDoc()">
+      <div class="vault-new-icon">+</div>
+      <span class="vault-new-label">NEW NOTE</span>
+    </div>
+    <div id="doc-list"></div>
+  </div>
+  <!-- EDITOR VIEW -->
+  <div id="v-edit" class="hide" style="display:flex;flex-direction:column;min-height:0;">
+    <input class="editor-title-in" id="edit-title" placeholder="Note title..." type="text">
+    <textarea class="editor-textarea" id="edit-body" placeholder="Write in markdown...&#10;&#10;# Heading&#10;**Bold**, *italic*&#10;- List item"></textarea>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+<div class="dbg" id="dbg">
+  <div class="dbg-hd">
+    <button class="dbg-btn" onclick="document.getElementById('dbg').classList.toggle('open')">&gt; DBG</button>
+    <span class="dbg-id">VTEK-VAULT-20260416-001</span>
+    <button class="dbg-copy" onclick="navigator.clipboard&&navigator.clipboard.writeText(document.getElementById('dbg-log').textContent);this.textContent='COPIED';setTimeout(()=>this.textContent='COPY',1500)">COPY</button>
+  </div>
+  <div class="dbg-body"><div class="dbg-log" id="dbg-log"></div></div>
+</div>
+
+<script>
+'use strict';
+const LS='vtek9';
+let S=JSON.parse(localStorage.getItem(LS)||'null')||{shows:[],shots:[],tasks:[],vaultDocs:[]};
+if(!S.vaultDocs)S.vaultDocs=[];
+let activeId=null;
+
+function save(){localStorage.setItem(LS,JSON.stringify(S));}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);}
+function dbg(m){const el=document.getElementById('dbg-log');el.textContent+=new Date().toTimeString().slice(0,8)+' '+m+'\n';}
+window.addEventListener('error',e=>dbg('ERR:'+e.message));
+
+function renderList(){
+  const groups=[
+    {label:'GENERAL',docs:S.vaultDocs.filter(d=>!d.showId)},
+    ...(S.shows||[]).map(s=>({label:s.code,docs:S.vaultDocs.filter(d=>d.showId===s.id)}))
+  ].filter(g=>g.docs.length>0);
+
+  let h='';
+  groups.forEach(g=>{
+    h+='<div class="vault-list-section"><div class="vault-list-sec-lbl">'+g.label+'</div>';
+    g.docs.forEach(d=>{
+      const date=new Date(d.updated||Date.now()).toLocaleDateString('en-US',{month:'short',day:'numeric'});
+      const preview=(d.content||'').replace(/[#*`]/g,'').trim().slice(0,50)||'Empty note';
+      h+='<div class="vault-doc-row" onclick="openDoc(\''+d.id+'\')">'+
+        '<div class="vault-doc-icon">&#x1F4C4;</div>'+
+        '<div class="vault-doc-info">'+
+          '<div class="vault-doc-title">'+escHtml(d.title||'Untitled')+'</div>'+
+          '<div class="vault-doc-meta">'+date+' &nbsp;&bull;&nbsp; '+escHtml(preview)+'</div>'+
+        '</div>'+
+        '<div class="vault-doc-chevron">&#x203A;</div>'+
+      '</div>';
+    });
+    h+='</div>';
+  });
+  if(!h)h='<div style="padding:40px;text-align:center;color:var(--t2);font-family:var(--mono);font-size:11px;letter-spacing:0.06em;">NO DOCS &mdash; TAP + NEW</div>';
+  document.getElementById('doc-list').innerHTML=h;
+}
+
+function escHtml(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+function showList(){
+  activeId=null;
+  document.getElementById('v-list').classList.remove('hide');
+  document.getElementById('v-edit').classList.add('hide');
+  document.getElementById('list-actions').classList.remove('hide');
+  document.getElementById('edit-actions').classList.add('hide');
+  document.getElementById('back-lbl').textContent='HOME';
+  document.getElementById('title-lbl').textContent='VAULT';
+  document.getElementById('main').style.display='';
+  document.getElementById('main').style.flexDirection='';
+  renderList();
+}
+
+function openDoc(id){
+  const doc=S.vaultDocs.find(d=>d.id===id);if(!doc)return;
+  activeId=id;
+  document.getElementById('edit-title').value=doc.title||'';
+  document.getElementById('edit-body').value=doc.content||'';
+  document.getElementById('v-list').classList.add('hide');
+  document.getElementById('v-edit').classList.remove('hide');
+  document.getElementById('list-actions').classList.add('hide');
+  document.getElementById('edit-actions').classList.remove('hide');
+  document.getElementById('back-lbl').textContent='VAULT';
+  document.getElementById('title-lbl').textContent='EDIT';
+  document.getElementById('main').style.display='flex';
+  document.getElementById('main').style.flexDirection='column';
+  dbg('[VAULT] opened '+id);
+}
+
+function newDoc(){
+  const id='v'+Date.now();
+  const show=S.shows[0]||null;
+  S.vaultDocs.unshift({id,title:'New Note',content:'',showId:show?show.id:null,updated:Date.now()});
+  save();openDoc(id);
+}
+
+function saveDoc(){
+  if(!activeId)return;
+  const doc=S.vaultDocs.find(d=>d.id===activeId);if(!doc)return;
+  doc.title=document.getElementById('edit-title').value.trim()||'Untitled';
+  doc.content=document.getElementById('edit-body').value;
+  doc.updated=Date.now();
+  save();toast('SAVED');dbg('[VAULT] saved '+activeId);
+}
+
+function deleteDoc(){
+  if(!activeId)return;
+  if(!confirm('Delete this note?'))return;
+  S.vaultDocs=S.vaultDocs.filter(d=>d.id!==activeId);
+  save();showList();toast('DELETED');
+}
+
+document.getElementById('back-btn').addEventListener('click',function(){
+  if(activeId){saveDoc();showList();}
+  else{window.location.href='./';}
+});
+
+renderList();
+</script>
+</body>
+</html>
