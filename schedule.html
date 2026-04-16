@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>VTEK // Schedule</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+:root {
+  --bg: #07080f;
+  --s1: #0a0b10;
+  --s2: #11141f;
+  --s3: #14161d;
+  --s4: #1e2029;
+  --s5: #292d36;
+  --t0: #c8cdd8;
+  --t1: #8390a2;
+  --t2: #525a68;
+  --t3: #3a414e;
+  --accent: #3d6e9e;
+  --accent-hi: #5590c0;
+  --teal: #21e1df;
+  --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+  --sans: -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif;
+  --b1: 1px solid rgba(255,255,255,0.055);
+  --b2: 1px solid rgba(255,255,255,0.085);
+  --safe-t: env(safe-area-inset-top, 0px);
+  --safe-b: env(safe-area-inset-bottom, 0px);
+}
+html, body {
+  background: var(--bg);
+  color: var(--t0);
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.4;
+  overflow: hidden;
+  height: 100dvh;
+  width: 100vw;
+}
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  min-height: -webkit-fill-available;
+  overflow: hidden;
+}
+
+/* TOPBAR */
+.topbar {
+  display: flex; align-items: center; gap: 10px;
+  padding: calc(var(--safe-t) + 12px) 12px 12px;
+  background: var(--s1);
+  border-bottom: var(--b1);
+  flex-shrink: 0;
+  touch-action: manipulation;
+}
+.back-btn {
+  display: flex; align-items: center; gap: 6px;
+  background: none; border: none;
+  color: var(--t1);
+  font-family: var(--mono); font-size: 10px; font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 10px 12px 10px 8px;
+  min-height: 44px; min-width: 44px;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-user-select: none; user-select: none;
+}
+.back-btn svg, .back-btn span { pointer-events: none; }
+.title {
+  font-family: var(--mono);
+  font-size: 14px; font-weight: 800;
+  letter-spacing: 0.10em;
+  color: #f4f7fa;
+}
+.actions { margin-left: auto; display: flex; gap: 6px; }
+.tb-btn {
+  padding: 6px 10px;
+  background: linear-gradient(180deg, var(--s4), var(--s3));
+  border: var(--b2);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.09), inset 0 -1px 0 rgba(0,0,0,0.55);
+  color: var(--t0);
+  font-family: var(--sans); font-size: 10px; font-weight: 700;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  min-height: 32px;
+  touch-action: manipulation;
+  -webkit-user-select: none; user-select: none;
+}
+.tb-btn:active { background: var(--s5); }
+
+/* MAIN */
+.main {
+  flex: 1; min-height: 0;
+  overflow-y: auto; overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+}
+
+.date-row {
+  padding: 14px 16px 10px;
+  text-align: center;
+  font-family: var(--mono); font-size: 11px;
+  color: var(--t1); letter-spacing: 0.08em;
+  border-bottom: var(--b1);
+}
+
+/* POOL */
+.pool-section { background: var(--s1); border-bottom: var(--b1); }
+.pool-toggle {
+  display: flex; align-items: center;
+  padding: 10px 16px;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-user-select: none; user-select: none;
+}
+.pool-label { font-family: var(--sans); font-size: 10px; font-weight: 800; letter-spacing: 0.12em; color: var(--t2); flex: 1; }
+.pool-count { font-family: var(--mono); font-size: 10px; font-weight: 700; color: var(--t0); background: var(--s3); padding: 2px 8px; margin-right: 10px; }
+.pool-hint { font-family: var(--sans); font-size: 9px; color: var(--t3); letter-spacing: 0.06em; margin-right: 10px; }
+.pool-arrow { font-size: 10px; color: var(--t2); transition: transform 0.2s; }
+.pool-section.open .pool-arrow { transform: rotate(180deg); }
+.pool-body { display: none; padding: 0 0 8px; }
+.pool-section.open .pool-body { display: block; }
+.chip {
+  display: flex; flex-direction: column; gap: 4px;
+  padding: 10px 14px;
+  background: var(--s2);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-left: 3px solid var(--tc, var(--s4));
+  margin: 2px 0;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-user-select: none; user-select: none;
+}
+.chip.scheduled { opacity: 0.35; }
+.chip.selected { background: rgba(61,110,158,0.15); border-left-color: var(--accent-hi); }
+.chip-title { font-size: 13px; font-weight: 500; color: var(--t0); }
+.chip-meta { display: flex; gap: 6px; align-items: center; }
+.chip-dur { font-family: var(--mono); font-size: 10px; color: var(--t2); }
+.chip-pri {
+  font-family: var(--sans); font-size: 9px; font-weight: 700;
+  padding: 1px 5px; border: 1px solid var(--pc, var(--t2)); color: var(--pc, var(--t2));
+}
+
+/* TIMELINE */
+.timeline { padding-bottom: 80px; }
+.slot {
+  display: flex;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  min-height: 54px;
+  touch-action: manipulation;
+}
+.slot-time {
+  width: 48px; flex-shrink: 0;
+  padding: 8px 8px 0; text-align: right;
+  font-family: var(--mono); font-size: 10px; color: var(--t2); font-weight: 500;
+}
+.slot-body {
+  flex: 1;
+  padding: 4px 12px;
+  cursor: pointer;
+  position: relative;
+  touch-action: manipulation;
+  -webkit-user-select: none; user-select: none;
+}
+.slot-body:active { background: rgba(255,255,255,0.04); }
+.slot-body.has-sel { cursor: crosshair; }
+.slot-body.has-sel::after {
+  content: '+';
+  position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+  font-size: 18px; color: rgba(85,144,192,0.4);
+  pointer-events: none;
+}
+
+.block {
+  background: var(--s2);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-left: 3px solid var(--bc, var(--accent));
+  padding: 8px 10px;
+  margin: 2px 0;
+  display: flex; align-items: center; gap: 8px;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.block-body { flex: 1; min-width: 0; }
+.block-title { font-size: 12px; font-weight: 600; color: var(--t0); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.block-meta { display: flex; gap: 6px; font-family: var(--mono); font-size: 9px; color: var(--t2); margin-top: 2px; }
+.block-x {
+  width: 28px; height: 28px; flex-shrink: 0;
+  background: none; border: none;
+  color: var(--t2); font-size: 14px;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.lunch {
+  background: rgba(85,144,192,0.06);
+  padding: 14px 16px;
+  font-family: var(--mono); font-size: 10px; color: var(--t1); letter-spacing: 0.08em;
+}
+
+/* HINT */
+.hint {
+  position: fixed;
+  bottom: calc(var(--safe-b) + 48px);
+  left: 50%; transform: translateX(-50%);
+  background: var(--s3);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.10), inset 0 -1px 0 rgba(0,0,0,0.72), 0 0 0 1px rgba(85,144,192,0.3);
+  padding: 8px 18px;
+  font-family: var(--mono); font-size: 10px; font-weight: 700;
+  color: var(--t0); letter-spacing: 0.08em;
+  pointer-events: none;
+  z-index: 500;
+  opacity: 0; transition: opacity 0.18s;
+  white-space: nowrap;
+}
+.hint.show { opacity: 1; }
+
+/* TOAST */
+.toast {
+  position: fixed;
+  bottom: calc(var(--safe-b) + 48px);
+  left: 50%; transform: translateX(-50%) translateY(20px);
+  background: rgba(30,32,41,0.95);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: #f4f7fa;
+  font-family: var(--mono); font-size: 11px; font-weight: 700;
+  letter-spacing: 0.10em;
+  padding: 8px 20px;
+  opacity: 0; transition: all 0.2s;
+  pointer-events: none; white-space: nowrap;
+  z-index: 600;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* DBG */
+.dbg {
+  flex-shrink: 0;
+  background: #0a0d0a;
+  border-top: 1px solid #1a3a1a;
+  font-family: monospace; font-size: 10px;
+}
+.dbg-hd {
+  height: 28px;
+  display: flex; align-items: center;
+  padding: 0 10px; gap: 10px;
+  touch-action: manipulation;
+  -webkit-user-select: none; user-select: none;
+}
+.dbg-btn {
+  background: none; border: none;
+  color: #0f0; font-size: 10px;
+  font-family: monospace; cursor: pointer;
+  min-width: 44px; min-height: 28px;
+  padding: 0; touch-action: manipulation;
+  -webkit-user-select: none; user-select: none;
+}
+.dbg-id { color: #555; font-size: 9px; flex: 1; }
+.dbg-copy {
+  background: #1a2a1a;
+  border: 1px solid #2a4a2a;
+  color: #0f0;
+  padding: 2px 8px; font-size: 9px;
+  font-family: monospace;
+  cursor: pointer;
+  min-height: 24px;
+  touch-action: manipulation;
+}
+.dbg-body {
+  display: none; max-height: 180px;
+  overflow-y: auto;
+  border-top: 1px solid #1a3a1a;
+  -webkit-overflow-scrolling: touch;
+}
+.dbg.open .dbg-body { display: block; }
+.dbg-log {
+  color: #0f0; line-height: 1.5;
+  white-space: pre-wrap; padding: 4px 10px;
+  font-size: 9px;
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <button class="back-btn" id="back-btn">
+    <svg viewBox="0 0 12 12" width="13" height="13" fill="none" stroke="#21e1df" stroke-width="2"><path d="M7.5 2L3.5 6l4 4"/></svg>
+    <span>HOME</span>
+  </button>
+  <span class="title">SCHEDULE</span>
+  <div class="actions">
+    <button class="tb-btn" id="rack-btn">AUTO-RACK</button>
+    <button class="tb-btn" id="commit-btn">COMMIT</button>
+  </div>
+</div>
+
+<div class="main" id="main">
+  <div class="date-row" id="date-label">TODAY</div>
+
+  <div class="pool-section open" id="pool-section">
+    <div class="pool-toggle" id="pool-toggle">
+      <span class="pool-label">TASK POOL</span>
+      <span class="pool-count" id="pool-count">0</span>
+      <span class="pool-hint">TAP TO TOGGLE</span>
+      <span class="pool-arrow">&#9660;</span>
+    </div>
+    <div class="pool-body" id="pool-body"></div>
+  </div>
+
+  <div class="timeline" id="timeline"></div>
+</div>
+
+<div id="hint" class="hint"></div>
+<div id="toast" class="toast"></div>
+
+<div class="dbg" id="dbg">
+  <div class="dbg-hd">
+    <button class="dbg-btn" id="dbg-toggle">&gt; DBG</button>
+    <span class="dbg-id" id="dbg-id">VTEK-SCHED-20260416-001</span>
+    <button class="dbg-copy" id="dbg-copy">COPY</button>
+  </div>
+  <div class="dbg-body">
+    <div class="dbg-log" id="dbg-log"></div>
+  </div>
+</div>
+
+<script>
+'use strict';
+const BUILD = 'VTEK-SCHED-20260416-001';
+
+// ============ DEBUG ============
+const _dbgEl = document.getElementById('dbg-log');
+function dbg(msg){
+  const t = new Date().toTimeString().slice(0,8);
+  _dbgEl.textContent += t + ' ' + msg + '\n';
+  _dbgEl.scrollTop = _dbgEl.scrollHeight;
+}
+window.addEventListener('error', e => dbg('ERR: ' + e.message + ' @ ' + e.lineno));
+
+// ============ STATE ============
+const LS_STATE = 'vtek9';
+const LS_PLAN = 'vtek_plan_' + new Date().toDateString();
+
+let S = JSON.parse(localStorage.getItem(LS_STATE) || '{"tasks":[],"shows":[]}');
+let planSchedule = JSON.parse(localStorage.getItem(LS_PLAN) || '[]');
+let planSelected = null;
+
+const WORK_START = 9, WORK_END = 19;
+const LUNCH_START = 13, LUNCH_END = 14;
+
+// ============ UTILS ============
+function fmtTime(h,m){
+  const a = h>=12?'pm':'am';
+  const h12 = h>12?h-12:(h===0?12:h);
+  return h12 + (m?':'+String(m).padStart(2,'0'):':00') + a;
+}
+function formatHour(h){
+  const a = h>=12?'PM':'AM';
+  return (h>12?h-12:h) + a;
+}
+function toast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2000);
+}
+function savePlan(){ localStorage.setItem(LS_PLAN, JSON.stringify(planSchedule)); }
+function isBlocked(h,m,dur){
+  const ns = h*60+m, ne = ns+dur;
+  if(ns < LUNCH_END*60 && ne > LUNCH_START*60) return true;
+  for(const e of planSchedule){
+    const es = e.startH*60+e.startM, ee = es+e.durMins;
+    if(ns < ee && ne > es) return true;
+  }
+  return false;
+}
+
+// ============ RENDER POOL ============
+function renderPool(){
+  const body = document.getElementById('pool-body');
+  const count = document.getElementById('pool-count');
+  const scheduled = new Set(planSchedule.map(s => s.taskId));
+  const tasks = (S.tasks||[]).filter(t => !t.done);
+  const unsched = tasks.filter(t => !scheduled.has(t.id));
+  count.textContent = unsched.length;
+
+  if(!tasks.length){ body.innerHTML = '<div style="padding:16px;text-align:center;color:var(--t2);font-size:10px;">NO OPEN TASKS</div>'; return; }
+
+  const priCol = { high: '#e85c4b', med: '#f4c06a', low: 'var(--t2)' };
+  body.innerHTML = tasks.map(t => {
+    const show = (S.shows||[]).find(s => s.id === t.sid);
+    const col = t.color || (show && show.color) || 'var(--s4)';
+    const pc = priCol[t.pri] || 'var(--t2)';
+    const isSched = scheduled.has(t.id);
+    const isSel = planSelected && planSelected.id === t.id;
+    return '<div class="chip' + (isSched?' scheduled':'') + (isSel?' selected':'') +
+      '" style="--tc:' + col + '" data-tid="' + t.id + '" data-dur="' + (t.dur||45) + '">' +
+      '<div class="chip-title">' + t.title + '</div>' +
+      '<div class="chip-meta">' +
+        '<span class="chip-dur">' + (t.dur||45) + 'min</span>' +
+        '<span class="chip-pri" style="--pc:' + pc + '">' + (t.pri||'MED').toUpperCase() + '</span>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+// ============ RENDER TIMELINE ============
+function renderTimeline(){
+  const tl = document.getElementById('timeline');
+  let html = '';
+  for(let h = WORK_START; h < WORK_END; h++){
+    html += slotHTML(h, 0);
+    html += slotHTML(h, 30);
+  }
+  tl.innerHTML = html;
+
+  // Place lunch
+  const lunchSlot = tl.querySelector('[data-h="' + LUNCH_START + '"][data-m="0"] .slot-body');
+  if(lunchSlot) lunchSlot.innerHTML = '<div class="lunch">LUNCH 1:00&ndash;2:00 PM</div>';
+
+  // Place blocks
+  planSchedule.forEach(entry => {
+    const task = (S.tasks||[]).find(t => t.id === entry.taskId);
+    if(!task) return;
+    const m30 = entry.startM < 30 ? 0 : 30;
+    const slot = tl.querySelector('[data-h="' + entry.startH + '"][data-m="' + m30 + '"] .slot-body');
+    if(!slot) return;
+    const endMins = entry.startH*60 + entry.startM + entry.durMins;
+    const endH = Math.floor(endMins/60), endM = endMins%60;
+    const show = (S.shows||[]).find(s => s.id === task.sid);
+    const col = task.color || (show && show.color) || 'var(--accent)';
+    slot.insertAdjacentHTML('beforeend',
+      '<div class="block" style="--bc:' + col + '" data-bid="' + task.id + '">' +
+        '<div class="block-body">' +
+          '<div class="block-title">' + task.title + '</div>' +
+          '<div class="block-meta">' +
+            '<span>' + fmtTime(entry.startH, entry.startM) + '&ndash;' + fmtTime(endH, endM) + '</span>' +
+            '<span>' + entry.durMins + 'min</span>' +
+          '</div>' +
+        '</div>' +
+        '<button class="block-x" data-del="' + task.id + '">&times;</button>' +
+      '</div>'
+    );
+  });
+}
+function slotHTML(h, m){
+  return '<div class="slot" data-h="' + h + '" data-m="' + m + '">' +
+    '<div class="slot-time">' + (m===0?formatHour(h):'') + '</div>' +
+    '<div class="slot-body" data-h="' + h + '" data-m="' + m + '"></div>' +
+  '</div>';
+}
+
+// ============ ACTIONS ============
+function selectTask(id){
+  const t = (S.tasks||[]).find(x => x.id === id);
+  if(!t) return;
+  if(planSelected && planSelected.id === id){
+    planSelected = null;
+    document.getElementById('hint').classList.remove('show');
+    dbg('[SEL] deselected');
+  } else {
+    planSelected = { id: t.id, title: t.title, dur: t.dur || 45 };
+    const h = document.getElementById('hint');
+    h.textContent = 'TAP A SLOT TO PLACE "' + t.title.toUpperCase() + '"';
+    h.classList.add('show');
+    dbg('[SEL] ' + t.title);
+  }
+  renderPool();
+  document.querySelectorAll('.slot-body').forEach(b => b.classList.toggle('has-sel', !!planSelected));
+}
+
+function placeOnSlot(h, m){
+  if(!planSelected) return;
+  if(isBlocked(h, m, planSelected.dur)){ toast('SLOT BLOCKED'); return; }
+  planSchedule = planSchedule.filter(s => s.taskId !== planSelected.id);
+  planSchedule.push({ taskId: planSelected.id, startH: h, startM: m, durMins: planSelected.dur });
+  dbg('[PLACE] ' + planSelected.title + ' @ ' + fmtTime(h,m));
+  savePlan();
+  planSelected = null;
+  document.getElementById('hint').classList.remove('show');
+  renderPool();
+  renderTimeline();
+  toast('PLACED');
+}
+
+function removeBlock(id){
+  planSchedule = planSchedule.filter(e => e.taskId !== id);
+  savePlan();
+  renderPool();
+  renderTimeline();
+  dbg('[DEL] ' + id);
+}
+
+function autoRack(){
+  dbg('[RACK] start');
+  const tasks = (S.tasks||[]).filter(t => !t.done).sort((a,b) => {
+    const p = { high: 0, med: 1, low: 2 };
+    return (p[a.pri]||1) - (p[b.pri]||1);
+  });
+  planSchedule = [];
+  // Build open slots
+  const slots = [];
+  for(let h = WORK_START; h < WORK_END; h++){
+    for(const m of [0, 30]){
+      if(h >= LUNCH_START && h < LUNCH_END) continue;
+      slots.push({ h, m });
+    }
+  }
+  // Bin-pack
+  let i = 0;
+  let placed = 0;
+  for(const t of tasks){
+    const dur = t.dur || 45;
+    const slotsNeeded = Math.ceil(dur / 30);
+    if(i + slotsNeeded > slots.length) continue;
+    const start = slots[i];
+    if(isBlocked(start.h, start.m, dur)){ i++; continue; }
+    planSchedule.push({ taskId: t.id, startH: start.h, startM: start.m, durMins: dur });
+    i += slotsNeeded;
+    placed++;
+  }
+  savePlan();
+  renderPool();
+  renderTimeline();
+  toast('RACKED ' + placed);
+  dbg('[RACK] placed=' + placed);
+}
+
+function commit(){
+  savePlan();
+  toast('PLAN COMMITTED');
+  dbg('[COMMIT] blocks=' + planSchedule.length);
+}
+
+function goHome(){
+  dbg('[BACK] tapped');
+  window.location.href = './';
+}
+
+// ============ EVENT WIRING ============
+document.getElementById('back-btn').addEventListener('click', goHome);
+document.getElementById('rack-btn').addEventListener('click', autoRack);
+document.getElementById('commit-btn').addEventListener('click', commit);
+
+// Pool toggle
+document.getElementById('pool-toggle').addEventListener('click', function(){
+  const s = document.getElementById('pool-section');
+  s.classList.toggle('open');
+  dbg('[POOL] ' + (s.classList.contains('open')?'open':'closed'));
+});
+
+// Delegated pool chip tap
+document.getElementById('pool-body').addEventListener('click', function(e){
+  const chip = e.target.closest('.chip');
+  if(!chip) return;
+  dbg('[CHIP] ' + chip.dataset.tid);
+  selectTask(chip.dataset.tid);
+});
+
+// Delegated timeline tap
+document.getElementById('timeline').addEventListener('click', function(e){
+  const del = e.target.closest('[data-del]');
+  if(del){ e.stopPropagation(); removeBlock(del.dataset.del); return; }
+  const block = e.target.closest('.block');
+  if(block){ dbg('[BLOCK] ' + block.dataset.bid); toast('EDIT SOON'); return; }
+  const slot = e.target.closest('.slot-body');
+  if(slot){
+    const h = parseInt(slot.dataset.h), m = parseInt(slot.dataset.m);
+    dbg('[SLOT] ' + h + ':' + String(m).padStart(2,'0'));
+    placeOnSlot(h, m);
+  }
+});
+
+// DBG
+document.getElementById('dbg-toggle').addEventListener('click', function(){
+  document.getElementById('dbg').classList.toggle('open');
+});
+document.getElementById('dbg-copy').addEventListener('click', function(){
+  const txt = _dbgEl.textContent;
+  if(navigator.clipboard) navigator.clipboard.writeText(txt);
+  this.textContent = 'COPIED';
+  setTimeout(()=>this.textContent='COPY', 1500);
+});
+
+// ============ INIT ============
+document.getElementById('date-label').textContent =
+  new Date().toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }).toUpperCase();
+document.getElementById('dbg-id').textContent = BUILD;
+
+dbg('[INIT] tasks=' + (S.tasks||[]).length + ' sched=' + planSchedule.length);
+renderPool();
+renderTimeline();
+dbg('[INIT] done | slots=' + document.querySelectorAll('.slot').length + ' blocks=' + document.querySelectorAll('.block').length);
+</script>
+</body>
+</html>
