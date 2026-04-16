@@ -709,14 +709,13 @@ body {
 .plan-slot-body:hover { background: rgba(255,255,255,0.05); }
 .plan-slot-body:hover::after { content: "+"; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 18px; color: rgba(255,255,255,0.13); font-weight: 300; pointer-events: none; }
 .plan-slot-body.has-selection { cursor: crosshair; }
-.plan-cal-block { padding: 7px 10px; background: rgba(104,104,112,0.12); border: 1px solid rgba(104,104,112,0.25); border-left: 3px solid var(--rev); border-radius: 6px; margin-bottom: 3px; }
+.plan-cal-block { padding: 7px 10px; background: rgba(104,104,112,0.12); border: 1px solid rgba(104,104,112,0.25); border-left: 3px solid var(--rev); margin-bottom: 3px; }
 .plan-cal-title { font-family: var(--sans); font-size: 11px; font-weight: 500; color: var(--t1); line-height: 1.3; }
 .plan-cal-time { font-family: var(--mono); font-size: 9px; color: var(--t2); margin-top: 2px; }
 .plan-cal-badge { font-family: var(--sans); font-size: 8px; font-weight: 600; letter-spacing: 0.06em; color: var(--t2); margin-left: 4px; }
 .plan-lunch-block {
   padding: 7px 12px;
   border: 1px solid rgba(255,255,255,0.06);
-  border-radius: 12px;
   margin-bottom: 2px;
   background: rgba(255,255,255,0.02);
   display: flex; align-items: center;
@@ -727,7 +726,6 @@ body {
   background: linear-gradient(160deg, rgba(40,40,50,0.9) 0%, rgba(30,30,38,0.95) 100%);
   border: 1px solid rgba(255,255,255,0.08);
   border-left: 2px solid rgba(255,255,255,0.35);
-  border-radius: 14px;
   transition: all 0.15s;
   position: relative;
   margin-bottom: 3px;
@@ -1712,13 +1710,13 @@ body {
 /* The overlay + bottom sheet */
 #plan-task-sheet-overlay {
   display: none; position: fixed; inset: 0;
-  background: rgba(0,0,0,0.6); z-index: 450;
+  background: rgba(0,0,0,0.6); z-index: 10100;
   -webkit-tap-highlight-color: transparent;
 }
 #plan-task-sheet-overlay.open { display: block; }
 #plan-task-sheet {
   position: fixed; bottom: 0; left: 0; right: 0;
-  z-index: 460;
+  z-index: 10110;
   background: var(--s1);
   border-top: 1px solid rgba(255,255,255,0.5); box-shadow: 0 -1px 8px rgba(255,255,255,0.15), 0 -1px 2px rgba(127,144,162,0.15);
   border-radius: 0;
@@ -1731,7 +1729,7 @@ body {
 #plan-task-sheet.open { transform: translateY(0); }
 .plan-sheet-grab {
   width: 32px; height: 3px; background: var(--s4);
-  border-radius: 99px; margin: 10px auto 6px;
+  margin: 10px auto 6px;
   flex-shrink: 0;
 }
 .plan-sheet-hd {
@@ -3387,7 +3385,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260415-200000';
+const BUILD_ID = 'VTEK-20260415-210000';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
@@ -5718,6 +5716,45 @@ function injectCalendarEvents(events){
 
 function savePlan(){localStorage.setItem('vtek_plan_'+new Date().toDateString(),JSON.stringify(planSchedule));}
 function loadSavedPlan(){const s=localStorage.getItem('vtek_plan_'+new Date().toDateString());planSchedule=s?JSON.parse(s):[];}
+function savePlan(){localStorage.setItem('vtek_plan_'+new Date().toDateString(),JSON.stringify(planSchedule));}
+function commitPlan(){
+  savePlan();
+  const count=planSchedule.length;
+  const status=document.getElementById('plan-commit-status');
+  const txt=document.getElementById('plan-commit-txt');
+  if(status) status.style.display='flex';
+  if(txt) txt.textContent=count+' BLOCK'+(count!==1?'S':'')+' COMMITTED';
+  updateTotalTime();
+  toast('PLAN COMMITTED -- '+count+' BLOCK'+(count!==1?'S':''));
+  renderTimeline();
+}
+function savePlanBlockEdit(){
+  if(!_planEditTaskId) return;
+  const task=S.tasks.find(t=>t.id===_planEditTaskId);
+  if(!task){closePlanEdit();return;}
+  const title=document.getElementById('pe-title').value.trim();
+  const dur=parseInt(document.getElementById('pe-dur-num').value)||30;
+  const startH=parseInt(document.getElementById('pe-start-h').value)||9;
+  const startM=parseInt(document.getElementById('pe-start-m').value)||0;
+  const due=document.getElementById('pe-due').value;
+  const notes=document.getElementById('pe-notes').value.trim();
+  const rawTags=document.getElementById('pe-tags').value;
+  const tags=rawTags.split(',').map(function(t){return t.trim();}).filter(Boolean);
+  const priGroup=document.getElementById('pe-pri-group');
+  const pri=(priGroup&&priGroup.dataset.selected)?priGroup.dataset.selected:(task.pri||'med');
+  if(title) task.title=title;
+  task.dur=dur; task.pri=pri; task.notes=notes;
+  if(due) task.due=due;
+  if(tags.length) task.tags=tags;
+  const entryIdx=planSchedule.findIndex(function(e){return e.taskId===_planEditTaskId;});
+  if(entryIdx>=0){
+    planSchedule[entryIdx].startH=startH;
+    planSchedule[entryIdx].startM=startM;
+    planSchedule[entryIdx].durMins=dur;
+  }
+  save();savePlan();closePlanEdit();renderTimeline();renderTaskPool();
+  toast('BLOCK UPDATED');
+}
 
 
 
