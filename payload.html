@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>VTEK // Payload</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+:root{
+  --bg:#1a1a1c;--s1:#1f1f21;--s2:#222224;--s3:#272729;--s4:#2e2e30;--s5:#353537;
+  --t0:#ececee;--t1:#b0b0bc;--t2:#787882;--t3:#505058;
+  --accent:rgba(244,247,250,0.92);--accent-hi:#f4f7fa;--teal:#21e1df;
+  --warn:#f4c06a;--hi:#e85c4b;
+  --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,monospace;
+  --sans:'Inter',-apple-system,BlinkMacSystemFont,'SF Pro Text',system-ui,sans-serif;
+  --b0:1px solid rgba(255,255,255,0.04);
+  --b1:1px solid rgba(255,255,255,0.07);
+  --b2:1px solid rgba(255,255,255,0.10);
+  --b3:1px solid rgba(255,255,255,0.15);
+  --safe-t:env(safe-area-inset-top,0px);--safe-b:env(safe-area-inset-bottom,0px);
+}
+html,body{background:var(--bg);color:var(--t0);font-family:var(--sans);font-size:14px;line-height:1.4;overflow:hidden;height:100dvh;width:100vw;}
+body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-available;overflow:hidden;}
+.topbar{display:flex;align-items:center;gap:8px;padding:calc(var(--safe-t)+12px) 12px 12px;background:var(--s1);border-bottom:var(--b1);flex-shrink:0;touch-action:manipulation;position:relative;}
+.topbar::after{content:'';position:absolute;bottom:-1px;left:8%;right:8%;height:1px;background:linear-gradient(90deg,transparent,rgba(200,220,232,0.5) 50%,transparent);opacity:0.3;}
+.back-btn{display:flex;align-items:center;gap:6px;background:none;border:none;color:var(--t1);font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:0.08em;padding:10px 10px 10px 8px;min-height:44px;min-width:44px;cursor:pointer;touch-action:manipulation;-webkit-user-select:none;user-select:none;}
+.back-btn svg,.back-btn span{pointer-events:none;}
+.title{font-family:var(--mono);font-size:14px;font-weight:800;letter-spacing:0.10em;color:var(--accent-hi);}
+.actions{margin-left:auto;display:flex;gap:4px;}
+.tb-btn{padding:6px 12px;background:var(--s3);border:var(--b2);color:var(--t0);font-family:var(--sans);font-size:10px;font-weight:700;letter-spacing:0.05em;cursor:pointer;min-height:32px;border-radius:8px;touch-action:manipulation;-webkit-user-select:none;user-select:none;white-space:nowrap;}
+.tb-btn.primary{background:#fff;color:#000;border-color:#fff;}
+.main{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;touch-action:pan-y;padding:0 12px 40px;}
+/* FILTER TABS */
+.filter-bar{display:flex;align-items:center;gap:0;padding:10px 0 0;border-bottom:var(--b1);margin-bottom:10px;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.filter-bar::-webkit-scrollbar{display:none;}
+.pl-fchip{flex-shrink:0;padding:8px 14px;border:none;border-bottom:2px solid transparent;background:transparent;font-family:var(--sans);font-size:10px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:var(--t2);cursor:pointer;white-space:nowrap;touch-action:manipulation;}
+.pl-fchip.on{color:#fff;font-weight:800;position:relative;}
+.pl-fchip.on::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 0%,rgba(200,220,232,0.9) 50%,transparent 100%);}
+.ai-sort-btn{margin-left:auto;flex-shrink:0;padding:5px 10px;background:var(--s3);border:var(--b2);color:var(--t1);font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:0.08em;cursor:pointer;border-radius:6px;white-space:nowrap;}
+/* QUICK LOG */
+.quick-log-row{display:flex;gap:8px;margin-bottom:10px;padding-top:4px;}
+.quick-log-input{flex:1;background:var(--s2);border:var(--b2);color:var(--t0);font-family:var(--sans);font-size:13px;padding:10px 12px;outline:none;border-radius:8px;}
+.quick-log-input::placeholder{color:var(--t2);}
+.quick-log-btn{background:var(--s3);border:var(--b2);color:var(--t0);font-family:var(--mono);font-size:10px;font-weight:700;padding:0 16px;border-radius:8px;cursor:pointer;white-space:nowrap;touch-action:manipulation;}
+/* PRIORITY SECTIONS */
+.pl-sec{display:flex;align-items:center;gap:10px;padding:12px 0 6px;margin-bottom:2px;}
+.pl-sec-lbl{font-family:var(--mono);font-size:9px;font-weight:700;color:var(--t3);letter-spacing:0.12em;display:flex;align-items:center;gap:6px;white-space:nowrap;}
+.pl-sec-lbl::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--t3);display:inline-block;}
+.pl-sec-rule{flex:1;height:1px;background:rgba(255,255,255,0.05);}
+.tcard {
+  background: var(--s2);
+  border: 1px solid rgba(255,255,255,0.04);
+  border-left: 2px solid var(--cc, var(--s4));
+  border-radius: 12px;
+  margin-bottom: 5px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), inset 0 -2px 0 rgba(0,0,0,0.70), 0 2px 6px rgba(0,0,0,0.60);
+  position: relative;
+  transition: all 0.12s;
+  cursor: default; user-select: none;
+  width: 100%; box-sizing: border-box; overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+.tcard.drag-over { border-top: 2px solid rgba(255,255,255,0.3); }
+.tcard-main { display: flex; align-items: center; gap: 8px; padding: 9px 14px; position: relative; }
+.tcard-body { flex: 1; min-width: 0; }
+.tcard-title {
+  font-size: 14px; font-weight: 500;
+  line-height: 1.3; margin-bottom: 5px; cursor: pointer;
+  letter-spacing: 0.005em;
+   background: linear-gradient(160deg, #dce8f0 0%, #7f90a2 60%, #2a3d50 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.tcard-meta { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
+.tcard-show {
+  font-family: var(--mono); font-size: 9px; color: var(--t1);
+  letter-spacing: 0.06em; text-transform: uppercase;
+  background: rgba(255,255,255,0.06);
+  padding: 2px 7px; border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.tcard-due { font-family: var(--mono); font-size: 10px; color: var(--t1); }
+.tcard-dur {
+  font-family: var(--mono); font-size: 9px; color: var(--t2);
+  background: rgba(255,255,255,0.05);
+  padding: 2px 7px; border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.07);
+}
+.done-c { opacity: 0.28; }
+.done-c .tcard-title { text-decoration: line-through; color: var(--t2); }
+.tcard-subs { padding: 0 14px 10px 40px; display: flex; flex-direction: column; gap: 2px; }
+.sub-row { display: flex; align-items: center; gap: 8px; }
+.sub-chk { width: 13px; height: 13px; flex-shrink: 0; background: transparent; border: 1px solid var(--s4); border-radius: 2px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 9px; color: transparent; transition: all 0.1s; }
+.sub-chk.on { background: radial-gradient(ellipse at 40% 35%, #ffffff 0%, rgba(190,210,225,0.90) 50%, rgba(127,144,162,0.80) 100%); border-color: transparent; color: #050b10; }
+.sub-prog { height: 1px; background: var(--s4); margin: 2px 0; overflow: hidden; border-radius: 0; }
+.sub-prog-fill { height: 100%; background: var(--accent); }
+.tcard-expand-inline { display: flex; justify-content: flex-end; padding: 2px 0 0; width: 100%; }
+.expand-btn {
+  font-family: var(--mono); font-size: 9px; font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--t2); background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 20px; padding: 3px 10px;
+  cursor: pointer; transition: all 0.1s;
+}
+.tcard-chk {
+  width: 20px; height: 20px; flex-shrink: 0; margin-top: 0;
+  background: transparent;
+  border: 1.5px solid rgba(255,255,255,0.2);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 10px; color: transparent;
+  transition: all 0.18s cubic-bezier(0.34,1.56,0.64,1);
+  box-shadow: 0 0 0 0 rgba(255,255,255,0.0);
+}
+.tcard-chk.on { background: radial-gradient(ellipse at 40% 35%, #ffffff 0%, rgba(190,210,225,0.90) 50%, rgba(127,144,162,0.80) 100%); border-color: transparent; color: #050b10; font-size: 11px; font-weight: 900; box-shadow: inset 0 1px 0 rgba(255,255,255,0.30); }
+.tcard-notes { padding: 0 14px 10px 40px; font-size: 12px; color: var(--t1); line-height: 1.5; }
+.tcard-expand-btn { font-family: var(--sans); font-size: 10px; font-weight: 600; color: var(--t2); background: none; border: none; cursor: pointer; letter-spacing: 0.06em; text-transform: uppercase; transition: color 0.1s; }
+.pri-badge { font-family: var(--sans); font-weight: 600; font-size: 10px; letter-spacing: 0.03em; padding: 2px 8px; border-radius: 3px; text-transform: uppercase; }
+.tag-chip { font-family: var(--sans); font-size: 10px; font-weight: 500; padding: 2px 10px; border-radius: 20px; background: var(--s3); border: 1px solid rgba(255,255,255,0.06); color: var(--t1); cursor: pointer; letter-spacing: 0.02em; transition: all 0.1s; }
+.pl-sec-lbl { font-family: var(--sans); font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--t2); flex-shrink: 0; }
+.pl-fchip {
+  flex-shrink: 0; padding: 3px 10px; border: none; border-radius: 2px;
+  background: transparent; font-family: var(--sans); font-size: 10px; font-weight: 600;
+  letter-spacing: 0.05em; text-transform: uppercase; color: var(--t2);
+  cursor: pointer; transition: all 0.1s; white-space: nowrap;
+  border-bottom: 1px solid transparent;
+}
+.pl-fchip.on { background: transparent; color: #ffffff; border-bottom: 1px solid transparent; font-weight: 800; position: relative;  }
+.pl-fchip.on::after { content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent 0%, rgba(127,144,162,0.4) 15%, rgba(200,220,232,0.90) 40%, rgba(200,220,232,1.0) 50%, rgba(200,220,232,0.90) 60%, rgba(127,144,162,0.4) 85%, transparent 100%); }
+.payload-mode-bar { display: flex; gap: 0; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 10px; }
+.pmode-btn {
+  flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px;
+  padding: 8px 12px; border: none; border-bottom: 2px solid transparent;
+  background: transparent;
+  font-family: var(--sans); font-size: 11px; font-weight: 700;
+  letter-spacing: 0.06em; text-transform: uppercase; color: var(--t2);
+  cursor: pointer; transition: all 0.1s;
+}
+.pmode-btn.on { color: #ffffff; border-bottom-color: transparent; position: relative; color: #c8dce8; }
+.pmode-btn.on::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent 0%, rgba(127,144,162,0.4) 15%, rgba(200,220,232,0.90) 40%, rgba(200,220,232,1.0) 50%, rgba(200,220,232,0.90) 60%, rgba(127,144,162,0.4) 85%, transparent 100%); }
+.vault-expand-btn { width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; background: var(--s2); border: var(--b2); border-radius: 3px; cursor: pointer; color: var(--t2); transition: all 0.12s; flex-shrink: 0; margin-left: auto; }
+.vault-expand-btn.expanded { color: #ffffff; border-color: rgba(255,255,255,0.3); text-shadow: 0 0 6px rgba(255,255,255,0.4); }
+.intel-expand-btn { font-family: var(--sans); font-size: 10px; font-weight: 700; color: var(--t2); background: none; border: none; cursor: pointer; padding: 8px 4px; transition: color 0.12s; display: flex; align-items: center; gap: 6px; letter-spacing: 0.1em; text-transform: uppercase; }
+.dep-badge { font-family: var(--sans); font-size: 10px; font-weight: 600; color: var(--t2); display: flex; align-items: center; gap: 3px; }
+.ai-reason-banner { padding: 10px 14px; margin-bottom: 10px; background: var(--s2); border: var(--b2); border-left: 2px solid var(--y); }
+.ai-reason-txt { font-family: var(--sans); font-size: 12px; color: var(--t1); }
+.pl-ai-reason-close { background: none; border: none; color: var(--t2); cursor: pointer; font-size: 14px; float: right; }
+.swipe-wrap .tcard,
+.swipe-wrap .shot-row {
+  margin-bottom: 0;
+  border-radius: 16px;
+  transition: transform 0.18s cubic-bezier(0.32,0.72,0,1), box-shadow 0.18s;
+  will-change: transform;
+  touch-action: pan-y;
+  position: relative;
+  z-index: 2;
+}
+.pl-sec-dot{width:3px;height:3px;border-radius:50%;background:#21e1df;flex-shrink:0;margin-right:6px;}
+.pl-sec{display:flex;align-items:center;gap:0;margin-bottom:4px;}
+.pl-sec-rule{flex:1;height:1px;background:linear-gradient(90deg,rgba(255,255,255,0.08) 0%,transparent 100%);margin-left:8px;}
+.tcard-main { cursor: pointer; }
+.tcard-edit-hint { flex-shrink:0; color:var(--t2); opacity:0.4; margin-left:4px; align-self:flex-start; margin-top:2px; }
+.restore-btn { font-family:var(--mono); font-size:9px; font-weight:700; letter-spacing:0.08em; color:var(--t1); background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.10); border-radius:20px; padding:2px 8px; cursor:pointer; margin-left:auto; }
+.done-c { opacity: 0.20; }
+.tcard.ms-selected { margin-left: 14px; border-left: 3px solid #21e1df; background: rgba(33,225,223,0.06); transition: margin 0.15s ease; }
+.tcard.ms-selected .tcard-chk { background: #21e1df; border-color: #21e1df; color: #000; }
+.tcard-chk.ms-chk{background:#21e1df!important;border-color:#21e1df!important;color:#000!important;}
+.pl-fchip{flex-shrink:0;padding:5px 14px;border:1px solid rgba(255,255,255,0.08);border-radius:20px;background:transparent;font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:var(--t1);cursor:pointer;white-space:nowrap;-webkit-tap-highlight-color:transparent;}
+.pl-fchip.on{background:rgba(33,225,223,0.12);color:#21e1df;border-color:rgba(33,225,223,0.35);}
+.tcard-edit-hint{flex-shrink:0;color:var(--t1);opacity:0.75;margin-left:6px;align-self:center;padding:10px;margin-right:-10px;cursor:pointer;border-radius:6px;transition:all 0.1s;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);}
+.tasks.length,open=S.tasks.filter(t=>!t.done).length,done=S.tasks.filter(t=>t.done).length;
+  const crit=S.tasks.filter(t=>!t.done&&t.pri==='critical').length,high=S.tasks.filter(t=>!t.done&&t.pri==='high').length;
+  document.getElementById('payload-dos').innerHTML='';
+  // Schedule section
+  rSchedSection();
+  // Filter chips
+  const allTags=[...new Set(S.tasks.flatMap(t=>t.tags||[]))].filter(Boolean);
+  const filterEl=document.getElementById('pl-filters');
+  if(filterEl) filterEl.innerHTML=
+    `<button class="pl-fchip ${!plFilterTag&&!plFilterShow?'on':''}
+.shows.map(s=>`<button class="pl-fchip ${plFilterShow===s.id?'on':''}
+.notes.trim();
+  const dep=t.dep?S.shots.find(sh=>sh.id===t.dep):null,depBlocked=dep&&dep.status==='blocked';
+  const expanded=t.expanded||false;
+  const showPri=t.pri==='critical'||t.pri==='high';
+  const isSel=typeof _msSelected!=='undefined'&&_msSelected.has(t.id);
+  let html=`<div class="tcard ${t.done?'done-c':''}
+.tcard.ms-selected").forEach(function(el){el.classList.remove("ms-selected");}
+.target.closest(".tcard");if(card)msToggle(id,card);},500);
+}
+function tcTouchEnd(e){if(_lpTimer){clearTimeout(_lpTimer);_lpTimer=null;}
+.g. 136_INT_0010</div></div>
+        <div class="f"><div class="fl">Seq</div><input class="fc" id="as-seq" placeholder="STL"><div class="fh">3-letter sequence ID</div></div>
+      </div>
+      <div class="f-row">
+        <div class="f"><div class="fl">Assignee</div><input class="fc" id="as-who" placeholder="Artist"><div class="fh">Primary compositor on this shot</div></div>
+        <div class="f"><div class="fl">Bid Days</div><input class="fc" id="as-bid" type="number" step="0.5" placeholder="2.0"><div class="fh">Typical: 1.5â5d per shot</div></div>
+      </div>
+      <div class="f-row">
+        <div class="f"><div class="fl">Cut In</div><input class="fc" id="as-ci" placeholder="1001"><div class="fh">First frame of the cut</div></div>
+        <div class="f"><div class="fl">Cut Out</div><input class="fc" id="as-co" placeholder="1087"><div class="fh">Last frame â diff = handle</div></div>
+      </div>
+      <div class="f"><div class="fl">Status</div>
+        <select class="fc" id="as-status">
+          <option value="hold">Hold</option><option value="wip" selected>WIP</option>
+          <option value="review">Int. Review</option><option value="delivered">Delivered</option>
+          <option value="approved">Approved</option><option value="blocked">Blocked</option>
+        </select>
+        <div class="fh">WIP = active Â· Hold = not started Â· Blocked = waiting on upstream</div>
+      </div>
+      <div class="f"><div class="fl">Notes</div><textarea class="fc" id="as-notes" rows="2" placeholder="Flags, retakes, known issuesâ¦"></textarea><div class="fh">Retake notes, client flags, technical blockers</div></div>
+      <div class="sh-acts"><button class="sh-ok" onclick="addShot()">CONFIRM</button><button class="sh-no" onclick="closeSheet('ol-shot')">ABORT</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- SHEET: ol-show -->
+<div class="overlay" id="ol-show">
+  <div class="sheet">
+    <div class="sh-handle"></div>
+    <div class="sh-head"><div class="sh-eye">Workspace</div><div class="sh-title">Add Show</div></div>
+    <div class="sh-body">
+      <div class="f-row">
+        <div class="f"><div class="fl">Code</div><input class="fc" id="ash-code" placeholder="CRL" style="text-transform:uppercase"><div class="fh">2â4 letters Â· e.g. CRL, AIG, DXR</div></div>
+        <div class="f"><div class="fl">Name</div><input class="fc" id="ash-name" placeholder="Cerulean"><div class="fh">Full show or project title</div></div>
+      </div>
+      <div class="f-row">
+        <div class="f"><div class="fl">Client</div><input class="fc" id="ash-client" placeholder="Netflix"><div class="fh">Studio, network or direct client</div></div>
+        <div class="f"><div class="fl">Delivery Date</div><input class="fc" id="ash-due" type="date"><div class="fh">Hard lock date for final delivery</div></div>
+      </div>
+      <div class="f-row">
+        <div class="f"><div class="fl">Team Size</div><input class="fc" id="ash-team" type="number" placeholder="2" min="1"><div class="fh">Active compers on this show</div></div>
+        <div class="f"><div class="fl">Weeks Remaining</div><input class="fc" id="ash-weeks" type="number" placeholder="12" min="1"><div class="fh">Weeks from today to delivery</div></div>
+      </div>
+      <div class="sh-acts"><button class="sh-ok" onclick="addShow()">CONFIRM</button><button class="sh-no" onclick="closeSheet('ol-show')">ABORT</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- SHEET: ol-edit -->
+<div class="overlay" id="ol-edit">
+  <div class="sheet">
+    <div class="sh-handle"></div>
+    <div class="sh-head"><div class="sh-eye" id="es-eye"></div><div class="sh-title" id="es-title"></div></div>
+    <div class="sh-body">
+      <div class="f"><div class="fl">Status</div><div class="stat-opts" id="es-stats"></div></div>
+      <div class="f"><div class="fl">Assignee</div><input class="fc" id="es-who" placeholder="Artist"><div class="fh">Compositor currently owning this shot</div></div>
+      <div class="f"><div class="fl">Notes</div><textarea class="fc" id="es-notes" rows="3" placeholder="Retakes, feedback, client notesâ¦"></textarea><div class="fh">Client feedback, retake count, technical flags</div></div>
+      <div class="f-row">
+        <div class="f"><div class="fl">Cut In</div><input class="fc" id="es-ci"><div class="fh">First frame</div></div>
+        <div class="f"><div class="fl">Cut Out</div><input class="fc" id="es-co"><div class="fh">Last frame</div></div>
+        <div class="f"><div class="fl">Bid Days</div><input class="fc" id="es-bid"><div class="fh">1.5â5d typical</div></div>
+      </div>
+      <!-- Version log -->
+      <div style="border-top:1px solid var(--b0);padding-top:12px;">
+        <div style="font-family:var(--mono);font-size:8px;color:var(--t2);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;">
+          <span>Version Log</span>
+          <button onclick="logNewVersion()" style="font-family:var(--mono);font-size:8px;padding:3px 9px;background:var(--p3);box-shadow:var(--sh-rm),inset 0 0 0 1px var(--ac-bd);border:none;color:var(--ac);cursor:pointer;clip-path:polygon(0 0,100% 0,100% calc(100% - 4px),calc(100% - 4px) 100%,0 100%);letter-spacing:0.08em;">+ LOG VERSION</button>
+        </div>
+        <div style="display:flex;gap:5px;margin-bottom:8px;">
+          <input class="fc" id="es-ver-label" placeholder="v1 Â· v2 Â· client_review" style="flex:1">
+          <input class="fc" id="es-ver-note" placeholder="What changed? e.g. grain pass, retime" style="flex:2">
+        </div>
+        <div id="es-vlog"></div>
+      </div>
+      <div class="sh-acts"><button class="sh-ok" onclick="saveShot()">SAVE</button><button class="sh-no" onclick="closeSheet('ol-edit')">CANCEL</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- SHEET: ol-task -->
+<div class="overlay" id="ol-task">
+  <div class="sheet">
+    <div class="sh-handle"></div>
+    <div class="sh-head"><div class="sh-eye">Payload</div><div class="sh-title">Log Task</div></div>
+    <div class="sh-body">
+
+      <div style="padding:0 0 8px;">
+        <div style="font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;background:linear-gradient(160deg,#909098,#70707a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;padding:12px 16px 6px;">TEMPLATES</div>
+        <div id="task-template-grid"></div>
+      </div>
+      <div style="height:1px;background:rgba(255,255,255,0.05);margin:0 16px 4px;"></div>
+      <div class="f"><div class="fl">Show</div><select class="fc" id="at-show"></select></div>
+      <div class="f"><div class="fl">Objective</div><input class="fc" id="at-title" placeholder="e.g. Deliver 136_INT_0010 by EOD"><div class="fh">One clear action â verb first</div></div>
+      <div class="f-row">
+        <div class="f"><div class="fl">Due</div><input class="fc" id="at-due" type="date"></div>
+        <div class="f"><div class="fl">Est. Duration</div><input class="fc" id="at-dur" type="number" step="15" placeholder="90"><div class="fh">Minutes Â· 60=1hr Â· 480=full day</div></div>
+      </div>
+      <div class="f"><div class="fl">Priority</div>
+        <select class="fc" id="at-pri"><option value="critical">Critical</option><option value="high">High</option><option value="med" selected>Medium</option><option value="low">Low</option></select>
+      </div>
+      <div class="f"><div class="fl">Tags</div><input class="fc" id="at-tags" placeholder="comp, roto, paint, grade, deliver" autocomplete="off"><div class="fh">Tap to add Â· comma-separated</div><div id="at-tag-chips" style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px;"></div></div>
+      <div class="f">
+        <div class="fl">Color</div>
+        <div class="color-picker-row" id="at-color-row">
+          <div class="cp-swatch on" data-c="" style="background:var(--s3);border:1px solid var(--s4)"></div>
+          <div class="cp-swatch" data-c="#c42f20" style="background:#c42f20"></div>
+          <div class="cp-swatch" data-c="#d4963a" style="background:#d4963a"></div>
+          <div class="cp-swatch" data-c="#7a9e4a" style="background:#7a9e4a"></div>
+          <div class="cp-swatch" data-c="#4a7abf" style="background:#4a7abf"></div>
+          <div class="cp-swatch" data-c="#7a5abf" style="background:#7a5abf"></div>
+        </div>
+      </div>
+      <div class="f">
+        <div class="fl">Sub-tasks</div>
+        <div id="at-subs-list"></div>
+        <div style="display:flex;gap:5px;margin-top:5px">
+          <input class="fc" id="at-sub-input" placeholder="Add sub-taskâ¦" style="flex:1" onkeydown="if(event.key==='Enter'){event.preventDefault();addSubInput();}
+
+.toast{position:fixed;bottom:calc(var(--safe-b)+48px);left:50%;transform:translateX(-50%) translateY(20px);background:var(--s4);border:var(--b2);color:var(--t0);font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:0.10em;padding:9px 20px;opacity:0;transition:all 0.2s;pointer-events:none;white-space:nowrap;z-index:600;border-radius:20px;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.dbg{flex-shrink:0;background:#0a0d0a;border-top:1px solid #1a3a1a;font-family:monospace;font-size:10px;}
+.dbg-hd{height:28px;display:flex;align-items:center;padding:0 10px;gap:10px;touch-action:manipulation;-webkit-user-select:none;user-select:none;}
+.dbg-btn{background:none;border:none;color:#0f0;font-size:10px;font-family:monospace;cursor:pointer;min-width:44px;min-height:28px;padding:0;}
+.dbg-id{color:#555;font-size:9px;flex:1;}
+.dbg-copy{background:#1a2a1a;border:1px solid #2a4a2a;color:#0f0;padding:2px 8px;font-size:9px;font-family:monospace;cursor:pointer;min-height:24px;}
+.dbg-body{display:none;max-height:160px;overflow-y:auto;border-top:1px solid #1a3a1a;}
+.dbg.open .dbg-body{display:block;}
+.dbg-log{color:#0f0;line-height:1.5;white-space:pre-wrap;padding:4px 10px;font-size:9px;}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <button class="back-btn" onclick="window.location.href='./'">
+    <svg viewBox="0 0 12 12" width="13" height="13" fill="none" stroke="#21e1df" stroke-width="2"><path d="M7.5 2L3.5 6l4 4"/></svg>
+    <span>HOME</span>
+  </button>
+  <span class="title">PAYLOAD</span>
+  <div class="actions">
+    <button class="tb-btn primary" onclick="addTask()">+ TASK</button>
+  </div>
+</div>
+<div class="main" id="main">
+  <div class="filter-bar">
+    <button class="pl-fchip on" data-view="all" onclick="plFilter('','')">ALL</button>
+    <button class="pl-fchip" data-view="today" onclick="plFilterToday()">TODAY</button>
+    <button class="pl-fchip" data-view="show" onclick="setView('show')">BY SHOW</button>
+    <button class="pl-fchip" data-view="tag" onclick="setView('tag')">BY TAG</button>
+    <button class="ai-sort-btn" id="ai-sort-btn" onclick="aiSort()">&#x25CF; AI SORT</button>
+  </div>
+  <div class="quick-log-row">
+    <input class="quick-log-input" id="quick-input" placeholder="Quick log a task..." onkeydown="if(event.key==='Enter')quickLog()">
+    <button class="quick-log-btn" onclick="quickLog()">LOG</button>
+  </div>
+  <div id="task-list"></div>
+</div>
+<div id="toast" class="toast"></div>
+<div class="dbg" id="dbg">
+  <div class="dbg-hd">
+    <button class="dbg-btn" onclick="document.getElementById('dbg').classList.toggle('open')">&gt; DBG</button>
+    <span class="dbg-id">VTEK-PAYLOAD-20260416-001</span>
+    <button class="dbg-copy" onclick="navigator.clipboard&&navigator.clipboard.writeText(document.getElementById('dbg-log').textContent);this.textContent='COPIED';setTimeout(()=>this.textContent='COPY',1500)">COPY</button>
+  </div>
+  <div class="dbg-body"><div class="dbg-log" id="dbg-log"></div></div>
+</div>
+<script>
+'use strict';
+const BUILD='VTEK-PAYLOAD-20260416-001';
+const _dbl=document.getElementById('dbg-log');
+function dbg(m){const t=new Date().toTimeString().slice(0,8);_dbl.textContent+=t+' '+m+'\n';_dbl.scrollTop=_dbl.scrollHeight;}
+window.addEventListener('error',e=>dbg('ERR:'+e.message+' @'+e.lineno));
+
+const LS='vtek9';
+let S=JSON.parse(localStorage.getItem(LS)||'null')||{shows:[],shots:[],tasks:[],team:[]};
+if(!S.shows)S.shows=[];if(!S.shots)S.shots=[];if(!S.tasks)S.tasks=[];if(!S.team)S.team=[];
+let plView='all',plFilterTag='',plFilterShow='',lastAiReason='';
+let _msSelected=new Set();
+
+function save(){localStorage.setItem(LS,JSON.stringify(S));}
+function gs(id){return(S.shows||[]).find(s=>s.id===id);}
+function tod(){return new Date().toISOString().slice(0,10);}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);}
+function escHtml(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function migrateTasks(){
+  S.tasks=S.tasks.map(t=>({subtasks:[],tags:[],color:'',notes:t.notes||'',dep:'',expanded:false,dur:t.dur||PRI_DUR[t.pri]||45,...t,pri:['critical','high','med','low'].includes(t.pri)?t.pri:'med'}));
+}
+
+// âââââââââââââââââââââââââââââââ
+// NAV
+// âââââââââââââââââââââââââââââââ
+const PN={hangar:'HANGAR',shots:'SHOTS',payload:'PAYLOAD',plan:'PLAN',vault:'VAULT',intel:'INTEL',settings:'CONFIG'};
+
+function fmt(str){
+  if(!str)return'';
+  const d=new Date(str+'T12:00:00');const t=new Date();t.setHours(12,0,0,0);
+  const diff=Math.round((d-t)/86400000);
+  if(diff===0)return'TODAY';if(diff===1)return'TOMORROW';if(diff<0)return`${Math.abs(diff)}D AGO`;
+  return str.slice(5).replace('-','.');
+}
+
+function fmtMins(m){if(!m)return'';if(m<60)return m+'min';return Math.floor(m/60)+'h'+(m%60?` ${m%60}m`:'');}
+
+// âââââââââââââââââââââââââââââââ
+// HANGAR
+// âââââââââââââââââââââââââââââââ
+
+function tod(){return new Date().toISOString().split('T')[0];}
+const BUILD_ID = 'VTEK-20260416-380000';
+let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
+  shows:[
+    {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
+    {id:'s2',code:'AIG',name:'An Innocent Girl',client:'Netflix',due:'2025-12-01',teamSize:2,weeksLeft:28},
+  ],
+  shots:[
+    {id:'sh1',sid:'s1',code:'136_STL_0080',seq:'STL',status:'wip',who:'Ruben',notes:'Drone stabilization â Mocha track needs review',ci:1001,co:1087,bid:2.5},
+    {id:'sh2',sid:'s1',code:'136_STL_0120',seq:'STL',status:'review',who:'Ruben',notes:'',ci:1001,co:1062,bid:1.5},
+    {id:'sh3',sid:'s1',code:'136_INT_0040',seq:'INT',status:'approved',who:'Ruben',notes:'Client signed off',ci:1001,co:1095,bid:3.0},
+    {id:'sh4',sid:'s1',code:'136_INT_0050',seq:'INT',status:'blocked',who:'Ruben',notes:'Waiting on clean plate',ci:1001,co:1044,bid:2.0},
+    {id:'sh5',sid:'s2',code:'AIG_001_0010',seq:'001',status:'wip',who:'Ruben',notes:'',ci:1001,co:1120,bid:4.0},
+    {id:'sh6',sid:'s2',code:'AIG_001_0020',seq:'001',status:'hold',who:'',notes:'',ci:0,co:0,bid:0},
+  ],
+  tasks:[
+    {id:'t1',sid:'s1',title:'Deliver STL sequence v3',due:tod(),pri:'high',dur:45,tags:['deliver'],color:'',notes:'',subtasks:[],dep:'',done:false,expanded:false},
+    {id:'t2',sid:'s1',title:'Update bid â INT extension',due:tod(),pri:'med',dur:30,tags:['note'],color:'',notes:'[Duration: 30 mins]',subtasks:[],dep:'',done:false,expanded:false},
+    {id:'t3',sid:'s2',title:'Review AIG_001 with supervisor',due:tod(),pri:'med',dur:60,tags:['review'],color:'',notes:'',subtasks:[],dep:'',done:true,expanded:false},
+    {id:'t4',sid:'s1',title:'Fix CBFX_Color_CRL node',due:'',pri:'low',dur:20,tags:['comp'],color:'',notes:'',subtasks:[],dep:'',done:false,expanded:false},
+  ],
+  vaultDocs:[
+    {id:'v1',title:'CRL Shot Notes',content:'# CRL Shot Notes\n\nNotes from review sessions.\n\n## 136_STL_0080\nMocha track needs review before delivery.\n\n## 136_INT_0040\nClient approved â ready for final delivery.',showId:'s1',tags:['notes','review'],updated:Date.now()},
+    {id:'v2',title:'CBFX Pipeline Docs',content:'# CBFX Pipeline\n\nInternal reference for compositing pipeline.\n\n## Color Management\n- ACES workflow\n- Output: Rec.709\n\n## Delivery Specs\n- ProRes 4444\n- 2048x858',showId:'',tags:['pipeline','reference'],updated:Date.now()},
+    {id:'v-keys',title:'API Keys & Config',content:'# API Keys & Config\n\n> Stored locally on this device only. Never shared.\n\n## Anthropic API Key\n\n(Set via CONFIG â ANTHROPIC API KEY)\n\n## GitHub\n- Repo: https://github.com/biggieai/vtek-hangar\n- Pages: https://biggieai.github.io/vtek-hangar/\n\n## Make.com Webhook\n\n(Set via CONFIG â MAKE.COM WEBHOOK URL)\n\n## Local Server\n- IP: 192.168.100.132:3000',showId:'',tags:['config','keys'],updated:Date.now()},
+  ],
+  schedule:[],
+  activeShow:'s1',activeTaskShow:'all',page:'hangar',
+};
+// Ensure required keys exist after localStorage load
+if(!S.shows) S.shows=[];
+if(!S.shots) S.shots=[];
+if(!S.tasks) S.tasks=[];
+if(!S.team) S.team=[];
+if(!S.vaultDocs) S.vaultDocs=[];
+if(!S.schedule) S.schedule=[];
+if(!S.config) S.config={};
+
+// ââ CONFIG DEFAULTS ââ
+const CFG_DEFAULTS = {
+  workStart:    9,      // hour (24h)
+  workEnd:      19,
+  lunchStart:   13,
+  lunchEnd:     14,
+  weekStart:    1,      // 0=Sun 1=Mon
+  defaultDur:   45,     // minutes
+  defaultPri:   'med',
+  shotPrefix:   '',     // e.g. 'CRL_'
+  autoRack:     true,   // auto-schedule on day start
+  rackTime:     9,      // hour to auto-rack
+  nudgesOn:     true,   // inline card nudges
+  briefOn:      true,   // morning brief on index
+  tz:           Intl.DateTimeFormat().resolvedOptions().timeZone,
+  intelModel:   'claude-haiku-4-5-20251001',
+  webhookPoll:  false,  // poll NAS for incoming tasks
+  webhookUrl:   '',
+};
+// Merge defaults with saved config
+S.config = Object.assign({}, CFG_DEFAULTS, S.config);
+
+// Apply config to plan vars
+
+function escHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+// âââââââââââââââââââââââââââââââ
+// SHOT EDIT
+// âââââââââââââââââââââââââââââââ
+
+function getFilteredTasks(){
+  let tasks=[...S.tasks];
+  if(plFilterShow) tasks=tasks.filter(t=>t.sid===plFilterShow);
+  if(plFilterTag)  tasks=tasks.filter(t=>(t.tags||[]).includes(plFilterTag));
+  if(plView==='today'){const today=tod();tasks=tasks.filter(t=>t.due===today);}
+  return tasks;
+}
+
+
+function renderTCard(t){
+  const show=gs(t.sid),today=tod();
+  const late=t.due&&t.due<today&&!t.done;
+  const soon=t.due&&!late&&Math.round((new Date(t.due+'T12:00:00')-new Date())/86400000)<=2&&!t.done;
+  const cc=t.color||'var(--s4)';
+  const subs=t.subtasks||[],subDone=subs.filter(s=>s.done).length;
+  const hasSubs=subs.length>0,hasNotes=t.notes&&t.notes.trim();
+  const dep=t.dep?S.shots.find(sh=>sh.id===t.dep):null,depBlocked=dep&&dep.status==='blocked';
+  const expanded=t.expanded||false;
+  const showPri=t.pri==='critical'||t.pri==='high';
+  const isSel=typeof _msSelected!=='undefined'&&_msSelected.has(t.id);
+  let html=`<div class="tcard ${t.done?'done-c':''} ${isSel?'ms-selected':''}" id="tc-${t.id}" style="--cc:${cc}" onclick="tcCircleTap('${t.id}',this)">
+    <div class="tcard-main">
+      <div class="tcard-chk ${t.done?'on':''} ${isSel?'ms-chk':''}" onclick="event.stopPropagation();tcCircleTap('${t.id}',this.closest('.tcard'))">${t.done&&!isSel?'â':isSel?'â':''}</div>
+      <div class="tcard-body">
+        <div class="tcard-title">${t.title}</div>
+        <div class="tcard-meta">
+          ${show?`<span class="tcard-show">${show.code}</span>`:''}
+          ${t.due?`<span class="tcard-due ${late?'ov':soon?'soon':''}">${late?'â  OVERDUE':fmt(t.due)}</span>`:''}
+          ${t.dur?`<span class="tcard-dur">${fmtMins(t.dur)}</span>`:''}
+          ${showPri?`<span class="pri-badge ${t.pri}">${t.pri.toUpperCase()}</span>`:''}
+          ${(t.tags||[]).map(tag=>`<span class="tag-chip" onclick="event.stopPropagation();plFilter('tag','${tag}')">${tag}</span>`).join('')}
+          ${dep?`<span class="dep-badge ${depBlocked?'blocked-dep':''}">â ${dep.code}${depBlocked?' â ':''}</span>`:''}
+          ${t.done&&!isSel?`<button class="restore-btn" onclick="event.stopPropagation();toggleTask('${t.id}')">&#x21BA; RESTORE</button>`:''}
+          ${(hasSubs||hasNotes)&&!expanded?`<button class="expand-btn" onclick="event.stopPropagation();toggleExpand('${t.id}')">â¼ ${hasSubs?subDone+'/'+subs.length+' SUB':'NOTES'}</button>`:''}
+          ${(hasSubs||hasNotes)&&expanded?`<button class="expand-btn" onclick="event.stopPropagation();toggleExpand('${t.id}')">â² LESS</button>`:''}
+        </div>
+      </div>
+      ${!t.done?`<div class="tcard-edit-hint" onclick="event.stopPropagation();openTaskEdit('${t.id}')"><svg viewBox="0 0 12 12" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 2l3 3-5 5H2V7l5-5z"/></svg></div>`:''}
+    </div>`;
+  if(hasSubs){const pct=Math.round(subDone/subs.length*100);html+=`<div class="sub-prog"><div class="sub-prog-fill" style="width:${pct}%"></div></div>`;}
+  if(expanded){
+    if(hasSubs)html+=`<div class="tcard-subs">${subs.map((s,i)=>`<div class="sub-row ${s.done?'done-s':''}"><button class="sub-chk ${s.done?'on':''}" onclick="event.stopPropagation();toggleSub('${t.id}',${i})">${s.done?'â':''}</button><span class="sub-txt">${s.title}</span></div>`).join('')}</div>`;
+    if(hasNotes)html+=`<div class="tcard-notes">${t.notes}</div>`;
+  }
+  html+=`</div>`;return html;
+}
+
+function rTaskList(){
+  const tasks=getFilteredTasks(),listEl=document.getElementById('task-list');if(!listEl)return;
+  let html='';
+  if(lastAiReason) html+=`<div class="ai-reason-banner"><div class="ai-reason-lbl">INTEL SORT</div><div class="ai-reason-txt">${lastAiReason}</div></div>`;
+  if(plView==='show'){
+    S.shows.forEach(show=>{
+      const st=tasks.filter(t=>t.sid===show.id&&!t.done);if(!st.length)return;
+      html+=`<div class="pl-sec"><span class="pl-sec-lbl">${show.code} â ${show.name}</span><span class="pl-sec-rule"></span></div>`;
+      html+=st.map(t=>renderTCard(t)).join('');
+    });
+    const dn=tasks.filter(t=>t.done);
+    if(dn.length)html+=`<div class="pl-sec" style="margin-top:14px"><span class="pl-sec-lbl">Completed</span><span class="pl-sec-rule"></span></div>`+dn.map(t=>renderTCard(t)).join('');
+  }else if(plView==='tag'){
+    const allTags=[...new Set(tasks.flatMap(t=>t.tags||[]))].filter(Boolean);
+    allTags.forEach(tag=>{
+      const tt=tasks.filter(t=>!t.done&&(t.tags||[]).includes(tag));if(!tt.length)return;
+      html+=`<div class="pl-sec"><span class="pl-sec-lbl">${tag}</span><span class="pl-sec-rule"></span></div>`+tt.map(t=>renderTCard(t)).join('');
+    });
+    const untagged=tasks.filter(t=>!t.done&&!(t.tags||[]).length);
+    if(untagged.length)html+=`<div class="pl-sec"><span class="pl-sec-lbl">Untagged</span><span class="pl-sec-rule"></span></div>`+untagged.map(t=>renderTCard(t)).join('');
+    const dn=tasks.filter(t=>t.done);
+    if(dn.length)html+=`<div class="pl-sec" style="margin-top:14px"><span class="pl-sec-lbl">Completed</span><span class="pl-sec-rule"></span></div>`+dn.map(t=>renderTCard(t)).join('');
+  }else{
+    const priGroups=[{key:'critical',label:'CRITICAL'},{key:'high',label:'HIGH'},{key:'med',label:'MED'},{key:'low',label:'LOW'}];
+    const open=tasks.filter(t=>!t.done);
+    let hasAny=false;
+    priGroups.forEach(function(g){
+      var gt=open.filter(function(t){return t.pri===g.key;});
+      if(!gt.length)return;
+      hasAny=true;
+      html+=`<div class="pl-sec"><span class="pl-sec-dot"></span><span class="pl-sec-lbl">${g.label}</span><span class="pl-sec-rule"></span></div>`;
+      html+=gt.map(t=>renderTCard(t)).join('');
+    });
+    const dn=tasks.filter(t=>t.done);
+    if(dn.length)html+=`<div class="pl-sec" style="margin-top:14px"><span class="pl-sec-dot"></span><span class="pl-sec-lbl">COMPLETED</span><span class="pl-sec-rule"></span></div>`+dn.map(t=>renderTCard(t)).join('');
+    if(!tasks.length)html=emptyState('<svg viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="white" stroke-width="1.2"><rect x="4" y="4" width="24" height="24" rx="3"/><path d="M10 16l4 4 8-8"/></svg>','ALL CLEAR','No open tasks. Tap + TASK to add one or use QUICK LOG in INTEL.','+ TASK',"openSheet(\'ol-task\')")
+  }
+  listEl.innerHTML=html;
+  // Attach swipe gestures
+  setTimeout(()=>{
+    listEl.querySelectorAll('.tcard').forEach(el=>{
+      const id=el.id.replace('tc-','');
+      if(id && !el.dataset.swiped) { el.dataset.swiped='1'; attachTaskSwipes(el,id); }
+    });
+  },20);
+}
+
+
+function toggleTask(id){const t=S.tasks.find(t=>t.id===id);if(!t)return;t.done=!t.done;save();refresh();haptic(t.done?"success":"light");}
+
+// ââ SUB-TASK SHEETS ââ
+
+function toggleExpand(id){const t=S.tasks.find(t=>t.id===id);if(!t)return;t.expanded=!t.expanded;save();rTaskList();}
+
+function toggleSub(tid,i){const t=S.tasks.find(t=>t.id===tid);if(!t||!t.subtasks)return;t.subtasks[i].done=!t.subtasks[i].done;save();rTaskList();}
+
+function openTaskEdit(id){
+  editTaskId=id;const t=S.tasks.find(t=>t.id===id);const sv=gs(t.sid);
+  const _eye=document.getElementById('et-eye');if(_eye)_eye.textContent=sv?`${sv.code} // ${sv.name}`:'';
+  document.getElementById('et-title-head').textContent=t.title.slice(0,30);
+  document.getElementById('et-title').value=t.title;
+  document.getElementById('et-due').value=t.due||'';
+  document.getElementById('et-dur').value=t.dur||'';
+  document.getElementById('et-pri').value=t.pri||'med';
+  document.getElementById('et-tags').value=(t.tags||[]).join(', ');
+  document.getElementById('et-notes').value=t.notes||'';
+  editSubsList=[...(t.subtasks||[])];renderSheetSubs('et-subs-list',editSubsList,false);
+  setTimeout(()=>{initColorPicker('et-color-row');const row=document.getElementById('et-color-row');if(row)row.querySelectorAll('.cp-swatch').forEach(sw=>{sw.classList.toggle('on',sw.dataset.c===t.color);});},50);
+  const depSel=document.getElementById('et-dep');
+  depSel.innerHTML=`<option value="">None</option>`+S.shots.filter(sh=>sh.sid===t.sid).map(sh=>`<option value="${sh.id}" ${t.dep===sh.id?'selected':''}>${sh.code}</option>`).join('');
+  _etDirty=false;
+  openSheet('ol-edit-task');
+  setTimeout(function(){
+    ['et-title','et-due','et-dur','et-pri','et-tags','et-notes'].forEach(function(fid){
+      var el=document.getElementById(fid);
+      if(el){el.oninput=_etMarkDirty;el.onchange=_etMarkDirty;}
+    });
+  },150);
+}
+
+function plFilter(type,val){
+  if(type==='tag'){plFilterTag=val;plFilterShow='';}
+  else if(type==='show'){plFilterShow=val;plFilterTag='';}
+  else{plFilterTag='';plFilterShow='';}
+  closeFilterDrop();
+  var lbl=document.getElementById('pl-filter-label');
+  if(lbl)lbl.textContent=(plFilterTag||plFilterShow)?(plFilterTag||plFilterShow).toUpperCase():'ALL TASKS';
+  rPayload();
+}
+
+
+function addTask(){
+  const title=document.getElementById('at-title').value.trim();if(!title){toast('OBJECTIVE REQUIRED');return;}
+  const tagsRaw=document.getElementById('at-tags').value.trim();
+  const tags=tagsRaw?tagsRaw.split(',').map(t=>t.trim().toLowerCase()).filter(Boolean):autoTag(title);
+  const dur=parseInt(document.getElementById('at-dur').value)||PRI_DUR[document.getElementById('at-pri').value]||45;
+  S.tasks.unshift({id:'t'+Date.now(),sid:document.getElementById('at-show').value,title,
+    due:document.getElementById('at-due').value,pri:document.getElementById('at-pri').value,
+    dur,notes:document.getElementById('at-notes').value,tags,color:getSelectedColor('at-color-row'),
+    dep:document.getElementById('at-dep').value||'',subtasks:[...pendingSubsAdd],done:false,expanded:false});
+  pendingSubsAdd=[];save();closeSheet('ol-task');refresh();rPayload();toast('TASK LOGGED');
+  ['at-title','at-tags','at-notes','at-sub-input','at-dur'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  const sl=document.getElementById('at-subs-list');if(sl)sl.innerHTML='';
+}
+
+
+function quickLog() {
+  const inp = document.getElementById('intel-quicklog');
+  const raw = (inp?.value || '').trim();
+  if (!raw) return;
+
+  const lower = raw.toLowerCase();
+  const todStr = tod();
+
+  // ââ Parse due date ââ
+  let due = '';
+  if (/tomorrow/.test(lower)) {
+    const d = new Date(); d.setDate(d.getDate()+1);
+    due = d.toISOString().split('T')[0];
+  } else if (/today/.test(lower)) {
+    due = todStr;
+  } else if (/monday|mon/.test(lower))  { due = nextWeekday(1); }
+  else if (/tuesday|tue/.test(lower))   { due = nextWeekday(2); }
+  else if (/wednesday|wed/.test(lower)) { due = nextWeekday(3); }
+  else if (/thursday|thu/.test(lower))  { due = nextWeekday(4); }
+  else if (/friday|fri/.test(lower))    { due = nextWeekday(5); }
+  // date format YYYY-MM-DD or MM/DD
+  const dateMatch = raw.match(/\b(\d{4}-\d{2}-\d{2}|\d{1,2}\/\d{1,2})\b/);
+  if (dateMatch && !due) {
+    if (dateMatch[1].includes('-')) {
+      due = dateMatch[1];
+    } else {
+      const [m,d] = dateMatch[1].split('/');
+      due = new Date().getFullYear()+'-'+String(m).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+    }
+  }
+
+  // ââ Parse priority ââ
+  let pri = S.config?.defaultPri || 'med';
+  if (/\bhigh\b|urgent|asap|critical/.test(lower)) pri = 'high';
+  else if (/\blow\b|whenever|backlog/.test(lower))  pri = 'low';
+  else if (/\bmed\b|medium|normal/.test(lower))    pri = 'med';
+
+  // ââ Parse duration ââ
+  let dur = S.config?.defaultDur || 45;
+  const durMatch = raw.match(/(\d+)\s*h(?:r|ours?)?/i);
+  const minMatch = raw.match(/(\d+)\s*m(?:in)?/i);
+  if (durMatch)      dur = parseInt(durMatch[1]) * 60;
+  else if (minMatch) dur = parseInt(minMatch[1]);
+
+  // ââ Parse show ââ
+  let sid = (S.shows||[])[0]?.id || '';
+  (S.shows||[]).forEach(sh => {
+    if (lower.includes(sh.code.toLowerCase())) sid = sh.id;
+  });
+
+  // ââ Build title â strip parsed tokens ââ
+  let title = raw
+    .replace(/(tomorrow|today|monday|tuesday|wednesday|thursday|friday|mon|tue|wed|thu|fri)/gi, '')
+    .replace(/(\d+)\s*h(?:r|ours?)?/gi, '')
+    .replace(/(\d+)\s*m(?:in)?/gi, '')
+    .replace(/\b(high|low|med|medium|urgent|asap|critical|normal|backlog|whenever)\b/gi, '')
+    .replace(/\b\d{4}-\d{2}-\d{2}\b/, '')
+    .replace(/\b\d{1,2}\/\d{1,2}\b/, '')
+    .replace(/\s+/g, ' ').trim();
+
+  if (!title) { toast('NEED A TITLE'); return; }
+
+  // Capitalize first letter
+  title = title.charAt(0).toUpperCase() + title.slice(1);
+
+  const task = {
+    id: 't'+Date.now(),
+    sid, title, due, pri, dur,
+    tags: [], color: '', notes: '',
+    subtasks: [], dep: '',
+    done: false, expanded: false,
+  };
+
+  if (!S.tasks) S.tasks = [];
+  S.tasks.unshift(task);
+  save();
+
+  if (inp) inp.value = '';
+  toast('â LOGGED: ' + title.slice(0,30));
+
+  // If schedule open, reactive rack
+  try { reactiveRack(); } catch(e) {}
+}
+
+function setView(v){plView=v;renderPage();}
+function plFilterToday(){plView='all';plFilterTag='';plFilterShow='';const el=document.getElementById('task-list');if(!el)return;migrateTasks();const today=tod();const tasks=S.tasks.filter(t=>!t.done&&t.due===today);el.innerHTML=tasks.length?tasks.map(t=>renderTCard(t)).join(''):'<div style="padding:40px;text-align:center;color:var(--t2);font-family:var(--mono);font-size:11px;">NOTHING DUE TODAY</div>';highlightTab('today');}
+function highlightTab(v){document.querySelectorAll('.pl-fchip').forEach(b=>b.classList.toggle('on',b.dataset.view===v));}
+function renderPage(){migrateTasks();rTaskList();highlightTab(plView||'all');}
+function aiSort(){toast('INTEL SORT — OPEN INTEL MODULE');dbg('[AI] sort requested');}
+function tcCircleTap(id,el){toggleTask(id);}
+
+// Quick log - simplified
+function quickLog(){
+  const inp=document.getElementById('quick-input');
+  const txt=(inp.value||'').trim();
+  if(!txt)return;
+  const id='t'+Date.now();
+  const show=S.shows[0]||null;
+  S.tasks.unshift({id,title:txt,done:false,pri:'none',tags:[],sid:show?show.id:null,created:Date.now()});
+  save();inp.value='';renderPage();toast('TASK ADDED');
+  dbg('[TASK] added: '+txt);
+}
+
+// Add task - prompt fallback
+function addTask(){
+  const t=prompt('Task title');if(!t)return;
+  const id='t'+Date.now();
+  S.tasks.unshift({id,title:t.trim(),done:false,pri:'none',tags:[],created:Date.now()});
+  save();renderPage();toast('ADDED');
+}
+
+// Task edit - simple sheet
+function openTaskEdit(id){
+  const t=(S.tasks||[]).find(x=>x.id===id);if(!t)return;
+  const title=prompt('Title',t.title);
+  if(title!==null&&title.trim()){t.title=title.trim();}
+  save();renderPage();
+}
+
+function toggleTask(id){
+  const t=(S.tasks||[]).find(x=>x.id===id);if(!t)return;
+  t.done=!t.done;if(t.done)t.completedAt=Date.now();else delete t.completedAt;
+  save();renderPage();
+}
+function toggleExpand(id){const t=(S.tasks||[]).find(x=>x.id===id);if(t){t.expanded=!t.expanded;save();renderPage();}}
+function toggleSub(tid,idx){const t=(S.tasks||[]).find(x=>x.id===tid);if(t&&t.subtasks&&t.subtasks[idx]){t.subtasks[idx].done=!t.subtasks[idx].done;save();renderPage();}}
+
+document.addEventListener('DOMContentLoaded',renderPage);
+</script>
+</body>
+</html>
