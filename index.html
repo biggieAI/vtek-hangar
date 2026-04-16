@@ -679,7 +679,6 @@ body {
   transition: background 0.12s;
 }
 .plan-slot:nth-child(even) { background: rgba(255,255,255,0.012); }
-.plan-slot:nth-child(even) { background: var(--bg); }
 .plan-slot.half-hour { border-bottom: 1px solid rgba(255,255,255,0.025); min-height: 48px; }
 .plan-slot-time {
   width: 48px; flex-shrink: 0;
@@ -3385,7 +3384,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-20260416-120000';
+const BUILD_ID = 'VTEK-20260416-130000';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
@@ -5133,6 +5132,10 @@ async function initPlanMode(){
   renderTaskPool();
   renderTimeline();
   checkDayStartRack();
+  // Open drawer by default
+  const section=document.getElementById('plan-pool-section');
+  const body=document.getElementById('plan-drawer-body');
+  if(section&&body){section.classList.add('plan-drawer-open');body.style.maxHeight='320px';}
 }
 
 
@@ -5306,11 +5309,11 @@ function closePlanTaskSheet(){
 }
 
 function togglePlanDrawer(){
-  const toggle=document.getElementById('plan-drawer-toggle');
+  const section=document.getElementById('plan-pool-section');
   const body=document.getElementById('plan-drawer-body');
-  if(!toggle||!body) return;
-  const isOpen=toggle.classList.toggle('plan-drawer-open');
-  if(isOpen) body.style.maxHeight='260px';
+  if(!section||!body) return;
+  const isOpen=section.classList.toggle('plan-drawer-open');
+  if(isOpen) body.style.maxHeight='320px';
   else body.style.maxHeight='0';
 }
 
@@ -8290,10 +8293,7 @@ function tryCloseEditTask(){
     <div class="page" id="pg-plan">
       <div class="plan-header">
         <div class="plan-date" id="plan-date-label">TODAY</div>
-        <div class="plan-header-actions">
-          <button class="plan-action-btn" id="rack-btn-top" onclick="autoRackDay()">AUTO-RACK</button>
-          <button class="plan-action-btn plan-commit-btn" onclick="commitPlan()">COMMIT</button>
-        </div>
+
       </div>
       <div class="plan-cal-status" id="plan-cal-status">
         <span id="plan-cal-txt" style="color:var(--t2);font-size:10px;font-family:var(--mono);letter-spacing:0.05em;">CAL SYNC READY</span>
