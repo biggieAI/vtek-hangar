@@ -160,6 +160,49 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 .pin-btn{background:none;border:var(--b2);color:var(--t2);font-family:var(--mono);font-size:11px;padding:6px 8px;border-radius:6px;cursor:pointer;min-height:32px;min-width:32px;touch-action:manipulation;}
 .pin-btn.on{color:var(--teal);border-color:rgba(33,225,223,0.3);}
 
+/* ═══ WAVE 2: MD TOOLBAR ═══ */
+.md-toolbar{display:flex;gap:4px;padding:6px 8px;background:var(--s1);border-top:var(--b1);border-bottom:var(--b1);flex-shrink:0;overflow-x:auto;-webkit-overflow-scrolling:touch;touch-action:pan-x;}
+.md-tb-btn{background:var(--s3);border:var(--b2);color:var(--t1);font-family:var(--mono);font-size:11px;font-weight:700;padding:6px 10px;border-radius:5px;cursor:pointer;min-width:36px;min-height:32px;flex-shrink:0;touch-action:manipulation;-webkit-user-select:none;user-select:none;letter-spacing:0.04em;}
+.md-tb-btn:active{background:var(--s4);color:var(--teal);}
+.md-tb-btn.b{font-weight:900;}
+.md-tb-btn.i{font-style:italic;}
+.md-tb-btn.mono{font-family:var(--mono);font-size:10px;}
+
+/* WAVE 2: auto-link + tap-to-copy code in preview */
+.vault-preview a,.code-preview a{color:var(--teal);text-decoration:underline;word-break:break-all;}
+.md-code-block{position:relative;background:#0d0e13;border:1px solid #1a1c24;border-radius:6px;margin:10px 0;overflow:hidden;}
+.md-code-block pre{margin:0;padding:12px 14px;padding-right:60px;font-family:var(--mono);font-size:12px;line-height:1.5;color:#d4d4d8;white-space:pre;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.md-code-block .copy-inline{position:absolute;top:6px;right:6px;background:#1a1c24;border:1px solid #2a2d37;color:var(--teal);padding:3px 8px;border-radius:4px;font-family:var(--mono);font-size:9px;font-weight:700;cursor:pointer;letter-spacing:0.06em;touch-action:manipulation;}
+
+/* footer: word/char count */
+.edit-footer{padding:6px 14px calc(var(--safe-b)+6px);background:var(--s1);border-top:var(--b1);font-family:var(--mono);font-size:9px;color:var(--t3);letter-spacing:0.08em;display:flex;gap:16px;flex-shrink:0;}
+.edit-footer.hide{display:none;}
+
+/* ═══ WAVE 3: ATTACHMENTS ═══ */
+.att-strip{display:flex;gap:8px;padding:8px 12px;overflow-x:auto;-webkit-overflow-scrolling:touch;background:var(--s1);border-top:var(--b1);flex-shrink:0;touch-action:pan-x;}
+.att-strip:empty{display:none;}
+.att-item{position:relative;width:64px;height:64px;border-radius:6px;background:var(--s3);border:var(--b2);flex-shrink:0;overflow:hidden;cursor:pointer;touch-action:manipulation;}
+.att-item img{width:100%;height:100%;object-fit:cover;}
+.att-item.file{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px;text-align:center;}
+.att-item.file .icon{font-size:22px;color:var(--teal);}
+.att-item.file .name{font-family:var(--mono);font-size:8px;color:var(--t1);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%;margin-top:2px;}
+.att-item .x-btn{position:absolute;top:2px;right:2px;width:18px;height:18px;background:rgba(0,0,0,0.7);color:#fff;border:none;border-radius:50%;font-size:10px;line-height:1;cursor:pointer;touch-action:manipulation;padding:0;display:flex;align-items:center;justify-content:center;}
+.att-add{width:64px;height:64px;border-radius:6px;background:var(--s2);border:1px dashed rgba(255,255,255,0.15);color:var(--t2);font-family:var(--mono);font-size:9px;font-weight:700;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;flex-shrink:0;cursor:pointer;touch-action:manipulation;}
+.att-add .plus{font-size:22px;line-height:1;color:var(--teal);}
+
+/* attachment viewer (fullscreen) */
+.att-viewer{position:fixed;inset:0;background:rgba(0,0,0,0.94);z-index:1000;display:none;align-items:center;justify-content:center;padding:0;}
+.att-viewer.open{display:flex;flex-direction:column;}
+.att-viewer .vw-top{position:absolute;top:0;left:0;right:0;padding:calc(var(--safe-t)+8px) 12px 10px;display:flex;gap:8px;align-items:center;z-index:2;}
+.att-viewer .vw-close{background:none;border:none;color:#fff;font-size:22px;padding:8px 12px;cursor:pointer;touch-action:manipulation;min-width:44px;min-height:44px;}
+.att-viewer .vw-name{flex:1;color:#fff;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:0.06em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.att-viewer .vw-dl{background:var(--teal);color:#000;border:none;font-family:var(--mono);font-size:10px;font-weight:800;padding:8px 14px;border-radius:6px;cursor:pointer;letter-spacing:0.08em;touch-action:manipulation;}
+.att-viewer img{max-width:100%;max-height:100%;object-fit:contain;}
+.att-viewer .file-box{color:#fff;text-align:center;padding:40px;}
+.att-viewer .file-box .icon{font-size:64px;color:var(--teal);margin-bottom:12px;}
+.att-viewer .file-box .name{font-family:var(--mono);font-size:13px;margin-bottom:4px;}
+.att-viewer .file-box .size{font-family:var(--mono);font-size:10px;color:var(--t2);}
+
 .toast{position:fixed;bottom:calc(var(--safe-b)+48px);left:50%;transform:translateX(-50%) translateY(20px);background:var(--s4);border:var(--b2);color:var(--t0);font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:0.10em;padding:9px 20px;opacity:0;transition:all 0.2s;pointer-events:none;white-space:nowrap;z-index:600;border-radius:20px;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 .dbg{flex-shrink:0;background:#0a0d0a;border-top:1px solid #1a3a1a;font-family:monospace;font-size:10px;}
@@ -214,8 +257,11 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
     <input class="editor-title-in" id="edit-title" placeholder="Note title..." type="text">
     <div class="vault-tag-row" id="tag-row"></div>
 
+    <!-- ATTACHMENT STRIP -->
+    <div class="att-strip" id="att-strip"></div>
+
     <!-- MD / generic textarea -->
-    <textarea class="editor-textarea" id="edit-body" placeholder="Write in markdown...&#10;&#10;# Heading&#10;**Bold**, *italic*&#10;- List item"></textarea>
+    <textarea class="editor-textarea" id="edit-body" placeholder="Write in markdown...&#10;&#10;# Heading&#10;**Bold**, *italic*&#10;- List item&#10;```code```"></textarea>
 
     <!-- MD preview -->
     <div class="vault-preview hide" id="edit-preview"></div>
@@ -246,6 +292,29 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
       <button class="snippet-big-copy" id="snip-copy-btn" onclick="copyActiveBody()">⎘ TAP TO COPY</button>
       <textarea class="editor-textarea" id="snip-body" placeholder="Paste snippet here..."></textarea>
     </div>
+
+    <!-- MD TOOLBAR (wave 2) -->
+    <div class="md-toolbar hide" id="md-toolbar">
+      <button class="md-tb-btn b" onclick="mdWrap('**','**')">B</button>
+      <button class="md-tb-btn i" onclick="mdWrap('*','*')">I</button>
+      <button class="md-tb-btn" onclick="mdLinePrefix('# ')">H1</button>
+      <button class="md-tb-btn" onclick="mdLinePrefix('## ')">H2</button>
+      <button class="md-tb-btn" onclick="mdLinePrefix('### ')">H3</button>
+      <button class="md-tb-btn mono" onclick="mdWrap('\`','\`')">&lt;/&gt;</button>
+      <button class="md-tb-btn mono" onclick="mdWrapBlock('\`\`\`\n','\n\`\`\`')">```</button>
+      <button class="md-tb-btn" onclick="mdLinePrefix('- ')">• LIST</button>
+      <button class="md-tb-btn" onclick="mdLinePrefix('- [ ] ')">☐</button>
+      <button class="md-tb-btn" onclick="mdInsertLink()">🔗</button>
+      <button class="md-tb-btn" onclick="mdInsert('---\n')">HR</button>
+      <button class="md-tb-btn" onclick="attachAdd()">📎</button>
+    </div>
+
+    <!-- FOOTER: char/word count -->
+    <div class="edit-footer hide" id="edit-footer">
+      <span id="ef-words">0 words</span>
+      <span id="ef-chars">0 chars</span>
+      <span id="ef-att" style="margin-left:auto"></span>
+    </div>
   </div>
 </div>
 
@@ -256,11 +325,24 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
   <div id="sh-content"></div>
 </div>
 
+<!-- ATTACHMENT VIEWER -->
+<div class="att-viewer" id="att-viewer">
+  <div class="vw-top">
+    <button class="vw-close" onclick="closeAttViewer()">✕</button>
+    <span class="vw-name" id="vw-name"></span>
+    <button class="vw-dl" id="vw-dl" onclick="downloadActiveAtt()">↓ DL</button>
+  </div>
+  <div id="vw-body" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;padding:60px 10px 20px;"></div>
+</div>
+
+<!-- hidden file input for attachments -->
+<input type="file" id="att-file-in" accept="image/*,application/pdf" style="display:none" multiple>
+
 <div id="toast" class="toast"></div>
 <div class="dbg" id="dbg">
   <div class="dbg-hd">
     <button class="dbg-btn" onclick="document.getElementById('dbg').classList.toggle('open')">&gt; DBG</button>
-    <span class="dbg-id">VTEK-VAULT-20260417-003</span>
+    <span class="dbg-id">VTEK-VAULT-20260417-004</span>
     <button class="dbg-copy" onclick="navigator.clipboard&&navigator.clipboard.writeText(document.getElementById('dbg-log').textContent);this.textContent='COPIED';setTimeout(()=>this.textContent='COPY',1500)">COPY</button>
   </div>
   <div class="dbg-body"><div class="dbg-log" id="dbg-log"></div></div>
@@ -268,7 +350,7 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 
 <script>
 'use strict';
-const BUILD_ID='VTEK-VAULT-20260417-003';
+const BUILD_ID='VTEK-VAULT-20260417-004';
 const LS='vtek9';
 let S=JSON.parse(localStorage.getItem(LS)||'null')||{shows:[],shots:[],tasks:[],vaultDocs:[],vaultTags:[]};
 if(!S.vaultDocs)S.vaultDocs=[];
@@ -278,6 +360,51 @@ let activeId=null;
 let mode='edit';                // 'edit' | 'preview'
 let _lpTimer=null;               // long-press timer
 let _lpTriggered=false;
+let _activeAttIdx=-1;            // active attachment in viewer
+
+// ═══ INDEXEDDB ATTACHMENTS ═══
+const IDB_NAME='vtek_vault';
+const IDB_STORE='att';
+let _idb=null;
+function idbOpen(){
+  return new Promise((res,rej)=>{
+    if(_idb){res(_idb);return;}
+    const req=indexedDB.open(IDB_NAME,1);
+    req.onupgradeneeded=e=>{
+      const db=e.target.result;
+      if(!db.objectStoreNames.contains(IDB_STORE)) db.createObjectStore(IDB_STORE,{keyPath:'id'});
+    };
+    req.onsuccess=e=>{_idb=e.target.result;res(_idb);};
+    req.onerror=e=>rej(e.target.error);
+  });
+}
+async function idbPut(rec){
+  const db=await idbOpen();
+  return new Promise((res,rej)=>{
+    const tx=db.transaction(IDB_STORE,'readwrite');
+    tx.objectStore(IDB_STORE).put(rec);
+    tx.oncomplete=()=>res();
+    tx.onerror=e=>rej(e.target.error);
+  });
+}
+async function idbGet(id){
+  const db=await idbOpen();
+  return new Promise((res,rej)=>{
+    const tx=db.transaction(IDB_STORE,'readonly');
+    const req=tx.objectStore(IDB_STORE).get(id);
+    req.onsuccess=()=>res(req.result);
+    req.onerror=e=>rej(e.target.error);
+  });
+}
+async function idbDelete(id){
+  const db=await idbOpen();
+  return new Promise((res,rej)=>{
+    const tx=db.transaction(IDB_STORE,'readwrite');
+    tx.objectStore(IDB_STORE).delete(id);
+    tx.oncomplete=()=>res();
+    tx.onerror=e=>rej(e.target.error);
+  });
+}
 
 function save(){localStorage.setItem(LS,JSON.stringify(S));}
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);}
@@ -287,6 +414,7 @@ window.addEventListener('error',e=>dbg('ERR:'+e.message));
 function escHtml(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function escAttr(s){return escHtml(s).replace(/'/g,'&#39;');}
 function gs(id){return (S.shows||[]).find(s=>s.id===id);}
+function bytesHuman(b){if(b<1024)return b+' B';if(b<1024*1024)return (b/1024).toFixed(1)+' KB';return (b/1024/1024).toFixed(1)+' MB';}
 
 // ── MIGRATION: add missing fields to old docs ──
 S.vaultDocs.forEach(d=>{
@@ -295,6 +423,7 @@ S.vaultDocs.forEach(d=>{
   if(!('pinned' in d)) d.pinned=false;
   if(!('codeLang' in d)) d.codeLang='plain';
   if(!d.checklist) d.checklist=[];
+  if(!d.att) d.att=[]; // [{id,name,mime,size,kind:'img'|'file'}]
 });
 
 // ── CLIPBOARD ──
@@ -310,16 +439,38 @@ function fallbackCopy(text){
   document.body.removeChild(ta);
 }
 
-// ── MARKDOWN ──
+// ── MARKDOWN (wave 2: fenced code + linkify) ──
 function md2html(md){
-  return (md||'')
-    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-    .replace(/^### (.+)/gm,'<h3>$1</h3>').replace(/^## (.+)/gm,'<h2>$1</h2>').replace(/^# (.+)/gm,'<h1>$1</h1>')
-    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>')
-    .replace(/`([^`]+)`/g,'<code>$1</code>')
-    .replace(/^---$/gm,'<hr>')
-    .replace(/^- (.+)/gm,'<li>$1</li>').replace(/(<li>.*<\/li>)/gs,'<ul>$1</ul>')
-    .replace(/\n\n/g,'</p><p>').replace(/^(?!<[hul]|<\/[hul]|<hr|<p|<li)/gm,'<p>').replace(/<p>$|^<\/p>/gm,'');
+  if(!md) return '';
+  // Extract fenced code blocks first so internal markdown doesn't get transformed
+  const blocks=[];
+  let s=md.replace(/```([\w-]*)\n?([\s\S]*?)```/g,(_,lang,code)=>{
+    const i=blocks.length;
+    blocks.push({lang:lang||'plain',code});
+    return '\x00CB'+i+'\x00';
+  });
+  // Escape HTML
+  s=s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  // Headings
+  s=s.replace(/^### (.+)/gm,'<h3>$1</h3>').replace(/^## (.+)/gm,'<h2>$1</h2>').replace(/^# (.+)/gm,'<h1>$1</h1>');
+  // Bold/italic/inline code
+  s=s.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>').replace(/`([^`]+)`/g,'<code>$1</code>');
+  // HR
+  s=s.replace(/^---$/gm,'<hr>');
+  // Lists (naive)
+  s=s.replace(/^- \[([ xX])\] (.+)/gm,(_,c,t)=>'<li class="mdchk"><span class="mdchk-box">'+(c.toLowerCase()==='x'?'☑':'☐')+'</span> '+t+'</li>');
+  s=s.replace(/^- (.+)/gm,'<li>$1</li>').replace(/(<li>[\s\S]*?<\/li>)/gs,'<ul>$1</ul>');
+  // Auto-linkify (before paragraph wrapping, skip inside code tokens)
+  s=s.replace(/(https?:\/\/[^\s<]+)/g,'<a href="$1" target="_blank" rel="noopener">$1</a>');
+  // Paragraphs
+  s=s.replace(/\n\n/g,'</p><p>').replace(/^(?!<[hul]|<\/[hul]|<hr|<p|<li|\x00CB)/gm,'<p>').replace(/<p>$|^<\/p>/gm,'');
+  // Restore code blocks with inline copy buttons
+  s=s.replace(/\x00CB(\d+)\x00/g,(_,i)=>{
+    const b=blocks[+i];
+    const hi=highlight(b.code.replace(/\n$/,''),b.lang);
+    return '<div class="md-code-block"><button class="copy-inline" onclick="copyText(this.nextElementSibling.textContent)">COPY</button><pre>'+hi+'</pre></div>';
+  });
+  return s;
 }
 
 // ── SYNTAX HIGHLIGHTER (lightweight, regex-based) ──
@@ -423,6 +574,8 @@ function showList(){
   document.getElementById('edit-actions').classList.add('hide');
   document.getElementById('back-lbl').textContent='HOME';
   document.getElementById('title-lbl').textContent='VAULT';
+  // hide wave 2/3 editor UI
+  ['md-toolbar','edit-footer','att-strip'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.add('hide');});
   renderList();
 }
 
@@ -470,7 +623,7 @@ function renderTagRow(doc){
 function renderTypeView(doc){
   const t=doc.type||'md';
   // Hide everything
-  ['edit-body','edit-preview','code-meta','code-preview','check-view','snip-view','mode-toggle'].forEach(id=>{
+  ['edit-body','edit-preview','code-meta','code-preview','check-view','snip-view','mode-toggle','md-toolbar'].forEach(id=>{
     const el=document.getElementById(id);if(el)el.classList.add('hide');
   });
 
@@ -482,6 +635,7 @@ function renderTypeView(doc){
     } else {
       document.getElementById('edit-body').classList.remove('hide');
       document.getElementById('edit-body').classList.remove('code-mode');
+      document.getElementById('md-toolbar').classList.remove('hide');
     }
   } else if(t==='code'){
     document.getElementById('mode-toggle').classList.remove('hide');
@@ -500,7 +654,209 @@ function renderTypeView(doc){
   } else if(t==='snip'){
     document.getElementById('snip-view').classList.remove('hide');
   }
+
+  renderAttStrip(doc);
+  updateFooter(doc);
 }
+
+// ═══ WAVE 3: ATTACHMENT STRIP ═══
+function renderAttStrip(doc){
+  const strip=document.getElementById('att-strip');
+  if(!strip) return;
+  const atts=doc.att||[];
+  let h='';
+  atts.forEach((a,i)=>{
+    if(a.kind==='img'){
+      h+='<div class="att-item" data-ai="'+i+'" onclick="openAttViewer('+i+')">'+
+           '<img id="att-thumb-'+a.id+'" alt="">'+
+           '<button class="x-btn" onclick="event.stopPropagation();removeAtt('+i+')">✕</button>'+
+         '</div>';
+    } else {
+      const ext=(a.name||'').split('.').pop().toUpperCase().slice(0,4);
+      h+='<div class="att-item file" data-ai="'+i+'" onclick="openAttViewer('+i+')">'+
+           '<div class="icon">📄</div>'+
+           '<div class="name">'+escHtml(ext)+'</div>'+
+           '<button class="x-btn" onclick="event.stopPropagation();removeAtt('+i+')">✕</button>'+
+         '</div>';
+    }
+  });
+  h+='<div class="att-add" onclick="attachAdd()"><div class="plus">+</div><div>ADD</div></div>';
+  strip.innerHTML=h;
+  // Load image thumbs from IndexedDB
+  atts.forEach(async a=>{
+    if(a.kind!=='img') return;
+    try{
+      const rec=await idbGet(a.id);
+      if(rec&&rec.blob){
+        const img=document.getElementById('att-thumb-'+a.id);
+        if(img) img.src=URL.createObjectURL(rec.blob);
+      }
+    }catch(e){dbg('thumb err '+e.message);}
+  });
+}
+
+function attachAdd(){
+  if(!activeId){toast('OPEN A NOTE FIRST');return;}
+  document.getElementById('att-file-in').click();
+}
+
+document.getElementById('att-file-in').addEventListener('change',async function(e){
+  const files=Array.from(e.target.files||[]);
+  if(!files.length)return;
+  const doc=S.vaultDocs.find(d=>d.id===activeId);if(!doc)return;
+  if(!doc.att) doc.att=[];
+  for(const f of files){
+    try{
+      const id='a'+Date.now()+Math.random().toString(36).slice(2,6);
+      const kind=f.type.startsWith('image/')?'img':'file';
+      await idbPut({id,blob:f});
+      doc.att.push({id,name:f.name,mime:f.type,size:f.size,kind});
+      dbg('[ATT] saved '+f.name+' '+bytesHuman(f.size));
+    }catch(err){
+      dbg('[ATT] ERR '+err.message);
+      toast('ATT FAILED: '+err.message);
+    }
+  }
+  doc.updated=Date.now();save();
+  renderAttStrip(doc);
+  updateFooter(doc);
+  toast(files.length+' ATTACHED');
+  e.target.value=''; // reset
+});
+
+async function removeAtt(idx){
+  const doc=S.vaultDocs.find(d=>d.id===activeId);if(!doc||!doc.att)return;
+  const a=doc.att[idx];if(!a)return;
+  if(!confirm('Remove "'+(a.name||'attachment')+'"?'))return;
+  try{await idbDelete(a.id);}catch(e){}
+  doc.att.splice(idx,1);
+  doc.updated=Date.now();save();
+  renderAttStrip(doc);
+  updateFooter(doc);
+  toast('REMOVED');
+}
+
+async function openAttViewer(idx){
+  const doc=S.vaultDocs.find(d=>d.id===activeId);if(!doc||!doc.att)return;
+  const a=doc.att[idx];if(!a)return;
+  _activeAttIdx=idx;
+  const viewer=document.getElementById('att-viewer');
+  const body=document.getElementById('vw-body');
+  document.getElementById('vw-name').textContent=a.name||'';
+  try{
+    const rec=await idbGet(a.id);
+    if(!rec||!rec.blob){body.innerHTML='<div style="color:#f87171">ATTACHMENT NOT FOUND</div>';viewer.classList.add('open');return;}
+    const url=URL.createObjectURL(rec.blob);
+    if(a.kind==='img'){
+      body.innerHTML='<img src="'+url+'" alt="'+escAttr(a.name)+'">';
+    } else {
+      body.innerHTML='<div class="file-box"><div class="icon">📄</div><div class="name">'+escHtml(a.name)+'</div><div class="size">'+escHtml(a.mime||'')+' · '+bytesHuman(a.size||0)+'</div></div>';
+    }
+    viewer.classList.add('open');
+  }catch(e){body.innerHTML='<div style="color:#f87171">'+escHtml(e.message)+'</div>';viewer.classList.add('open');}
+}
+function closeAttViewer(){document.getElementById('att-viewer').classList.remove('open');_activeAttIdx=-1;}
+async function downloadActiveAtt(){
+  const doc=S.vaultDocs.find(d=>d.id===activeId);if(!doc||_activeAttIdx<0)return;
+  const a=doc.att[_activeAttIdx];if(!a)return;
+  try{
+    const rec=await idbGet(a.id);if(!rec||!rec.blob)return;
+    const url=URL.createObjectURL(rec.blob);
+    const link=document.createElement('a');link.href=url;link.download=a.name||'download';document.body.appendChild(link);link.click();link.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),500);
+    toast('DOWNLOAD');
+  }catch(e){toast('DOWNLOAD FAILED');}
+}
+
+// ═══ WAVE 2: MD TOOLBAR HANDLERS ═══
+function mdWrap(pre,post){
+  const ta=document.getElementById('edit-body');
+  if(!ta||ta.classList.contains('hide'))return;
+  const v=ta.value,s=ta.selectionStart,e=ta.selectionEnd;
+  const sel=v.slice(s,e);
+  const insert=pre+sel+post;
+  ta.value=v.slice(0,s)+insert+v.slice(e);
+  ta.selectionStart=s+pre.length;
+  ta.selectionEnd=s+pre.length+sel.length;
+  ta.focus();
+  syncContent();
+}
+function mdWrapBlock(pre,post){
+  const ta=document.getElementById('edit-body');
+  if(!ta||ta.classList.contains('hide'))return;
+  const v=ta.value,s=ta.selectionStart,e=ta.selectionEnd;
+  const sel=v.slice(s,e)||'code';
+  const insert=pre+sel+post;
+  ta.value=v.slice(0,s)+insert+v.slice(e);
+  ta.selectionStart=s+pre.length;
+  ta.selectionEnd=s+pre.length+sel.length;
+  ta.focus();
+  syncContent();
+}
+function mdLinePrefix(prefix){
+  const ta=document.getElementById('edit-body');
+  if(!ta||ta.classList.contains('hide'))return;
+  const v=ta.value,s=ta.selectionStart;
+  // find start of current line
+  const lineStart=v.lastIndexOf('\n',s-1)+1;
+  ta.value=v.slice(0,lineStart)+prefix+v.slice(lineStart);
+  ta.selectionStart=ta.selectionEnd=s+prefix.length;
+  ta.focus();
+  syncContent();
+}
+function mdInsert(text){
+  const ta=document.getElementById('edit-body');
+  if(!ta||ta.classList.contains('hide'))return;
+  const v=ta.value,s=ta.selectionStart,e=ta.selectionEnd;
+  ta.value=v.slice(0,s)+text+v.slice(e);
+  ta.selectionStart=ta.selectionEnd=s+text.length;
+  ta.focus();
+  syncContent();
+}
+function mdInsertLink(){
+  const url=prompt('URL:','https://');
+  if(!url)return;
+  const ta=document.getElementById('edit-body');
+  if(!ta)return;
+  const s=ta.selectionStart,e=ta.selectionEnd,sel=ta.value.slice(s,e)||'link';
+  const insert='['+sel+']('+url+')';
+  ta.value=ta.value.slice(0,s)+insert+ta.value.slice(e);
+  ta.selectionStart=ta.selectionEnd=s+insert.length;
+  ta.focus();syncContent();
+}
+
+function syncContent(){
+  const doc=S.vaultDocs.find(d=>d.id===activeId);if(!doc)return;
+  if(doc.type==='md'||doc.type==='code') doc.content=document.getElementById('edit-body').value;
+  else if(doc.type==='snip') doc.content=document.getElementById('snip-body').value;
+  doc.updated=Date.now();
+  updateFooter(doc);
+}
+
+// footer updater
+function updateFooter(doc){
+  const f=document.getElementById('edit-footer');
+  if(!f||!doc){return;}
+  // Only show for md/code/snip editing (not checklist)
+  if(doc.type==='check'){f.classList.add('hide');return;}
+  f.classList.remove('hide');
+  let text='';
+  if(doc.type==='md'||doc.type==='code') text=document.getElementById('edit-body').value||'';
+  else if(doc.type==='snip') text=document.getElementById('snip-body').value||'';
+  else text=doc.content||'';
+  const words=text.trim()?text.trim().split(/\s+/).length:0;
+  document.getElementById('ef-words').textContent=words+(words===1?' word':' words');
+  document.getElementById('ef-chars').textContent=text.length+' chars';
+  const attCount=(doc.att||[]).length;
+  document.getElementById('ef-att').textContent=attCount?('📎 '+attCount):'';
+}
+
+// wire live count while typing
+document.addEventListener('input',e=>{
+  if(e.target&&(e.target.id==='edit-body'||e.target.id==='snip-body'||e.target.id==='edit-title')){
+    const doc=S.vaultDocs.find(d=>d.id===activeId);if(doc){updateFooter(doc);}
+  }
+});
 
 function setMode(m){
   mode=m;
@@ -727,6 +1083,8 @@ function copyDocContent(did){
 function deleteDocById(did){
   const doc=S.vaultDocs.find(d=>d.id===did);if(!doc)return;
   if(!confirm('Delete "'+(doc.title||'Untitled')+'"?'))return;
+  // cleanup attachments from IDB
+  (doc.att||[]).forEach(a=>{idbDelete(a.id).catch(()=>{});});
   S.vaultDocs=S.vaultDocs.filter(d=>d.id!==did);save();closeSheet();renderList();toast('DELETED');
 }
 
@@ -777,6 +1135,7 @@ function deleteDoc(){
   if(!activeId)return;
   const doc=S.vaultDocs.find(d=>d.id===activeId);if(!doc)return;
   if(!confirm('Delete "'+(doc.title||'Untitled')+'"?'))return;
+  (doc.att||[]).forEach(a=>{idbDelete(a.id).catch(()=>{});});
   S.vaultDocs=S.vaultDocs.filter(d=>d.id!==activeId);
   save();closeSheet();showList();toast('DELETED');
 }
