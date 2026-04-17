@@ -166,14 +166,14 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 .v-sheet-ovl{position:absolute;inset:0;background:rgba(0,0,0,0.6);opacity:0;transition:opacity 0.2s;pointer-events:none;}
 .v-sheet-wrap.open{pointer-events:auto;}
 .v-sheet-wrap.open .v-sheet-ovl{opacity:1;pointer-events:auto;}
-.v-sheet{position:absolute;left:0;right:0;bottom:0;background:var(--s1);border-top:var(--b2);border-radius:14px 14px 0 0;max-height:72dvh;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:8px 20px calc(var(--safe-b)+24px);transform:translateY(100%);transition:transform 0.22s cubic-bezier(0.16,1,0.3,1);box-shadow:0 -8px 30px rgba(0,0,0,0.5);}
+.v-sheet{position:absolute;left:0;right:0;bottom:0;background:var(--s1);border-top:var(--b2);border-radius:14px 14px 0 0;max-height:72dvh;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:8px 24px calc(var(--safe-b)+24px);transform:translateY(100%);transition:transform 0.22s cubic-bezier(0.16,1,0.3,1);box-shadow:0 -8px 30px rgba(0,0,0,0.5);}
 .v-sheet-wrap.open .v-sheet{transform:translateY(0);}
 .v-sh-handle{width:36px;height:4px;background:var(--t3);border-radius:2px;margin:0 auto 14px;}
-.v-sh-title{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--t1);letter-spacing:0.1em;margin-bottom:8px;padding:4px 4px 8px;}
-.v-sh-row{display:flex;align-items:center;gap:12px;padding:14px 8px;border-bottom:var(--b1);cursor:pointer;touch-action:manipulation;border-radius:6px;}
-.v-sh-row:last-child{border-bottom:none;}
-.v-sh-row:active{background:var(--s2);}
-.v-sh-row-lbl{flex:1;font-size:14px;color:var(--t0);padding-left:2px;}
+.v-sh-title{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--t1);letter-spacing:0.1em;margin-bottom:4px;padding:6px 0 10px;}
+.v-sh-row{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:var(--b1);cursor:pointer;touch-action:manipulation;}
+.v-sh-row:last-of-type{border-bottom:none;}
+.v-sh-row:active{background:var(--s2);margin:0 -12px;padding-left:12px;padding-right:12px;border-radius:6px;}
+.v-sh-row-lbl{flex:1;font-size:14px;color:var(--t0);}
 .v-sh-row-chk{color:var(--teal);font-weight:800;font-size:16px;}
 .v-sh-chip-row{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0;}
 .v-sh-chip{padding:6px 10px;background:var(--s3);border:var(--b2);color:var(--t1);font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:0.06em;border-radius:6px;cursor:pointer;touch-action:manipulation;}
@@ -382,7 +382,7 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 <div class="dbg" id="dbg">
   <div class="dbg-hd">
     <button class="dbg-btn" onclick="document.getElementById('dbg').classList.toggle('open')">&gt; DBG</button>
-    <span class="dbg-id">VTEK-VAULT-20260417-009</span>
+    <span class="dbg-id">VTEK-VAULT-20260417-010</span>
     <button class="dbg-copy" onclick="navigator.clipboard&&navigator.clipboard.writeText(document.getElementById('dbg-log').textContent);this.textContent='COPIED';setTimeout(()=>this.textContent='COPY',1500)">COPY</button>
   </div>
   <div class="dbg-body"><div class="dbg-log" id="dbg-log"></div></div>
@@ -390,7 +390,7 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 
 <script>
 'use strict';
-const BUILD_ID='VTEK-VAULT-20260417-009';
+const BUILD_ID='VTEK-VAULT-20260417-010';
 const LS='vtek9';
 let S=JSON.parse(localStorage.getItem(LS)||'null')||{shows:[],shots:[],tasks:[],vaultDocs:[],vaultTags:[]};
 if(!S.vaultDocs)S.vaultDocs=[];
