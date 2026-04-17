@@ -12,89 +12,126 @@
   --bg:#1a1a1c;--s1:#1f1f21;--s2:#222224;--s3:#272729;--s4:#2e2e30;--s5:#353537;
   --t0:#ececee;--t1:#b0b0bc;--t2:#787882;--t3:#505058;
   --accent:rgba(244,247,250,0.92);--accent-hi:#f4f7fa;--teal:#21e1df;
-  --hi:#e85c4b;
+  --hi:#e85c4b;--ok:#4ade80;--warn:#fbbf24;
   --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,monospace;
   --sans:'Inter',-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
-  --b1:1px solid rgba(255,255,255,0.07);--b2:1px solid rgba(255,255,255,0.10);--b3:1px solid rgba(255,255,255,0.15);
+  --b1:1px solid rgba(255,255,255,0.07);--b2:1px solid rgba(255,255,255,0.10);
   --safe-t:env(safe-area-inset-top,0px);--safe-b:env(safe-area-inset-bottom,0px);
 }
 html,body{background:var(--bg);color:var(--t0);font-family:var(--sans);font-size:14px;line-height:1.4;overflow:hidden;height:100dvh;width:100vw;}
 body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-available;overflow:hidden;}
-.topbar{display:flex;align-items:center;gap:8px;padding:calc(var(--safe-t)+12px) 12px 12px;background:var(--s1);border-bottom:var(--b1);flex-shrink:0;touch-action:manipulation;position:relative;}
+
+/* TOPBAR */
+.topbar{display:flex;align-items:center;gap:6px;padding:calc(var(--safe-t)+6px) 8px 6px;background:var(--s1);border-bottom:var(--b1);flex-shrink:0;touch-action:manipulation;position:relative;min-height:44px;}
 .topbar::after{content:'';position:absolute;bottom:-1px;left:8%;right:8%;height:1px;background:linear-gradient(90deg,transparent,rgba(200,220,232,0.5) 50%,transparent);opacity:0.3;}
-.back-btn{display:flex;align-items:center;gap:6px;background:none;border:none;color:var(--t1);font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:0.08em;padding:10px 10px 10px 8px;min-height:44px;min-width:44px;cursor:pointer;touch-action:manipulation;-webkit-user-select:none;user-select:none;}
-.back-btn svg,.back-btn span{pointer-events:none;}
-.title{font-family:var(--mono);font-size:14px;font-weight:800;letter-spacing:0.10em;color:var(--accent-hi);}
-.actions{margin-left:auto;display:flex;gap:4px;}
-.tb-btn{padding:6px 12px;background:var(--s3);border:var(--b2);color:var(--t0);font-family:var(--sans);font-size:10px;font-weight:700;letter-spacing:0.05em;cursor:pointer;min-height:32px;border-radius:8px;touch-action:manipulation;-webkit-user-select:none;user-select:none;}
+.back-btn{display:flex;align-items:center;gap:4px;background:none;border:none;color:var(--teal);font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:0.06em;padding:8px;min-height:40px;min-width:44px;cursor:pointer;touch-action:manipulation;-webkit-user-select:none;user-select:none;flex-shrink:0;}
+.title{font-family:var(--mono);font-size:13px;font-weight:800;letter-spacing:0.08em;color:var(--accent-hi);white-space:nowrap;flex:1;min-width:0;}
+.actions{margin-left:auto;display:flex;gap:4px;align-items:center;flex-shrink:0;}
+.tb-btn{padding:6px 10px;background:var(--s3);border:var(--b2);color:var(--t0);font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:0.05em;cursor:pointer;min-height:32px;border-radius:8px;touch-action:manipulation;-webkit-user-select:none;user-select:none;}
+.tb-btn.primary{background:var(--teal);color:#000;border-color:var(--teal);}
 
-/* CHAT */
-.chat-area{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:12px 14px 80px;display:flex;flex-direction:column;gap:10px;}
-.msg{max-width:88%;word-wrap:break-word;line-height:1.55;}
-.msg.user{align-self:flex-end;background:var(--s3);border:var(--b2);border-radius:14px 14px 4px 14px;padding:10px 14px;font-size:13px;}
-.msg.ai{align-self:flex-start;background:var(--s2);border:var(--b1);border-radius:14px 14px 14px 4px;padding:10px 14px;font-size:13px;}
-.msg.thinking{opacity:0.5;font-style:italic;color:var(--t1);}
-.msg-time{font-family:var(--mono);font-size:9px;color:var(--t3);margin-top:4px;}
+/* MODEL PICKER */
+.model-picker{background:var(--s2);border:var(--b2);color:var(--t1);font-family:var(--mono);font-size:9px;font-weight:700;padding:6px 8px;border-radius:6px;cursor:pointer;min-height:32px;outline:none;letter-spacing:0.04em;}
 
-/* WORKFLOWS */
-.wf-section{padding:16px 14px 8px;}
-.wf-label{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:0.12em;color:var(--t2);margin-bottom:8px;}
-.wf-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-.wf-btn{
-  display:flex;align-items:center;gap:10px;
-  background:var(--s2);border:var(--b2);border-radius:10px;
-  padding:12px;cursor:pointer;touch-action:manipulation;
-  -webkit-user-select:none;user-select:none;
-}
-.wf-btn:active{background:var(--s3);}
-.wf-icon{font-size:18px;flex-shrink:0;}
-.wf-name{font-family:var(--mono);font-size:10px;font-weight:700;color:var(--t0);letter-spacing:0.04em;}
-.wf-desc{font-size:10px;color:var(--t2);margin-top:2px;}
+/* KEY BANNER */
+.key-banner{display:none;padding:10px 16px;background:rgba(232,92,75,0.08);border-bottom:1px solid rgba(232,92,75,0.2);flex-shrink:0;gap:10px;align-items:center;}
+.key-banner.show{display:flex;}
+.key-txt{flex:1;font-size:11px;color:var(--hi);font-family:var(--mono);letter-spacing:0.04em;}
+.key-in{flex:1;background:var(--s2);border:var(--b2);color:var(--t0);font-family:var(--mono);font-size:11px;padding:7px 10px;outline:none;border-radius:6px;min-height:32px;}
+.key-save{background:#fff;color:#000;border:none;font-family:var(--mono);font-size:10px;font-weight:800;padding:7px 12px;border-radius:6px;cursor:pointer;touch-action:manipulation;letter-spacing:0.06em;}
 
-/* INPUT BAR */
-.input-bar{
-  flex-shrink:0;
-  padding:10px 12px calc(var(--safe-b)+10px);
-  background:var(--s1);border-top:var(--b1);
-  display:flex;align-items:flex-end;gap:8px;
-}
-.intel-input{
-  flex:1;background:var(--s2);border:var(--b2);color:var(--t0);
-  font-family:var(--sans);font-size:13px;padding:10px 12px;
-  outline:none;border-radius:10px;resize:none;
-  max-height:100px;overflow-y:auto;line-height:1.4;
-  -webkit-overflow-scrolling:touch;
-}
-.intel-input::placeholder{color:var(--t2);}
-.send-btn{
-  width:40px;height:40px;flex-shrink:0;
-  background:var(--accent-hi);border:none;border-radius:10px;
-  color:#000;font-size:16px;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  touch-action:manipulation;-webkit-user-select:none;user-select:none;
-}
-.send-btn:disabled{background:var(--s4);color:var(--t2);}
+/* MAIN */
+.main{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;display:flex;flex-direction:column;}
 
-/* KEY SETUP */
-.key-banner{display:none;padding:10px 14px;background:rgba(232,92,75,0.08);border-bottom:1px solid rgba(232,92,75,0.2);}
-.key-banner.show{display:flex;align-items:center;gap:10px;}
-.key-banner-txt{font-size:11px;color:var(--hi);flex:1;}
-.key-input{flex:1;background:var(--s2);border:var(--b2);color:var(--t0);font-family:var(--mono);font-size:11px;padding:6px 10px;outline:none;border-radius:6px;}
-.key-save{background:#fff;color:#000;border:none;font-family:var(--mono);font-size:10px;font-weight:800;padding:6px 12px;border-radius:6px;cursor:pointer;touch-action:manipulation;}
+/* BRIEFING CARD */
+.brief{padding:16px 20px;background:var(--s1);border-bottom:var(--b1);flex-shrink:0;}
+.brief-hd{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.brief-dot{width:8px;height:8px;border-radius:50%;background:var(--teal);box-shadow:0 0 6px rgba(33,225,223,0.5);flex-shrink:0;}
+.brief-lbl{font-family:var(--mono);font-size:10px;font-weight:800;color:var(--teal);letter-spacing:0.1em;}
+.brief-date{margin-left:auto;font-family:var(--mono);font-size:9px;color:var(--t2);letter-spacing:0.08em;}
+.brief-stats{display:flex;gap:8px;margin-bottom:12px;}
+.brief-stat{flex:1;padding:10px;background:var(--s2);border:var(--b1);border-radius:8px;text-align:center;}
+.brief-stat-n{font-family:var(--mono);font-size:18px;font-weight:800;color:var(--t0);}
+.brief-stat-n.urgent{color:var(--hi);}
+.brief-stat-n.blocked{color:var(--warn);}
+.brief-stat-n.ok{color:var(--ok);}
+.brief-stat-l{font-family:var(--mono);font-size:8px;font-weight:700;color:var(--t2);letter-spacing:0.1em;margin-top:2px;}
+.brief-sum{font-size:13px;color:var(--t1);line-height:1.5;padding:8px 0;}
+.brief-sum strong{color:var(--t0);}
 
-.toast{position:fixed;bottom:calc(var(--safe-b)+60px);left:50%;transform:translateX(-50%) translateY(20px);background:var(--s4);border:var(--b2);color:var(--t0);font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:0.10em;padding:9px 20px;opacity:0;transition:all 0.2s;pointer-events:none;white-space:nowrap;z-index:600;border-radius:20px;}
+/* QUICK CHIPS */
+.chip-row{display:flex;gap:8px;padding:10px 16px;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-shrink:0;background:var(--s1);border-bottom:var(--b1);touch-action:pan-x;scrollbar-width:none;}
+.chip-row::-webkit-scrollbar{display:none;}
+.chip{background:var(--s3);border:var(--b2);color:var(--t1);font-family:var(--mono);font-size:10px;font-weight:700;padding:8px 12px;border-radius:18px;cursor:pointer;flex-shrink:0;letter-spacing:0.05em;touch-action:manipulation;min-height:32px;white-space:nowrap;}
+.chip:active{background:var(--s4);color:var(--teal);}
+.chip.primary{background:rgba(33,225,223,0.12);color:var(--teal);border-color:rgba(33,225,223,0.3);}
+
+/* MESSAGES */
+.msgs{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:8px 16px 20px;display:flex;flex-direction:column;gap:10px;}
+.msg{display:flex;flex-direction:column;max-width:92%;}
+.msg.user{align-self:flex-end;align-items:flex-end;}
+.msg.ai{align-self:flex-start;align-items:flex-start;}
+.msg-meta{font-family:var(--mono);font-size:8px;font-weight:700;color:var(--t3);letter-spacing:0.1em;margin-bottom:3px;padding:0 4px;}
+.msg-bubble{padding:10px 14px;border-radius:14px;font-size:14px;line-height:1.55;max-width:100%;}
+.msg.user .msg-bubble{background:var(--teal);color:#000;border-bottom-right-radius:4px;}
+.msg.ai .msg-bubble{background:var(--s2);color:var(--t0);border:var(--b1);border-bottom-left-radius:4px;}
+.msg-bubble strong{color:var(--accent-hi);font-weight:700;}
+.msg.user .msg-bubble strong{color:#000;font-weight:800;}
+.msg-bubble em{font-style:italic;}
+.msg-bubble code{font-family:var(--mono);font-size:12px;background:rgba(0,0,0,0.35);padding:1px 5px;border-radius:3px;color:var(--teal);}
+.msg.user .msg-bubble code{background:rgba(0,0,0,0.25);color:#000;}
+.msg-bubble h1,.msg-bubble h2,.msg-bubble h3{font-weight:700;margin:8px 0 4px;color:var(--t0);}
+.msg-bubble h1{font-size:16px;}
+.msg-bubble h2{font-size:14px;}
+.msg-bubble h3{font-size:13px;color:var(--t1);}
+.msg-bubble ul{padding-left:18px;margin:6px 0;}
+.msg-bubble li{margin:2px 0;}
+.msg-bubble hr{border:none;border-top:var(--b1);margin:8px 0;}
+
+/* Thinking dots */
+.think{display:flex;gap:4px;padding:4px 0;}
+.think-dot{width:6px;height:6px;border-radius:50%;background:var(--t2);animation:bounce 1.4s infinite ease-in-out both;}
+.think-dot:nth-child(1){animation-delay:-0.32s;}
+.think-dot:nth-child(2){animation-delay:-0.16s;}
+@keyframes bounce{0%,80%,100%{transform:scale(0.6);opacity:0.4;}40%{transform:scale(1);opacity:1;}}
+
+/* ACTION CHIPS in AI messages */
+.action-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;padding-top:10px;border-top:var(--b1);}
+.action-chip{background:rgba(33,225,223,0.1);border:1px solid rgba(33,225,223,0.3);color:var(--teal);font-family:var(--mono);font-size:10px;font-weight:700;padding:6px 10px;border-radius:6px;cursor:pointer;letter-spacing:0.04em;touch-action:manipulation;min-height:30px;}
+.action-chip:active{background:rgba(33,225,223,0.2);}
+.action-chip.done{background:rgba(74,222,128,0.12);border-color:rgba(74,222,128,0.3);color:var(--ok);pointer-events:none;}
+
+/* EMPTY */
+.empty{padding:40px 20px;text-align:center;color:var(--t2);font-family:var(--mono);font-size:11px;letter-spacing:0.06em;}
+
+/* INPUT DOCK */
+.dock{display:flex;align-items:flex-end;gap:8px;padding:10px 12px calc(var(--safe-b)+10px);background:var(--s1);border-top:var(--b1);flex-shrink:0;}
+.dock-in{flex:1;background:var(--s2);border:var(--b2);color:var(--t0);font-family:var(--sans);font-size:14px;padding:10px 14px;outline:none;border-radius:12px;resize:none;max-height:140px;min-height:44px;overflow-y:auto;line-height:1.4;-webkit-overflow-scrolling:touch;}
+.dock-in::placeholder{color:var(--t3);}
+.dock-btn{width:44px;height:44px;flex-shrink:0;background:var(--teal);border:none;border-radius:12px;color:#000;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;touch-action:manipulation;-webkit-user-select:none;user-select:none;font-weight:800;}
+.dock-btn:disabled{background:var(--s4);color:var(--t3);}
+.dock-btn.mic{background:var(--s3);color:var(--t1);}
+.dock-btn.mic.listening{background:var(--hi);color:#fff;animation:pulse 1.4s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.6;}}
+
+.toast{position:fixed;bottom:calc(var(--safe-b)+80px);left:50%;transform:translateX(-50%) translateY(20px);background:var(--s4);border:var(--b2);color:var(--t0);font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:0.10em;padding:9px 20px;opacity:0;transition:all 0.2s;pointer-events:none;white-space:nowrap;z-index:600;border-radius:20px;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* DBG */
 .dbg{flex-shrink:0;background:#0a0d0a;border-top:1px solid #1a3a1a;font-family:monospace;font-size:10px;}
-.dbg-hd{height:28px;display:flex;align-items:center;padding:0 10px;gap:10px;touch-action:manipulation;}
-.dbg-btn{background:none;border:none;color:#0f0;font-size:10px;font-family:monospace;cursor:pointer;min-width:44px;min-height:28px;padding:0;}
-.dbg-id{color:#555;font-size:9px;flex:1;}
-.dbg-copy{background:#1a2a1a;border:1px solid #2a4a2a;color:#0f0;padding:2px 8px;font-size:9px;font-family:monospace;cursor:pointer;min-height:24px;}
-.dbg-body{display:none;max-height:140px;overflow-y:auto;border-top:1px solid #1a3a1a;}
+.dbg-hd{height:20px;display:flex;align-items:center;padding:0 8px;gap:8px;touch-action:manipulation;}
+.dbg-btn{background:none;border:none;color:#0f0;font-size:9px;font-family:monospace;cursor:pointer;min-width:36px;min-height:20px;padding:0;}
+.dbg-id{color:#444;font-size:8px;flex:1;}
+.dbg-copy{background:#1a2a1a;border:1px solid #2a4a2a;color:#0f0;padding:1px 6px;font-size:8px;font-family:monospace;cursor:pointer;min-height:18px;}
+.dbg-body{display:none;max-height:120px;overflow-y:auto;border-top:1px solid #1a3a1a;}
 .dbg.open .dbg-body{display:block;}
-.dbg-log{color:#0f0;line-height:1.5;white-space:pre-wrap;padding:4px 10px;font-size:9px;}
+.dbg-log{color:#0f0;line-height:1.4;white-space:pre-wrap;padding:3px 8px;font-size:9px;}
+
+.hide{display:none!important;}
 </style>
 </head>
 <body>
+
 <div class="topbar">
   <button class="back-btn" onclick="window.location.href='./'">
     <svg viewBox="0 0 12 12" width="13" height="13" fill="none" stroke="#21e1df" stroke-width="2"><path d="M7.5 2L3.5 6l4 4"/></svg>
@@ -102,54 +139,53 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
   </button>
   <span class="title">INTEL</span>
   <div class="actions">
-    <button class="tb-btn" onclick="clearChat()">CLEAR</button>
-    <button class="tb-btn" onclick="toggleKeySetup()">API KEY</button>
+    <select class="model-picker" id="model-picker" onchange="saveModel()">
+      <option value="claude-haiku-4-5-20251001">HAIKU</option>
+      <option value="claude-sonnet-4-5-20251001">SONNET</option>
+      <option value="claude-opus-4-6-20251001">OPUS</option>
+    </select>
+    <button class="tb-btn" onclick="clearChat()" title="New conversation">⟲</button>
+    <button class="tb-btn" onclick="toggleKey()" title="API key">🔑</button>
   </div>
 </div>
 
 <div class="key-banner" id="key-banner">
-  <span class="key-banner-txt">&#x26A0; No API key set</span>
-  <input class="key-input" id="key-input" type="password" placeholder="sk-ant-...">
+  <input class="key-in" id="key-in" type="password" placeholder="sk-ant-..." autocomplete="off">
   <button class="key-save" onclick="saveKey()">SAVE</button>
 </div>
 
-<div class="chat-area" id="chat-area">
-  <!-- Workflows shown when chat is empty -->
-  <div class="wf-section" id="wf-section">
-    <div class="wf-label">WORKFLOWS</div>
-    <div class="wf-grid">
-      <div class="wf-btn" onclick="runWF('status')">
-        <span class="wf-icon">&#x1F4CA;</span>
-        <div><div class="wf-name">STATUS</div><div class="wf-desc">Show summary</div></div>
-      </div>
-      <div class="wf-btn" onclick="runWF('blockers')">
-        <span class="wf-icon">&#x1F6A8;</span>
-        <div><div class="wf-name">BLOCKERS</div><div class="wf-desc">Identify risks</div></div>
-      </div>
-      <div class="wf-btn" onclick="runWF('priorities')">
-        <span class="wf-icon">&#x1F3AF;</span>
-        <div><div class="wf-name">PRIORITIES</div><div class="wf-desc">Sort my tasks</div></div>
-      </div>
-      <div class="wf-btn" onclick="runWF('plan')">
-        <span class="wf-icon">&#x1F5D3;</span>
-        <div><div class="wf-name">DAY PLAN</div><div class="wf-desc">Build schedule</div></div>
-      </div>
-    </div>
+<div class="main">
+  <!-- BRIEFING CARD -->
+  <div class="brief" id="brief"></div>
+
+  <!-- QUICK CHIPS -->
+  <div class="chip-row" id="chips">
+    <button class="chip primary" onclick="quickAsk('Give me a tight briefing of today — what matters most, in order of urgency.')">⚡ BRIEFING</button>
+    <button class="chip" onclick="quickAsk('Plan my day. Given my open tasks and shot deadlines, what should I do in what order, and when? Be concrete.')">📅 PLAN DAY</button>
+    <button class="chip" onclick="quickAsk('What is urgent right now? Anything overdue, blocked, or at risk?')">🚨 URGENT</button>
+    <button class="chip" onclick="quickAsk('Review all shots. Any stuck in WIP too long? Anything I should chase reviews on?')">🎬 SHOT REVIEW</button>
+    <button class="chip" onclick="quickAsk('Write a short status update I can send to the team about the current show progress.')">📝 STATUS UPDATE</button>
+    <button class="chip" onclick="quickAsk('Suggest optimizations to my current schedule. Where am I wasting time? What can be batched or parallelized?')">🔧 OPTIMIZE</button>
+    <button class="chip" onclick="quickAsk('Summarize everything I did today based on task activity and schedule.')">📊 SUMMARY</button>
+    <button class="chip" onclick="quickAsk('What are my biggest risks this week? Shots at risk of missing delivery, bottlenecks, dependencies.')">⚠️ RISKS</button>
   </div>
+
+  <!-- MESSAGES -->
+  <div class="msgs" id="msgs"></div>
 </div>
 
-<div class="input-bar">
-  <textarea class="intel-input" id="intel-input" placeholder="Ask anything about your shows, shots, tasks..." rows="1"
-    onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();send();}"
-    oninput="autoResize(this)"></textarea>
-  <button class="send-btn" id="send-btn" onclick="send()">&#x279C;</button>
+<!-- INPUT DOCK -->
+<div class="dock">
+  <button class="dock-btn mic" id="mic-btn" onclick="toggleMic()" title="Voice">🎤</button>
+  <textarea class="dock-in" id="dock-in" placeholder="Ask Seconds anything..." rows="1"></textarea>
+  <button class="dock-btn" id="send-btn" onclick="send()">↑</button>
 </div>
 
 <div id="toast" class="toast"></div>
 <div class="dbg" id="dbg">
   <div class="dbg-hd">
     <button class="dbg-btn" onclick="document.getElementById('dbg').classList.toggle('open')">&gt; DBG</button>
-    <span class="dbg-id">VTEK-INTEL-20260416-001</span>
+    <span class="dbg-id">VTEK-INTEL-20260417-002</span>
     <button class="dbg-copy" onclick="navigator.clipboard&&navigator.clipboard.writeText(document.getElementById('dbg-log').textContent);this.textContent='COPIED';setTimeout(()=>this.textContent='COPY',1500)">COPY</button>
   </div>
   <div class="dbg-body"><div class="dbg-log" id="dbg-log"></div></div>
@@ -157,109 +193,471 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 
 <script>
 'use strict';
+const BUILD_ID='VTEK-INTEL-20260417-002';
 const LS='vtek9';
-let S=JSON.parse(localStorage.getItem(LS)||'null')||{shows:[],shots:[],tasks:[]};
-let history=[];
-let msgCount=0;
+const HIST_KEY='vtek_intel_hist';
+const MODEL_KEY='vtek_intel_model';
 
+let S=JSON.parse(localStorage.getItem(LS)||'null')||{shows:[],shots:[],tasks:[],vaultDocs:[]};
+let history=JSON.parse(localStorage.getItem(HIST_KEY)||'[]');
+let isListening=false, recognition=null;
+
+function save(){localStorage.setItem(LS,JSON.stringify(S));}
+function saveHist(){localStorage.setItem(HIST_KEY,JSON.stringify(history.slice(-30)));}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);}
 function dbg(m){const el=document.getElementById('dbg-log');el.textContent+=new Date().toTimeString().slice(0,8)+' '+m+'\n';}
 window.addEventListener('error',e=>dbg('ERR:'+e.message));
-function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);}
-function getKey(){return localStorage.getItem('vtek_claude_key')||'';}
-function saveKey(){const k=document.getElementById('key-input').value.trim();if(k){localStorage.setItem('vtek_claude_key',k);toast('API KEY SAVED');document.getElementById('key-banner').classList.remove('show');}else{toast('ENTER A KEY');}}
-function toggleKeySetup(){const b=document.getElementById('key-banner');b.classList.toggle('show');if(b.classList.contains('show'))document.getElementById('key-input').focus();}
-function autoResize(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,100)+'px';}
 
-function buildContext(){
-  const tod=new Date().toISOString().slice(0,10);
-  const openTasks=(S.tasks||[]).filter(t=>!t.done);
-  const blkShots=(S.shots||[]).filter(s=>s.status==='blocked');
-  return `You are INTEL, a VFX production AI for CBFX (Chicken Bone FX). Today: ${tod}.
-Shows: ${(S.shows||[]).map(s=>s.code+' ('+s.name+')').join(', ')||'none'}.
-Shots: ${(S.shots||[]).length} total, ${blkShots.length} blocked.
-Open tasks: ${openTasks.length}. High priority: ${openTasks.filter(t=>t.pri==='high').length}.
-Be concise, production-focused, use VFX terminology. Max 300 words unless detail requested.`;
+function escHtml(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function getKey(){return localStorage.getItem('vtek_claude_key')||'';}
+function getModel(){return localStorage.getItem(MODEL_KEY)||'claude-haiku-4-5-20251001';}
+function saveModel(){localStorage.setItem(MODEL_KEY,document.getElementById('model-picker').value);toast('MODEL SET');}
+function tod(){return new Date().toISOString().slice(0,10);}
+function gs(id){return (S.shows||[]).find(s=>s.id===id);}
+
+// ═══ BRIEFING CARD ═══
+function renderBrief(){
+  const shots=S.shots||[],tasks=S.tasks||[],shows=S.shows||[];
+  const todStr=tod();
+  const openTasks=tasks.filter(t=>!t.done);
+  const overdue=openTasks.filter(t=>t.due && t.due < todStr).length;
+  const dueToday=openTasks.filter(t=>t.due === todStr).length;
+  const blocked=shots.filter(s=>s.status==='blocked').length;
+  const wip=shots.filter(s=>s.status==='wip').length;
+  const critical=openTasks.filter(t=>t.pri==='high'||t.pri==='critical').length;
+
+  const planKey='vtek_plan_'+new Date().toDateString();
+  const plan=JSON.parse(localStorage.getItem(planKey)||'[]');
+
+  const now=new Date();
+  const hh=now.getHours(),mm=now.getMinutes();
+  const tm=hh*60+mm;
+
+  // Find next scheduled block
+  let nextBlock=null;
+  plan.forEach(e=>{
+    const blockStart=(e.startH||0)*60+(e.startM||0);
+    if(blockStart>=tm && !nextBlock){
+      const t=tasks.find(x=>x.id===e.taskId);
+      if(t) nextBlock={startH:e.startH,startM:e.startM,task:t};
+    }
+  });
+
+  let sum='';
+  if(overdue) sum+='<strong>'+overdue+' overdue</strong>. ';
+  if(dueToday) sum+=dueToday+' due today. ';
+  if(blocked) sum+=blocked+' shot'+(blocked>1?'s':'')+' blocked. ';
+  if(critical && !overdue) sum+=critical+' high-pri task'+(critical>1?'s':'')+'. ';
+  if(nextBlock){
+    const h=nextBlock.startH, m=String(nextBlock.startM||0).padStart(2,'0');
+    sum+='Next: <strong>'+nextBlock.task.title+'</strong> at '+(h>12?h-12:h)+':'+m+(h>=12?'pm':'am')+'. ';
+  }
+  if(!sum) sum='Quiet day. '+openTasks.length+' open task'+(openTasks.length===1?'':'s')+'.';
+
+  const dateStr=now.toLocaleDateString('en-US',{weekday:'long',month:'short',day:'numeric'});
+
+  const html='<div class="brief-hd">'+
+    '<div class="brief-dot"></div>'+
+    '<div class="brief-lbl">SECONDS // BRIEFING</div>'+
+    '<div class="brief-date">'+dateStr.toUpperCase()+'</div>'+
+  '</div>'+
+  '<div class="brief-stats">'+
+    '<div class="brief-stat"><div class="brief-stat-n '+(overdue?'urgent':'')+'">'+overdue+'</div><div class="brief-stat-l">OVERDUE</div></div>'+
+    '<div class="brief-stat"><div class="brief-stat-n">'+openTasks.length+'</div><div class="brief-stat-l">TASKS</div></div>'+
+    '<div class="brief-stat"><div class="brief-stat-n '+(blocked?'blocked':'')+'">'+blocked+'</div><div class="brief-stat-l">BLK</div></div>'+
+    '<div class="brief-stat"><div class="brief-stat-n ok">'+wip+'</div><div class="brief-stat-l">WIP</div></div>'+
+  '</div>'+
+  '<div class="brief-sum">'+sum+'</div>';
+
+  document.getElementById('brief').innerHTML=html;
 }
 
-function addMsg(role,text,thinking=false){
-  const id='m'+Date.now()+msgCount++;
-  const chat=document.getElementById('chat-area');
-  const wf=document.getElementById('wf-section');
-  if(wf)wf.style.display='none';
+// ═══ CONTEXT for AI ═══
+function buildContext(){
+  const todStr=tod();
+  const shows=S.shows||[],shots=S.shots||[],tasks=S.tasks||[],docs=S.vaultDocs||[];
+
+  // Shows summary
+  const showLines=shows.map(sh=>{
+    const shShots=shots.filter(s=>s.sid===sh.id);
+    const done=shShots.filter(s=>s.status==='approved'||s.status==='delivered').length;
+    const blk=shShots.filter(s=>s.status==='blocked').length;
+    const wip=shShots.filter(s=>s.status==='wip').length;
+    const pct=shShots.length ? Math.round(done/shShots.length*100) : 0;
+    const bidTotal=shShots.reduce((a,s)=>a+(s.bid||0),0);
+    return sh.code+' "'+sh.name+'" — '+shShots.length+' shots, '+pct+'% done, '+wip+' WIP, '+blk+' BLK, '+(sh.weeksLeft||'?')+' wks left, bid '+bidTotal+'d total';
+  }).join('\n');
+
+  // Shots (compressed)
+  const shotLines=shots.map(s=>{
+    const sh=shows.find(x=>x.id===s.sid);
+    const note=s.notes ? ' ['+s.notes.slice(0,60)+']' : '';
+    return (sh?.code||'?')+' '+s.code+' '+(s.status||'?').toUpperCase()+' bid:'+(s.bid||0)+'d'+note;
+  }).join('\n');
+
+  // Open tasks
+  const taskLines=tasks.filter(t=>!t.done).map(t=>{
+    const sh=shows.find(x=>x.id===t.sid);
+    const overdue=t.due && t.due<todStr ? ' OVERDUE' : t.due===todStr ? ' DUE-TODAY' : '';
+    return '['+(t.pri||'med').toUpperCase()+']'+overdue+' "'+t.title+'" '+(t.dur||45)+'min'+(t.due ? ' due:'+t.due : '')+(sh?' ('+sh.code+')':'');
+  }).join('\n');
+
+  // Today's plan
+  const planKey='vtek_plan_'+new Date().toDateString();
+  const plan=JSON.parse(localStorage.getItem(planKey)||'[]');
+  const planLines=plan.map(e=>{
+    const t=tasks.find(x=>x.id===e.taskId);
+    return (e.startH||0)+':'+String(e.startM||0).padStart(2,'0')+' '+(t?.title||'?')+' ('+(e.durMins||45)+'min)';
+  }).join(', ') || 'Nothing scheduled';
+
+  const vaultLines=docs.slice(0,15).map(d=>
+    '"'+(d.title||'Untitled')+'"'+(d.tags?.length?' ['+d.tags.join(',')+']':'')
+  ).join(', ') || 'None';
+
+  const now=new Date();
+  const hhmm=now.getHours()+':'+String(now.getMinutes()).padStart(2,'0');
+
+  return `You are SECONDS — a blunt, production-savvy AI assistant embedded in V//TEK HANGAR, Ruben "Biggie" Rodas's personal VFX ops system. Biggie is a VFX Compositor/Supervisor at CBFX (Chicken Bone FX). You have full live context of his shows, shots, tasks, and schedule.
+
+VOICE:
+- Blunt, minimal, no corporate fluff. Zero pleasantries.
+- Lead with the answer. No preamble, no restating the question.
+- Short high-velocity sentences. Use unfiltered vocabulary when it fits.
+- Act as Chief of Staff / Technical Lead mode — advise, don't ask permission.
+- When asked to "plan my day" or similar, give a concrete time-blocked schedule with specific task names, not vague suggestions.
+- When asked to review/optimize, call out specific problems with specific shot/task names from the context below.
+- Always reference real data from the context. Never fabricate shot codes, task names, or show codes.
+
+TODAY: ${todStr} | NOW: ${hhmm}
+WORK HOURS: 9:00-19:00 (default)
+
+═══ SHOWS ═══
+${showLines || 'None'}
+
+═══ SHOTS (${shots.length} total) ═══
+${shotLines || 'None'}
+
+═══ OPEN TASKS (${tasks.filter(t=>!t.done).length}) ═══
+${taskLines || 'None'}
+
+═══ TODAY'S SCHEDULE ═══
+${planLines}
+
+═══ VAULT DOCS ═══
+${vaultLines}
+
+═══ ACTIONS YOU CAN TRIGGER ═══
+At the END of your reply (NEVER in the middle), you may include a JSON block to suggest actions the user can tap to execute:
+{"actions":[
+  {"type":"add_task","sid":"SHOW_ID","title":"task name","pri":"high","dur":45,"due":"YYYY-MM-DD"},
+  {"type":"update_shot","id":"SHOT_ID_OR_CODE","status":"wip|review|approved|blocked|delivered"},
+  {"type":"add_note","shotId":"SHOT_ID","note":"text"},
+  {"type":"create_vault_note","title":"string","content":"markdown body"}
+]}
+
+Rules for actions:
+- Only include actions when they're directly actionable and useful. Don't suggest actions for everything.
+- Never fabricate IDs. Use show/shot codes from context above; for shot updates, use the shot's code like "CRL_0010_0080".
+- For "plan my day" responses, don't include actions — the schedule is a discussion, not an auto-commit.
+- Max 5 actions per response.
+
+Respond in crisp markdown. Bold key terms, use short bullet lists for enumerations, and timestamp-prefix time blocks when outlining a schedule.`;
+}
+
+// ═══ MESSAGES ═══
+function renderMsgText(t){
+  const cleaned=(t||'').replace(/\{"actions":\[[\s\S]*?\]\}/g,'').trim();
+  // minimal markdown
+  let h=cleaned
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/^### (.+)$/gm,'<h3>$1</h3>')
+    .replace(/^## (.+)$/gm,'<h2>$1</h2>')
+    .replace(/^# (.+)$/gm,'<h1>$1</h1>')
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*([^*\n]+?)\*/g,'<em>$1</em>')
+    .replace(/`([^`]+)`/g,'<code>$1</code>')
+    .replace(/^---$/gm,'<hr>')
+    .replace(/^[-*] (.+)$/gm,'<li>$1</li>')
+    .replace(/(<li>.*?<\/li>)(\s*<li>.*?<\/li>)+/gs,m=>'<ul>'+m+'</ul>')
+    .replace(/\n\n/g,'<br><br>')
+    .replace(/\n(?!<)/g,'<br>');
+  return h;
+}
+
+function parseActions(text){
+  const m=(text||'').match(/\{"actions":\[[\s\S]*?\]\}/);
+  if(!m) return [];
+  try{const p=JSON.parse(m[0]);return p.actions||[];}catch(e){return [];}
+}
+
+function actionLabel(a){
+  if(a.type==='add_task') return '+ '+(a.title||'task')+(a.due?' · '+a.due:'');
+  if(a.type==='update_shot') return '▶ '+(a.id||'shot')+' → '+(a.status||'').toUpperCase();
+  if(a.type==='add_note') return '✎ note on '+(a.shotId||'?');
+  if(a.type==='create_vault_note') return '📝 VAULT: '+(a.title||'note');
+  return a.type;
+}
+
+function renderChips(actions,msgId){
+  if(!actions.length) return '';
+  let h='<div class="action-chips">';
+  actions.forEach((a,i)=>{
+    h+='<span class="action-chip" data-mid="'+msgId+'" data-aidx="'+i+'" onclick="execChip(this)">'+escHtml(actionLabel(a))+'</span>';
+  });
+  h+='</div>';
+  return h;
+}
+
+function addMsg(role,text,thinking){
+  const wrap=document.getElementById('msgs');
+  const id='m'+Date.now()+Math.random().toString(36).slice(2,5);
+  const ts=new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
   const div=document.createElement('div');
-  div.className='msg '+role+(thinking?' thinking':'');
+  div.className='msg '+role;
   div.id=id;
-  div.textContent=thinking?'Thinking...':text;
-  chat.appendChild(div);
-  chat.scrollTop=chat.scrollHeight;
+  if(thinking){
+    div.innerHTML='<div class="msg-meta">SECONDS</div>'+
+      '<div class="msg-bubble"><div class="think"><div class="think-dot"></div><div class="think-dot"></div><div class="think-dot"></div></div></div>';
+  } else {
+    const meta=role==='user'?'YOU · '+ts:'SECONDS · '+ts;
+    const actions=role==='ai'?parseActions(text):[];
+    div.innerHTML='<div class="msg-meta">'+meta+'</div>'+
+      '<div class="msg-bubble">'+renderMsgText(text)+renderChips(actions,id)+'</div>';
+    // stash actions for execChip
+    if(actions.length) div.dataset.actions=JSON.stringify(actions);
+  }
+  wrap.appendChild(div);
+  wrap.scrollTo({top:wrap.scrollHeight,behavior:'smooth'});
   return id;
 }
 
 function updateMsg(id,text){
-  const el=document.getElementById(id);
-  if(el){el.textContent=text;el.classList.remove('thinking');document.getElementById('chat-area').scrollTop=9999;}
+  const el=document.getElementById(id);if(!el)return;
+  const ts=new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+  const actions=parseActions(text);
+  el.className='msg ai';
+  el.innerHTML='<div class="msg-meta">SECONDS · '+ts+'</div>'+
+    '<div class="msg-bubble">'+renderMsgText(text)+renderChips(actions,id)+'</div>';
+  if(actions.length) el.dataset.actions=JSON.stringify(actions);
+  const wrap=document.getElementById('msgs');
+  if(wrap) wrap.scrollTo({top:wrap.scrollHeight,behavior:'smooth'});
 }
 
+// ═══ EXECUTE CHIPS ═══
+function execChip(el){
+  const mid=el.dataset.mid;
+  const aidx=parseInt(el.dataset.aidx);
+  const msg=document.getElementById(mid);
+  if(!msg||!msg.dataset.actions) return;
+  const actions=JSON.parse(msg.dataset.actions);
+  const a=actions[aidx];
+  if(!a) return;
+
+  if(a.type==='add_task'){
+    const id='t'+Date.now();
+    S.tasks=S.tasks||[];
+    S.tasks.unshift({
+      id,
+      sid:a.sid||S.shows[0]?.id||'',
+      title:a.title||'Task',
+      due:a.due||'',
+      pri:a.pri||'med',
+      dur:a.dur||45,
+      tags:[],
+      color:'',
+      notes:a.notes||'',
+      subtasks:[],
+      dep:'',
+      done:false,
+      expanded:false
+    });
+    save();toast('TASK LOGGED');
+  } else if(a.type==='update_shot'){
+    // match by id or code
+    const sh=(S.shots||[]).find(s=>s.id===a.id||s.code===a.id);
+    if(!sh){toast('SHOT NOT FOUND: '+a.id);return;}
+    if(a.status) sh.status=a.status;
+    if(a.notes) sh.notes=(sh.notes?sh.notes+'\n':'')+a.notes;
+    save();toast('SHOT UPDATED');
+  } else if(a.type==='add_note'){
+    const sh=(S.shots||[]).find(s=>s.id===a.shotId||s.code===a.shotId);
+    if(!sh){toast('SHOT NOT FOUND');return;}
+    sh.notes=(sh.notes?sh.notes+'\n':'')+(a.note||'');
+    save();toast('NOTE ADDED');
+  } else if(a.type==='create_vault_note'){
+    S.vaultDocs=S.vaultDocs||[];
+    S.vaultDocs.unshift({
+      id:'v'+Date.now(),
+      title:a.title||'Note from Seconds',
+      content:a.content||'',
+      showId:S.activeShow||null,
+      tags:['seconds'],
+      type:'md',
+      pinned:false,
+      codeLang:'plain',
+      checklist:[],
+      att:[],
+      archived:false,
+      archivedAt:0,
+      updated:Date.now()
+    });
+    save();toast('VAULT NOTE CREATED');
+  }
+
+  el.classList.add('done');
+  el.textContent='✓ '+el.textContent.replace(/^[+▶✎📝]\s*/,'');
+  renderBrief(); // refresh stats
+}
+
+// ═══ SEND ═══
 async function send(){
+  const input=document.getElementById('dock-in');
+  const text=(input.value||'').trim();
+  if(!text) return;
+
   const key=getKey();
-  const inp=document.getElementById('intel-input');
-  const text=(inp.value||'').trim();
-  if(!text)return;
-  if(!key){toggleKeySetup();toast('SET API KEY FIRST');return;}
-  inp.value='';autoResize(inp);
+  if(!key){
+    toggleKey(true);
+    toast('ADD API KEY FIRST');
+    return;
+  }
+
+  input.value='';
+  autoResize(input);
   addMsg('user',text);
   history.push({role:'user',content:text});
+
   const thinkId=addMsg('ai','',true);
-  document.getElementById('send-btn').disabled=true;
+  const sendBtn=document.getElementById('send-btn');
+  sendBtn.disabled=true;
+
   try{
+    const model=getModel();
     const res=await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',
-      headers:{'Content-Type':'application/json','x-api-key':key,
+      headers:{
+        'Content-Type':'application/json',
+        'x-api-key':key,
         'anthropic-version':'2023-06-01',
-        'anthropic-dangerous-direct-browser-access':'true'},
+        'anthropic-dangerous-direct-browser-access':'true'
+      },
       body:JSON.stringify({
-        model:'claude-haiku-4-5-20251001',
-        max_tokens:1000,
+        model,
+        max_tokens:2000,
         system:buildContext(),
         messages:history
       })
     });
-    if(!res.ok){const e=await res.json().catch(()=>({}));throw new Error(e.error?.message||res.statusText);}
+    if(!res.ok){
+      const e=await res.json().catch(()=>({error:{message:res.statusText}}));
+      throw new Error(e.error?.message||res.statusText);
+    }
     const data=await res.json();
-    const reply=data.content?.[0]?.text||'(no response)';
+    const reply=data.content?.[0]?.text || '(no response)';
     history.push({role:'assistant',content:reply});
+    saveHist();
     updateMsg(thinkId,reply);
-    dbg('[INTEL] replied, tokens='+data.usage?.output_tokens);
-  }catch(e){updateMsg(thinkId,'Error: '+e.message);dbg('[INTEL] err: '+e.message);}
-  finally{document.getElementById('send-btn').disabled=false;}
+    dbg('[INTEL] '+(data.usage?.input_tokens||'?')+'→'+(data.usage?.output_tokens||'?')+' tokens');
+  }catch(e){
+    updateMsg(thinkId,'⚠ **Error:** '+e.message);
+    dbg('[ERR] '+e.message);
+  }finally{
+    sendBtn.disabled=false;
+  }
 }
 
-const WF_PROMPTS={
-  status:'Give me a quick production status summary across all shows.',
-  blockers:'What are the current blockers and what should I do about them?',
-  priorities:'Based on my tasks and shots, what should I focus on first today?',
-  plan:'Build me a day plan for today using my open tasks.'
-};
-
-function runWF(type){
-  document.getElementById('intel-input').value=WF_PROMPTS[type]||'';
+function quickAsk(prompt){
+  document.getElementById('dock-in').value=prompt;
+  autoResize(document.getElementById('dock-in'));
   send();
 }
 
+// ═══ CLEAR ═══
 function clearChat(){
+  if(!history.length){toast('ALREADY EMPTY');return;}
+  if(!confirm('Clear conversation history?'))return;
   history=[];
-  const chat=document.getElementById('chat-area');
-  chat.innerHTML='';
-  const wf=document.createElement('div');
-  wf.id='wf-section';
-  wf.className='wf-section';
-  wf.innerHTML=document.querySelector('.wf-grid')?'':'<div class="wf-label">WORKFLOWS</div><div class="wf-grid"><div class="wf-btn" onclick="runWF(\'status\')"><span class="wf-icon">&#x1F4CA;</span><div><div class="wf-name">STATUS</div><div class="wf-desc">Show summary</div></div></div><div class="wf-btn" onclick="runWF(\'blockers\')"><span class="wf-icon">&#x1F6A8;</span><div><div class="wf-name">BLOCKERS</div><div class="wf-desc">Identify risks</div></div></div><div class="wf-btn" onclick="runWF(\'priorities\')"><span class="wf-icon">&#x1F3AF;</span><div><div class="wf-name">PRIORITIES</div><div class="wf-desc">Sort my tasks</div></div></div><div class="wf-btn" onclick="runWF(\'plan\')"><span class="wf-icon">&#x1F5D3;</span><div><div class="wf-name">DAY PLAN</div><div class="wf-desc">Build schedule</div></div></div></div>';
-  chat.appendChild(wf);
+  saveHist();
+  document.getElementById('msgs').innerHTML='';
+  renderBrief();
   toast('CLEARED');
 }
 
-if(!getKey())document.getElementById('key-banner').classList.add('show');
-dbg('[INIT] intel ready, key='+(getKey()?'SET':'MISSING'));
+// ═══ KEY MGMT ═══
+function toggleKey(force){
+  const b=document.getElementById('key-banner');
+  if(force===true){b.classList.add('show');}
+  else b.classList.toggle('show');
+  if(b.classList.contains('show')){
+    const inEl=document.getElementById('key-in');
+    inEl.value=getKey();
+    setTimeout(()=>inEl.focus(),50);
+  }
+}
+function saveKey(){
+  const v=(document.getElementById('key-in').value||'').trim();
+  if(!v||!v.startsWith('sk-')){toast('INVALID — must start with sk-');return;}
+  localStorage.setItem('vtek_claude_key',v);
+  toast('KEY SAVED');
+  document.getElementById('key-banner').classList.remove('show');
+}
+
+// ═══ VOICE ═══
+function toggleMic(){
+  if(isListening){stopMic();return;}
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){toast('VOICE UNSUPPORTED');return;}
+  recognition=new SR();
+  recognition.continuous=false;recognition.interimResults=true;recognition.lang='en-US';
+  const btn=document.getElementById('mic-btn');
+  const input=document.getElementById('dock-in');
+  recognition.onstart=()=>{isListening=true;btn.classList.add('listening');btn.textContent='●';toast('LISTENING');};
+  recognition.onresult=e=>{
+    const t=Array.from(e.results).map(r=>r[0].transcript).join('');
+    input.value=t;autoResize(input);
+  };
+  recognition.onend=()=>{isListening=false;btn.classList.remove('listening');btn.textContent='🎤';if(input.value.trim()) send();};
+  recognition.onerror=e=>{isListening=false;btn.classList.remove('listening');btn.textContent='🎤';if(e.error!=='no-speech')toast('MIC: '+e.error.toUpperCase());};
+  recognition.start();
+}
+function stopMic(){if(recognition)recognition.stop();}
+
+// ═══ INPUT ═══
+function autoResize(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,140)+'px';}
+document.getElementById('dock-in').addEventListener('input',function(){autoResize(this);});
+document.getElementById('dock-in').addEventListener('keydown',function(e){
+  if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}
+});
+
+// ═══ BOOT ═══
+function boot(){
+  // Set model dropdown
+  const saved=getModel();
+  const pick=document.getElementById('model-picker');
+  if(pick){
+    [...pick.options].forEach(o=>{if(o.value===saved)o.selected=true;});
+  }
+
+  renderBrief();
+
+  // Replay history
+  history.forEach(m=>{
+    if(m.role==='user') addMsg('user',m.content);
+    else addMsg('ai',m.content);
+  });
+
+  // If no key, show banner
+  if(!getKey()){toggleKey(true);}
+
+  // Refresh state periodically so briefing stays current with other tabs
+  setInterval(()=>{
+    const fresh=JSON.parse(localStorage.getItem(LS)||'null');
+    if(fresh){S=fresh;renderBrief();}
+  },5000);
+
+  dbg('[INIT] '+BUILD_ID+' | key='+(getKey()?'SET':'MISSING')+' | model='+getModel().split('-')[1].toUpperCase()+' | hist='+history.length);
+}
+boot();
 </script>
 </body>
 </html>
