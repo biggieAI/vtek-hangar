@@ -71,16 +71,16 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 .editor-view{display:flex;flex-direction:column;flex:1;min-height:0;}
 .editor-topbar{display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:var(--b1);background:var(--s1);flex-shrink:0;}
 .editor-back{background:none;border:none;color:var(--teal);font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:0.06em;padding:8px;cursor:pointer;touch-action:manipulation;}
-.editor-title-in{width:100%;background:transparent;border:none;color:var(--t0);font-family:var(--sans);font-size:20px;font-weight:700;padding:14px 16px 4px;outline:none;letter-spacing:-0.01em;flex-shrink:0;flex-grow:0;flex-basis:auto;}
+.editor-title-in{width:100%;background:transparent;border:none;color:var(--t0);font-family:var(--sans);font-size:20px;font-weight:700;padding:14px 20px 4px;outline:none;letter-spacing:-0.01em;flex-shrink:0;flex-grow:0;flex-basis:auto;}
 .editor-title-in::placeholder{color:var(--t3);}
 .editor-save{background:#fff;color:#000;border:none;font-family:var(--mono);font-size:10px;font-weight:800;padding:7px 14px;border-radius:8px;cursor:pointer;letter-spacing:0.06em;touch-action:manipulation;}
 .editor-del{background:none;border:var(--b2);color:var(--t2);font-family:var(--mono);font-size:10px;font-weight:700;padding:7px 10px;border-radius:8px;cursor:pointer;letter-spacing:0.06em;touch-action:manipulation;}
-.editor-textarea{flex:1;width:100%;background:transparent;border:none;color:var(--t0);font-family:var(--sans);font-size:15px;line-height:1.6;padding:14px 16px;outline:none;resize:none;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.editor-textarea{flex:1;width:100%;background:transparent;border:none;color:var(--t0);font-family:var(--sans);font-size:15px;line-height:1.6;padding:14px 20px;outline:none;resize:none;overflow-y:auto;-webkit-overflow-scrolling:touch;}
 
 /* Title — Obsidian-quiet, big-ish but no border */
 
 /* TAG ROW */
-.vault-tag-row{display:flex;gap:6px;padding:4px 16px 8px;flex-shrink:0;}
+.vault-tag-row{display:flex;gap:6px;padding:6px 20px 10px;flex-shrink:0;}
 .vault-doc-tag{display:inline-block;padding:3px 8px;background:var(--s3);border:var(--b2);color:var(--t1);font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:0.08em;border-radius:4px;}
 
 /* MODE TOGGLE */
@@ -89,7 +89,7 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 .mode-btn.on{background:var(--s4);color:var(--t0);}
 
 /* PREVIEW */
-.vault-preview{flex:1;width:100%;padding:16px;overflow-y:auto;-webkit-overflow-scrolling:touch;color:var(--t0);font-family:var(--sans);font-size:14px;line-height:1.7;}
+.vault-preview{flex:1;width:100%;padding:14px 20px;overflow-y:auto;-webkit-overflow-scrolling:touch;color:var(--t0);font-family:var(--sans);font-size:14px;line-height:1.7;}
 .vault-preview h1{font-size:20px;font-weight:800;margin:12px 0 8px;color:var(--t0);letter-spacing:-0.01em;}
 .vault-preview h2{font-size:17px;font-weight:700;margin:10px 0 6px;color:var(--t0);}
 .vault-preview h3{font-size:14px;font-weight:700;margin:8px 0 4px;color:var(--t1);letter-spacing:0.02em;}
@@ -113,7 +113,7 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 .vault-doc-type-icon{display:inline-block;width:14px;text-align:center;color:var(--t2);font-family:var(--mono);font-size:11px;font-weight:800;}
 
 /* TAG ROW (editor) - now multi */
-.vault-tag-row{display:flex;gap:6px;padding:4px 16px 8px;flex-shrink:0;flex-wrap:wrap;align-items:center;flex-grow:0;}
+.vault-tag-row{display:flex;gap:6px;padding:6px 20px 10px;flex-shrink:0;flex-wrap:wrap;align-items:center;flex-grow:0;}
 .vault-tag-row .vault-doc-tag{cursor:pointer;touch-action:manipulation;}
 .vault-tag-row .vault-doc-tag.show-tag{background:var(--s4);color:var(--accent-hi);}
 .vault-tag-row .vault-doc-tag.user-tag{background:rgba(33,225,223,0.1);color:var(--teal);border-color:rgba(33,225,223,0.2);}
@@ -166,14 +166,14 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 .v-sheet-ovl{position:absolute;inset:0;background:rgba(0,0,0,0.6);opacity:0;transition:opacity 0.2s;pointer-events:none;}
 .v-sheet-wrap.open{pointer-events:auto;}
 .v-sheet-wrap.open .v-sheet-ovl{opacity:1;pointer-events:auto;}
-.v-sheet{position:absolute;left:0;right:0;bottom:0;background:var(--s1);border-top:var(--b2);border-radius:14px 14px 0 0;max-height:72dvh;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px 16px calc(var(--safe-b)+20px);transform:translateY(100%);transition:transform 0.22s cubic-bezier(0.16,1,0.3,1);box-shadow:0 -8px 30px rgba(0,0,0,0.5);}
+.v-sheet{position:absolute;left:0;right:0;bottom:0;background:var(--s1);border-top:var(--b2);border-radius:14px 14px 0 0;max-height:72dvh;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:8px 20px calc(var(--safe-b)+24px);transform:translateY(100%);transition:transform 0.22s cubic-bezier(0.16,1,0.3,1);box-shadow:0 -8px 30px rgba(0,0,0,0.5);}
 .v-sheet-wrap.open .v-sheet{transform:translateY(0);}
 .v-sh-handle{width:36px;height:4px;background:var(--t3);border-radius:2px;margin:0 auto 14px;}
-.v-sh-title{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--t1);letter-spacing:0.1em;margin-bottom:12px;}
-.v-sh-row{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:var(--b1);cursor:pointer;touch-action:manipulation;}
+.v-sh-title{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--t1);letter-spacing:0.1em;margin-bottom:8px;padding:4px 4px 8px;}
+.v-sh-row{display:flex;align-items:center;gap:12px;padding:14px 8px;border-bottom:var(--b1);cursor:pointer;touch-action:manipulation;border-radius:6px;}
 .v-sh-row:last-child{border-bottom:none;}
 .v-sh-row:active{background:var(--s2);}
-.v-sh-row-lbl{flex:1;font-size:14px;color:var(--t0);}
+.v-sh-row-lbl{flex:1;font-size:14px;color:var(--t0);padding-left:2px;}
 .v-sh-row-chk{color:var(--teal);font-weight:800;font-size:16px;}
 .v-sh-chip-row{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0;}
 .v-sh-chip{padding:6px 10px;background:var(--s3);border:var(--b2);color:var(--t1);font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:0.06em;border-radius:6px;cursor:pointer;touch-action:manipulation;}
@@ -382,7 +382,7 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 <div class="dbg" id="dbg">
   <div class="dbg-hd">
     <button class="dbg-btn" onclick="document.getElementById('dbg').classList.toggle('open')">&gt; DBG</button>
-    <span class="dbg-id">VTEK-VAULT-20260417-008</span>
+    <span class="dbg-id">VTEK-VAULT-20260417-009</span>
     <button class="dbg-copy" onclick="navigator.clipboard&&navigator.clipboard.writeText(document.getElementById('dbg-log').textContent);this.textContent='COPIED';setTimeout(()=>this.textContent='COPY',1500)">COPY</button>
   </div>
   <div class="dbg-body"><div class="dbg-log" id="dbg-log"></div></div>
@@ -390,7 +390,7 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 
 <script>
 'use strict';
-const BUILD_ID='VTEK-VAULT-20260417-008';
+const BUILD_ID='VTEK-VAULT-20260417-009';
 const LS='vtek9';
 let S=JSON.parse(localStorage.getItem(LS)||'null')||{shows:[],shots:[],tasks:[],vaultDocs:[],vaultTags:[]};
 if(!S.vaultDocs)S.vaultDocs=[];
