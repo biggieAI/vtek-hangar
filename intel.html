@@ -27,7 +27,7 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 .back-btn{display:flex;align-items:center;gap:4px;background:none;border:none;color:var(--teal);font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:0.06em;padding:8px;min-height:40px;min-width:44px;cursor:pointer;touch-action:manipulation;-webkit-user-select:none;user-select:none;flex-shrink:0;}
 .title{font-family:var(--mono);font-size:13px;font-weight:800;letter-spacing:0.08em;color:var(--accent-hi);white-space:nowrap;flex:1;min-width:0;}
 .actions{margin-left:auto;display:flex;gap:4px;align-items:center;flex-shrink:0;}
-.tb-btn{padding:6px 10px;background:var(--s3);border:var(--b2);color:var(--t0);font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:0.05em;cursor:pointer;min-height:32px;border-radius:8px;touch-action:manipulation;-webkit-user-select:none;user-select:none;}
+.tb-btn{padding:6px 10px;background:var(--s3);border:var(--b2);color:var(--t0);font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:0.05em;cursor:pointer;min-height:32px;min-width:36px;border-radius:8px;touch-action:manipulation;-webkit-user-select:none;user-select:none;display:flex;align-items:center;justify-content:center;}
 .tb-btn.primary{background:var(--teal);color:#000;border-color:var(--teal);}
 
 /* MODEL PICKER */
@@ -44,27 +44,45 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 .main{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;display:flex;flex-direction:column;}
 
 /* BRIEFING CARD */
-.brief{padding:16px 20px;background:var(--s1);border-bottom:var(--b1);flex-shrink:0;}
-.brief-hd{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
-.brief-dot{width:8px;height:8px;border-radius:50%;background:var(--teal);box-shadow:0 0 6px rgba(33,225,223,0.5);flex-shrink:0;}
-.brief-lbl{font-family:var(--mono);font-size:10px;font-weight:800;color:var(--teal);letter-spacing:0.1em;}
-.brief-date{margin-left:auto;font-family:var(--mono);font-size:9px;color:var(--t2);letter-spacing:0.08em;}
-.brief-stats{display:flex;gap:8px;margin-bottom:12px;}
-.brief-stat{flex:1;padding:10px;background:var(--s2);border:var(--b1);border-radius:8px;text-align:center;}
-.brief-stat-n{font-family:var(--mono);font-size:18px;font-weight:800;color:var(--t0);}
+.brief{padding:18px 20px 14px;background:var(--s1);border-bottom:var(--b1);flex-shrink:0;position:relative;}
+.brief-hd{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+
+/* ENERGY ORB — living agent indicator */
+.orb{position:relative;width:32px;height:32px;flex-shrink:0;}
+.orb-core{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 35% 35%,var(--teal) 0%,rgba(33,225,223,0.55) 45%,rgba(33,225,223,0.08) 75%,transparent 100%);filter:blur(0.4px);animation:orb-pulse 3.2s ease-in-out infinite;}
+.orb-ring{position:absolute;inset:-3px;border-radius:50%;border:1px solid rgba(33,225,223,0.25);animation:orb-rotate 6s linear infinite;}
+.orb-ring::before{content:'';position:absolute;top:-2px;left:50%;width:3px;height:3px;background:var(--teal);border-radius:50%;box-shadow:0 0 4px var(--teal);margin-left:-1.5px;}
+.orb-ring2{position:absolute;inset:-6px;border-radius:50%;border:1px solid rgba(33,225,223,0.12);animation:orb-rotate 10s linear infinite reverse;}
+.orb-ring2::before{content:'';position:absolute;bottom:0;right:15%;width:2px;height:2px;background:var(--teal);border-radius:50%;box-shadow:0 0 3px var(--teal);opacity:0.6;}
+.orb.thinking .orb-core{animation:orb-pulse-fast 0.8s ease-in-out infinite;}
+.orb.thinking .orb-ring{animation-duration:1.6s;}
+.orb.thinking .orb-ring2{animation-duration:2.8s;}
+@keyframes orb-pulse{0%,100%{transform:scale(0.92);opacity:0.85;}50%{transform:scale(1);opacity:1;}}
+@keyframes orb-pulse-fast{0%,100%{transform:scale(0.88);opacity:0.7;}50%{transform:scale(1.08);opacity:1;}}
+@keyframes orb-rotate{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+
+.brief-lbl{font-family:var(--mono);font-size:11px;font-weight:800;color:var(--teal);letter-spacing:0.14em;}
+.brief-sub{font-family:var(--mono);font-size:8px;font-weight:700;color:var(--t3);letter-spacing:0.14em;margin-top:2px;}
+.brief-date{margin-left:auto;font-family:var(--mono);font-size:9px;color:var(--t2);letter-spacing:0.08em;text-align:right;}
+.brief-stats{display:flex;gap:8px;margin-bottom:14px;}
+.brief-stat{flex:1;padding:12px 6px;background:var(--s2);border:var(--b1);border-radius:8px;text-align:center;}
+.brief-stat-n{font-family:var(--mono);font-size:19px;font-weight:800;color:var(--t0);line-height:1;}
 .brief-stat-n.urgent{color:var(--hi);}
 .brief-stat-n.blocked{color:var(--warn);}
 .brief-stat-n.ok{color:var(--ok);}
-.brief-stat-l{font-family:var(--mono);font-size:8px;font-weight:700;color:var(--t2);letter-spacing:0.1em;margin-top:2px;}
-.brief-sum{font-size:13px;color:var(--t1);line-height:1.5;padding:8px 0;}
-.brief-sum strong{color:var(--t0);}
+.brief-stat-l{font-family:var(--mono);font-size:8px;font-weight:700;color:var(--t2);letter-spacing:0.12em;margin-top:6px;}
+.brief-sum{font-size:13px;color:var(--t1);line-height:1.55;}
+.brief-sum strong{color:var(--t0);font-weight:700;}
 
-/* QUICK CHIPS */
-.chip-row{display:flex;gap:8px;padding:10px 16px;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-shrink:0;background:var(--s1);border-bottom:var(--b1);touch-action:pan-x;scrollbar-width:none;}
-.chip-row::-webkit-scrollbar{display:none;}
-.chip{background:var(--s3);border:var(--b2);color:var(--t1);font-family:var(--mono);font-size:10px;font-weight:700;padding:8px 12px;border-radius:18px;cursor:pointer;flex-shrink:0;letter-spacing:0.05em;touch-action:manipulation;min-height:32px;white-space:nowrap;}
-.chip:active{background:var(--s4);color:var(--teal);}
-.chip.primary{background:rgba(33,225,223,0.12);color:var(--teal);border-color:rgba(33,225,223,0.3);}
+/* ACTION CARDS (replacing emoji chips) */
+.card-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:14px 16px 8px;flex-shrink:0;background:var(--s1);border-bottom:var(--b1);}
+.ai-card{background:var(--s2);border:var(--b2);border-radius:10px;padding:12px 13px;cursor:pointer;touch-action:manipulation;-webkit-user-select:none;user-select:none;display:flex;gap:11px;align-items:flex-start;transition:background 0.12s,border-color 0.12s;min-height:64px;}
+.ai-card:active{background:var(--s3);border-color:rgba(33,225,223,0.3);}
+.ai-card-icon{width:22px;height:22px;flex-shrink:0;color:var(--teal);display:flex;align-items:center;justify-content:center;margin-top:1px;}
+.ai-card-icon svg{width:20px;height:20px;stroke:currentColor;stroke-width:1.6;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+.ai-card-txt{flex:1;min-width:0;}
+.ai-card-title{font-family:var(--mono);font-size:10px;font-weight:800;color:var(--t0);letter-spacing:0.06em;line-height:1.2;}
+.ai-card-sub{font-size:11px;color:var(--t2);line-height:1.3;margin-top:4px;letter-spacing:0;}
 
 /* MESSAGES */
 .msgs{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:8px 16px 20px;display:flex;flex-direction:column;gap:10px;}
@@ -144,8 +162,12 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
       <option value="claude-sonnet-4-5-20251001">SONNET</option>
       <option value="claude-opus-4-6-20251001">OPUS</option>
     </select>
-    <button class="tb-btn" onclick="clearChat()" title="New conversation">⟲</button>
-    <button class="tb-btn" onclick="toggleKey()" title="API key">🔑</button>
+    <button class="tb-btn" onclick="clearChat()" title="New conversation">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 109-9"/><path d="M3 3v6h6"/></svg>
+    </button>
+    <button class="tb-btn" onclick="toggleKey()" title="API key">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="14" r="4"/><path d="M11 11l10-10M16 6l3 3"/></svg>
+    </button>
   </div>
 </div>
 
@@ -158,16 +180,40 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
   <!-- BRIEFING CARD -->
   <div class="brief" id="brief"></div>
 
-  <!-- QUICK CHIPS -->
-  <div class="chip-row" id="chips">
-    <button class="chip primary" onclick="quickAsk('Give me a tight briefing of today — what matters most, in order of urgency.')">⚡ BRIEFING</button>
-    <button class="chip" onclick="quickAsk('Plan my day. Given my open tasks and shot deadlines, what should I do in what order, and when? Be concrete.')">📅 PLAN DAY</button>
-    <button class="chip" onclick="quickAsk('What is urgent right now? Anything overdue, blocked, or at risk?')">🚨 URGENT</button>
-    <button class="chip" onclick="quickAsk('Review all shots. Any stuck in WIP too long? Anything I should chase reviews on?')">🎬 SHOT REVIEW</button>
-    <button class="chip" onclick="quickAsk('Write a short status update I can send to the team about the current show progress.')">📝 STATUS UPDATE</button>
-    <button class="chip" onclick="quickAsk('Suggest optimizations to my current schedule. Where am I wasting time? What can be batched or parallelized?')">🔧 OPTIMIZE</button>
-    <button class="chip" onclick="quickAsk('Summarize everything I did today based on task activity and schedule.')">📊 SUMMARY</button>
-    <button class="chip" onclick="quickAsk('What are my biggest risks this week? Shots at risk of missing delivery, bottlenecks, dependencies.')">⚠️ RISKS</button>
+  <!-- ACTION CARD GRID (flat line-art) -->
+  <div class="card-grid" id="chips">
+    <div class="ai-card" onclick="quickAsk('Give me a tight briefing of today — what matters most, in order of urgency.')">
+      <div class="ai-card-icon"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg></div>
+      <div class="ai-card-txt"><div class="ai-card-title">BRIEFING</div><div class="ai-card-sub">Priority rundown now</div></div>
+    </div>
+    <div class="ai-card" onclick="quickAsk('Plan my day. Given my open tasks and shot deadlines, what should I do in what order, and when? Be concrete.')">
+      <div class="ai-card-icon"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4M8 14h2M14 14h2M8 18h2M14 18h2"/></svg></div>
+      <div class="ai-card-txt"><div class="ai-card-title">PLAN DAY</div><div class="ai-card-sub">Time-blocked schedule</div></div>
+    </div>
+    <div class="ai-card" onclick="quickAsk('What is urgent right now? Anything overdue, blocked, or at risk?')">
+      <div class="ai-card-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 20h20L12 2z"/><path d="M12 10v5M12 18v.5"/></svg></div>
+      <div class="ai-card-txt"><div class="ai-card-title">URGENT</div><div class="ai-card-sub">What's at risk</div></div>
+    </div>
+    <div class="ai-card" onclick="quickAsk('Review all shots. Any stuck in WIP too long? Anything I should chase reviews on?')">
+      <div class="ai-card-icon"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M7 6V3M17 6V3M7 18v3M17 18v3M2 10h3M2 14h3M19 10h3M19 14h3"/></svg></div>
+      <div class="ai-card-txt"><div class="ai-card-title">SHOT REVIEW</div><div class="ai-card-sub">Stuck shots, chases</div></div>
+    </div>
+    <div class="ai-card" onclick="quickAsk('Write a short status update I can send to the team about the current show progress.')">
+      <div class="ai-card-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/><path d="M7 9h10M7 13h6"/></svg></div>
+      <div class="ai-card-txt"><div class="ai-card-title">STATUS</div><div class="ai-card-sub">Draft team update</div></div>
+    </div>
+    <div class="ai-card" onclick="quickAsk('Suggest optimizations to my current schedule. Where am I wasting time? What can be batched or parallelized?')">
+      <div class="ai-card-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 110-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 114 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 110 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></div>
+      <div class="ai-card-txt"><div class="ai-card-title">OPTIMIZE</div><div class="ai-card-sub">Cut waste, batch work</div></div>
+    </div>
+    <div class="ai-card" onclick="quickAsk('Summarize everything I did today based on task activity and schedule.')">
+      <div class="ai-card-icon"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg></div>
+      <div class="ai-card-txt"><div class="ai-card-title">SUMMARY</div><div class="ai-card-sub">What got done today</div></div>
+    </div>
+    <div class="ai-card" onclick="quickAsk('What are my biggest risks this week? Shots at risk of missing delivery, bottlenecks, dependencies.')">
+      <div class="ai-card-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16v.5"/></svg></div>
+      <div class="ai-card-txt"><div class="ai-card-title">RISKS</div><div class="ai-card-sub">Bottlenecks & blockers</div></div>
+    </div>
   </div>
 
   <!-- MESSAGES -->
@@ -176,16 +222,20 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 
 <!-- INPUT DOCK -->
 <div class="dock">
-  <button class="dock-btn mic" id="mic-btn" onclick="toggleMic()" title="Voice">🎤</button>
+  <button class="dock-btn mic" id="mic-btn" onclick="toggleMic()" title="Voice">
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v3"/></svg>
+  </button>
   <textarea class="dock-in" id="dock-in" placeholder="Ask Seconds anything..." rows="1"></textarea>
-  <button class="dock-btn" id="send-btn" onclick="send()">↑</button>
+  <button class="dock-btn" id="send-btn" onclick="send()" title="Send">
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+  </button>
 </div>
 
 <div id="toast" class="toast"></div>
 <div class="dbg" id="dbg">
   <div class="dbg-hd">
     <button class="dbg-btn" onclick="document.getElementById('dbg').classList.toggle('open')">&gt; DBG</button>
-    <span class="dbg-id">VTEK-INTEL-20260417-002</span>
+    <span class="dbg-id">VTEK-INTEL-20260417-003</span>
     <button class="dbg-copy" onclick="navigator.clipboard&&navigator.clipboard.writeText(document.getElementById('dbg-log').textContent);this.textContent='COPIED';setTimeout(()=>this.textContent='COPY',1500)">COPY</button>
   </div>
   <div class="dbg-body"><div class="dbg-log" id="dbg-log"></div></div>
@@ -193,7 +243,7 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 
 <script>
 'use strict';
-const BUILD_ID='VTEK-INTEL-20260417-002';
+const BUILD_ID='VTEK-INTEL-20260417-003';
 const LS='vtek9';
 const HIST_KEY='vtek_intel_hist';
 const MODEL_KEY='vtek_intel_model';
@@ -257,8 +307,8 @@ function renderBrief(){
   const dateStr=now.toLocaleDateString('en-US',{weekday:'long',month:'short',day:'numeric'});
 
   const html='<div class="brief-hd">'+
-    '<div class="brief-dot"></div>'+
-    '<div class="brief-lbl">SECONDS // BRIEFING</div>'+
+    '<div class="orb" id="orb"><div class="orb-core"></div><div class="orb-ring"></div><div class="orb-ring2"></div></div>'+
+    '<div><div class="brief-lbl">SECONDS</div><div class="brief-sub">AGENT ONLINE</div></div>'+
     '<div class="brief-date">'+dateStr.toUpperCase()+'</div>'+
   '</div>'+
   '<div class="brief-stats">'+
@@ -391,10 +441,10 @@ function parseActions(text){
 }
 
 function actionLabel(a){
-  if(a.type==='add_task') return '+ '+(a.title||'task')+(a.due?' · '+a.due:'');
-  if(a.type==='update_shot') return '▶ '+(a.id||'shot')+' → '+(a.status||'').toUpperCase();
-  if(a.type==='add_note') return '✎ note on '+(a.shotId||'?');
-  if(a.type==='create_vault_note') return '📝 VAULT: '+(a.title||'note');
+  if(a.type==='add_task') return 'ADD: '+(a.title||'task')+(a.due?' · '+a.due:'');
+  if(a.type==='update_shot') return 'UPDATE: '+(a.id||'shot')+' → '+(a.status||'').toUpperCase();
+  if(a.type==='add_note') return 'NOTE: '+(a.shotId||'?');
+  if(a.type==='create_vault_note') return 'VAULT: '+(a.title||'note');
   return a.type;
 }
 
@@ -505,7 +555,7 @@ function execChip(el){
   }
 
   el.classList.add('done');
-  el.textContent='✓ '+el.textContent.replace(/^[+▶✎📝]\s*/,'');
+  el.textContent='✓ '+el.textContent.replace(/^(✓\s)?/,'');
   renderBrief(); // refresh stats
 }
 
@@ -530,6 +580,8 @@ async function send(){
   const thinkId=addMsg('ai','',true);
   const sendBtn=document.getElementById('send-btn');
   sendBtn.disabled=true;
+  const orb=document.getElementById('orb');
+  if(orb) orb.classList.add('thinking');
 
   try{
     const model=getModel();
@@ -563,6 +615,7 @@ async function send(){
     dbg('[ERR] '+e.message);
   }finally{
     sendBtn.disabled=false;
+    if(orb) orb.classList.remove('thinking');
   }
 }
 
@@ -611,13 +664,13 @@ function toggleMic(){
   recognition.continuous=false;recognition.interimResults=true;recognition.lang='en-US';
   const btn=document.getElementById('mic-btn');
   const input=document.getElementById('dock-in');
-  recognition.onstart=()=>{isListening=true;btn.classList.add('listening');btn.textContent='●';toast('LISTENING');};
+  recognition.onstart=()=>{isListening=true;btn.classList.add('listening');toast('LISTENING');};
   recognition.onresult=e=>{
     const t=Array.from(e.results).map(r=>r[0].transcript).join('');
     input.value=t;autoResize(input);
   };
-  recognition.onend=()=>{isListening=false;btn.classList.remove('listening');btn.textContent='🎤';if(input.value.trim()) send();};
-  recognition.onerror=e=>{isListening=false;btn.classList.remove('listening');btn.textContent='🎤';if(e.error!=='no-speech')toast('MIC: '+e.error.toUpperCase());};
+  recognition.onend=()=>{isListening=false;btn.classList.remove('listening');if(input.value.trim()) send();};
+  recognition.onerror=e=>{isListening=false;btn.classList.remove('listening');if(e.error!=='no-speech')toast('MIC: '+e.error.toUpperCase());};
   recognition.start();
 }
 function stopMic(){if(recognition)recognition.stop();}
@@ -651,6 +704,8 @@ function boot(){
 
   // Refresh state periodically so briefing stays current with other tabs
   setInterval(()=>{
+    const orbEl=document.getElementById('orb');
+    if(orbEl&&orbEl.classList.contains('thinking'))return; // don't nuke orb mid-request
     const fresh=JSON.parse(localStorage.getItem(LS)||'null');
     if(fresh){S=fresh;renderBrief();}
   },5000);
