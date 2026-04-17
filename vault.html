@@ -71,14 +71,13 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 .editor-view{display:flex;flex-direction:column;flex:1;min-height:0;}
 .editor-topbar{display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:var(--b1);background:var(--s1);flex-shrink:0;}
 .editor-back{background:none;border:none;color:var(--teal);font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:0.06em;padding:8px;cursor:pointer;touch-action:manipulation;}
-.editor-title-in{flex:1;background:none;border:none;color:var(--t0);font-family:var(--sans);font-size:14px;font-weight:700;padding:0 4px;outline:none;}
+.editor-title-in{width:100%;background:transparent;border:none;color:var(--t0);font-family:var(--sans);font-size:20px;font-weight:700;padding:14px 16px 4px;outline:none;letter-spacing:-0.01em;flex-shrink:0;flex-grow:0;flex-basis:auto;}
+.editor-title-in::placeholder{color:var(--t3);}
 .editor-save{background:#fff;color:#000;border:none;font-family:var(--mono);font-size:10px;font-weight:800;padding:7px 14px;border-radius:8px;cursor:pointer;letter-spacing:0.06em;touch-action:manipulation;}
 .editor-del{background:none;border:var(--b2);color:var(--t2);font-family:var(--mono);font-size:10px;font-weight:700;padding:7px 10px;border-radius:8px;cursor:pointer;letter-spacing:0.06em;touch-action:manipulation;}
 .editor-textarea{flex:1;width:100%;background:transparent;border:none;color:var(--t0);font-family:var(--sans);font-size:15px;line-height:1.6;padding:14px 16px;outline:none;resize:none;overflow-y:auto;-webkit-overflow-scrolling:touch;}
 
 /* Title — Obsidian-quiet, big-ish but no border */
-.editor-title-in{width:100%;background:transparent;border:none;color:var(--t0);font-family:var(--sans);font-size:20px;font-weight:700;padding:14px 16px 4px;outline:none;letter-spacing:-0.01em;flex-shrink:0;}
-.editor-title-in::placeholder{color:var(--t3);}
 
 /* TAG ROW */
 .vault-tag-row{display:flex;gap:6px;padding:4px 16px 8px;flex-shrink:0;}
@@ -114,7 +113,7 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 .vault-doc-type-icon{display:inline-block;width:14px;text-align:center;color:var(--t2);font-family:var(--mono);font-size:11px;font-weight:800;}
 
 /* TAG ROW (editor) - now multi */
-.vault-tag-row{display:flex;gap:6px;padding:4px 16px 8px;flex-shrink:0;flex-wrap:wrap;align-items:center;}
+.vault-tag-row{display:flex;gap:6px;padding:4px 16px 8px;flex-shrink:0;flex-wrap:wrap;align-items:center;flex-grow:0;}
 .vault-tag-row .vault-doc-tag{cursor:pointer;touch-action:manipulation;}
 .vault-tag-row .vault-doc-tag.show-tag{background:var(--s4);color:var(--accent-hi);}
 .vault-tag-row .vault-doc-tag.user-tag{background:rgba(33,225,223,0.1);color:var(--teal);border-color:rgba(33,225,223,0.2);}
@@ -383,7 +382,7 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 <div class="dbg" id="dbg">
   <div class="dbg-hd">
     <button class="dbg-btn" onclick="document.getElementById('dbg').classList.toggle('open')">&gt; DBG</button>
-    <span class="dbg-id">VTEK-VAULT-20260417-007</span>
+    <span class="dbg-id">VTEK-VAULT-20260417-008</span>
     <button class="dbg-copy" onclick="navigator.clipboard&&navigator.clipboard.writeText(document.getElementById('dbg-log').textContent);this.textContent='COPIED';setTimeout(()=>this.textContent='COPY',1500)">COPY</button>
   </div>
   <div class="dbg-body"><div class="dbg-log" id="dbg-log"></div></div>
@@ -391,7 +390,7 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 
 <script>
 'use strict';
-const BUILD_ID='VTEK-VAULT-20260417-007';
+const BUILD_ID='VTEK-VAULT-20260417-008';
 const LS='vtek9';
 let S=JSON.parse(localStorage.getItem(LS)||'null')||{shows:[],shots:[],tasks:[],vaultDocs:[],vaultTags:[]};
 if(!S.vaultDocs)S.vaultDocs=[];
