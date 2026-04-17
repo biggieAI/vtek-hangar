@@ -3369,7 +3369,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-PAYLOAD-20260416-003';
+const BUILD_ID = 'VTEK-PAYLOAD-20260416-004';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
@@ -3976,8 +3976,13 @@ function tryCloseEditTask(){
 
 // ══ PAYLOAD BOOT ══
 document.addEventListener('DOMContentLoaded', function(){
-  try { migrateTasks(); } catch(e){ console.warn('[VTEK] migrate:', e && e.message); }
-  try { rPayload(); } catch(e){ console.error('[VTEK] rPayload init:', e && e.message, e && e.stack); }
+  console.log('[PAYLOAD] boot start');
+  // Activate the payload page (global CSS hides .page without .on)
+  var pg = document.getElementById('pg-payload');
+  if(pg) { pg.classList.add('on'); console.log('[PAYLOAD] pg-payload activated'); }
+  else { console.error('[PAYLOAD] pg-payload element not found'); }
+  try { migrateTasks(); console.log('[PAYLOAD] migrateTasks ok'); } catch(e){ console.warn('[VTEK] migrate:', e && e.message); }
+  try { rPayload(); console.log('[PAYLOAD] rPayload ok, tasks=', S.tasks.length); } catch(e){ console.error('[VTEK] rPayload:', e && e.message); }
   try { attachTeamDatalist(); } catch(e){}
 });
 
