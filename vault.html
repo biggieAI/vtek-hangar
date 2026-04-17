@@ -37,6 +37,14 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 
 .main{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;touch-action:pan-y;}
 
+/* SEARCH BAR */
+.vault-search{display:flex;align-items:center;gap:8px;padding:10px 12px;background:var(--s1);border-bottom:var(--b1);flex-shrink:0;}
+.vault-search-in{flex:1;background:var(--s2);border:var(--b2);color:var(--t0);font-family:var(--sans);font-size:13px;padding:8px 12px;outline:none;border-radius:8px;min-height:36px;}
+.vault-search-in::placeholder{color:var(--t3);}
+.vault-search-x{background:none;border:none;color:var(--t2);font-size:18px;cursor:pointer;padding:4px 8px;min-height:36px;min-width:36px;touch-action:manipulation;}
+.vault-arch-toggle{background:var(--s3);border:var(--b2);color:var(--t2);font-family:var(--mono);font-size:9px;font-weight:700;padding:6px 10px;border-radius:6px;cursor:pointer;letter-spacing:0.06em;min-height:32px;touch-action:manipulation;}
+.vault-arch-toggle.on{background:rgba(33,225,223,0.12);color:var(--teal);border-color:rgba(33,225,223,0.3);}
+
 /* VAULT LIST */
 .vault-new-row{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;border-bottom:var(--b1);touch-action:manipulation;-webkit-user-select:none;user-select:none;}
 .vault-new-row:active{background:var(--s2);}
@@ -239,7 +247,7 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
   </button>
   <span class="title" id="title-lbl">VAULT</span>
   <div class="actions" id="list-actions">
-    <button class="tb-btn primary" onclick="newDoc()">+ NEW</button>
+    <button class="tb-btn primary" onclick="openNewSheet()">+ NEW</button>
   </div>
   <div class="actions hide" id="edit-actions">
     <button class="editor-save" onclick="saveDoc()">SAVE</button>
@@ -265,7 +273,12 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 <div class="main" id="main">
   <!-- LIST VIEW -->
   <div id="v-list">
-    <div class="vault-new-row" onclick="newDoc()">
+    <div class="vault-search">
+      <input class="vault-search-in" id="vault-search-in" placeholder="Search notes..." type="text">
+      <button class="vault-search-x hide" id="vault-search-x" onclick="clearVaultSearch()">✕</button>
+      <button class="vault-arch-toggle" id="vault-arch-toggle" onclick="toggleArchView()">ARCH</button>
+    </div>
+    <div class="vault-new-row" onclick="openNewSheet()">
       <div class="vault-new-icon">+</div>
       <span class="vault-new-label">NEW NOTE</span>
     </div>
@@ -363,7 +376,7 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 <div class="dbg" id="dbg">
   <div class="dbg-hd">
     <button class="dbg-btn" onclick="document.getElementById('dbg').classList.toggle('open')">&gt; DBG</button>
-    <span class="dbg-id">VTEK-VAULT-20260417-005</span>
+    <span class="dbg-id">VTEK-VAULT-20260417-006</span>
     <button class="dbg-copy" onclick="navigator.clipboard&&navigator.clipboard.writeText(document.getElementById('dbg-log').textContent);this.textContent='COPIED';setTimeout(()=>this.textContent='COPY',1500)">COPY</button>
   </div>
   <div class="dbg-body"><div class="dbg-log" id="dbg-log"></div></div>
@@ -371,7 +384,7 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 
 <script>
 'use strict';
-const BUILD_ID='VTEK-VAULT-20260417-005';
+const BUILD_ID='VTEK-VAULT-20260417-006';
 const LS='vtek9';
 let S=JSON.parse(localStorage.getItem(LS)||'null')||{shows:[],shots:[],tasks:[],vaultDocs:[],vaultTags:[]};
 if(!S.vaultDocs)S.vaultDocs=[];
@@ -382,6 +395,8 @@ let mode='edit';                // 'edit' | 'preview'
 let _lpTimer=null;               // long-press timer
 let _lpTriggered=false;
 let _activeAttIdx=-1;            // active attachment in viewer
+let vaultSearchQ='';             // current search query
+let showArchived=false;          // list toggle
 
 // ═══ INDEXEDDB ATTACHMENTS ═══
 const IDB_NAME='vtek_vault';
@@ -445,7 +460,22 @@ S.vaultDocs.forEach(d=>{
   if(!('codeLang' in d)) d.codeLang='plain';
   if(!d.checklist) d.checklist=[];
   if(!d.att) d.att=[]; // [{id,name,mime,size,kind:'img'|'file'}]
+  if(!('archived' in d)) d.archived=false;
+  if(!('archivedAt' in d)) d.archivedAt=0;
 });
+
+// Auto-purge archived docs older than 30 days
+const THIRTY_DAYS=30*24*60*60*1000;
+const now=Date.now();
+const toPurge=S.vaultDocs.filter(d=>d.archived&&d.archivedAt&&(now-d.archivedAt>THIRTY_DAYS));
+if(toPurge.length){
+  toPurge.forEach(d=>{
+    (d.att||[]).forEach(a=>{idbDelete(a.id).catch(()=>{});});
+  });
+  S.vaultDocs=S.vaultDocs.filter(d=>!(d.archived&&d.archivedAt&&(now-d.archivedAt>THIRTY_DAYS)));
+  save();
+  dbg('[VAULT] purged '+toPurge.length+' archived >30d');
+}
 
 // ── CLIPBOARD ──
 function copyText(text){
@@ -528,19 +558,39 @@ function highlight(code,lang){
 
 // ── LIST ──
 function renderList(){
-  const pinned=S.vaultDocs.filter(d=>d.pinned);
-  const unpinned=S.vaultDocs.filter(d=>!d.pinned);
+  // Filter by archive view
+  let pool=S.vaultDocs.filter(d=>showArchived ? d.archived : !d.archived);
+
+  // Filter by search query
+  const q=vaultSearchQ.trim().toLowerCase();
+  if(q){
+    pool=pool.filter(d=>{
+      const inTitle=(d.title||'').toLowerCase().includes(q);
+      const inContent=(d.content||'').toLowerCase().includes(q);
+      const inTags=(d.tags||[]).some(t=>t.toLowerCase().includes(q));
+      const inShow=(()=>{const s=gs(d.showId);return s?s.code.toLowerCase().includes(q):false;})();
+      const inChk=(d.checklist||[]).some(c=>(c.text||'').toLowerCase().includes(q));
+      return inTitle||inContent||inTags||inShow||inChk;
+    });
+  }
+
+  const pinned=pool.filter(d=>d.pinned);
+  const unpinned=pool.filter(d=>!d.pinned);
 
   const groups=[];
-  if(pinned.length) groups.push({label:'📌 PINNED',docs:pinned,isPinGroup:true});
-  groups.push({label:'GENERAL',docs:unpinned.filter(d=>!d.showId)});
-  (S.shows||[]).forEach(s=>groups.push({label:s.code,docs:unpinned.filter(d=>d.showId===s.id)}));
-  // Custom tags: add a group for each user tag present on any doc
-  const tagsInUse=[...new Set(unpinned.flatMap(d=>d.tags||[]))];
-  tagsInUse.forEach(t=>{
-    const docs=unpinned.filter(d=>(d.tags||[]).includes(t) && !d.showId);
-    if(docs.length) groups.push({label:'#'+t,docs,isTagGroup:true});
-  });
+  if(pinned.length && !showArchived) groups.push({label:'📌 PINNED',docs:pinned,isPinGroup:true});
+  if(showArchived){
+    groups.push({label:'🗄 ARCHIVED (auto-deletes after 30d)',docs:pool});
+  } else {
+    groups.push({label:'GENERAL',docs:unpinned.filter(d=>!d.showId)});
+    (S.shows||[]).forEach(s=>groups.push({label:s.code,docs:unpinned.filter(d=>d.showId===s.id)}));
+    // Custom tags
+    const tagsInUse=[...new Set(unpinned.flatMap(d=>d.tags||[]))];
+    tagsInUse.forEach(t=>{
+      const docs=unpinned.filter(d=>(d.tags||[]).includes(t) && !d.showId);
+      if(docs.length) groups.push({label:'#'+t,docs,isTagGroup:true});
+    });
+  }
 
   const filtered=groups.filter(g=>g.docs.length>0);
 
@@ -565,7 +615,11 @@ function renderList(){
     });
     h+='</div>';
   });
-  if(!h)h='<div style="padding:40px;text-align:center;color:var(--t2);font-family:var(--mono);font-size:11px;letter-spacing:0.06em;">NO DOCS &mdash; TAP + NEW</div>';
+  if(!h){
+    if(q) h='<div style="padding:40px;text-align:center;color:var(--t2);font-family:var(--mono);font-size:11px;letter-spacing:0.06em;">NO MATCH FOR "'+escHtml(q).toUpperCase()+'"</div>';
+    else if(showArchived) h='<div style="padding:40px;text-align:center;color:var(--t2);font-family:var(--mono);font-size:11px;letter-spacing:0.06em;">NO ARCHIVED NOTES</div>';
+    else h='<div style="padding:40px;text-align:center;color:var(--t2);font-family:var(--mono);font-size:11px;letter-spacing:0.06em;">NO DOCS &mdash; TAP + NEW</div>';
+  }
   document.getElementById('doc-list').innerHTML=h;
 
   // wire click + long-press on every row
@@ -580,7 +634,6 @@ function renderList(){
       if(!_lpTriggered) openDoc(did);
     });
     el.addEventListener('touchmove',()=>clearTimeout(_lpTimer),{passive:true});
-    // desktop fallback
     el.addEventListener('click',e=>{if(!('ontouchstart' in window)) openDoc(did);});
     el.addEventListener('contextmenu',e=>{e.preventDefault();openMoveSheet(did);});
   });
@@ -1039,12 +1092,18 @@ function setShow(sid){
 function openMoveSheet(did){
   const doc=S.vaultDocs.find(d=>d.id===did);if(!doc)return;
   let h='<div class="v-sh-title">'+escHtml(doc.title||'Untitled')+'</div>';
-  h+='<div class="v-sh-row" onclick="toggleDocPin(\''+did+'\')"><div class="v-sh-row-lbl">'+(doc.pinned?'📌 UNPIN':'📌 PIN')+'</div></div>';
-  h+='<div class="v-sh-row" onclick="openMoveShowSheet(\''+did+'\')"><div class="v-sh-row-lbl">Move to show →</div></div>';
-  h+='<div class="v-sh-row" onclick="openDocTagSheet(\''+did+'\')"><div class="v-sh-row-lbl">Edit tags →</div></div>';
-  h+='<div class="v-sh-row" onclick="duplicateDoc(\''+did+'\')"><div class="v-sh-row-lbl">Duplicate</div></div>';
-  h+='<div class="v-sh-row" onclick="copyDocContent(\''+did+'\')"><div class="v-sh-row-lbl">Copy content</div></div>';
-  h+='<button class="v-sh-btn danger" onclick="deleteDocById(\''+did+'\')">DELETE NOTE</button>';
+  if(!doc.archived){
+    h+='<div class="v-sh-row" onclick="toggleDocPin(\''+did+'\')"><div class="v-sh-row-lbl">'+(doc.pinned?'📌 UNPIN':'📌 PIN')+'</div></div>';
+    h+='<div class="v-sh-row" onclick="openMoveShowSheet(\''+did+'\')"><div class="v-sh-row-lbl">Move to show →</div></div>';
+    h+='<div class="v-sh-row" onclick="openDocTagSheet(\''+did+'\')"><div class="v-sh-row-lbl">Edit tags →</div></div>';
+    h+='<div class="v-sh-row" onclick="duplicateDoc(\''+did+'\')"><div class="v-sh-row-lbl">Duplicate</div></div>';
+    h+='<div class="v-sh-row" onclick="copyDocContent(\''+did+'\')"><div class="v-sh-row-lbl">Copy content</div></div>';
+    h+='<div class="v-sh-row" onclick="archiveDoc(\''+did+'\')"><div class="v-sh-row-lbl">🗄 Archive (30d recovery)</div></div>';
+  } else {
+    h+='<div class="v-sh-row" onclick="unarchiveDoc(\''+did+'\')"><div class="v-sh-row-lbl">↺ Restore</div></div>';
+    h+='<div class="v-sh-row" onclick="copyDocContent(\''+did+'\')"><div class="v-sh-row-lbl">Copy content</div></div>';
+  }
+  h+='<button class="v-sh-btn danger" onclick="deleteDocById(\''+did+'\')">DELETE PERMANENTLY</button>';
   h+='<button class="v-sh-btn" onclick="closeSheet()">CANCEL</button>';
   openSheet(h);
 }
@@ -1121,7 +1180,12 @@ function openActionSheet(){
   let h='<div class="v-sh-title">'+escHtml(doc.title||'Untitled')+'</div>';
   h+='<div class="v-sh-row" onclick="copyActiveBody();closeSheet()"><div class="v-sh-row-lbl">⎘ Copy all content</div></div>';
   h+='<div class="v-sh-row" onclick="duplicateDoc(\''+activeId+'\')"><div class="v-sh-row-lbl">Duplicate</div></div>';
-  h+='<button class="v-sh-btn danger" onclick="deleteDoc()">DELETE NOTE</button>';
+  if(doc.archived){
+    h+='<div class="v-sh-row" onclick="unarchiveDoc(\''+activeId+'\');showList()"><div class="v-sh-row-lbl">↺ Restore from archive</div></div>';
+  } else {
+    h+='<div class="v-sh-row" onclick="archiveDoc(\''+activeId+'\');showList()"><div class="v-sh-row-lbl">🗄 Archive (30d recovery)</div></div>';
+  }
+  h+='<button class="v-sh-btn danger" onclick="deleteDoc()">DELETE PERMANENTLY</button>';
   h+='<button class="v-sh-btn" onclick="closeSheet()">CANCEL</button>';
   openSheet(h);
 }
@@ -1134,12 +1198,91 @@ function openSheet(html){
 function closeSheet(){document.getElementById('sh-wrap').classList.remove('open');}
 document.getElementById('sh-ovl').addEventListener('click',function(e){if(e.target===this)closeSheet();});
 
-// ── NEW / SAVE / DELETE ──
-function newDoc(){
+// ═══ WAVE 4: TEMPLATES ═══
+const TEMPLATES={
+  blank:{type:'md',title:'New Note',content:''},
+  bid:{type:'md',title:'Bid — ',content:'# Bid Sheet\n\n**Show:** \n**Project:** \n**Date:** \n\n## Scope\n- \n\n## Shots / Items\n| # | Description | Days | Notes |\n|---|---|---|---|\n| 01 |  |  |  |\n\n## Totals\n- **Total days:** \n- **Rate:** \n- **Total:** \n\n## Terms\n- \n\n---\n'},
+  meeting:{type:'md',title:'Meeting — ',content:'# Meeting\n\n**Date:** \n**Attendees:** \n**Project:** \n\n## Agenda\n- \n\n## Notes\n- \n\n## Action Items\n- [ ] \n\n## Next steps\n- \n'},
+  recipe:{type:'md',title:'Recipe — ',content:'# Recipe\n\n**Serves:** \n**Time:** \n\n## Ingredients\n- \n\n## Steps\n1. \n\n## Notes\n- \n'},
+  bug:{type:'md',title:'Bug — ',content:'# Bug Report\n\n**Where:** \n**Version:** \n**Priority:** \n\n## Steps to reproduce\n1. \n\n## Expected\n\n\n## Actual\n\n\n## Logs\n```\n\n```\n\n## Fix\n- [ ] \n'},
+  snip:{type:'snip',title:'Snippet',content:''},
+  code:{type:'code',title:'Code',content:'',codeLang:'js'},
+  list:{type:'check',title:'Checklist',content:'',checklist:[]}
+};
+
+function openNewSheet(){
+  let h='<div class="v-sh-title">NEW NOTE</div>';
+  h+='<div class="v-sh-row" onclick="newDocFromTpl(\'blank\')"><div class="v-sh-row-lbl">📝 Blank (markdown)</div></div>';
+  h+='<div class="v-sh-row" onclick="newDocFromTpl(\'code\')"><div class="v-sh-row-lbl">&lt;/&gt; Code snippet</div></div>';
+  h+='<div class="v-sh-row" onclick="newDocFromTpl(\'list\')"><div class="v-sh-row-lbl">☐ Checklist</div></div>';
+  h+='<div class="v-sh-row" onclick="newDocFromTpl(\'snip\')"><div class="v-sh-row-lbl">⎘ Quick snippet</div></div>';
+  h+='<div style="height:1px;background:var(--b2);margin:10px 0"></div>';
+  h+='<div class="v-sh-title" style="margin-top:0">TEMPLATES</div>';
+  h+='<div class="v-sh-row" onclick="newDocFromTpl(\'bid\')"><div class="v-sh-row-lbl">💰 Bid sheet</div></div>';
+  h+='<div class="v-sh-row" onclick="newDocFromTpl(\'meeting\')"><div class="v-sh-row-lbl">📅 Meeting notes</div></div>';
+  h+='<div class="v-sh-row" onclick="newDocFromTpl(\'recipe\')"><div class="v-sh-row-lbl">🍳 Recipe</div></div>';
+  h+='<div class="v-sh-row" onclick="newDocFromTpl(\'bug\')"><div class="v-sh-row-lbl">🐛 Bug report</div></div>';
+  h+='<button class="v-sh-btn" onclick="closeSheet()">CANCEL</button>';
+  openSheet(h);
+}
+
+function newDocFromTpl(tplKey){
+  closeSheet();
+  const tpl=TEMPLATES[tplKey]||TEMPLATES.blank;
   const id='v'+Date.now();
   const show=S.shows[0]||null;
-  S.vaultDocs.unshift({id,title:'New Note',content:'',showId:show?show.id:null,tags:[],type:'md',pinned:false,codeLang:'plain',checklist:[],updated:Date.now()});
-  save();openDoc(id);
+  const doc={
+    id,
+    title:tpl.title||'New Note',
+    content:tpl.content||'',
+    showId:show?show.id:null,
+    tags:[],
+    type:tpl.type||'md',
+    pinned:false,
+    codeLang:tpl.codeLang||'plain',
+    checklist:tpl.checklist||[],
+    att:[],
+    archived:false,
+    archivedAt:0,
+    updated:Date.now()
+  };
+  S.vaultDocs.unshift(doc);
+  save();
+  openDoc(id);
+}
+
+function newDoc(){newDocFromTpl('blank');} // legacy shim
+
+// ═══ WAVE 4: SEARCH ═══
+function clearVaultSearch(){
+  const inEl=document.getElementById('vault-search-in');
+  if(inEl){inEl.value='';vaultSearchQ='';}
+  document.getElementById('vault-search-x').classList.add('hide');
+  renderList();
+}
+document.getElementById('vault-search-in').addEventListener('input',function(e){
+  vaultSearchQ=e.target.value;
+  document.getElementById('vault-search-x').classList.toggle('hide',!vaultSearchQ);
+  renderList();
+});
+
+// ═══ WAVE 4: ARCHIVE ═══
+function toggleArchView(){
+  showArchived=!showArchived;
+  document.getElementById('vault-arch-toggle').classList.toggle('on',showArchived);
+  document.getElementById('vault-arch-toggle').textContent=showArchived?'● ARCH':'ARCH';
+  renderList();
+}
+
+function archiveDoc(did){
+  const doc=S.vaultDocs.find(d=>d.id===did);if(!doc)return;
+  doc.archived=true;doc.archivedAt=Date.now();doc.pinned=false;
+  save();closeSheet();renderList();toast('ARCHIVED');
+}
+function unarchiveDoc(did){
+  const doc=S.vaultDocs.find(d=>d.id===did);if(!doc)return;
+  doc.archived=false;doc.archivedAt=0;
+  save();closeSheet();renderList();toast('RESTORED');
 }
 
 function saveDoc(silent){
