@@ -47,19 +47,36 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 .brief{padding:18px 20px 14px;background:var(--s1);border-bottom:var(--b1);flex-shrink:0;position:relative;}
 .brief-hd{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
 
-/* ENERGY ORB — living agent indicator */
-.orb{position:relative;width:32px;height:32px;flex-shrink:0;}
-.orb-core{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 35% 35%,var(--teal) 0%,rgba(33,225,223,0.55) 45%,rgba(33,225,223,0.08) 75%,transparent 100%);filter:blur(0.4px);animation:orb-pulse 3.2s ease-in-out infinite;}
-.orb-ring{position:absolute;inset:-3px;border-radius:50%;border:1px solid rgba(33,225,223,0.25);animation:orb-rotate 6s linear infinite;}
-.orb-ring::before{content:'';position:absolute;top:-2px;left:50%;width:3px;height:3px;background:var(--teal);border-radius:50%;box-shadow:0 0 4px var(--teal);margin-left:-1.5px;}
-.orb-ring2{position:absolute;inset:-6px;border-radius:50%;border:1px solid rgba(33,225,223,0.12);animation:orb-rotate 10s linear infinite reverse;}
-.orb-ring2::before{content:'';position:absolute;bottom:0;right:15%;width:2px;height:2px;background:var(--teal);border-radius:50%;box-shadow:0 0 3px var(--teal);opacity:0.6;}
-.orb.thinking .orb-core{animation:orb-pulse-fast 0.8s ease-in-out infinite;}
-.orb.thinking .orb-ring{animation-duration:1.6s;}
-.orb.thinking .orb-ring2{animation-duration:2.8s;}
-@keyframes orb-pulse{0%,100%{transform:scale(0.92);opacity:0.85;}50%{transform:scale(1);opacity:1;}}
-@keyframes orb-pulse-fast{0%,100%{transform:scale(0.88);opacity:0.7;}50%{transform:scale(1.08);opacity:1;}}
-@keyframes orb-rotate{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+/* CORE REACTOR — agent indicator */
+.orb{position:relative;width:40px;height:40px;flex-shrink:0;}
+/* hexagonal frame */
+.orb-hex{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;}
+.orb-hex svg{width:100%;height:100%;overflow:visible;}
+.orb-hex .hex-outer{fill:none;stroke:rgba(33,225,223,0.35);stroke-width:1;}
+.orb-hex .hex-inner{fill:none;stroke:rgba(33,225,223,0.18);stroke-width:1;}
+/* glowing nucleus */
+.orb-core{position:absolute;top:50%;left:50%;width:11px;height:11px;margin:-5.5px 0 0 -5.5px;border-radius:50%;background:radial-gradient(circle,#7effff 0%,var(--teal) 45%,rgba(33,225,223,0.4) 80%,transparent 100%);box-shadow:0 0 10px rgba(33,225,223,0.7),0 0 20px rgba(33,225,223,0.35);animation:core-pulse 2.6s ease-in-out infinite;}
+/* electron orbits */
+.orb-orbit{position:absolute;top:50%;left:50%;border:1px solid rgba(33,225,223,0.22);border-radius:50%;transform:translate(-50%,-50%);}
+.orb-orbit::before{content:'';position:absolute;top:-2px;left:50%;width:3px;height:3px;margin-left:-1.5px;background:var(--teal);border-radius:50%;box-shadow:0 0 4px var(--teal);}
+.orb-o1{width:36px;height:36px;animation:orbit1 3.8s linear infinite;}
+.orb-o2{width:30px;height:30px;transform:translate(-50%,-50%) rotateX(60deg);animation:orbit2 5.2s linear infinite;}
+.orb-o3{width:32px;height:32px;transform:translate(-50%,-50%) rotateZ(60deg) rotateX(-55deg);animation:orbit3 4.4s linear infinite;}
+
+@keyframes core-pulse{0%,100%{transform:scale(0.85);opacity:0.8;}50%{transform:scale(1.1);opacity:1;}}
+@keyframes orbit1{from{transform:translate(-50%,-50%) rotate(0deg);}to{transform:translate(-50%,-50%) rotate(360deg);}}
+@keyframes orbit2{from{transform:translate(-50%,-50%) rotateX(60deg) rotateZ(0deg);}to{transform:translate(-50%,-50%) rotateX(60deg) rotateZ(360deg);}}
+@keyframes orbit3{from{transform:translate(-50%,-50%) rotateZ(60deg) rotateX(-55deg) rotateY(0deg);}to{transform:translate(-50%,-50%) rotateZ(60deg) rotateX(-55deg) rotateY(360deg);}}
+
+.orb.thinking .orb-core{animation:core-pulse-fast 0.7s ease-in-out infinite;box-shadow:0 0 14px rgba(33,225,223,0.9),0 0 28px rgba(33,225,223,0.5);}
+.orb.thinking .orb-o1{animation-duration:1.4s;}
+.orb.thinking .orb-o2{animation-duration:1.9s;}
+.orb.thinking .orb-o3{animation-duration:1.6s;}
+.orb.thinking .orb-hex .hex-outer{stroke:rgba(33,225,223,0.6);animation:hex-flash 1.4s ease-in-out infinite;}
+.orb.thinking .orb-hex .hex-inner{stroke:rgba(33,225,223,0.4);animation:hex-flash 1.4s ease-in-out infinite;animation-delay:0.3s;}
+
+@keyframes core-pulse-fast{0%,100%{transform:scale(0.8);opacity:0.7;}50%{transform:scale(1.2);opacity:1;}}
+@keyframes hex-flash{0%,100%{opacity:0.3;}50%{opacity:1;}}
 
 .brief-lbl{font-family:var(--mono);font-size:11px;font-weight:800;color:var(--teal);letter-spacing:0.14em;}
 .brief-sub{font-family:var(--mono);font-size:8px;font-weight:700;color:var(--t3);letter-spacing:0.14em;margin-top:2px;}
@@ -235,7 +252,7 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 <div class="dbg" id="dbg">
   <div class="dbg-hd">
     <button class="dbg-btn" onclick="document.getElementById('dbg').classList.toggle('open')">&gt; DBG</button>
-    <span class="dbg-id">VTEK-INTEL-20260417-003</span>
+    <span class="dbg-id">VTEK-INTEL-20260417-004</span>
     <button class="dbg-copy" onclick="navigator.clipboard&&navigator.clipboard.writeText(document.getElementById('dbg-log').textContent);this.textContent='COPIED';setTimeout(()=>this.textContent='COPY',1500)">COPY</button>
   </div>
   <div class="dbg-body"><div class="dbg-log" id="dbg-log"></div></div>
@@ -243,7 +260,7 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 
 <script>
 'use strict';
-const BUILD_ID='VTEK-INTEL-20260417-003';
+const BUILD_ID='VTEK-INTEL-20260417-004';
 const LS='vtek9';
 const HIST_KEY='vtek_intel_hist';
 const MODEL_KEY='vtek_intel_model';
@@ -307,8 +324,17 @@ function renderBrief(){
   const dateStr=now.toLocaleDateString('en-US',{weekday:'long',month:'short',day:'numeric'});
 
   const html='<div class="brief-hd">'+
-    '<div class="orb" id="orb"><div class="orb-core"></div><div class="orb-ring"></div><div class="orb-ring2"></div></div>'+
-    '<div><div class="brief-lbl">SECONDS</div><div class="brief-sub">AGENT ONLINE</div></div>'+
+    '<div class="orb" id="orb">'+
+      '<div class="orb-hex"><svg viewBox="0 0 40 40">'+
+        '<polygon class="hex-outer" points="20,2 36,11 36,29 20,38 4,29 4,11"/>'+
+        '<polygon class="hex-inner" points="20,8 31,14.5 31,25.5 20,32 9,25.5 9,14.5"/>'+
+      '</svg></div>'+
+      '<div class="orb-o1 orb-orbit"></div>'+
+      '<div class="orb-o2 orb-orbit"></div>'+
+      '<div class="orb-o3 orb-orbit"></div>'+
+      '<div class="orb-core"></div>'+
+    '</div>'+
+    '<div><div class="brief-lbl">SECONDS</div><div class="brief-sub">REACTOR ONLINE</div></div>'+
     '<div class="brief-date">'+dateStr.toUpperCase()+'</div>'+
   '</div>'+
   '<div class="brief-stats">'+
