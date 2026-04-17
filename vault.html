@@ -75,6 +75,91 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 .vault-preview strong{color:var(--accent-hi);}
 .vault-preview em{color:var(--t1);font-style:italic;}
 
+/* TYPE PICKER in topbar */
+.type-picker{display:flex;gap:0;background:var(--s2);border:var(--b2);border-radius:8px;overflow:hidden;margin-right:6px;flex-shrink:0;}
+.type-btn{padding:6px 8px;background:none;border:none;color:var(--t2);font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:0.06em;cursor:pointer;min-height:32px;min-width:36px;touch-action:manipulation;-webkit-user-select:none;user-select:none;}
+.type-btn.on{background:var(--s4);color:var(--teal);}
+
+/* DOC ROW - pinned + multi-tag indicator */
+.vault-doc-row.pinned{border-left:2px solid var(--teal);}
+.vault-doc-row-tags{display:flex;gap:3px;margin-top:3px;flex-wrap:wrap;}
+.vault-doc-row-tag{display:inline-block;padding:1px 5px;background:var(--s4);border:1px solid rgba(255,255,255,0.06);color:var(--t2);font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:0.06em;border-radius:3px;}
+.vault-doc-type-icon{display:inline-block;width:14px;text-align:center;color:var(--t2);font-family:var(--mono);font-size:11px;font-weight:800;}
+
+/* TAG ROW (editor) - now multi */
+.vault-tag-row{display:flex;gap:6px;padding:4px 16px 8px;flex-shrink:0;flex-wrap:wrap;align-items:center;}
+.vault-tag-row .vault-doc-tag{cursor:pointer;touch-action:manipulation;}
+.vault-tag-row .vault-doc-tag.show-tag{background:var(--s4);color:var(--accent-hi);}
+.vault-tag-row .vault-doc-tag.user-tag{background:rgba(33,225,223,0.1);color:var(--teal);border-color:rgba(33,225,223,0.2);}
+.vault-tag-row .tag-add{background:var(--s2);color:var(--t2);border:1px dashed rgba(255,255,255,0.15);cursor:pointer;min-height:20px;}
+
+/* CODE MODE textarea */
+.editor-textarea.code-mode{font-family:var(--mono);font-size:12.5px;line-height:1.55;letter-spacing:0;tab-size:2;white-space:pre;color:#d4d4d8;background:#0d0e13;border-top:1px solid #1a1c24;}
+.editor-textarea.code-mode::placeholder{color:#3e4452;font-style:italic;}
+.code-meta{display:flex;gap:10px;padding:6px 16px;background:#0d0e13;border-bottom:1px solid #1a1c24;flex-shrink:0;font-family:var(--mono);font-size:10px;color:#6b7280;}
+.code-meta select{background:#1a1c24;color:#d4d4d8;border:1px solid #2a2d37;border-radius:4px;padding:2px 8px;font-family:var(--mono);font-size:10px;outline:none;}
+.code-meta .code-copy{margin-left:auto;background:#1a1c24;border:1px solid #2a2d37;color:var(--teal);padding:3px 10px;border-radius:4px;font-family:var(--mono);font-size:10px;font-weight:700;cursor:pointer;letter-spacing:0.06em;touch-action:manipulation;}
+
+/* CODE PREVIEW syntax */
+.code-preview{flex:1;overflow:auto;background:#0d0e13;padding:0;position:relative;}
+.code-preview pre{margin:0;padding:14px 16px 14px 48px;font-family:var(--mono);font-size:12.5px;line-height:1.55;color:#d4d4d8;white-space:pre;counter-reset:ln;}
+.code-preview .ln{display:block;position:relative;}
+.code-preview .ln::before{content:counter(ln);counter-increment:ln;position:absolute;left:-36px;width:28px;text-align:right;color:#3e4452;font-size:10px;user-select:none;}
+.code-preview .k{color:#c586c0;}
+.code-preview .s{color:#ce9178;}
+.code-preview .n{color:#b5cea8;}
+.code-preview .c{color:#6a9955;font-style:italic;}
+.code-preview .f{color:#dcdcaa;}
+.code-preview .t{color:#4ec9b0;}
+.code-preview .p{color:#d4d4d8;}
+.code-preview .copy-code-btn{position:absolute;top:8px;right:8px;background:#1a1c24;border:1px solid #2a2d37;color:var(--teal);padding:4px 10px;border-radius:4px;font-family:var(--mono);font-size:10px;font-weight:700;cursor:pointer;z-index:5;letter-spacing:0.06em;touch-action:manipulation;}
+
+/* CHECKLIST */
+.checklist-view{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:8px 0;}
+.chk-row{display:flex;align-items:flex-start;gap:10px;padding:10px 16px;border-bottom:var(--b1);cursor:pointer;touch-action:manipulation;-webkit-user-select:none;user-select:none;}
+.chk-row:active{background:var(--s2);}
+.chk-box{width:20px;height:20px;border:1.5px solid var(--t2);border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;transition:all 0.12s;}
+.chk-row.done .chk-box{background:var(--teal);border-color:var(--teal);}
+.chk-row.done .chk-box::after{content:'✓';color:#000;font-weight:800;font-size:13px;}
+.chk-text{flex:1;font-size:14px;line-height:1.4;color:var(--t0);}
+.chk-row.done .chk-text{text-decoration:line-through;color:var(--t2);}
+.chk-copy{background:none;border:none;color:var(--t3);font-family:var(--mono);font-size:9px;font-weight:700;padding:4px 6px;cursor:pointer;flex-shrink:0;letter-spacing:0.06em;}
+.chk-copy:active{color:var(--teal);}
+.chk-add-row{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:var(--b1);}
+.chk-add-in{flex:1;background:var(--s2);border:var(--b2);color:var(--t0);font-family:var(--sans);font-size:13px;padding:8px 10px;outline:none;border-radius:6px;min-height:36px;}
+.chk-add-btn{background:var(--teal);color:#000;border:none;font-family:var(--mono);font-size:10px;font-weight:800;padding:8px 14px;border-radius:6px;cursor:pointer;letter-spacing:0.06em;min-height:36px;touch-action:manipulation;}
+
+/* SNIPPET */
+.snippet-view{flex:1;display:flex;flex-direction:column;min-height:0;}
+.snippet-big-copy{background:var(--teal);color:#000;border:none;font-family:var(--mono);font-size:13px;font-weight:800;padding:14px;cursor:pointer;letter-spacing:0.12em;flex-shrink:0;touch-action:manipulation;}
+.snippet-big-copy:active{background:#18c0be;}
+.snippet-big-copy.copied{background:var(--s-app,#4ade80);}
+
+/* SHEET (bottom-up) */
+.v-sheet-ovl{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:900;display:none;}
+.v-sheet-ovl.open{display:block;}
+.v-sheet{position:fixed;left:0;right:0;bottom:0;background:var(--s1);border-top:var(--b2);border-radius:14px 14px 0 0;z-index:901;max-height:72dvh;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px 16px calc(var(--safe-b)+20px);transform:translateY(100%);transition:transform 0.2s;}
+.v-sheet-ovl.open .v-sheet{transform:translateY(0);}
+.v-sh-handle{width:36px;height:4px;background:var(--t3);border-radius:2px;margin:0 auto 14px;}
+.v-sh-title{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--t1);letter-spacing:0.1em;margin-bottom:12px;}
+.v-sh-row{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:var(--b1);cursor:pointer;touch-action:manipulation;}
+.v-sh-row:last-child{border-bottom:none;}
+.v-sh-row:active{background:var(--s2);}
+.v-sh-row-lbl{flex:1;font-size:14px;color:var(--t0);}
+.v-sh-row-chk{color:var(--teal);font-weight:800;font-size:16px;}
+.v-sh-chip-row{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0;}
+.v-sh-chip{padding:6px 10px;background:var(--s3);border:var(--b2);color:var(--t1);font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:0.06em;border-radius:6px;cursor:pointer;touch-action:manipulation;}
+.v-sh-chip.on{background:rgba(33,225,223,0.15);color:var(--teal);border-color:rgba(33,225,223,0.3);}
+.v-sh-chip .x{color:var(--t3);margin-left:4px;}
+.v-sh-input{width:100%;background:var(--s2);border:var(--b2);color:var(--t0);font-family:var(--sans);font-size:13px;padding:10px 12px;outline:none;border-radius:8px;min-height:40px;margin-bottom:10px;}
+.v-sh-btn{width:100%;background:var(--s4);border:var(--b2);color:var(--t0);font-family:var(--mono);font-size:11px;font-weight:700;padding:12px;border-radius:8px;cursor:pointer;letter-spacing:0.08em;touch-action:manipulation;margin-top:6px;min-height:44px;}
+.v-sh-btn.primary{background:var(--teal);color:#000;border-color:var(--teal);}
+.v-sh-btn.danger{background:none;color:#f87171;border-color:#f87171;}
+
+/* PIN button */
+.pin-btn{background:none;border:var(--b2);color:var(--t2);font-family:var(--mono);font-size:11px;padding:6px 8px;border-radius:6px;cursor:pointer;min-height:32px;min-width:32px;touch-action:manipulation;}
+.pin-btn.on{color:var(--teal);border-color:rgba(33,225,223,0.3);}
+
 .toast{position:fixed;bottom:calc(var(--safe-b)+48px);left:50%;transform:translateX(-50%) translateY(20px);background:var(--s4);border:var(--b2);color:var(--t0);font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:0.10em;padding:9px 20px;opacity:0;transition:all 0.2s;pointer-events:none;white-space:nowrap;z-index:600;border-radius:20px;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 .dbg{flex-shrink:0;background:#0a0d0a;border-top:1px solid #1a3a1a;font-family:monospace;font-size:10px;}
@@ -99,11 +184,18 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
     <button class="tb-btn primary" onclick="newDoc()">+ NEW</button>
   </div>
   <div class="actions hide" id="edit-actions">
-    <div class="mode-toggle">
+    <button class="pin-btn" id="pin-btn" onclick="togglePin()" title="Pin">📌</button>
+    <div class="type-picker" id="type-picker">
+      <button class="type-btn on" data-t="md" onclick="setType('md')">MD</button>
+      <button class="type-btn" data-t="code" onclick="setType('code')">&lt;/&gt;</button>
+      <button class="type-btn" data-t="check" onclick="setType('check')">☐</button>
+      <button class="type-btn" data-t="snip" onclick="setType('snip')">⎘</button>
+    </div>
+    <div class="mode-toggle" id="mode-toggle">
       <button class="mode-btn on" id="mode-edit" onclick="setMode('edit')">EDIT</button>
       <button class="mode-btn" id="mode-prev" onclick="setMode('preview')">PREV</button>
     </div>
-    <button class="editor-del" id="del-btn" onclick="deleteDoc()">DEL</button>
+    <button class="editor-del" id="del-btn" onclick="openActionSheet()">⋯</button>
     <button class="editor-save" onclick="saveDoc()">SAVE</button>
   </div>
 </div>
@@ -120,17 +212,55 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
   <!-- EDITOR VIEW -->
   <div id="v-edit" class="hide" style="display:flex;flex-direction:column;min-height:0;">
     <input class="editor-title-in" id="edit-title" placeholder="Note title..." type="text">
-    <div class="vault-tag-row" id="tag-row"><span class="vault-doc-tag" id="tag-pill">GENERAL</span></div>
+    <div class="vault-tag-row" id="tag-row"></div>
+
+    <!-- MD / generic textarea -->
     <textarea class="editor-textarea" id="edit-body" placeholder="Write in markdown...&#10;&#10;# Heading&#10;**Bold**, *italic*&#10;- List item"></textarea>
+
+    <!-- MD preview -->
     <div class="vault-preview hide" id="edit-preview"></div>
+
+    <!-- CODE meta bar (language picker + copy) -->
+    <div class="code-meta hide" id="code-meta">
+      <span>LANG</span>
+      <select id="code-lang">
+        <option value="plain">plain</option>
+        <option value="js">JavaScript</option>
+        <option value="py">Python</option>
+        <option value="bash">Bash</option>
+        <option value="html">HTML</option>
+        <option value="css">CSS</option>
+        <option value="json">JSON</option>
+        <option value="nuke">Nuke (Python)</option>
+      </select>
+      <button class="code-copy" onclick="copyActiveBody()">COPY</button>
+    </div>
+    <!-- CODE preview -->
+    <div class="code-preview hide" id="code-preview"></div>
+
+    <!-- CHECKLIST view -->
+    <div class="checklist-view hide" id="check-view"></div>
+
+    <!-- SNIPPET view -->
+    <div class="snippet-view hide" id="snip-view">
+      <button class="snippet-big-copy" id="snip-copy-btn" onclick="copyActiveBody()">⎘ TAP TO COPY</button>
+      <textarea class="editor-textarea" id="snip-body" placeholder="Paste snippet here..."></textarea>
+    </div>
   </div>
+</div>
+
+<!-- ACTION / TAG / MOVE SHEET -->
+<div class="v-sheet-ovl" id="sh-ovl"></div>
+<div class="v-sheet" id="sh-body">
+  <div class="v-sh-handle"></div>
+  <div id="sh-content"></div>
 </div>
 
 <div id="toast" class="toast"></div>
 <div class="dbg" id="dbg">
   <div class="dbg-hd">
     <button class="dbg-btn" onclick="document.getElementById('dbg').classList.toggle('open')">&gt; DBG</button>
-    <span class="dbg-id">VTEK-VAULT-20260416-002</span>
+    <span class="dbg-id">VTEK-VAULT-20260417-003</span>
     <button class="dbg-copy" onclick="navigator.clipboard&&navigator.clipboard.writeText(document.getElementById('dbg-log').textContent);this.textContent='COPIED';setTimeout(()=>this.textContent='COPY',1500)">COPY</button>
   </div>
   <div class="dbg-body"><div class="dbg-log" id="dbg-log"></div></div>
@@ -138,12 +268,16 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 
 <script>
 'use strict';
-const BUILD_ID='VTEK-VAULT-20260416-002';
+const BUILD_ID='VTEK-VAULT-20260417-003';
 const LS='vtek9';
-let S=JSON.parse(localStorage.getItem(LS)||'null')||{shows:[],shots:[],tasks:[],vaultDocs:[]};
+let S=JSON.parse(localStorage.getItem(LS)||'null')||{shows:[],shots:[],tasks:[],vaultDocs:[],vaultTags:[]};
 if(!S.vaultDocs)S.vaultDocs=[];
+if(!S.vaultTags)S.vaultTags=[];
+
 let activeId=null;
-let mode='edit';
+let mode='edit';                // 'edit' | 'preview'
+let _lpTimer=null;               // long-press timer
+let _lpTriggered=false;
 
 function save(){localStorage.setItem(LS,JSON.stringify(S));}
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);}
@@ -151,8 +285,32 @@ function dbg(m){const el=document.getElementById('dbg-log');el.textContent+=new 
 window.addEventListener('error',e=>dbg('ERR:'+e.message));
 
 function escHtml(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function escAttr(s){return escHtml(s).replace(/'/g,'&#39;');}
+function gs(id){return (S.shows||[]).find(s=>s.id===id);}
 
-// Markdown renderer - port of index.html md2html
+// ── MIGRATION: add missing fields to old docs ──
+S.vaultDocs.forEach(d=>{
+  if(!d.type) d.type='md';
+  if(!d.tags) d.tags=[];
+  if(!('pinned' in d)) d.pinned=false;
+  if(!('codeLang' in d)) d.codeLang='plain';
+  if(!d.checklist) d.checklist=[];
+});
+
+// ── CLIPBOARD ──
+function copyText(text){
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(()=>toast('COPIED')).catch(()=>fallbackCopy(text));
+  } else fallbackCopy(text);
+}
+function fallbackCopy(text){
+  const ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';
+  document.body.appendChild(ta);ta.select();
+  try{document.execCommand('copy');toast('COPIED');}catch(e){toast('COPY FAILED');}
+  document.body.removeChild(ta);
+}
+
+// ── MARKDOWN ──
 function md2html(md){
   return (md||'')
     .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
@@ -164,25 +322,71 @@ function md2html(md){
     .replace(/\n\n/g,'</p><p>').replace(/^(?!<[hul]|<\/[hul]|<hr|<p|<li)/gm,'<p>').replace(/<p>$|^<\/p>/gm,'');
 }
 
-function gs(id){return (S.shows||[]).find(s=>s.id===id);}
+// ── SYNTAX HIGHLIGHTER (lightweight, regex-based) ──
+const LANG_RULES={
+  js:{k:/\b(const|let|var|function|return|if|else|for|while|class|new|this|await|async|try|catch|throw|import|export|from|default|break|continue|typeof|instanceof|of|in|null|undefined|true|false)\b/g,f:/\b([a-zA-Z_$][\w$]*)(?=\s*\()/g,s:/(["'`])(?:\\.|(?!\1)[^\\])*\1/g,n:/\b(\d+\.?\d*)\b/g,c:/(\/\/[^\n]*|\/\*[\s\S]*?\*\/)/g},
+  py:{k:/\b(def|class|return|if|elif|else|for|while|import|from|as|try|except|finally|raise|with|lambda|pass|break|continue|global|nonlocal|yield|in|is|not|and|or|True|False|None|self|print)\b/g,f:/\b([a-zA-Z_][\w]*)(?=\s*\()/g,s:/(["'])(?:\\.|(?!\1)[^\\])*\1|"""[\s\S]*?"""|'''[\s\S]*?'''/g,n:/\b(\d+\.?\d*)\b/g,c:/(#[^\n]*)/g},
+  bash:{k:/\b(if|then|else|elif|fi|for|while|do|done|case|esac|function|return|exit|echo|export|source|local|read)\b/g,f:/\b([a-zA-Z_][\w-]*)(?=\s*\()/g,s:/(["'])(?:\\.|(?!\1)[^\\])*\1/g,n:/\b(\d+)\b/g,c:/(#[^\n]*)/g},
+  json:{k:/\b(true|false|null)\b/g,f:null,s:/"(?:\\.|[^"\\])*"/g,n:/\b(\d+\.?\d*)\b/g,c:null},
+  html:{k:/(&lt;\/?[a-zA-Z][\w-]*|\/?&gt;)/g,f:null,s:/(["'])(?:\\.|(?!\1)[^\\])*\1/g,n:null,c:/(&lt;!--[\s\S]*?--&gt;)/g},
+  css:{k:/\b(\.[a-zA-Z_-][\w-]*|#[a-zA-Z_-][\w-]*|@\w+)\b/g,f:/([a-zA-Z-]+)(?=\s*:)/g,s:/(["'])(?:\\.|(?!\1)[^\\])*\1/g,n:/\b(\d+\.?\d*(?:px|em|rem|%|vh|vw|s|ms)?)\b/g,c:/(\/\*[\s\S]*?\*\/)/g},
+  nuke:{k:/\b(def|class|return|if|elif|else|for|while|import|from|as|try|except|finally|raise|with|lambda|pass|break|continue|True|False|None|self|nuke|knob|node|input|output)\b/g,f:/\b([a-zA-Z_][\w]*)(?=\s*\()/g,s:/(["'])(?:\\.|(?!\1)[^\\])*\1/g,n:/\b(\d+\.?\d*)\b/g,c:/(#[^\n]*)/g}
+};
 
+function highlight(code,lang){
+  const rules=LANG_RULES[lang];
+  // escape first
+  let s=code.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  if(!rules){return s;}
+  // Use tokenizer-lite: replace with placeholder, re-insert
+  const tokens=[];
+  function push(cls,val){const id='\x00'+tokens.length+'\x00';tokens.push('<span class="'+cls+'">'+val+'</span>');return id;}
+  // order: comments, strings, numbers, keywords, functions
+  if(rules.c) s=s.replace(rules.c,m=>push('c',m));
+  if(rules.s) s=s.replace(rules.s,m=>push('s',m));
+  if(rules.n) s=s.replace(rules.n,m=>push('n',m));
+  if(rules.k) s=s.replace(rules.k,m=>push('k',m));
+  if(rules.f) s=s.replace(rules.f,m=>push('f',m));
+  // re-insert tokens
+  s=s.replace(/\x00(\d+)\x00/g,(_,i)=>tokens[+i]);
+  // wrap each line with .ln for line numbers
+  s=s.split('\n').map(l=>'<span class="ln">'+(l||' ')+'</span>').join('\n');
+  return s;
+}
+
+// ── LIST ──
 function renderList(){
-  const groups=[
-    {label:'GENERAL',docs:S.vaultDocs.filter(d=>!d.showId)},
-    ...(S.shows||[]).map(s=>({label:s.code,docs:S.vaultDocs.filter(d=>d.showId===s.id)}))
-  ].filter(g=>g.docs.length>0);
+  const pinned=S.vaultDocs.filter(d=>d.pinned);
+  const unpinned=S.vaultDocs.filter(d=>!d.pinned);
+
+  const groups=[];
+  if(pinned.length) groups.push({label:'📌 PINNED',docs:pinned,isPinGroup:true});
+  groups.push({label:'GENERAL',docs:unpinned.filter(d=>!d.showId)});
+  (S.shows||[]).forEach(s=>groups.push({label:s.code,docs:unpinned.filter(d=>d.showId===s.id)}));
+  // Custom tags: add a group for each user tag present on any doc
+  const tagsInUse=[...new Set(unpinned.flatMap(d=>d.tags||[]))];
+  tagsInUse.forEach(t=>{
+    const docs=unpinned.filter(d=>(d.tags||[]).includes(t) && !d.showId);
+    if(docs.length) groups.push({label:'#'+t,docs,isTagGroup:true});
+  });
+
+  const filtered=groups.filter(g=>g.docs.length>0);
+
+  const typeIcon={md:'M',code:'</>',check:'☐',snip:'⎘'};
 
   let h='';
-  groups.forEach(g=>{
+  filtered.forEach(g=>{
     h+='<div class="vault-list-section"><div class="vault-list-sec-lbl">'+g.label+'</div>';
     g.docs.forEach(d=>{
       const date=new Date(d.updated||Date.now()).toLocaleDateString('en-US',{month:'short',day:'numeric'});
       const preview=(d.content||'').replace(/[#*`]/g,'').trim().slice(0,50)||'Empty note';
-      h+='<div class="vault-doc-row" onclick="openDoc(\''+d.id+'\')">'+
-        '<div class="vault-doc-icon">&#x1F4C4;</div>'+
+      const tagsHtml=(d.tags||[]).length?'<div class="vault-doc-row-tags">'+(d.tags||[]).map(t=>'<span class="vault-doc-row-tag">#'+escHtml(t)+'</span>').join('')+'</div>':'';
+      h+='<div class="vault-doc-row'+(d.pinned?' pinned':'')+'" data-did="'+d.id+'">'+
+        '<div class="vault-doc-icon"><span class="vault-doc-type-icon">'+(typeIcon[d.type||'md']||'M')+'</span></div>'+
         '<div class="vault-doc-info">'+
           '<div class="vault-doc-title">'+escHtml(d.title||'Untitled')+'</div>'+
           '<div class="vault-doc-meta">'+date+' &nbsp;&bull;&nbsp; '+escHtml(preview)+'</div>'+
+          tagsHtml+
         '</div>'+
         '<div class="vault-doc-chevron">&#x203A;</div>'+
       '</div>';
@@ -191,6 +395,23 @@ function renderList(){
   });
   if(!h)h='<div style="padding:40px;text-align:center;color:var(--t2);font-family:var(--mono);font-size:11px;letter-spacing:0.06em;">NO DOCS &mdash; TAP + NEW</div>';
   document.getElementById('doc-list').innerHTML=h;
+
+  // wire click + long-press on every row
+  document.querySelectorAll('.vault-doc-row').forEach(el=>{
+    const did=el.dataset.did;
+    el.addEventListener('touchstart',e=>{
+      _lpTriggered=false;
+      _lpTimer=setTimeout(()=>{_lpTriggered=true;if(navigator.vibrate)navigator.vibrate(30);openMoveSheet(did);},500);
+    },{passive:true});
+    el.addEventListener('touchend',e=>{
+      clearTimeout(_lpTimer);
+      if(!_lpTriggered) openDoc(did);
+    });
+    el.addEventListener('touchmove',()=>clearTimeout(_lpTimer),{passive:true});
+    // desktop fallback
+    el.addEventListener('click',e=>{if(!('ontouchstart' in window)) openDoc(did);});
+    el.addEventListener('contextmenu',e=>{e.preventDefault();openMoveSheet(did);});
+  });
 }
 
 function showList(){
@@ -202,86 +423,370 @@ function showList(){
   document.getElementById('edit-actions').classList.add('hide');
   document.getElementById('back-lbl').textContent='HOME';
   document.getElementById('title-lbl').textContent='VAULT';
-  document.getElementById('main').style.display='';
-  document.getElementById('main').style.flexDirection='';
   renderList();
 }
 
+// ── OPEN / RENDER DOC ──
 function openDoc(id){
   const doc=S.vaultDocs.find(d=>d.id===id);if(!doc)return;
   activeId=id;
   mode='edit';
+
   document.getElementById('edit-title').value=doc.title||'';
   document.getElementById('edit-body').value=doc.content||'';
-  // Show tag pill
-  const show=gs(doc.showId);
-  document.getElementById('tag-pill').textContent=show?show.code:'GENERAL';
-  // Breadcrumb in title
+  document.getElementById('snip-body').value=doc.content||'';
+  document.getElementById('code-lang').value=doc.codeLang||'plain';
+
   document.getElementById('title-lbl').textContent=(doc.title||'UNTITLED').toUpperCase().slice(0,18);
   document.getElementById('v-list').classList.add('hide');
   document.getElementById('v-edit').classList.remove('hide');
   document.getElementById('list-actions').classList.add('hide');
   document.getElementById('edit-actions').classList.remove('hide');
   document.getElementById('back-lbl').textContent='VAULT';
-  document.getElementById('main').style.display='flex';
-  document.getElementById('main').style.flexDirection='column';
-  // Reset mode UI
-  setMode('edit');
-  dbg('[VAULT] opened '+id);
+
+  // Pin state
+  document.getElementById('pin-btn').classList.toggle('on',!!doc.pinned);
+
+  // Type picker active state
+  document.querySelectorAll('#type-picker .type-btn').forEach(b=>b.classList.toggle('on',b.dataset.t===(doc.type||'md')));
+
+  renderTagRow(doc);
+  renderTypeView(doc);
+  dbg('[VAULT] opened '+id+' type='+doc.type);
+}
+
+function renderTagRow(doc){
+  const row=document.getElementById('tag-row');
+  const show=gs(doc.showId);
+  let h='';
+  h+='<span class="vault-doc-tag show-tag" onclick="openShowPicker()">'+(show?show.code:'GENERAL')+' ▾</span>';
+  (doc.tags||[]).forEach(t=>{
+    h+='<span class="vault-doc-tag user-tag" onclick="removeTag(\''+escAttr(t)+'\')">#'+escHtml(t)+' ×</span>';
+  });
+  h+='<span class="vault-doc-tag tag-add" onclick="openTagSheet()">+ TAG</span>';
+  row.innerHTML=h;
+}
+
+function renderTypeView(doc){
+  const t=doc.type||'md';
+  // Hide everything
+  ['edit-body','edit-preview','code-meta','code-preview','check-view','snip-view','mode-toggle'].forEach(id=>{
+    const el=document.getElementById(id);if(el)el.classList.add('hide');
+  });
+
+  if(t==='md'){
+    document.getElementById('mode-toggle').classList.remove('hide');
+    if(mode==='preview'){
+      document.getElementById('edit-preview').classList.remove('hide');
+      document.getElementById('edit-preview').innerHTML=md2html(doc.content||'');
+    } else {
+      document.getElementById('edit-body').classList.remove('hide');
+      document.getElementById('edit-body').classList.remove('code-mode');
+    }
+  } else if(t==='code'){
+    document.getElementById('mode-toggle').classList.remove('hide');
+    document.getElementById('code-meta').classList.remove('hide');
+    if(mode==='preview'){
+      const pv=document.getElementById('code-preview');
+      pv.classList.remove('hide');
+      pv.innerHTML='<button class="copy-code-btn" onclick="copyActiveBody()">COPY</button><pre>'+highlight(doc.content||'',doc.codeLang||'plain')+'</pre>';
+    } else {
+      document.getElementById('edit-body').classList.remove('hide');
+      document.getElementById('edit-body').classList.add('code-mode');
+    }
+  } else if(t==='check'){
+    document.getElementById('check-view').classList.remove('hide');
+    renderChecklist(doc);
+  } else if(t==='snip'){
+    document.getElementById('snip-view').classList.remove('hide');
+  }
 }
 
 function setMode(m){
   mode=m;
-  const eb=document.getElementById('mode-edit');
-  const pb=document.getElementById('mode-prev');
-  const ta=document.getElementById('edit-body');
-  const pv=document.getElementById('edit-preview');
-  if(!eb||!pb||!ta||!pv)return;
-  eb.classList.toggle('on',m==='edit');
-  pb.classList.toggle('on',m==='preview');
+  document.getElementById('mode-edit').classList.toggle('on',m==='edit');
+  document.getElementById('mode-prev').classList.toggle('on',m==='preview');
+  const doc=S.vaultDocs.find(d=>d.id===activeId);if(!doc)return;
+  // snapshot body before switching to preview
   if(m==='preview'){
-    // snapshot current text
-    const doc=S.vaultDocs.find(d=>d.id===activeId);
-    if(doc){doc.content=ta.value;doc.title=document.getElementById('edit-title').value;}
-    pv.innerHTML=md2html(ta.value||'');
-    ta.classList.add('hide');
-    pv.classList.remove('hide');
-  } else {
-    pv.classList.add('hide');
-    ta.classList.remove('hide');
+    if(doc.type==='md'||doc.type==='code'){
+      doc.content=document.getElementById('edit-body').value;
+    }
+  }
+  renderTypeView(doc);
+}
+
+function setType(t){
+  const doc=S.vaultDocs.find(d=>d.id===activeId);if(!doc)return;
+  // Persist current content based on previous type
+  if(doc.type==='md'||doc.type==='code'){doc.content=document.getElementById('edit-body').value;}
+  if(doc.type==='snip'){doc.content=document.getElementById('snip-body').value;}
+  doc.type=t;
+  mode='edit';
+  document.querySelectorAll('#type-picker .type-btn').forEach(b=>b.classList.toggle('on',b.dataset.t===t));
+  // Sync inputs
+  document.getElementById('edit-body').value=doc.content||'';
+  document.getElementById('snip-body').value=doc.content||'';
+  renderTypeView(doc);
+  save();
+}
+
+function togglePin(){
+  const doc=S.vaultDocs.find(d=>d.id===activeId);if(!doc)return;
+  doc.pinned=!doc.pinned;
+  document.getElementById('pin-btn').classList.toggle('on',doc.pinned);
+  save();toast(doc.pinned?'PINNED':'UNPINNED');
+}
+
+// ── CODE LANG ──
+document.addEventListener('change',e=>{
+  if(e.target&&e.target.id==='code-lang'){
+    const doc=S.vaultDocs.find(d=>d.id===activeId);if(!doc)return;
+    doc.codeLang=e.target.value;save();
+    if(mode==='preview') renderTypeView(doc);
+  }
+});
+
+// ── CHECKLIST ──
+function renderChecklist(doc){
+  if(!doc.checklist) doc.checklist=[];
+  // parse lines from content if checklist empty (migration on first open)
+  if(!doc.checklist.length&&doc.content){
+    doc.checklist=doc.content.split('\n').filter(l=>l.trim()).map(line=>{
+      const m=line.match(/^\s*[-*]\s*\[([ xX])\]\s*(.*)$/);
+      return m?{text:m[2],done:m[1].toLowerCase()==='x'}:{text:line.replace(/^\s*[-*]\s*/,''),done:false};
+    });
+  }
+  const view=document.getElementById('check-view');
+  let h='<div class="chk-add-row"><input class="chk-add-in" id="chk-add-in" placeholder="New item..." onkeydown="if(event.key===\'Enter\')addChkItem()"><button class="chk-add-btn" onclick="addChkItem()">ADD</button></div>';
+  doc.checklist.forEach((it,i)=>{
+    h+='<div class="chk-row'+(it.done?' done':'')+'" data-i="'+i+'">'+
+      '<div class="chk-box" onclick="toggleChk('+i+')"></div>'+
+      '<div class="chk-text" onclick="editChkItem('+i+')">'+escHtml(it.text||'')+'</div>'+
+      '<button class="chk-copy" onclick="copyText(\''+escAttr(it.text||'')+'\')">⎘</button>'+
+      '<button class="chk-copy" onclick="delChk('+i+')" style="color:#f87171">✕</button>'+
+    '</div>';
+  });
+  view.innerHTML=h;
+}
+function toggleChk(i){const doc=S.vaultDocs.find(d=>d.id===activeId);if(!doc)return;doc.checklist[i].done=!doc.checklist[i].done;doc.updated=Date.now();save();renderChecklist(doc);}
+function addChkItem(){const doc=S.vaultDocs.find(d=>d.id===activeId);if(!doc)return;const inEl=document.getElementById('chk-add-in');const v=inEl.value.trim();if(!v)return;doc.checklist.push({text:v,done:false});doc.updated=Date.now();save();inEl.value='';renderChecklist(doc);setTimeout(()=>document.getElementById('chk-add-in')?.focus(),20);}
+function delChk(i){const doc=S.vaultDocs.find(d=>d.id===activeId);if(!doc)return;doc.checklist.splice(i,1);doc.updated=Date.now();save();renderChecklist(doc);}
+function editChkItem(i){const doc=S.vaultDocs.find(d=>d.id===activeId);if(!doc)return;const cur=doc.checklist[i].text;const v=prompt('Edit item:',cur);if(v!==null){doc.checklist[i].text=v;doc.updated=Date.now();save();renderChecklist(doc);}}
+
+// ── SNIPPET COPY ──
+function copyActiveBody(){
+  const doc=S.vaultDocs.find(d=>d.id===activeId);if(!doc)return;
+  let text='';
+  if(doc.type==='snip') text=document.getElementById('snip-body').value||doc.content||'';
+  else if(doc.type==='md'||doc.type==='code') text=document.getElementById('edit-body').value||doc.content||'';
+  if(!text){toast('NOTHING TO COPY');return;}
+  copyText(text);
+  if(doc.type==='snip'){
+    const b=document.getElementById('snip-copy-btn');
+    b.classList.add('copied');b.textContent='✓ COPIED';
+    setTimeout(()=>{b.classList.remove('copied');b.textContent='⎘ TAP TO COPY';},1500);
   }
 }
 
+// ── TAGS ──
+function openTagSheet(){
+  saveDoc(true); // silent save current
+  const doc=S.vaultDocs.find(d=>d.id===activeId);if(!doc)return;
+  const all=[...new Set([...(S.vaultTags||[]),...S.vaultDocs.flatMap(d=>d.tags||[])])].sort();
+  const current=new Set(doc.tags||[]);
+  let h='<div class="v-sh-title">TAGS</div>';
+  h+='<div class="v-sh-chip-row">';
+  all.forEach(t=>{
+    h+='<span class="v-sh-chip'+(current.has(t)?' on':'')+'" onclick="toggleTag(\''+escAttr(t)+'\')">#'+escHtml(t)+'</span>';
+  });
+  h+='</div>';
+  h+='<input class="v-sh-input" id="new-tag-in" placeholder="new tag name..." maxlength="20">';
+  h+='<button class="v-sh-btn primary" onclick="createTag()">+ CREATE TAG</button>';
+  h+='<button class="v-sh-btn" onclick="closeSheet()">DONE</button>';
+  openSheet(h);
+}
+function toggleTag(tag){
+  const doc=S.vaultDocs.find(d=>d.id===activeId);if(!doc)return;
+  if(!doc.tags) doc.tags=[];
+  const i=doc.tags.indexOf(tag);
+  if(i>=0) doc.tags.splice(i,1); else doc.tags.push(tag);
+  doc.updated=Date.now();save();
+  openTagSheet();
+  renderTagRow(doc);
+}
+function createTag(){
+  const inEl=document.getElementById('new-tag-in');
+  let v=(inEl.value||'').trim().toLowerCase().replace(/[^\w-]/g,'-').slice(0,20);
+  if(!v)return;
+  if(!S.vaultTags.includes(v)) S.vaultTags.push(v);
+  const doc=S.vaultDocs.find(d=>d.id===activeId);
+  if(doc&&!doc.tags.includes(v)){doc.tags.push(v);doc.updated=Date.now();}
+  save();openTagSheet();renderTagRow(doc);
+}
+function removeTag(tag){
+  const doc=S.vaultDocs.find(d=>d.id===activeId);if(!doc)return;
+  doc.tags=(doc.tags||[]).filter(t=>t!==tag);
+  doc.updated=Date.now();save();renderTagRow(doc);
+}
+
+// ── MOVE between shows ──
+function openShowPicker(){
+  saveDoc(true);
+  const doc=S.vaultDocs.find(d=>d.id===activeId);if(!doc)return;
+  let h='<div class="v-sh-title">MOVE TO SHOW</div>';
+  h+='<div class="v-sh-row" onclick="setShow(null)">'+
+    '<div class="v-sh-row-lbl">GENERAL</div>'+
+    (!doc.showId?'<span class="v-sh-row-chk">✓</span>':'')+
+  '</div>';
+  (S.shows||[]).forEach(s=>{
+    h+='<div class="v-sh-row" onclick="setShow(\''+s.id+'\')">'+
+      '<div class="v-sh-row-lbl">'+escHtml(s.code)+' — '+escHtml(s.name||'')+'</div>'+
+      (doc.showId===s.id?'<span class="v-sh-row-chk">✓</span>':'')+
+    '</div>';
+  });
+  h+='<button class="v-sh-btn" onclick="closeSheet()">CANCEL</button>';
+  openSheet(h);
+}
+function setShow(sid){
+  const doc=S.vaultDocs.find(d=>d.id===activeId);if(!doc)return;
+  doc.showId=sid;doc.updated=Date.now();save();
+  closeSheet();renderTagRow(doc);toast(sid?'MOVED':'MOVED TO GENERAL');
+}
+
+// ── MOVE sheet (long-press on list row) ──
+function openMoveSheet(did){
+  const doc=S.vaultDocs.find(d=>d.id===did);if(!doc)return;
+  let h='<div class="v-sh-title">'+escHtml(doc.title||'Untitled')+'</div>';
+  h+='<div class="v-sh-row" onclick="toggleDocPin(\''+did+'\')"><div class="v-sh-row-lbl">'+(doc.pinned?'📌 UNPIN':'📌 PIN')+'</div></div>';
+  h+='<div class="v-sh-row" onclick="openMoveShowSheet(\''+did+'\')"><div class="v-sh-row-lbl">Move to show →</div></div>';
+  h+='<div class="v-sh-row" onclick="openDocTagSheet(\''+did+'\')"><div class="v-sh-row-lbl">Edit tags →</div></div>';
+  h+='<div class="v-sh-row" onclick="duplicateDoc(\''+did+'\')"><div class="v-sh-row-lbl">Duplicate</div></div>';
+  h+='<div class="v-sh-row" onclick="copyDocContent(\''+did+'\')"><div class="v-sh-row-lbl">Copy content</div></div>';
+  h+='<button class="v-sh-btn danger" onclick="deleteDocById(\''+did+'\')">DELETE NOTE</button>';
+  h+='<button class="v-sh-btn" onclick="closeSheet()">CANCEL</button>';
+  openSheet(h);
+}
+function toggleDocPin(did){const doc=S.vaultDocs.find(d=>d.id===did);if(!doc)return;doc.pinned=!doc.pinned;save();closeSheet();renderList();toast(doc.pinned?'PINNED':'UNPINNED');}
+function openMoveShowSheet(did){
+  const doc=S.vaultDocs.find(d=>d.id===did);if(!doc)return;
+  let h='<div class="v-sh-title">MOVE TO SHOW</div>';
+  h+='<div class="v-sh-row" onclick="setDocShow(\''+did+'\',null)"><div class="v-sh-row-lbl">GENERAL</div>'+(!doc.showId?'<span class="v-sh-row-chk">✓</span>':'')+'</div>';
+  (S.shows||[]).forEach(s=>{
+    h+='<div class="v-sh-row" onclick="setDocShow(\''+did+'\',\''+s.id+'\')"><div class="v-sh-row-lbl">'+escHtml(s.code)+' — '+escHtml(s.name||'')+'</div>'+(doc.showId===s.id?'<span class="v-sh-row-chk">✓</span>':'')+'</div>';
+  });
+  h+='<button class="v-sh-btn" onclick="closeSheet()">CANCEL</button>';
+  openSheet(h);
+}
+function setDocShow(did,sid){const doc=S.vaultDocs.find(d=>d.id===did);if(!doc)return;doc.showId=sid;doc.updated=Date.now();save();closeSheet();renderList();toast('MOVED');}
+function openDocTagSheet(did){
+  const doc=S.vaultDocs.find(d=>d.id===did);if(!doc)return;
+  const all=[...new Set([...(S.vaultTags||[]),...S.vaultDocs.flatMap(d=>d.tags||[])])].sort();
+  const current=new Set(doc.tags||[]);
+  let h='<div class="v-sh-title">TAGS — '+escHtml(doc.title||'Untitled')+'</div>';
+  h+='<div class="v-sh-chip-row">';
+  all.forEach(t=>{
+    h+='<span class="v-sh-chip'+(current.has(t)?' on':'')+'" onclick="toggleDocTag(\''+did+'\',\''+escAttr(t)+'\')">#'+escHtml(t)+'</span>';
+  });
+  h+='</div>';
+  h+='<input class="v-sh-input" id="new-tag-in2" placeholder="new tag name..." maxlength="20">';
+  h+='<button class="v-sh-btn primary" onclick="createDocTag(\''+did+'\')">+ CREATE TAG</button>';
+  h+='<button class="v-sh-btn" onclick="closeSheet()">DONE</button>';
+  openSheet(h);
+}
+function toggleDocTag(did,tag){
+  const doc=S.vaultDocs.find(d=>d.id===did);if(!doc)return;
+  if(!doc.tags) doc.tags=[];
+  const i=doc.tags.indexOf(tag);
+  if(i>=0) doc.tags.splice(i,1); else doc.tags.push(tag);
+  doc.updated=Date.now();save();openDocTagSheet(did);
+}
+function createDocTag(did){
+  const inEl=document.getElementById('new-tag-in2');
+  let v=(inEl.value||'').trim().toLowerCase().replace(/[^\w-]/g,'-').slice(0,20);
+  if(!v)return;
+  if(!S.vaultTags.includes(v)) S.vaultTags.push(v);
+  const doc=S.vaultDocs.find(d=>d.id===did);
+  if(doc&&!doc.tags.includes(v)){doc.tags.push(v);doc.updated=Date.now();}
+  save();openDocTagSheet(did);
+}
+function duplicateDoc(did){
+  const doc=S.vaultDocs.find(d=>d.id===did);if(!doc)return;
+  const copy=JSON.parse(JSON.stringify(doc));
+  copy.id='v'+Date.now();copy.title=(doc.title||'Untitled')+' (copy)';copy.updated=Date.now();copy.pinned=false;
+  S.vaultDocs.unshift(copy);save();closeSheet();renderList();toast('DUPLICATED');
+}
+function copyDocContent(did){
+  const doc=S.vaultDocs.find(d=>d.id===did);if(!doc)return;
+  let text=doc.content||'';
+  if(doc.type==='check'&&doc.checklist?.length){
+    text=doc.checklist.map(c=>(c.done?'[x] ':'[ ] ')+c.text).join('\n');
+  }
+  copyText(text);closeSheet();
+}
+function deleteDocById(did){
+  const doc=S.vaultDocs.find(d=>d.id===did);if(!doc)return;
+  if(!confirm('Delete "'+(doc.title||'Untitled')+'"?'))return;
+  S.vaultDocs=S.vaultDocs.filter(d=>d.id!==did);save();closeSheet();renderList();toast('DELETED');
+}
+
+// ── ACTION SHEET from editor (⋯ button) ──
+function openActionSheet(){
+  saveDoc(true);
+  if(!activeId)return;
+  const doc=S.vaultDocs.find(d=>d.id===activeId);if(!doc)return;
+  let h='<div class="v-sh-title">'+escHtml(doc.title||'Untitled')+'</div>';
+  h+='<div class="v-sh-row" onclick="copyActiveBody();closeSheet()"><div class="v-sh-row-lbl">⎘ Copy all content</div></div>';
+  h+='<div class="v-sh-row" onclick="duplicateDoc(\''+activeId+'\')"><div class="v-sh-row-lbl">Duplicate</div></div>';
+  h+='<button class="v-sh-btn danger" onclick="deleteDoc()">DELETE NOTE</button>';
+  h+='<button class="v-sh-btn" onclick="closeSheet()">CANCEL</button>';
+  openSheet(h);
+}
+
+// ── SHEET helpers ──
+function openSheet(html){
+  document.getElementById('sh-content').innerHTML=html;
+  document.getElementById('sh-ovl').classList.add('open');
+}
+function closeSheet(){document.getElementById('sh-ovl').classList.remove('open');}
+document.getElementById('sh-ovl').addEventListener('click',function(e){if(e.target===this)closeSheet();});
+
+// ── NEW / SAVE / DELETE ──
 function newDoc(){
   const id='v'+Date.now();
   const show=S.shows[0]||null;
-  S.vaultDocs.unshift({id,title:'New Note',content:'',showId:show?show.id:null,updated:Date.now()});
+  S.vaultDocs.unshift({id,title:'New Note',content:'',showId:show?show.id:null,tags:[],type:'md',pinned:false,codeLang:'plain',checklist:[],updated:Date.now()});
   save();openDoc(id);
 }
 
-function saveDoc(){
+function saveDoc(silent){
   if(!activeId)return;
   const doc=S.vaultDocs.find(d=>d.id===activeId);if(!doc)return;
   doc.title=document.getElementById('edit-title').value.trim()||'Untitled';
-  doc.content=document.getElementById('edit-body').value;
+  if(doc.type==='md'||doc.type==='code') doc.content=document.getElementById('edit-body').value;
+  else if(doc.type==='snip') doc.content=document.getElementById('snip-body').value;
+  // checklist saves itself on toggle/add/del
   doc.updated=Date.now();
-  save();toast('SAVED');dbg('[VAULT] saved '+activeId);
+  save();
+  if(!silent) toast('SAVED');
+  dbg('[VAULT] saved '+activeId);
   document.getElementById('title-lbl').textContent=doc.title.toUpperCase().slice(0,18);
 }
 
 function deleteDoc(){
   if(!activeId)return;
-  if(!confirm('Delete this note?'))return;
+  const doc=S.vaultDocs.find(d=>d.id===activeId);if(!doc)return;
+  if(!confirm('Delete "'+(doc.title||'Untitled')+'"?'))return;
   S.vaultDocs=S.vaultDocs.filter(d=>d.id!==activeId);
-  save();showList();toast('DELETED');
+  save();closeSheet();showList();toast('DELETED');
 }
 
 document.getElementById('back-btn').addEventListener('click',function(){
-  if(activeId){saveDoc();showList();}
+  if(activeId){saveDoc(true);showList();}
   else{window.location.href='./';}
 });
 
-dbg('[VAULT] '+BUILD_ID+' boot');
+dbg('[VAULT] '+BUILD_ID+' boot | docs='+S.vaultDocs.length+' tags='+S.vaultTags.length);
 renderList();
 </script>
 </body>
