@@ -3303,6 +3303,14 @@ body { display: flex; flex-direction: column; }
 </div>
 
 
+
+<div id="ms-bar" class="ms-bar">
+  <span id="ms-count" class="ms-count">0 SELECTED</span>
+  <button class="ms-btn done" onclick="msBatchDone()">COMPLETE</button>
+  <button class="ms-btn del" onclick="msBatchDelete()">DELETE</button>
+  <button class="ms-btn cancel" onclick="msClear()">CANCEL</button>
+</div>
+
 <div id="toast" style="position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(30,32,41,0.95);border:1px solid rgba(255,255,255,0.12);color:#f4f7fa;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:0.10em;padding:8px 20px;border-radius:4px;opacity:0;transition:all 0.2s;pointer-events:none;z-index:99999;white-space:nowrap;"></div>
 
 <div id="dbg-bar" style="flex-shrink:0;background:#0a0d0a;border-top:1px solid #1a3a1a;font-family:monospace;font-size:10px;">
@@ -3369,7 +3377,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-PAYLOAD-20260416-004';
+const BUILD_ID = 'VTEK-PAYLOAD-20260416-005';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
@@ -3480,6 +3488,10 @@ let autoSyncInterval=null;
 const BACKUP_KEY='vtek9_backups';
 const MAX_BACKUPS=20;
 
+// ══ PAYLOAD-ONLY STATE VARS ══
+var _msActive = false;
+var _msSelected = new Set();
+var _lpTimer = null;
 // ══ PAYLOAD-ONLY STUBS ══
 function quickAdd(){ if(typeof plQuickLog==="function") plQuickLog(); }
 // No-ops for cross-module functions not needed in payload-only context
