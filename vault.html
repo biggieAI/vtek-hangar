@@ -19,14 +19,22 @@
 }
 html,body{background:var(--bg);color:var(--t0);font-family:var(--sans);font-size:14px;line-height:1.4;overflow:hidden;height:100dvh;width:100vw;}
 body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-available;overflow:hidden;}
-.topbar{display:flex;align-items:center;gap:8px;padding:calc(var(--safe-t)+12px) 12px 12px;background:var(--s1);border-bottom:var(--b1);flex-shrink:0;touch-action:manipulation;position:relative;}
+
+/* TOPBAR — single row, no wrap, fixed height */
+.topbar{display:flex;align-items:center;gap:6px;padding:calc(var(--safe-t)+6px) 8px 6px;background:var(--s1);border-bottom:var(--b1);flex-shrink:0;touch-action:manipulation;position:relative;min-height:44px;}
 .topbar::after{content:'';position:absolute;bottom:-1px;left:8%;right:8%;height:1px;background:linear-gradient(90deg,transparent,rgba(200,220,232,0.5) 50%,transparent);opacity:0.3;}
-.back-btn{display:flex;align-items:center;gap:6px;background:none;border:none;color:var(--t1);font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:0.08em;padding:10px 10px 10px 8px;min-height:44px;min-width:44px;cursor:pointer;touch-action:manipulation;-webkit-user-select:none;user-select:none;}
+.back-btn{display:flex;align-items:center;gap:4px;background:none;border:none;color:var(--teal);font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:0.06em;padding:8px;min-height:40px;min-width:44px;cursor:pointer;touch-action:manipulation;-webkit-user-select:none;user-select:none;flex-shrink:0;}
 .back-btn svg,.back-btn span{pointer-events:none;}
-.title{font-family:var(--mono);font-size:14px;font-weight:800;letter-spacing:0.10em;color:var(--accent-hi);}
-.actions{margin-left:auto;display:flex;gap:4px;}
-.tb-btn{padding:6px 12px;background:var(--s3);border:var(--b2);color:var(--t0);font-family:var(--sans);font-size:10px;font-weight:700;letter-spacing:0.05em;cursor:pointer;min-height:32px;border-radius:8px;touch-action:manipulation;-webkit-user-select:none;user-select:none;}
+.title{font-family:var(--mono);font-size:13px;font-weight:800;letter-spacing:0.08em;color:var(--accent-hi);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;min-width:0;}
+.actions{margin-left:auto;display:flex;gap:4px;align-items:center;flex-shrink:0;}
+.tb-btn{padding:6px 10px;background:var(--s3);border:var(--b2);color:var(--t0);font-family:var(--sans);font-size:10px;font-weight:700;letter-spacing:0.05em;cursor:pointer;min-height:32px;border-radius:8px;touch-action:manipulation;-webkit-user-select:none;user-select:none;}
 .tb-btn.primary{background:#fff;color:#000;border-color:#fff;}
+
+/* SECONDARY EDITOR BAR (row 2 in edit mode) */
+.editor-bar{display:flex;align-items:center;gap:4px;padding:6px 8px;background:var(--s1);border-bottom:var(--b1);flex-shrink:0;overflow-x:auto;-webkit-overflow-scrolling:touch;touch-action:pan-x;scrollbar-width:none;}
+.editor-bar::-webkit-scrollbar{display:none;}
+.editor-bar > *{flex-shrink:0;}
+
 .main{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;touch-action:pan-y;}
 
 /* VAULT LIST */
@@ -51,7 +59,11 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 .editor-title-in{flex:1;background:none;border:none;color:var(--t0);font-family:var(--sans);font-size:14px;font-weight:700;padding:0 4px;outline:none;}
 .editor-save{background:#fff;color:#000;border:none;font-family:var(--mono);font-size:10px;font-weight:800;padding:7px 14px;border-radius:8px;cursor:pointer;letter-spacing:0.06em;touch-action:manipulation;}
 .editor-del{background:none;border:var(--b2);color:var(--t2);font-family:var(--mono);font-size:10px;font-weight:700;padding:7px 10px;border-radius:8px;cursor:pointer;letter-spacing:0.06em;touch-action:manipulation;}
-.editor-textarea{flex:1;width:100%;background:transparent;border:none;color:var(--t0);font-family:var(--sans);font-size:14px;line-height:1.7;padding:16px;outline:none;resize:none;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.editor-textarea{flex:1;width:100%;background:transparent;border:none;color:var(--t0);font-family:var(--sans);font-size:15px;line-height:1.6;padding:14px 16px;outline:none;resize:none;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+
+/* Title — Obsidian-quiet, big-ish but no border */
+.editor-title-in{width:100%;background:transparent;border:none;color:var(--t0);font-family:var(--sans);font-size:20px;font-weight:700;padding:14px 16px 4px;outline:none;letter-spacing:-0.01em;flex-shrink:0;}
+.editor-title-in::placeholder{color:var(--t3);}
 
 /* TAG ROW */
 .vault-tag-row{display:flex;gap:6px;padding:4px 16px 8px;flex-shrink:0;}
@@ -75,9 +87,9 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 .vault-preview strong{color:var(--accent-hi);}
 .vault-preview em{color:var(--t1);font-style:italic;}
 
-/* TYPE PICKER in topbar */
-.type-picker{display:flex;gap:0;background:var(--s2);border:var(--b2);border-radius:8px;overflow:hidden;margin-right:6px;flex-shrink:0;}
-.type-btn{padding:6px 8px;background:none;border:none;color:var(--t2);font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:0.06em;cursor:pointer;min-height:32px;min-width:36px;touch-action:manipulation;-webkit-user-select:none;user-select:none;}
+/* TYPE PICKER in editor bar */
+.type-picker{display:flex;gap:0;background:var(--s2);border:var(--b2);border-radius:8px;overflow:hidden;flex-shrink:0;}
+.type-btn{padding:6px 9px;background:none;border:none;color:var(--t2);font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:0.04em;cursor:pointer;min-height:32px;min-width:42px;touch-action:manipulation;-webkit-user-select:none;user-select:none;}
 .type-btn.on{background:var(--s4);color:var(--teal);}
 
 /* DOC ROW - pinned + multi-tag indicator */
@@ -136,10 +148,12 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 .snippet-big-copy.copied{background:var(--s-app,#4ade80);}
 
 /* SHEET (bottom-up) */
-.v-sheet-ovl{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:900;display:none;}
-.v-sheet-ovl.open{display:block;}
-.v-sheet{position:fixed;left:0;right:0;bottom:0;background:var(--s1);border-top:var(--b2);border-radius:14px 14px 0 0;z-index:901;max-height:72dvh;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px 16px calc(var(--safe-b)+20px);transform:translateY(100%);transition:transform 0.2s;}
-.v-sheet-ovl.open .v-sheet{transform:translateY(0);}
+.v-sheet-wrap{position:fixed;inset:0;z-index:900;pointer-events:none;}
+.v-sheet-ovl{position:absolute;inset:0;background:rgba(0,0,0,0.6);opacity:0;transition:opacity 0.2s;pointer-events:none;}
+.v-sheet-wrap.open{pointer-events:auto;}
+.v-sheet-wrap.open .v-sheet-ovl{opacity:1;pointer-events:auto;}
+.v-sheet{position:absolute;left:0;right:0;bottom:0;background:var(--s1);border-top:var(--b2);border-radius:14px 14px 0 0;max-height:72dvh;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px 16px calc(var(--safe-b)+20px);transform:translateY(100%);transition:transform 0.22s cubic-bezier(0.16,1,0.3,1);box-shadow:0 -8px 30px rgba(0,0,0,0.5);}
+.v-sheet-wrap.open .v-sheet{transform:translateY(0);}
 .v-sh-handle{width:36px;height:4px;background:var(--t3);border-radius:2px;margin:0 auto 14px;}
 .v-sh-title{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--t1);letter-spacing:0.1em;margin-bottom:12px;}
 .v-sh-row{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:var(--b1);cursor:pointer;touch-action:manipulation;}
@@ -161,8 +175,9 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 .pin-btn.on{color:var(--teal);border-color:rgba(33,225,223,0.3);}
 
 /* ═══ WAVE 2: MD TOOLBAR ═══ */
-.md-toolbar{display:flex;gap:4px;padding:6px 8px;background:var(--s1);border-top:var(--b1);border-bottom:var(--b1);flex-shrink:0;overflow-x:auto;-webkit-overflow-scrolling:touch;touch-action:pan-x;}
-.md-tb-btn{background:var(--s3);border:var(--b2);color:var(--t1);font-family:var(--mono);font-size:11px;font-weight:700;padding:6px 10px;border-radius:5px;cursor:pointer;min-width:36px;min-height:32px;flex-shrink:0;touch-action:manipulation;-webkit-user-select:none;user-select:none;letter-spacing:0.04em;}
+.md-toolbar{display:flex;gap:3px;padding:6px 10px;background:var(--s1);border-top:var(--b1);border-bottom:var(--b1);flex-shrink:0;overflow-x:auto;-webkit-overflow-scrolling:touch;touch-action:pan-x;scrollbar-width:none;}
+.md-toolbar::-webkit-scrollbar{display:none;}
+.md-tb-btn{background:var(--s3);border:var(--b2);color:var(--t1);font-family:var(--mono);font-size:11px;font-weight:700;padding:5px 8px;border-radius:5px;cursor:pointer;min-width:34px;min-height:30px;flex-shrink:0;touch-action:manipulation;-webkit-user-select:none;user-select:none;letter-spacing:0.04em;}
 .md-tb-btn:active{background:var(--s4);color:var(--teal);}
 .md-tb-btn.b{font-weight:900;}
 .md-tb-btn.i{font-style:italic;}
@@ -206,13 +221,13 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 .toast{position:fixed;bottom:calc(var(--safe-b)+48px);left:50%;transform:translateX(-50%) translateY(20px);background:var(--s4);border:var(--b2);color:var(--t0);font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:0.10em;padding:9px 20px;opacity:0;transition:all 0.2s;pointer-events:none;white-space:nowrap;z-index:600;border-radius:20px;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 .dbg{flex-shrink:0;background:#0a0d0a;border-top:1px solid #1a3a1a;font-family:monospace;font-size:10px;}
-.dbg-hd{height:28px;display:flex;align-items:center;padding:0 10px;gap:10px;touch-action:manipulation;}
-.dbg-btn{background:none;border:none;color:#0f0;font-size:10px;font-family:monospace;cursor:pointer;min-width:44px;min-height:28px;padding:0;}
-.dbg-id{color:#555;font-size:9px;flex:1;}
-.dbg-copy{background:#1a2a1a;border:1px solid #2a4a2a;color:#0f0;padding:2px 8px;font-size:9px;font-family:monospace;cursor:pointer;min-height:24px;}
-.dbg-body{display:none;max-height:140px;overflow-y:auto;border-top:1px solid #1a3a1a;}
+.dbg-hd{height:20px;display:flex;align-items:center;padding:0 8px;gap:8px;touch-action:manipulation;}
+.dbg-btn{background:none;border:none;color:#0f0;font-size:9px;font-family:monospace;cursor:pointer;min-width:36px;min-height:20px;padding:0;}
+.dbg-id{color:#444;font-size:8px;flex:1;}
+.dbg-copy{background:#1a2a1a;border:1px solid #2a4a2a;color:#0f0;padding:1px 6px;font-size:8px;font-family:monospace;cursor:pointer;min-height:18px;}
+.dbg-body{display:none;max-height:120px;overflow-y:auto;border-top:1px solid #1a3a1a;}
 .dbg.open .dbg-body{display:block;}
-.dbg-log{color:#0f0;line-height:1.5;white-space:pre-wrap;padding:4px 10px;font-size:9px;}
+.dbg-log{color:#0f0;line-height:1.4;white-space:pre-wrap;padding:3px 8px;font-size:9px;}
 .hide{display:none!important;}
 </style>
 </head>
@@ -227,19 +242,23 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
     <button class="tb-btn primary" onclick="newDoc()">+ NEW</button>
   </div>
   <div class="actions hide" id="edit-actions">
-    <button class="pin-btn" id="pin-btn" onclick="togglePin()" title="Pin">📌</button>
-    <div class="type-picker" id="type-picker">
-      <button class="type-btn on" data-t="md" onclick="setType('md')">MD</button>
-      <button class="type-btn" data-t="code" onclick="setType('code')">&lt;/&gt;</button>
-      <button class="type-btn" data-t="check" onclick="setType('check')">☐</button>
-      <button class="type-btn" data-t="snip" onclick="setType('snip')">⎘</button>
-    </div>
-    <div class="mode-toggle" id="mode-toggle">
-      <button class="mode-btn on" id="mode-edit" onclick="setMode('edit')">EDIT</button>
-      <button class="mode-btn" id="mode-prev" onclick="setMode('preview')">PREV</button>
-    </div>
-    <button class="editor-del" id="del-btn" onclick="openActionSheet()">⋯</button>
     <button class="editor-save" onclick="saveDoc()">SAVE</button>
+    <button class="editor-del" id="del-btn" onclick="openActionSheet()">⋯</button>
+  </div>
+</div>
+
+<!-- ROW 2: editor-only secondary bar -->
+<div class="editor-bar hide" id="editor-bar">
+  <button class="pin-btn" id="pin-btn" onclick="togglePin()" title="Pin">📌</button>
+  <div class="type-picker" id="type-picker">
+    <button class="type-btn on" data-t="md" onclick="setType('md')">MD</button>
+    <button class="type-btn" data-t="code" onclick="setType('code')">CODE</button>
+    <button class="type-btn" data-t="check" onclick="setType('check')">LIST</button>
+    <button class="type-btn" data-t="snip" onclick="setType('snip')">SNIP</button>
+  </div>
+  <div class="mode-toggle" id="mode-toggle">
+    <button class="mode-btn on" id="mode-edit" onclick="setMode('edit')">EDIT</button>
+    <button class="mode-btn" id="mode-prev" onclick="setMode('preview')">PREV</button>
   </div>
 </div>
 
@@ -253,12 +272,28 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
     <div id="doc-list"></div>
   </div>
   <!-- EDITOR VIEW -->
-  <div id="v-edit" class="hide" style="display:flex;flex-direction:column;min-height:0;">
-    <input class="editor-title-in" id="edit-title" placeholder="Note title..." type="text">
+  <div id="v-edit" class="hide" style="display:flex;flex-direction:column;min-height:0;flex:1;">
+    <input class="editor-title-in" id="edit-title" placeholder="Untitled" type="text">
     <div class="vault-tag-row" id="tag-row"></div>
 
+    <!-- MD TOOLBAR (pinned top, only shown when md type + edit mode) -->
+    <div class="md-toolbar hide" id="md-toolbar">
+      <button class="md-tb-btn b" onclick="mdWrap('**','**')">B</button>
+      <button class="md-tb-btn i" onclick="mdWrap('*','*')">I</button>
+      <button class="md-tb-btn" onclick="mdLinePrefix('# ')">H1</button>
+      <button class="md-tb-btn" onclick="mdLinePrefix('## ')">H2</button>
+      <button class="md-tb-btn" onclick="mdLinePrefix('### ')">H3</button>
+      <button class="md-tb-btn mono" onclick="mdWrap('\`','\`')">CODE</button>
+      <button class="md-tb-btn mono" onclick="mdWrapBlock('\`\`\`\n','\n\`\`\`')">BLK</button>
+      <button class="md-tb-btn" onclick="mdLinePrefix('- ')">LIST</button>
+      <button class="md-tb-btn" onclick="mdLinePrefix('- [ ] ')">CHK</button>
+      <button class="md-tb-btn" onclick="mdInsertLink()">LINK</button>
+      <button class="md-tb-btn" onclick="mdInsert('---\n')">HR</button>
+      <button class="md-tb-btn" onclick="attachAdd()">FILE</button>
+    </div>
+
     <!-- ATTACHMENT STRIP -->
-    <div class="att-strip" id="att-strip"></div>
+    <div class="att-strip hide" id="att-strip"></div>
 
     <!-- MD / generic textarea -->
     <textarea class="editor-textarea" id="edit-body" placeholder="Write in markdown...&#10;&#10;# Heading&#10;**Bold**, *italic*&#10;- List item&#10;```code```"></textarea>
@@ -293,22 +328,6 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
       <textarea class="editor-textarea" id="snip-body" placeholder="Paste snippet here..."></textarea>
     </div>
 
-    <!-- MD TOOLBAR (wave 2) -->
-    <div class="md-toolbar hide" id="md-toolbar">
-      <button class="md-tb-btn b" onclick="mdWrap('**','**')">B</button>
-      <button class="md-tb-btn i" onclick="mdWrap('*','*')">I</button>
-      <button class="md-tb-btn" onclick="mdLinePrefix('# ')">H1</button>
-      <button class="md-tb-btn" onclick="mdLinePrefix('## ')">H2</button>
-      <button class="md-tb-btn" onclick="mdLinePrefix('### ')">H3</button>
-      <button class="md-tb-btn mono" onclick="mdWrap('\`','\`')">&lt;/&gt;</button>
-      <button class="md-tb-btn mono" onclick="mdWrapBlock('\`\`\`\n','\n\`\`\`')">```</button>
-      <button class="md-tb-btn" onclick="mdLinePrefix('- ')">• LIST</button>
-      <button class="md-tb-btn" onclick="mdLinePrefix('- [ ] ')">☐</button>
-      <button class="md-tb-btn" onclick="mdInsertLink()">🔗</button>
-      <button class="md-tb-btn" onclick="mdInsert('---\n')">HR</button>
-      <button class="md-tb-btn" onclick="attachAdd()">📎</button>
-    </div>
-
     <!-- FOOTER: char/word count -->
     <div class="edit-footer hide" id="edit-footer">
       <span id="ef-words">0 words</span>
@@ -318,11 +337,13 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
   </div>
 </div>
 
-<!-- ACTION / TAG / MOVE SHEET -->
-<div class="v-sheet-ovl" id="sh-ovl"></div>
-<div class="v-sheet" id="sh-body">
-  <div class="v-sh-handle"></div>
-  <div id="sh-content"></div>
+<!-- ACTION / TAG / MOVE SHEET (wrapped for proper z-stack + animation) -->
+<div class="v-sheet-wrap" id="sh-wrap">
+  <div class="v-sheet-ovl" id="sh-ovl"></div>
+  <div class="v-sheet" id="sh-body">
+    <div class="v-sh-handle"></div>
+    <div id="sh-content"></div>
+  </div>
 </div>
 
 <!-- ATTACHMENT VIEWER -->
@@ -342,7 +363,7 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 <div class="dbg" id="dbg">
   <div class="dbg-hd">
     <button class="dbg-btn" onclick="document.getElementById('dbg').classList.toggle('open')">&gt; DBG</button>
-    <span class="dbg-id">VTEK-VAULT-20260417-004</span>
+    <span class="dbg-id">VTEK-VAULT-20260417-005</span>
     <button class="dbg-copy" onclick="navigator.clipboard&&navigator.clipboard.writeText(document.getElementById('dbg-log').textContent);this.textContent='COPIED';setTimeout(()=>this.textContent='COPY',1500)">COPY</button>
   </div>
   <div class="dbg-body"><div class="dbg-log" id="dbg-log"></div></div>
@@ -350,7 +371,7 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 
 <script>
 'use strict';
-const BUILD_ID='VTEK-VAULT-20260417-004';
+const BUILD_ID='VTEK-VAULT-20260417-005';
 const LS='vtek9';
 let S=JSON.parse(localStorage.getItem(LS)||'null')||{shows:[],shots:[],tasks:[],vaultDocs:[],vaultTags:[]};
 if(!S.vaultDocs)S.vaultDocs=[];
@@ -572,6 +593,7 @@ function showList(){
   document.getElementById('v-edit').classList.add('hide');
   document.getElementById('list-actions').classList.remove('hide');
   document.getElementById('edit-actions').classList.add('hide');
+  document.getElementById('editor-bar').classList.add('hide');
   document.getElementById('back-lbl').textContent='HOME';
   document.getElementById('title-lbl').textContent='VAULT';
   // hide wave 2/3 editor UI
@@ -595,6 +617,7 @@ function openDoc(id){
   document.getElementById('v-edit').classList.remove('hide');
   document.getElementById('list-actions').classList.add('hide');
   document.getElementById('edit-actions').classList.remove('hide');
+  document.getElementById('editor-bar').classList.remove('hide');
   document.getElementById('back-lbl').textContent='VAULT';
 
   // Pin state
@@ -664,6 +687,8 @@ function renderAttStrip(doc){
   const strip=document.getElementById('att-strip');
   if(!strip) return;
   const atts=doc.att||[];
+  if(!atts.length){strip.classList.add('hide');strip.innerHTML='';return;}
+  strip.classList.remove('hide');
   let h='';
   atts.forEach((a,i)=>{
     if(a.kind==='img'){
@@ -1104,9 +1129,9 @@ function openActionSheet(){
 // ── SHEET helpers ──
 function openSheet(html){
   document.getElementById('sh-content').innerHTML=html;
-  document.getElementById('sh-ovl').classList.add('open');
+  document.getElementById('sh-wrap').classList.add('open');
 }
-function closeSheet(){document.getElementById('sh-ovl').classList.remove('open');}
+function closeSheet(){document.getElementById('sh-wrap').classList.remove('open');}
 document.getElementById('sh-ovl').addEventListener('click',function(e){if(e.target===this)closeSheet();});
 
 // ── NEW / SAVE / DELETE ──
@@ -1144,6 +1169,27 @@ document.getElementById('back-btn').addEventListener('click',function(){
   if(activeId){saveDoc(true);showList();}
   else{window.location.href='./';}
 });
+
+// Edge-swipe-right gesture to exit note (Obsidian / iOS style)
+let _swStartX=null,_swStartY=null,_swStartT=0;
+document.addEventListener('touchstart',function(e){
+  if(!activeId)return;
+  const t=e.touches[0];
+  if(t.clientX<24){ // left edge
+    _swStartX=t.clientX;_swStartY=t.clientY;_swStartT=Date.now();
+  } else { _swStartX=null; }
+},{passive:true});
+document.addEventListener('touchend',function(e){
+  if(_swStartX===null)return;
+  const t=(e.changedTouches&&e.changedTouches[0]);
+  if(!t){_swStartX=null;return;}
+  const dx=t.clientX-_swStartX, dy=Math.abs(t.clientY-_swStartY), dt=Date.now()-_swStartT;
+  if(dx>60 && dy<60 && dt<600){
+    // confirmed edge swipe right
+    saveDoc(true);showList();
+  }
+  _swStartX=null;
+},{passive:true});
 
 dbg('[VAULT] '+BUILD_ID+' boot | docs='+S.vaultDocs.length+' tags='+S.vaultTags.length);
 renderList();
