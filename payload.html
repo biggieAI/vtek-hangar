@@ -3377,7 +3377,7 @@ const PRI_ORDER={critical:0,high:1,med:2,low:3};
 const PRI_DUR={critical:30,high:60,med:45,low:30}; // default duration mins per priority
 
 function tod(){return new Date().toISOString().split('T')[0];}
-const BUILD_ID = 'VTEK-PAYLOAD-20260416-005';
+const BUILD_ID = 'VTEK-PAYLOAD-20260416-006';
 let S=JSON.parse(localStorage.getItem('vtek9')||'null')||{
   shows:[
     {id:'s1',code:'CRL',name:'Cerulean',client:'Netflix',due:'2025-09-01',teamSize:3,weeksLeft:14},
@@ -3996,6 +3996,20 @@ document.addEventListener('DOMContentLoaded', function(){
   try { migrateTasks(); console.log('[PAYLOAD] migrateTasks ok'); } catch(e){ console.warn('[VTEK] migrate:', e && e.message); }
   try { rPayload(); console.log('[PAYLOAD] rPayload ok, tasks=', S.tasks.length); } catch(e){ console.error('[VTEK] rPayload:', e && e.message); }
   try { attachTeamDatalist(); } catch(e){}
+  // Overlay backdrop: tap outside sheet to close
+  document.querySelectorAll('.overlay').forEach(function(o){
+    o.addEventListener('click', function(e){
+      var sheet = o.querySelector('.sheet');
+      if(sheet && sheet.contains(e.target)) return;
+      if(o.id === 'ol-edit-task'){ tryCloseEditTask(); return; }
+      o.classList.remove('open');
+    });
+  });
+  // Edit task backdrop + handle
+  var bd = document.getElementById('et-backdrop');
+  if(bd) bd.onclick = function(){ tryCloseEditTask(); };
+  var h = document.querySelector('#ol-edit-task .sh-handle');
+  if(h) h.onclick = function(e){ e.stopPropagation(); tryCloseEditTask(); };
 });
 
 </script>
