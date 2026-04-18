@@ -243,6 +243,7 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 .dbg.open .dbg-body{display:block;}
 .dbg-log{color:#0f0;line-height:1.4;white-space:pre-wrap;padding:3px 8px;font-size:9px;}
 .hide{display:none!important;}
+.dbg{display:none!important;}
 </style>
 </head>
 <body>
@@ -382,7 +383,7 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 <div class="dbg" id="dbg">
   <div class="dbg-hd">
     <button class="dbg-btn" onclick="document.getElementById('dbg').classList.toggle('open')">&gt; DBG</button>
-    <span class="dbg-id">VTEK-VAULT-20260417-011</span>
+    <span class="dbg-id">VTEK-VAULT-20260417-12</span>
     <button class="dbg-copy" onclick="navigator.clipboard&&navigator.clipboard.writeText(document.getElementById('dbg-log').textContent);this.textContent='COPIED';setTimeout(()=>this.textContent='COPY',1500)">COPY</button>
   </div>
   <div class="dbg-body"><div class="dbg-log" id="dbg-log"></div></div>
@@ -390,7 +391,7 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 
 <script>
 'use strict';
-const BUILD_ID='VTEK-VAULT-20260417-011';
+const BUILD_ID='VTEK-VAULT-20260417-12';
 const LS='vtek9';
 let S=JSON.parse(localStorage.getItem(LS)||'null')||{shows:[],shots:[],tasks:[],vaultDocs:[],vaultTags:[]};
 if(!S.vaultDocs)S.vaultDocs=[];
