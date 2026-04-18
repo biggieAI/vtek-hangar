@@ -1,4 +1,4 @@
-<!-- vtek-1776518094 -->
+<!-- vtek-1776518437 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -2765,6 +2765,42 @@ body { display: flex; flex-direction: column; }
 .dbg{display:none!important;height:0!important;overflow:hidden!important;padding:0!important;margin:0!important;border:none!important;}
 .hide{display:none!important;}
 
+
+/* ── TOPBAR LAYOUT FIX ── */
+.title {
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: #f4f7fa;
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.actions {
+  margin-left: auto;
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  flex-shrink: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.actions::-webkit-scrollbar { display: none; }
+.back-btn {
+  display: flex; align-items: center; gap: 4px;
+  background: none; border: none;
+  color: var(--t1);
+  font-family: var(--sans); font-size: 11px; font-weight: 600;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 0 8px 0 0; min-height: 40px; min-width: 44px;
+  cursor: pointer; touch-action: manipulation;
+  -webkit-user-select: none; user-select: none; flex-shrink: 0;
+}
 </style>
 </head>
 <body>
@@ -2903,7 +2939,7 @@ body { display: flex; flex-direction: column; }
 
 <script>
 'use strict';
-const BUILD='VTEK-SCHED-20260418-12';
+const BUILD='VTEK-SCHED-20260418-13';
 
 const _dbgEl=document.getElementById('dbg-log');
 function dbg(msg){const t=new Date().toTimeString().slice(0,8);_dbgEl.textContent+=t+' '+msg+'\n';_dbgEl.scrollTop=_dbgEl.scrollHeight;}
