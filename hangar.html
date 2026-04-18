@@ -1,3 +1,4 @@
+<!-- vtek-1776519193 -->
 <!-- vtek-1776518435 -->
 <!-- vtek-1776517351 -->
 <!DOCTYPE html>
@@ -2588,9 +2589,6 @@ html, body { height: 100dvh; min-height: -webkit-fill-available; overflow: hidde
 body { display: flex; flex-direction: column; }
 #mv-payload { flex: 1; display: flex !important; flex-direction: column; overflow: hidden; min-height: 0; }
 #mv-payload .module-content { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; min-height: 0; }
-.dbg-bar{display:none!important;}
-
-
 /* ══ MODULE-SPECIFIC ══ */
 .hng-banner{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;padding:10px 16px 14px;border-bottom:1px solid rgba(255,255,255,0.04);background:var(--bg);}
 .hng-banner-cell{background:var(--s3);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:12px 8px 10px;text-align:center;position:relative;box-shadow:inset 0 2px 3px rgba(0,0,0,0.60),inset 0 1px 0 rgba(255,255,255,0.04),0 1px 0 rgba(255,255,255,0.03);}
@@ -2647,7 +2645,6 @@ body { display: flex; flex-direction: column; }
 .hvs-row:active{background:var(--s3);}
 .hvs-row-code{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--t0);}
 .hvs-row-show{font-family:var(--mono);font-size:9px;color:var(--t1);}
-.dbg{display:none!important;height:0!important;overflow:hidden!important;padding:0!important;margin:0!important;border:none!important;}
 .hide{display:none!important;}
 
 
@@ -2697,11 +2694,11 @@ body { display: flex; flex-direction: column; }
   </button>
   <span class="title" id="title-lbl">HANGAR</span>
   <div class="actions">
-    <button class="tb-btn icon" id="refresh-btn" title="Refresh">&#x21bb;</button>
-    <button class="tb-btn icon" id="team-btn" title="Team">&#x1F465;</button>
-    <button class="tb-btn icon" id="import-btn" title="Import">&#x2B07;</button>
+    <button class="tb-icon-btn" id="refresh-btn" title="Refresh">&#x21bb;</button>
+    <button class="tb-icon-btn" id="team-btn" title="Team">&#x1F465;</button>
+    <button class="tb-icon-btn" id="import-btn" title="Import">&#x2B07;</button>
     <button class="tb-btn" id="show-btn">+ SHOW</button>
-    <button class="tb-btn primary" id="shot-btn">+ SHOT</button>
+    <button class="tb-btn go" id="shot-btn">+ SHOT</button>
   </div>
 </div>
 
@@ -2763,23 +2760,10 @@ body { display: flex; flex-direction: column; }
 
 </div>
 
-<div id="toast" class="toast"></div>
-
-<div class="dbg" id="dbg">
-  <div class="dbg-hd">
-    <button class="dbg-btn" id="dbg-toggle">&gt; DBG</button>
-    <span class="dbg-id" id="dbg-id"></span>
-    <button class="dbg-copy" id="dbg-copy">COPY</button>
-  </div>
-  <div class="dbg-body"><div class="dbg-log" id="dbg-log"></div></div>
-</div>
-
 <script>
 'use strict';
-const BUILD='VTEK-HANGAR-20260418-13';
-const _dbgEl=document.getElementById('dbg-log');
-function dbg(msg){const t=new Date().toTimeString().slice(0,8);_dbgEl.textContent+=t+' '+msg+'\n';_dbgEl.scrollTop=_dbgEl.scrollHeight;}
-window.addEventListener('error',e=>dbg('ERR: '+e.message+' @ '+e.lineno));
+const BUILD='VTEK-HANGAR-20260418-14';
+window.addEventListener('error',()=>{});
 
 const LS_STATE='vtek9';
 let S=JSON.parse(localStorage.getItem(LS_STATE)||'null')||{shows:[],shots:[],tasks:[],team:[]};
@@ -2800,7 +2784,6 @@ function showView(v){
   const bl=document.getElementById('back-lbl');
   if(v==='home'){tl.textContent='HANGAR';bl.textContent='HOME';}
   else if(v==='shots'){const sh=gs(S.activeShow);tl.textContent=sh?sh.code:'SHOTS';bl.textContent='HANGAR';}
-  dbg('[VIEW] '+v);
 }
 
 function renderHome(){
@@ -2944,13 +2927,8 @@ document.getElementById('main').addEventListener('click',function(e){
   toast(shot.code+' \u2192 '+shot.status.toUpperCase());
 });
 
-document.getElementById('dbg-toggle').addEventListener('click',function(){document.getElementById('dbg').classList.toggle('open');});
-document.getElementById('dbg-copy').addEventListener('click',function(){if(navigator.clipboard)navigator.clipboard.writeText(_dbgEl.textContent);this.textContent='COPIED';setTimeout(()=>this.textContent='COPY',1500);});
 
-document.getElementById('dbg-id').textContent=BUILD;
-dbg('[INIT] shows='+S.shows.length+' shots='+S.shots.length);
 renderHome();
-dbg('[INIT] done');
 </script>
 </body>
 </html>
