@@ -1,3 +1,4 @@
+<!-- vtek-1776518096 -->
 <!-- vtek-1776517355 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -2725,9 +2726,15 @@ body { display: flex; flex-direction: column; }
 .att-viewer .file-box .icon{font-size:64px;color:var(--teal);margin-bottom:12px;}
 .att-viewer .file-box .name{font-family:var(--mono);font-size:13px;margin-bottom:4px;}
 .att-viewer .file-box .size{font-family:var(--mono);font-size:10px;color:var(--t2);}
-.dbg{display:none!important;}
+.dbg{display:none!important;height:0!important;overflow:hidden!important;padding:0!important;margin:0!important;border:none!important;}
 .hide{display:none!important;}
 
+
+.main > #v-edit{flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden;}
+
+.editor-bar.hide { display: none !important; height: 0 !important; }
+.att-strip:empty { display: none !important; height: 0 !important; }
+.edit-footer.hide { display: none !important; height: 0 !important; }
 </style>
 </head>
 <body>
@@ -2875,7 +2882,7 @@ body { display: flex; flex-direction: column; }
 
 <script>
 'use strict';
-const BUILD_ID='VTEK-VAULT-20260418-16';
+const BUILD_ID='VTEK-VAULT-20260418-17';
 const LS='vtek9';
 let S=JSON.parse(localStorage.getItem(LS)||'null')||{shows:[],shots:[],tasks:[],vaultDocs:[],vaultTags:[]};
 if(!S.vaultDocs)S.vaultDocs=[];
