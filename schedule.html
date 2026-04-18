@@ -1,3 +1,4 @@
+<!-- vtek-1776519195 -->
 <!-- vtek-1776518437 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -2587,9 +2588,6 @@ html, body { height: 100dvh; min-height: -webkit-fill-available; overflow: hidde
 body { display: flex; flex-direction: column; }
 #mv-payload { flex: 1; display: flex !important; flex-direction: column; overflow: hidden; min-height: 0; }
 #mv-payload .module-content { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; min-height: 0; }
-.dbg-bar{display:none!important;}
-
-
 /* ══ MODULE-SPECIFIC ══ */
 .date-row{padding:12px 16px 10px;text-align:center;font-family:var(--mono);font-size:11px;color:var(--t1);letter-spacing:0.08em;border-bottom:1px solid rgba(255,255,255,0.04);background:var(--bg);}
 .pool{background:var(--bg);border-bottom:1px solid rgba(255,255,255,0.04);}
@@ -2762,7 +2760,6 @@ body { display: flex; flex-direction: column; }
   touch-action:manipulation;
   -webkit-user-select:none;user-select:none;
 }
-.dbg{display:none!important;height:0!important;overflow:hidden!important;padding:0!important;margin:0!important;border:none!important;}
 .hide{display:none!important;}
 
 
@@ -2832,8 +2829,6 @@ body { display: flex; flex-direction: column; }
 </div>
 
 <div id="hint" class="hint"></div>
-<div id="toast" class="toast"></div>
-
 <!-- EDIT SHEET -->
 <div class="sheet-overlay" id="sheet-overlay"></div>
 <div class="sheet" id="sheet">
@@ -2928,22 +2923,11 @@ body { display: flex; flex-direction: column; }
   </div>
 </div>
 
-<div class="dbg" id="dbg">
-  <div class="dbg-hd">
-    <button class="dbg-btn" id="dbg-toggle">&gt; DBG</button>
-    <span class="dbg-id" id="dbg-id"></span>
-    <button class="dbg-copy" id="dbg-copy">COPY</button>
-  </div>
-  <div class="dbg-body"><div class="dbg-log" id="dbg-log"></div></div>
-</div>
-
 <script>
 'use strict';
-const BUILD='VTEK-SCHED-20260418-13';
+const BUILD='VTEK-SCHED-20260418-14';
 
-const _dbgEl=document.getElementById('dbg-log');
-function dbg(msg){const t=new Date().toTimeString().slice(0,8);_dbgEl.textContent+=t+' '+msg+'\n';_dbgEl.scrollTop=_dbgEl.scrollHeight;}
-window.addEventListener('error',e=>dbg('ERR: '+e.message+' @ '+e.lineno));
+window.addEventListener('error',()=>{});
 
 const LS_STATE='vtek9';
 const LS_PLAN='vtek_plan_'+new Date().toDateString();
@@ -3037,10 +3021,11 @@ function slotHTML(h,m){return '<div class="slot" data-h="'+h+'" data-m="'+m+'"><
 function selectTask(id){
   const t=(S.tasks||[]).find(x=>x.id===id);
   if(!t)return;
-  if(planSelected&&planSelected.id===id){planSelected=null;document.getElementById('hint').classList.remove('show');dbg('[SEL] deselect');}
+  if(planSelected&&planSelected.id===id){planSelected=null;document.getElementById('hint').classList.remove('show');
+}
   else{planSelected={id:t.id,title:t.title,dur:t.dur||45};
     const h=document.getElementById('hint');h.textContent='TAP A SLOT TO PLACE "'+t.title.toUpperCase()+'"';h.classList.add('show');
-    dbg('[SEL] '+t.title);}
+}
   renderPool();
   document.querySelectorAll('.slot-body').forEach(b=>b.classList.toggle('has-sel',!!planSelected));
 }
@@ -3049,16 +3034,15 @@ function placeOnSlot(h,m){
   if(isBlocked(h,m,planSelected.dur)){toast('SLOT BLOCKED');return;}
   planSchedule=planSchedule.filter(s=>s.taskId!==planSelected.id);
   planSchedule.push({taskId:planSelected.id,startH:h,startM:m,durMins:planSelected.dur});
-  dbg('[PLACE] '+planSelected.title+' @ '+fmtTime(h,m));
   savePlan();
   planSelected=null;
   document.getElementById('hint').classList.remove('show');
   renderPool();renderTimeline();toast('PLACED');
 }
-function removeBlock(id){planSchedule=planSchedule.filter(e=>e.taskId!==id);savePlan();renderPool();renderTimeline();dbg('[DEL] '+id);}
+function removeBlock(id){planSchedule=planSchedule.filter(e=>e.taskId!==id);savePlan();renderPool();renderTimeline();
+}
 
 function autoRack(){
-  dbg('[RACK] start');
   const tasks=(S.tasks||[]).filter(t=>!t.done).sort((a,b)=>{const p={high:0,med:1,low:2,none:3};return(p[a.pri]||3)-(p[b.pri]||3);});
   planSchedule=[];
   const slots=[];
@@ -3072,10 +3056,12 @@ function autoRack(){
     planSchedule.push({taskId:t.id,startH:start.h,startM:start.m,durMins:dur});
     i+=slotsNeeded;placed++;
   }
-  savePlan();renderPool();renderTimeline();toast('RACKED '+placed);dbg('[RACK] placed='+placed);
+  savePlan();renderPool();renderTimeline();toast('RACKED '+placed);
 }
-function commit(){savePlan();toast('PLAN COMMITTED');dbg('[COMMIT] blocks='+planSchedule.length);}
-function goHome(){dbg('[BACK]');window.location.href='./';}
+function commit(){savePlan();toast('PLAN COMMITTED');
+}
+function goHome(){
+window.location.href='./';}
 
 // =============== EDIT SHEET ===============
 function openEdit(taskId){
@@ -3131,13 +3117,11 @@ function openEdit(taskId){
 
   document.getElementById('sheet-overlay').classList.add('open');
   document.getElementById('sheet').classList.add('open');
-  dbg('[EDIT] open '+task.title);
 }
 function closeEdit(){
   document.getElementById('sheet').classList.remove('open');
   setTimeout(()=>document.getElementById('sheet-overlay').classList.remove('open'),280);
   editingId=null;
-  dbg('[EDIT] close');
 }
 function updateGroup(gid,val){
   document.querySelectorAll('#'+gid+' .chip-btn').forEach(b=>{
@@ -3183,7 +3167,6 @@ function saveEdit(){
   save();savePlan();
   renderPool();renderTimeline();
   closeEdit();toast('SAVED');
-  dbg('[EDIT] saved '+task.title);
 }
 
 function deleteTask(){
@@ -3194,7 +3177,6 @@ function deleteTask(){
   save();savePlan();
   renderPool();renderTimeline();
   closeEdit();toast('DELETED');
-  dbg('[EDIT] deleted');
 }
 
 // =============== EVENT WIRING ===============
@@ -3208,16 +3190,16 @@ document.getElementById('pool-toggle').addEventListener('click',function(){
 document.getElementById('pool-body').addEventListener('click',function(e){
   const chip=e.target.closest('.chip');
   if(!chip)return;
-  dbg('[CHIP] '+chip.dataset.tid);
   selectTask(chip.dataset.tid);
 });
 document.getElementById('timeline').addEventListener('click',function(e){
   const del=e.target.closest('[data-del]');
   if(del){e.stopPropagation();removeBlock(del.dataset.del);return;}
   const block=e.target.closest('.block');
-  if(block){dbg('[BLOCK] '+block.dataset.bid);openEdit(block.dataset.bid);return;}
+  if(block){
+openEdit(block.dataset.bid);return;}
   const slot=e.target.closest('.slot-body');
-  if(slot){const h=parseInt(slot.dataset.h),m=parseInt(slot.dataset.m);dbg('[SLOT] '+h+':'+String(m).padStart(2,'0'));placeOnSlot(h,m);}
+  if(slot){const h=parseInt(slot.dataset.h),m=parseInt(slot.dataset.m);placeOnSlot(h,m);}
 });
 
 // Edit sheet
@@ -3257,19 +3239,11 @@ const ds=document.getElementById('e-dur-s'),dn=document.getElementById('e-dur-n'
 ds.addEventListener('input',()=>{dn.value=ds.value;});
 dn.addEventListener('input',()=>{ds.value=dn.value;});
 
-// DBG
-document.getElementById('dbg-toggle').addEventListener('click',function(){document.getElementById('dbg').classList.toggle('open');});
-document.getElementById('dbg-copy').addEventListener('click',function(){
-  if(navigator.clipboard)navigator.clipboard.writeText(_dbgEl.textContent);
-  this.textContent='COPIED';setTimeout(()=>this.textContent='COPY',1500);
-});
+
 
 // INIT
 document.getElementById('date-label').textContent=new Date().toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}).toUpperCase();
-document.getElementById('dbg-id').textContent=BUILD;
-dbg('[INIT] tasks='+(S.tasks||[]).length+' sched='+planSchedule.length);
 renderPool();renderTimeline();
-dbg('[INIT] done slots='+document.querySelectorAll('.slot').length+' blocks='+document.querySelectorAll('.block').length);
 </script>
 </body>
 </html>
