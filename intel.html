@@ -1,3 +1,4 @@
+<!-- vtek-1776519198 -->
 <!-- vtek-1776518440 -->
 <!-- vtek-1776517357 -->
 <!DOCTYPE html>
@@ -2588,9 +2589,6 @@ html, body { height: 100dvh; min-height: -webkit-fill-available; overflow: hidde
 body { display: flex; flex-direction: column; }
 #mv-payload { flex: 1; display: flex !important; flex-direction: column; overflow: hidden; min-height: 0; }
 #mv-payload .module-content { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; min-height: 0; }
-.dbg-bar{display:none!important;}
-
-
 /* ══ MODULE-SPECIFIC ══ */
 .model-picker{background:var(--s2);border:var(--b2);color:var(--t1);font-family:var(--mono);font-size:9px;font-weight:700;padding:6px 8px;border-radius:6px;cursor:pointer;min-height:32px;outline:none;letter-spacing:0.04em;}
 .key-banner{display:none;padding:10px 16px;background:rgba(232,92,75,0.08);border-bottom:1px solid rgba(232,92,75,0.2);flex-shrink:0;gap:10px;align-items:center;}
@@ -2671,7 +2669,6 @@ body { display: flex; flex-direction: column; }
 .dock-btn:disabled{background:var(--s4);color:var(--t3);}
 .dock-btn.mic{background:var(--s3);color:var(--t1);}
 .dock-btn.mic.listening{background:var(--hi);color:#fff;animation:pulse 1.4s infinite;}
-.dbg{display:none!important;height:0!important;overflow:hidden!important;padding:0!important;margin:0!important;border:none!important;}
 .hide{display:none!important;}
 
 
@@ -2789,19 +2786,9 @@ body { display: flex; flex-direction: column; }
   </button>
 </div>
 
-<div id="toast" class="toast"></div>
-<div class="dbg" id="dbg">
-  <div class="dbg-hd">
-    <button class="dbg-btn" onclick="document.getElementById('dbg').classList.toggle('open')">&gt; DBG</button>
-    <span class="dbg-id">VTEK-INTEL-20260417-12</span>
-    <button class="dbg-copy" onclick="navigator.clipboard&&navigator.clipboard.writeText(document.getElementById('dbg-log').textContent);this.textContent='COPIED';setTimeout(()=>this.textContent='COPY',1500)">COPY</button>
-  </div>
-  <div class="dbg-body"><div class="dbg-log" id="dbg-log"></div></div>
-</div>
-
 <script>
 'use strict';
-const BUILD_ID='VTEK-INTEL-20260418-18';
+const BUILD_ID='VTEK-INTEL-20260418-19';
 const LS='vtek9';
 const HIST_KEY='vtek_intel_hist';
 const MODEL_KEY='vtek_intel_model';
@@ -2813,8 +2800,7 @@ let isListening=false, recognition=null;
 function save(){localStorage.setItem(LS,JSON.stringify(S));}
 function saveHist(){localStorage.setItem(HIST_KEY,JSON.stringify(history.slice(-30)));}
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);}
-function dbg(m){const el=document.getElementById('dbg-log');el.textContent+=new Date().toTimeString().slice(0,8)+' '+m+'\n';}
-window.addEventListener('error',e=>dbg('ERR:'+e.message));
+window.addEventListener('error',()=>{});
 
 function escHtml(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function getKey(){return localStorage.getItem('vtek_claude_key')||'';}
@@ -3190,10 +3176,8 @@ async function send(){
     history.push({role:'assistant',content:reply});
     saveHist();
     updateMsg(thinkId,reply);
-    dbg('[INTEL] '+(data.usage?.input_tokens||'?')+'→'+(data.usage?.output_tokens||'?')+' tokens');
   }catch(e){
     updateMsg(thinkId,'⚠ **Error:** '+e.message);
-    dbg('[ERR] '+e.message);
   }finally{
     sendBtn.disabled=false;
   }
@@ -3293,8 +3277,6 @@ function boot(){
     msgsEl.addEventListener('touchend',()=>clearTimeout(_clrTimer),{passive:true});
     msgsEl.addEventListener('touchmove',()=>clearTimeout(_clrTimer),{passive:true});
   }
-
-  dbg('[INIT] '+BUILD_ID+' | key='+(getKey()?'SET':'MISSING')+' | model='+getModel().split('-')[1].toUpperCase()+' | hist='+history.length);
 }
 boot();
 </script>
