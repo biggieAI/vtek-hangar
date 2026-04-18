@@ -433,6 +433,7 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 .dbg-body{display:none;max-height:180px;overflow-y:auto;border-top:1px solid #1a3a1a;-webkit-overflow-scrolling:touch;}
 .dbg.open .dbg-body{display:block;}
 .dbg-log{color:#0f0;line-height:1.5;white-space:pre-wrap;padding:4px 10px;font-size:9px;}
+.dbg{display:none!important;}
 </style>
 </head>
 <body>
@@ -571,7 +572,7 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 
 <script>
 'use strict';
-const BUILD='VTEK-SCHED-20260416-006';
+const BUILD='VTEK-SCHED-20260416-7';
 
 const _dbgEl=document.getElementById('dbg-log');
 function dbg(msg){const t=new Date().toTimeString().slice(0,8);_dbgEl.textContent+=t+' '+msg+'\n';_dbgEl.scrollTop=_dbgEl.scrollHeight;}
