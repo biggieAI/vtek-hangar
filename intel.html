@@ -43,74 +43,54 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 /* MAIN */
 .main{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;display:flex;flex-direction:column;}
 
-/* ═══ HARD SURFACE PANEL ═══ */
-.brief{padding:0;background:#141618;border-bottom:2px solid #0a0b0c;flex-shrink:0;overflow:hidden;}
-.hud-panel{
-  position:relative;margin:8px 8px 6px;
-  background:linear-gradient(160deg,#1e2228 0%,#181c20 60%,#1a1e22 100%);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,0.07),inset 0 -1px 0 rgba(0,0,0,0.7),inset 1px 0 0 rgba(255,255,255,0.04),inset -1px 0 0 rgba(0,0,0,0.5),0 2px 10px rgba(0,0,0,0.7);
-  clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px));
-  padding:11px 13px 11px;
-}
-.hud-top{display:flex;align-items:flex-start;gap:8px;margin-bottom:9px;}
+/* ═══ BRIEFING PANEL ═══ */
+.brief{padding:0;background:var(--s1);border-bottom:var(--b1);flex-shrink:0;overflow:hidden;}
+.hud-panel{position:relative;padding:14px 16px 12px;}
+.hud-top{display:flex;align-items:flex-start;gap:10px;margin-bottom:12px;}
 .hud-title-block{flex:1;}
-.hud-designation{font-family:var(--mono);font-size:7px;font-weight:700;color:#384450;letter-spacing:0.24em;}
-.hud-name{font-family:var(--mono);font-size:13px;font-weight:800;color:#c0ccd6;letter-spacing:0.14em;margin-top:2px;text-shadow:0 1px 0 rgba(0,0,0,0.8),0 -1px 0 rgba(255,255,255,0.05);}
-.hud-status-row{display:flex;align-items:center;gap:5px;margin-top:4px;}
-.hud-dot{width:4px;height:4px;border-radius:50%;background:#64c832;box-shadow:0 0 4px rgba(100,200,50,0.7);flex-shrink:0;}
-.hud-status-txt{font-family:var(--mono);font-size:7px;font-weight:700;color:#64c832;letter-spacing:0.16em;}
-.hud-date-txt{font-family:var(--mono);font-size:7px;color:#2a3440;letter-spacing:0.08em;margin-left:auto;text-align:right;line-height:1.5;}
+.hud-designation{font-family:var(--mono);font-size:7px;font-weight:700;color:var(--t3);letter-spacing:0.22em;}
+.hud-name{font-family:var(--mono);font-size:13px;font-weight:800;color:var(--accent-hi);letter-spacing:0.12em;margin-top:3px;}
+.hud-status-row{display:flex;align-items:center;gap:6px;margin-top:5px;}
+.hud-dot{width:4px;height:4px;border-radius:50%;background:var(--teal);box-shadow:0 0 5px rgba(33,225,223,0.6);flex-shrink:0;}
+.hud-status-txt{font-family:var(--mono);font-size:7px;font-weight:700;color:var(--teal);letter-spacing:0.16em;}
+.hud-date-txt{font-family:var(--mono);font-size:8px;color:var(--t3);letter-spacing:0.08em;text-align:right;line-height:1.5;}
 .hud-badge{
-  width:34px;height:34px;flex-shrink:0;
-  background:linear-gradient(135deg,#1c2026 0%,#12161a 100%);
-  clip-path:polygon(0 0,100% 0,100% 100%,8px 100%,0 calc(100% - 8px));
-  box-shadow:inset 0 1px 0 rgba(255,255,255,0.05),inset 1px 0 0 rgba(255,255,255,0.02);
+  width:36px;height:36px;flex-shrink:0;background:var(--s2);border:var(--b1);
   display:flex;align-items:center;justify-content:center;
-  font-family:var(--mono);font-size:8px;font-weight:800;color:#243040;
+  font-family:var(--mono);font-size:9px;font-weight:800;color:var(--teal);letter-spacing:0.06em;
 }
-.hud-inner{
-  background:linear-gradient(180deg,#0d0f11 0%,#101214 100%);
-  box-shadow:inset 0 2px 5px rgba(0,0,0,0.85),inset 1px 0 0 rgba(0,0,0,0.6),inset -1px 0 0 rgba(0,0,0,0.6),inset 0 -1px 0 rgba(255,255,255,0.025),0 1px 0 rgba(255,255,255,0.03);
-  padding:9px 7px;margin:0 0 8px;
-  clip-path:polygon(0 0,calc(100% - 6px) 0,100% 6px,100% 100%,6px 100%,0 calc(100% - 6px));
-}
-.hud-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;}
-.hud-stat{
-  background:linear-gradient(180deg,#09090b 0%,#0c0e10 100%);
-  box-shadow:inset 0 2px 3px rgba(0,0,0,0.8),inset 1px 0 0 rgba(0,0,0,0.6),inset -1px 0 0 rgba(0,0,0,0.5),inset 0 -1px 0 rgba(255,255,255,0.02),0 1px 0 rgba(255,255,255,0.03);
-  padding:9px 3px 7px;
-}
-.hud-stat-n{font-family:var(--mono);font-size:16px;font-weight:800;color:#607080;line-height:1;text-align:center;text-shadow:0 2px 4px rgba(0,0,0,0.9);}
-.hud-stat-n.urgent{color:#b04040;text-shadow:0 0 6px rgba(180,60,60,0.4),0 2px 4px rgba(0,0,0,0.9);}
-.hud-stat-n.warn{color:#906030;text-shadow:0 0 5px rgba(144,96,48,0.35),0 2px 4px rgba(0,0,0,0.9);}
-.hud-stat-n.ok{color:#548a2a;text-shadow:0 0 5px rgba(84,138,42,0.4),0 2px 4px rgba(0,0,0,0.9);}
-.hud-stat-l{font-family:var(--mono);font-size:7px;font-weight:700;color:#243040;letter-spacing:0.14em;text-align:center;margin-top:5px;}
-.hud-sum{font-family:var(--sans);font-size:11px;color:#404e5c;line-height:1.5;}
-.hud-sum strong{color:#7090a8;font-weight:600;}
-.hud-sum .flag{color:#64c832;font-family:var(--mono);font-size:9px;font-weight:700;}
-.hud-bolts{display:flex;justify-content:space-between;margin-top:9px;}
-.hud-bolt{width:12px;height:5px;background:linear-gradient(180deg,#1a1e22 0%,#101418 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,0.05),0 1px 2px rgba(0,0,0,0.6);}
-.hud-bolt::after{content:'';display:block;width:3px;height:3px;margin:1px auto;border-radius:50%;background:#0e1214;box-shadow:inset 0 1px 1px rgba(0,0,0,0.9);}
+.hud-inner{background:var(--s2);border:var(--b1);padding:9px 8px;margin:0 0 10px;}
+.hud-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;}
+.hud-stat{background:var(--bg);border:var(--b1);border-top:1px solid rgba(255,255,255,0.06);padding:9px 4px 7px;}
+.hud-stat-n{font-family:var(--mono);font-size:17px;font-weight:800;color:var(--t1);line-height:1;text-align:center;}
+.hud-stat-n.urgent{color:var(--hi);}
+.hud-stat-n.warn{color:var(--warn);}
+.hud-stat-n.ok{color:var(--teal);}
+.hud-stat-l{font-family:var(--mono);font-size:7px;font-weight:700;color:var(--t3);letter-spacing:0.14em;text-align:center;margin-top:5px;}
+.hud-sum{font-family:var(--sans);font-size:12px;color:var(--t2);line-height:1.5;}
+.hud-sum strong{color:var(--t1);font-weight:600;}
+.hud-sum .flag{color:var(--teal);font-family:var(--mono);font-size:10px;font-weight:700;}
+.hud-bolts{display:flex;justify-content:space-between;margin-top:10px;}
+.hud-bolt{width:14px;height:5px;background:var(--s3);border:var(--b1);}
+.hud-bolt::after{content:'';display:block;width:3px;height:3px;margin:1px auto;border-radius:50%;background:var(--s1);border:1px solid rgba(255,255,255,0.08);}
 
-/* ACTION CARDS — hard surface plates */
-.card-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:6px 8px 6px;flex-shrink:0;background:#141618;border-bottom:2px solid #0a0b0c;}
+/* ACTION CARDS */
+.card-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:10px 12px 8px;flex-shrink:0;background:var(--s1);border-bottom:var(--b1);}
 .ai-card{
-  background:linear-gradient(150deg,#1b1f24 0%,#161a1e 100%);
-  border:none;padding:10px 11px;cursor:pointer;touch-action:manipulation;-webkit-user-select:none;user-select:none;
-  display:flex;gap:10px;align-items:flex-start;min-height:52px;position:relative;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,0.055),inset 0 -1px 0 rgba(0,0,0,0.55),inset 1px 0 0 rgba(255,255,255,0.03),inset -1px 0 0 rgba(0,0,0,0.45),0 2px 4px rgba(0,0,0,0.45);
-  clip-path:polygon(0 0,calc(100% - 7px) 0,100% 7px,100% 100%,7px 100%,0 calc(100% - 7px));
+  background:var(--s2);border:var(--b2);border-left:2px solid rgba(33,225,223,0.2);
+  padding:11px 12px;cursor:pointer;touch-action:manipulation;-webkit-user-select:none;user-select:none;
+  display:flex;gap:10px;align-items:flex-start;min-height:56px;
 }
-.ai-card:active{background:linear-gradient(150deg,#1e2630 0%,#161c24 100%);}
-.ai-card-icon{width:14px;height:14px;flex-shrink:0;color:#2e4050;display:flex;align-items:center;justify-content:center;margin-top:2px;}
-.ai-card:active .ai-card-icon{color:#64c832;}
-.ai-card-icon svg{width:13px;height:13px;stroke:currentColor;stroke-width:1.9;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+.ai-card:active{background:var(--s3);border-left-color:var(--teal);}
+.ai-card-icon{width:16px;height:16px;flex-shrink:0;color:var(--t2);display:flex;align-items:center;justify-content:center;margin-top:2px;}
+.ai-card:active .ai-card-icon{color:var(--teal);}
+.ai-card-icon svg{width:14px;height:14px;stroke:currentColor;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round;}
 .ai-card-txt{flex:1;min-width:0;}
-.ai-card-title{font-family:var(--mono);font-size:9px;font-weight:800;color:#5a7080;letter-spacing:0.1em;text-shadow:0 1px 0 rgba(0,0,0,0.8);}
-.ai-card-sub{font-size:10px;color:#283440;line-height:1.3;margin-top:3px;}
+.ai-card-title{font-family:var(--mono);font-size:9px;font-weight:800;color:var(--t1);letter-spacing:0.1em;}
+.ai-card-sub{font-size:11px;color:var(--t2);line-height:1.3;margin-top:3px;}
 
-/* ACTION CHIPS */
-/* MESSAGES — style tweak for dark HUD theme */
+/* MESSAGES */
+
 .msgs{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:8px 16px 20px;display:flex;flex-direction:column;gap:10px;}
 .msg{display:flex;flex-direction:column;max-width:92%;}
 .msg.user{align-self:flex-end;align-items:flex-end;}
@@ -261,7 +241,7 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 <div class="dbg" id="dbg">
   <div class="dbg-hd">
     <button class="dbg-btn" onclick="document.getElementById('dbg').classList.toggle('open')">&gt; DBG</button>
-    <span class="dbg-id">VTEK-INTEL-20260417-008</span>
+    <span class="dbg-id">VTEK-INTEL-20260417-009</span>
     <button class="dbg-copy" onclick="navigator.clipboard&&navigator.clipboard.writeText(document.getElementById('dbg-log').textContent);this.textContent='COPIED';setTimeout(()=>this.textContent='COPY',1500)">COPY</button>
   </div>
   <div class="dbg-body"><div class="dbg-log" id="dbg-log"></div></div>
@@ -269,7 +249,7 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 
 <script>
 'use strict';
-const BUILD_ID='VTEK-INTEL-20260417-008';
+const BUILD_ID='VTEK-INTEL-20260417-009';
 const LS='vtek9';
 const HIST_KEY='vtek_intel_hist';
 const MODEL_KEY='vtek_intel_model';
@@ -325,12 +305,14 @@ function renderBrief(){
     '<div class="hud-panel">'+
       '<div class="hud-top">'+
         '<div class="hud-title-block">'+
-          '<div class="hud-designation">SYS // INTEL MODULE</div>'+
+          '<div class="hud-designation">INTEL // AGENT</div>'+
           '<div class="hud-name">SECONDS</div>'+
           '<div class="hud-status-row"><div class="hud-dot"></div><div class="hud-status-txt">ONLINE</div></div>'+
         '</div>'+
-        '<div class="hud-badge">S//</div>'+
-        '<div class="hud-date-txt">'+dateStr+'</div>'+
+        '<div style="text-align:right">'+
+          '<div class="hud-badge">S</div>'+
+          '<div class="hud-date-txt" style="margin-top:4px">'+dateStr+'</div>'+
+        '</div>'+
       '</div>'+
       '<div class="hud-inner">'+
         '<div class="hud-stats">'+
