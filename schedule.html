@@ -1,4 +1,4 @@
-<!-- vtek-1776517353 -->
+<!-- vtek-1776518094 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -2762,7 +2762,7 @@ body { display: flex; flex-direction: column; }
   touch-action:manipulation;
   -webkit-user-select:none;user-select:none;
 }
-.dbg{display:none!important;}
+.dbg{display:none!important;height:0!important;overflow:hidden!important;padding:0!important;margin:0!important;border:none!important;}
 .hide{display:none!important;}
 
 </style>
@@ -2903,7 +2903,7 @@ body { display: flex; flex-direction: column; }
 
 <script>
 'use strict';
-const BUILD='VTEK-SCHED-20260418-11';
+const BUILD='VTEK-SCHED-20260418-12';
 
 const _dbgEl=document.getElementById('dbg-log');
 function dbg(msg){const t=new Date().toTimeString().slice(0,8);_dbgEl.textContent+=t+' '+msg+'\n';_dbgEl.scrollTop=_dbgEl.scrollHeight;}
