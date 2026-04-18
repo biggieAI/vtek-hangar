@@ -1,3 +1,4 @@
+<!-- vtek-1776519196 -->
 <!-- vtek-1776518439 -->
 <!-- vtek-1776517355 -->
 <!DOCTYPE html>
@@ -2588,9 +2589,6 @@ html, body { height: 100dvh; min-height: -webkit-fill-available; overflow: hidde
 body { display: flex; flex-direction: column; }
 #mv-payload { flex: 1; display: flex !important; flex-direction: column; overflow: hidden; min-height: 0; }
 #mv-payload .module-content { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; min-height: 0; }
-.dbg-bar{display:none!important;}
-
-
 /* ══ MODULE-SPECIFIC ══ */
 .editor-bar{display:flex;align-items:center;gap:4px;padding:6px 8px;background:var(--s1);border-bottom:var(--b1);flex-shrink:0;overflow-x:auto;-webkit-overflow-scrolling:touch;touch-action:pan-x;scrollbar-width:none;}
 .editor-bar::-webkit-scrollbar{display:none;}
@@ -2726,7 +2724,6 @@ body { display: flex; flex-direction: column; }
 .att-viewer .file-box .icon{font-size:64px;color:var(--teal);margin-bottom:12px;}
 .att-viewer .file-box .name{font-family:var(--mono);font-size:13px;margin-bottom:4px;}
 .att-viewer .file-box .size{font-family:var(--mono);font-size:10px;color:var(--t2);}
-.dbg{display:none!important;height:0!important;overflow:hidden!important;padding:0!important;margin:0!important;border:none!important;}
 .hide{display:none!important;}
 
 
@@ -2906,19 +2903,9 @@ body { display: flex; flex-direction: column; }
 <!-- hidden file input for attachments -->
 <input type="file" id="att-file-in" accept="image/*,application/pdf" style="display:none" multiple>
 
-<div id="toast" class="toast"></div>
-<div class="dbg" id="dbg">
-  <div class="dbg-hd">
-    <button class="dbg-btn" onclick="document.getElementById('dbg').classList.toggle('open')">&gt; DBG</button>
-    <span class="dbg-id">VTEK-VAULT-20260417-12</span>
-    <button class="dbg-copy" onclick="navigator.clipboard&&navigator.clipboard.writeText(document.getElementById('dbg-log').textContent);this.textContent='COPIED';setTimeout(()=>this.textContent='COPY',1500)">COPY</button>
-  </div>
-  <div class="dbg-body"><div class="dbg-log" id="dbg-log"></div></div>
-</div>
-
 <script>
 'use strict';
-const BUILD_ID='VTEK-VAULT-20260418-18';
+const BUILD_ID='VTEK-VAULT-20260418-19';
 const LS='vtek9';
 let S=JSON.parse(localStorage.getItem(LS)||'null')||{shows:[],shots:[],tasks:[],vaultDocs:[],vaultTags:[]};
 if(!S.vaultDocs)S.vaultDocs=[];
@@ -2978,8 +2965,7 @@ async function idbDelete(id){
 
 function save(){localStorage.setItem(LS,JSON.stringify(S));}
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);}
-function dbg(m){const el=document.getElementById('dbg-log');el.textContent+=new Date().toTimeString().slice(0,8)+' '+m+'\n';}
-window.addEventListener('error',e=>dbg('ERR:'+e.message));
+window.addEventListener('error',()=>{});
 
 function escHtml(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function escAttr(s){return escHtml(s).replace(/'/g,'&#39;');}
@@ -3008,7 +2994,6 @@ if(toPurge.length){
   });
   S.vaultDocs=S.vaultDocs.filter(d=>!(d.archived&&d.archivedAt&&(now-d.archivedAt>THIRTY_DAYS)));
   save();
-  dbg('[VAULT] purged '+toPurge.length+' archived >30d');
 }
 
 // ── CLIPBOARD ──
@@ -3215,7 +3200,6 @@ function openDoc(id){
 
   renderTagRow(doc);
   renderTypeView(doc);
-  dbg('[VAULT] opened '+id+' type='+doc.type);
 }
 
 function renderTagRow(doc){
@@ -3303,7 +3287,8 @@ function renderAttStrip(doc){
         const img=document.getElementById('att-thumb-'+a.id);
         if(img) img.src=URL.createObjectURL(rec.blob);
       }
-    }catch(e){dbg('thumb err '+e.message);}
+    }catch(e){
+}
   });
 }
 
@@ -3323,9 +3308,7 @@ document.getElementById('att-file-in').addEventListener('change',async function(
       const kind=f.type.startsWith('image/')?'img':'file';
       await idbPut({id,blob:f});
       doc.att.push({id,name:f.name,mime:f.type,size:f.size,kind});
-      dbg('[ATT] saved '+f.name+' '+bytesHuman(f.size));
     }catch(err){
-      dbg('[ATT] ERR '+err.message);
       toast('ATT FAILED: '+err.message);
     }
   }
@@ -3829,7 +3812,6 @@ function saveDoc(silent){
   doc.updated=Date.now();
   save();
   if(!silent) toast('SAVED');
-  dbg('[VAULT] saved '+activeId);
   document.getElementById('title-lbl').textContent=doc.title.toUpperCase().slice(0,18);
 }
 
@@ -3867,8 +3849,6 @@ document.addEventListener('touchend',function(e){
   }
   _swStartX=null;
 },{passive:true});
-
-dbg('[VAULT] '+BUILD_ID+' boot | docs='+S.vaultDocs.length+' tags='+S.vaultTags.length);
 renderList();
 </script>
 </body>
