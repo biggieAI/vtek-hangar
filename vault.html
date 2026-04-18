@@ -1,4 +1,4 @@
-<!-- vtek-1776514601 -->
+<!-- vtek-1776515051 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -164,8 +164,8 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 .editor-bar::-webkit-scrollbar{display:none;}
 .editor-bar > *{flex-shrink:0;}
 
-.main{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;touch-action:pan-y;display:flex;flex-direction:column;}
-.main > #v-list{flex:1;min-height:0;}
+.main { flex:1; min-height:0; overflow-y:auto; overflow-x:hidden; -webkit-overflow-scrolling:touch; overscroll-behavior:contain; touch-action:pan-y; display:flex; flex-direction:column; background:var(--bg); }
+.main > #v-list{flex:1;min-height:0;background:var(--bg);}
 .main > #v-edit{flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden;}
 #v-edit > .editor-textarea,
 #v-edit > .vault-preview,
@@ -174,27 +174,27 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 #v-edit > .snippet-view{flex:1;min-height:0;}
 
 /* SEARCH BAR */
-.vault-search{display:flex;align-items:center;gap:8px;padding:10px 12px;background:var(--s1);border-bottom:var(--b1);flex-shrink:0;}
-.vault-search-in{flex:1;background:var(--s2);border:var(--b2);color:var(--t0);font-family:var(--sans);font-size:13px;padding:8px 12px;outline:none;border-radius:8px;min-height:36px;}
+.vault-search { display:flex; align-items:center; gap:8px; padding:8px 12px; background:var(--bg); border-bottom:1px solid rgba(255,255,255,0.04); flex-shrink:0; }
+.vault-search-in { flex:1; background:var(--s2); border:var(--b2); color:var(--t0); font-family:var(--sans); font-size:13px; padding:8px 12px; outline:none; border-radius:4px; min-height:36px; }
 .vault-search-in::placeholder{color:var(--t3);}
 .vault-search-x{background:none;border:none;color:var(--t2);font-size:18px;cursor:pointer;padding:4px 8px;min-height:36px;min-width:36px;touch-action:manipulation;}
-.vault-arch-toggle{background:var(--s3);border:var(--b2);color:var(--t2);font-family:var(--mono);font-size:9px;font-weight:700;padding:6px 10px;border-radius:6px;cursor:pointer;letter-spacing:0.06em;min-height:32px;touch-action:manipulation;}
+.vault-arch-toggle { background:linear-gradient(180deg,var(--s4) 0%,var(--s3) 100%); border:var(--b2); color:var(--t1); font-family:var(--sans); font-size:10px; font-weight:600; padding:0 10px; height:30px; border-radius:6px; cursor:pointer; letter-spacing:0.04em; text-transform:uppercase; display:inline-flex; align-items:center; box-shadow:inset 0 1px 0 rgba(255,255,255,0.09),inset 0 -1px 0 rgba(0,0,0,0.65); touch-action:manipulation; }
 .vault-arch-toggle.on{background:rgba(33,225,223,0.12);color:var(--teal);border-color:rgba(33,225,223,0.3);}
 
 /* VAULT LIST */
-.vault-new-row{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;border-bottom:var(--b1);touch-action:manipulation;-webkit-user-select:none;user-select:none;}
-.vault-new-row:active{background:var(--s2);}
-.vault-new-icon{width:32px;height:32px;border-radius:8px;background:var(--s3);border:var(--b2);display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--t1);flex-shrink:0;}
-.vault-new-label{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--t1);letter-spacing:0.06em;}
+.vault-new-row { display:flex; align-items:center; gap:8px; padding:7px 10px 7px 14px; cursor:pointer; transition:background 0.08s; -webkit-tap-highlight-color:transparent; background:transparent; border-radius:4px; margin:4px 4px 1px; touch-action:manipulation; -webkit-user-select:none; user-select:none; }
+.vault-new-row:hover { background:var(--s2); } .vault-new-row:active { background:var(--s3); }
+.vault-new-icon { font-size:14px; color:var(--t2); flex-shrink:0; } .vault-new-label { font-family:var(--sans); font-size:12px; font-weight:400; color:var(--t2); }
+
 .vault-list-section{padding-top:4px;}
-.vault-list-sec-lbl{font-family:var(--mono);font-size:9px;font-weight:700;color:var(--t3);letter-spacing:0.12em;padding:14px 16px 6px;}
-.vault-doc-row{display:flex;align-items:center;gap:12px;padding:12px 16px;cursor:pointer;border-top:var(--b1);touch-action:manipulation;-webkit-user-select:none;user-select:none;}
-.vault-doc-row:active,.vault-doc-row.on{background:var(--s2);}
-.vault-doc-icon{width:32px;height:32px;border-radius:8px;background:var(--s3);border:var(--b2);display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--t2);flex-shrink:0;}
+.vault-list-sec-lbl { font-family:var(--sans); font-size:10px; font-weight:600; letter-spacing:0.04em; color:var(--t2); padding:10px 10px 4px 14px; background:transparent; display:flex; align-items:center; gap:6px; }
+.vault-doc-row { display:flex; align-items:center; gap:8px; padding:10px 12px 10px 14px; cursor:pointer; transition:all 0.12s; -webkit-tap-highlight-color:transparent; position:relative; background:var(--s2); border:1px solid rgba(255,255,255,0.04); border-radius:14px; margin:3px 4px; box-shadow:3px 5px 12px rgba(0,0,0,0.5),-1px -2px 4px rgba(255,255,255,0.04); touch-action:manipulation; -webkit-user-select:none; user-select:none; }
+.vault-doc-row:hover { background:var(--s1); } .vault-doc-row:active { background:var(--s3); } .vault-doc-row.on { background:rgba(255,255,255,0.07); }
+.vault-doc-icon { display:none; }
 .vault-doc-info{flex:1;min-width:0;}
-.vault-doc-title{font-size:13px;font-weight:600;color:var(--t0);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.vault-doc-meta{font-family:var(--mono);font-size:10px;color:var(--t2);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.vault-doc-chevron{color:var(--t3);font-size:12px;flex-shrink:0;}
+.vault-doc-title { font-family:var(--sans); font-size:13px; font-weight:500; background:linear-gradient(160deg,#dce8f0 0%,#7f90a2 60%,#2a3d50 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.vault-doc-meta { font-family:var(--mono); font-size:9px; color:var(--t1); display:flex; gap:6px; margin-top:1px; }
+.vault-doc-chevron { color:var(--t2); font-size:12px; flex-shrink:0; }
 
 /* EDITOR */
 .editor-view{display:flex;flex-direction:column;flex:1;min-height:0;}
@@ -236,9 +236,9 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 .type-btn.on{background:var(--s4);color:var(--teal);}
 
 /* DOC ROW - pinned + multi-tag indicator */
-.vault-doc-row.pinned{border-left:2px solid var(--teal);}
-.vault-doc-row-tags{display:flex;gap:3px;margin-top:3px;flex-wrap:wrap;}
-.vault-doc-row-tag{display:inline-block;padding:1px 5px;background:var(--s4);border:1px solid rgba(255,255,255,0.06);color:var(--t2);font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:0.06em;border-radius:3px;}
+.vault-doc-row.pinned { border-left:2px solid rgba(33,225,223,0.5); }
+.vault-doc-row-tags { display:flex; gap:3px; margin-top:3px; flex-wrap:wrap; }
+.vault-doc-row-tag { font-family:var(--sans); font-size:9px; font-weight:700; padding:2px 6px; border:1px solid #2e2e2e; border-radius:2px; color:var(--t1); background:var(--s1); letter-spacing:0.04em; text-transform:uppercase; display:inline-block; }
 .vault-doc-type-icon{display:inline-block;width:14px;text-align:center;color:var(--t2);font-family:var(--mono);font-size:11px;font-weight:800;}
 
 /* TAG ROW (editor) - now multi */
@@ -416,8 +416,8 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
       <button class="vault-arch-toggle" id="vault-arch-toggle" onclick="toggleArchView()">ARCH</button>
     </div>
     <div class="vault-new-row" onclick="openNewSheet()">
-      <div class="vault-new-icon">+</div>
-      <span class="vault-new-label">NEW NOTE</span>
+      <span class="vault-new-icon">＋</span>
+      <span class="vault-new-label">New note</span>
     </div>
     <div id="doc-list"></div>
   </div>
@@ -521,7 +521,7 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 
 <script>
 'use strict';
-const BUILD_ID='VTEK-VAULT-20260418-14';
+const BUILD_ID='VTEK-VAULT-20260418-15';
 const LS='vtek9';
 let S=JSON.parse(localStorage.getItem(LS)||'null')||{shows:[],shots:[],tasks:[],vaultDocs:[],vaultTags:[]};
 if(!S.vaultDocs)S.vaultDocs=[];
