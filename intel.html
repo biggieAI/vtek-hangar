@@ -43,38 +43,65 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 /* MAIN */
 .main{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;display:flex;flex-direction:column;}
 
-/* BRIEFING CARD */
-.brief{padding:18px 20px 14px;background:var(--s1);border-bottom:var(--b1);flex-shrink:0;position:relative;}
-.brief-hd{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+/* ═══ HUD BRIEFING PANEL ═══ */
+.brief{padding:0;background:#0e1012;border-bottom:1px solid rgba(100,200,50,0.15);flex-shrink:0;overflow:hidden;position:relative;}
+.hud-panel{position:relative;padding:12px 14px 10px;}
 
-/* FLUID ORB — canvas-based liquid sphere */
-.orb{position:relative;width:56px;height:56px;flex-shrink:0;overflow:visible;}
-.orb canvas{display:block;}
+/* left accent stripe */
+.hud-panel::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,transparent,#64c832 25%,#64c832 75%,transparent);}
 
-.brief-lbl{font-family:var(--mono);font-size:11px;font-weight:800;color:var(--teal);letter-spacing:0.14em;}
-.brief-sub{font-family:var(--mono);font-size:8px;font-weight:700;color:var(--t3);letter-spacing:0.14em;margin-top:2px;}
-.brief-date{margin-left:auto;font-family:var(--mono);font-size:9px;color:var(--t2);letter-spacing:0.08em;text-align:right;}
-.brief-stats{display:flex;gap:8px;margin-bottom:14px;}
-.brief-stat{flex:1;padding:12px 6px;background:var(--s2);border:var(--b1);border-radius:8px;text-align:center;}
-.brief-stat-n{font-family:var(--mono);font-size:19px;font-weight:800;color:var(--t0);line-height:1;}
-.brief-stat-n.urgent{color:var(--hi);}
-.brief-stat-n.blocked{color:var(--warn);}
-.brief-stat-n.ok{color:var(--ok);}
-.brief-stat-l{font-family:var(--mono);font-size:8px;font-weight:700;color:var(--t2);letter-spacing:0.12em;margin-top:6px;}
-.brief-sum{font-size:13px;color:var(--t1);line-height:1.55;}
-.brief-sum strong{color:var(--t0);font-weight:700;}
+/* top row: corners + designation */
+.hud-top{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.hud-corner{width:9px;height:9px;border-top:1.5px solid #64c832;border-left:1.5px solid #64c832;flex-shrink:0;}
+.hud-corner.r{border:none;border-bottom:1.5px solid rgba(100,200,50,0.4);border-right:1.5px solid rgba(100,200,50,0.4);margin-left:auto;}
+.hud-title-block{flex:1;padding:0 8px;}
+.hud-designation{font-family:var(--mono);font-size:8px;font-weight:700;color:#64c832;letter-spacing:0.2em;}
+.hud-name{font-family:var(--mono);font-size:12px;font-weight:800;color:#dde4ec;letter-spacing:0.12em;margin-top:1px;}
+.hud-status-row{display:flex;align-items:center;gap:6px;padding:0 8px;}
+.hud-pulse{width:5px;height:5px;border-radius:50%;background:#64c832;box-shadow:0 0 6px #64c832,0 0 12px rgba(100,200,50,0.4);animation:hud-blink 2.4s ease-in-out infinite;flex-shrink:0;}
+@keyframes hud-blink{0%,100%{opacity:1;}48%,52%{opacity:0.15;}}
+.hud-status-txt{font-family:var(--mono);font-size:8px;font-weight:700;color:#64c832;letter-spacing:0.14em;}
+.hud-date-txt{font-family:var(--mono);font-size:8px;color:#374050;letter-spacing:0.08em;margin-left:auto;}
 
-/* ACTION CARDS (replacing emoji chips) */
-.card-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:14px 16px 8px;flex-shrink:0;background:var(--s1);border-bottom:var(--b1);}
-.ai-card{background:var(--s2);border:var(--b2);border-radius:10px;padding:12px 13px;cursor:pointer;touch-action:manipulation;-webkit-user-select:none;user-select:none;display:flex;gap:11px;align-items:flex-start;transition:background 0.12s,border-color 0.12s;min-height:64px;}
-.ai-card:active{background:var(--s3);border-color:rgba(33,225,223,0.3);}
-.ai-card-icon{width:22px;height:22px;flex-shrink:0;color:var(--teal);display:flex;align-items:center;justify-content:center;margin-top:1px;}
-.ai-card-icon svg{width:20px;height:20px;stroke:currentColor;stroke-width:1.6;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+/* scanning trace line */
+.hud-trace{height:1px;background:linear-gradient(90deg,transparent 0%,rgba(100,200,50,0.3) 20%,rgba(100,200,50,0.7) 50%,rgba(100,200,50,0.3) 80%,transparent 100%);margin:0 0 10px;position:relative;overflow:hidden;}
+.hud-trace::after{content:'';position:absolute;top:0;left:-20%;width:20%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.9),transparent);animation:hud-scan 3.2s linear infinite;}
+@keyframes hud-scan{0%{left:-20%;}100%{left:120%;}}
+
+/* stat boxes */
+.hud-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:9px;}
+.hud-stat{background:#0a0c0e;border:1px solid rgba(255,255,255,0.05);border-top:1px solid rgba(100,200,50,0.18);padding:8px 4px 7px;position:relative;}
+.hud-stat::before{content:'';position:absolute;top:0;left:0;width:2px;height:100%;background:rgba(100,200,50,0.12);}
+.hud-stat-n{font-family:var(--mono);font-size:17px;font-weight:800;color:#b8c4cc;line-height:1;text-align:center;}
+.hud-stat-n.urgent{color:#e85c4b;text-shadow:0 0 8px rgba(232,92,75,0.5);}
+.hud-stat-n.warn{color:#fbbf24;text-shadow:0 0 8px rgba(251,191,36,0.4);}
+.hud-stat-n.ok{color:#64c832;text-shadow:0 0 8px rgba(100,200,50,0.5);}
+.hud-stat-l{font-family:var(--mono);font-size:7px;font-weight:700;color:#2e3844;letter-spacing:0.14em;text-align:center;margin-top:5px;}
+
+/* summary */
+.hud-sum{font-family:var(--sans);font-size:12px;color:#6a7888;line-height:1.45;}
+.hud-sum strong{color:#b8c4cc;font-weight:600;}
+.hud-sum .flag{color:#64c832;font-family:var(--mono);font-size:10px;font-weight:700;}
+
+/* bottom corners */
+.hud-bottom{display:flex;align-items:flex-end;margin-top:10px;}
+.hud-bl{width:12px;height:6px;border-bottom:1px solid rgba(100,200,50,0.3);border-left:1px solid rgba(100,200,50,0.3);}
+.hud-br{width:12px;height:6px;border-bottom:1px solid rgba(100,200,50,0.3);border-right:1px solid rgba(100,200,50,0.3);margin-left:auto;}
+.hud-bottom-line{flex:1;height:1px;background:rgba(255,255,255,0.03);}
+
+/* ACTION CARDS — hard surface, no rounded corners */
+.card-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:10px 12px 8px;flex-shrink:0;background:#0e1012;border-bottom:1px solid rgba(100,200,50,0.1);}
+.ai-card{background:#111416;border:1px solid rgba(255,255,255,0.07);border-left:2px solid rgba(100,200,50,0.3);border-radius:0;padding:10px 11px;cursor:pointer;touch-action:manipulation;-webkit-user-select:none;user-select:none;display:flex;gap:10px;align-items:flex-start;min-height:58px;position:relative;overflow:hidden;}
+.ai-card::after{content:'';position:absolute;top:0;right:0;width:0;height:0;border-style:solid;border-width:0 7px 7px 0;border-color:transparent rgba(100,200,50,0.25) transparent transparent;}
+.ai-card:active{background:#161a1e;border-left-color:#64c832;}
+.ai-card:active::after{border-color:transparent #64c832 transparent transparent;}
+.ai-card-icon{width:18px;height:18px;flex-shrink:0;color:#64c832;display:flex;align-items:center;justify-content:center;margin-top:2px;}
+.ai-card-icon svg{width:16px;height:16px;stroke:currentColor;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round;}
 .ai-card-txt{flex:1;min-width:0;}
-.ai-card-title{font-family:var(--mono);font-size:10px;font-weight:800;color:var(--t0);letter-spacing:0.06em;line-height:1.2;}
-.ai-card-sub{font-size:11px;color:var(--t2);line-height:1.3;margin-top:4px;letter-spacing:0;}
+.ai-card-title{font-family:var(--mono);font-size:9px;font-weight:800;color:#b8c4cc;letter-spacing:0.1em;line-height:1.2;}
+.ai-card-sub{font-size:10px;color:#3e4e5e;line-height:1.3;margin-top:3px;letter-spacing:0;}
 
-/* MESSAGES */
+/* MESSAGES — style tweak for dark HUD theme */
 .msgs{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:8px 16px 20px;display:flex;flex-direction:column;gap:10px;}
 .msg{display:flex;flex-direction:column;max-width:92%;}
 .msg.user{align-self:flex-end;align-items:flex-end;}
@@ -225,7 +252,7 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 <div class="dbg" id="dbg">
   <div class="dbg-hd">
     <button class="dbg-btn" onclick="document.getElementById('dbg').classList.toggle('open')">&gt; DBG</button>
-    <span class="dbg-id">VTEK-INTEL-20260417-006</span>
+    <span class="dbg-id">VTEK-INTEL-20260417-007</span>
     <button class="dbg-copy" onclick="navigator.clipboard&&navigator.clipboard.writeText(document.getElementById('dbg-log').textContent);this.textContent='COPIED';setTimeout(()=>this.textContent='COPY',1500)">COPY</button>
   </div>
   <div class="dbg-body"><div class="dbg-log" id="dbg-log"></div></div>
@@ -233,7 +260,7 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 
 <script>
 'use strict';
-const BUILD_ID='VTEK-INTEL-20260417-006';
+const BUILD_ID='VTEK-INTEL-20260417-007';
 const LS='vtek9';
 const HIST_KEY='vtek_intel_hist';
 const MODEL_KEY='vtek_intel_model';
@@ -255,64 +282,65 @@ function saveModel(){localStorage.setItem(MODEL_KEY,document.getElementById('mod
 function tod(){return new Date().toISOString().slice(0,10);}
 function gs(id){return (S.shows||[]).find(s=>s.id===id);}
 
-// ═══ BRIEFING CARD ═══
+// ═══ HUD BRIEFING ═══
 function renderBrief(){
   const shots=S.shots||[],tasks=S.tasks||[],shows=S.shows||[];
   const todStr=tod();
   const openTasks=tasks.filter(t=>!t.done);
   const overdue=openTasks.filter(t=>t.due && t.due < todStr).length;
-  const dueToday=openTasks.filter(t=>t.due === todStr).length;
   const blocked=shots.filter(s=>s.status==='blocked').length;
   const wip=shots.filter(s=>s.status==='wip').length;
-  const critical=openTasks.filter(t=>t.pri==='high'||t.pri==='critical').length;
 
   const planKey='vtek_plan_'+new Date().toDateString();
   const plan=JSON.parse(localStorage.getItem(planKey)||'[]');
-
   const now=new Date();
-  const hh=now.getHours(),mm=now.getMinutes();
-  const tm=hh*60+mm;
-
-  // Find next scheduled block
+  const tm=now.getHours()*60+now.getMinutes();
   let nextBlock=null;
   plan.forEach(e=>{
-    const blockStart=(e.startH||0)*60+(e.startM||0);
-    if(blockStart>=tm && !nextBlock){
-      const t=tasks.find(x=>x.id===e.taskId);
-      if(t) nextBlock={startH:e.startH,startM:e.startM,task:t};
-    }
+    const bs=(e.startH||0)*60+(e.startM||0);
+    if(bs>=tm && !nextBlock){const t=tasks.find(x=>x.id===e.taskId);if(t)nextBlock={startH:e.startH,startM:e.startM,task:t};}
   });
 
   let sum='';
-  if(overdue) sum+='<strong>'+overdue+' overdue</strong>. ';
-  if(dueToday) sum+=dueToday+' due today. ';
-  if(blocked) sum+=blocked+' shot'+(blocked>1?'s':'')+' blocked. ';
-  if(critical && !overdue) sum+=critical+' high-pri task'+(critical>1?'s':'')+'. ';
+  if(overdue) sum+='<span class="flag">// OVERDUE: '+overdue+'</span> &nbsp;';
+  if(blocked) sum+='<span class="flag">// BLK: '+blocked+'</span> &nbsp;';
   if(nextBlock){
-    const h=nextBlock.startH, m=String(nextBlock.startM||0).padStart(2,'0');
-    sum+='Next: <strong>'+nextBlock.task.title+'</strong> at '+(h>12?h-12:h)+':'+m+(h>=12?'pm':'am')+'. ';
+    const h=nextBlock.startH,m=String(nextBlock.startM||0).padStart(2,'0');
+    sum+='<strong>NEXT →</strong> '+nextBlock.task.title+' <span class="flag">@'+(h>12?h-12:h)+':'+m+(h>=12?'P':'A')+'</span>';
   }
-  if(!sum) sum='Quiet day. '+openTasks.length+' open task'+(openTasks.length===1?'':'s')+'.';
+  if(!sum) sum='<strong>'+openTasks.length+' TASK'+(openTasks.length===1?'':'S')+' OPEN</strong> · ALL CLEAR';
 
-  const dateStr=now.toLocaleDateString('en-US',{weekday:'long',month:'short',day:'numeric'});
+  const dateStr=now.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}).toUpperCase();
 
-  const html='<div class="brief-hd">'+
-    '<div class="orb" id="orb"><canvas id="orb-canvas" width="56" height="56"></canvas></div>'+
-    '<div><div class="brief-lbl">SECONDS</div><div class="brief-sub">AGENT ONLINE</div></div>'+
-    '<div class="brief-date">'+dateStr.toUpperCase()+'</div>'+
-  '</div>'+
-  '<div class="brief-stats">'+
-    '<div class="brief-stat"><div class="brief-stat-n '+(overdue?'urgent':'')+'">'+overdue+'</div><div class="brief-stat-l">OVERDUE</div></div>'+
-    '<div class="brief-stat"><div class="brief-stat-n">'+openTasks.length+'</div><div class="brief-stat-l">TASKS</div></div>'+
-    '<div class="brief-stat"><div class="brief-stat-n '+(blocked?'blocked':'')+'">'+blocked+'</div><div class="brief-stat-l">BLK</div></div>'+
-    '<div class="brief-stat"><div class="brief-stat-n ok">'+wip+'</div><div class="brief-stat-l">WIP</div></div>'+
-  '</div>'+
-  '<div class="brief-sum">'+sum+'</div>';
-
-  document.getElementById('brief').innerHTML=html;
-  // cancel any running RAF, then init fresh canvas
-  if(_orbRAF){cancelAnimationFrame(_orbRAF);_orbRAF=null;}
-  initOrb();
+  document.getElementById('brief').innerHTML=
+    '<div class="hud-panel">'+
+      '<div class="hud-top">'+
+        '<div class="hud-corner"></div>'+
+        '<div class="hud-title-block">'+
+          '<div class="hud-designation">SYS // INTEL MODULE</div>'+
+          '<div class="hud-name">SECONDS</div>'+
+        '</div>'+
+        '<div class="hud-status-row">'+
+          '<div class="hud-pulse"></div>'+
+          '<div class="hud-status-txt">ONLINE</div>'+
+          '<div class="hud-date-txt">'+dateStr+'</div>'+
+        '</div>'+
+        '<div class="hud-corner r"></div>'+
+      '</div>'+
+      '<div class="hud-trace"></div>'+
+      '<div class="hud-stats">'+
+        '<div class="hud-stat"><div class="hud-stat-n '+(overdue?'urgent':'')+'">'+overdue+'</div><div class="hud-stat-l">OVERDUE</div></div>'+
+        '<div class="hud-stat"><div class="hud-stat-n">'+openTasks.length+'</div><div class="hud-stat-l">TASKS</div></div>'+
+        '<div class="hud-stat"><div class="hud-stat-n '+(blocked?'warn':'')+'">'+blocked+'</div><div class="hud-stat-l">BLK</div></div>'+
+        '<div class="hud-stat"><div class="hud-stat-n '+(wip?'ok':'')+'">'+wip+'</div><div class="hud-stat-l">WIP</div></div>'+
+      '</div>'+
+      '<div class="hud-sum">'+sum+'</div>'+
+      '<div class="hud-bottom">'+
+        '<div class="hud-bl"></div>'+
+        '<div class="hud-bottom-line"></div>'+
+        '<div class="hud-br"></div>'+
+      '</div>'+
+    '</div>';
 }
 
 // ═══ CONTEXT for AI ═══
@@ -573,8 +601,9 @@ async function send(){
   const thinkId=addMsg('ai','',true);
   const sendBtn=document.getElementById('send-btn');
   sendBtn.disabled=true;
-  const orb=document.getElementById('orb');
-  if(orb) orb.classList.add('thinking');
+  // pulse the scan trace during thinking
+  const trace=document.querySelector('.hud-trace');
+  if(trace) trace.style.animationDuration='0.8s';
 
   try{
     const model=getModel();
@@ -608,7 +637,8 @@ async function send(){
     dbg('[ERR] '+e.message);
   }finally{
     sendBtn.disabled=false;
-    if(orb) orb.classList.remove('thinking');
+    const trace=document.querySelector('.hud-trace');
+    if(trace) trace.style.animationDuration='';
   }
 }
 
@@ -705,138 +735,6 @@ function boot(){
 
   dbg('[INIT] '+BUILD_ID+' | key='+(getKey()?'SET':'MISSING')+' | model='+getModel().split('-')[1].toUpperCase()+' | hist='+history.length);
 }
-// ═══ CANVAS ORB — fluid liquid sphere ═══
-let _orbRAF=null, _orbThinking=false;
-
-function initOrb(){
-  const canvas=document.getElementById('orb-canvas');
-  if(!canvas) return;
-  const dpr=window.devicePixelRatio||1;
-  const SIZE=56;
-  canvas.width=SIZE*dpr;
-  canvas.height=SIZE*dpr;
-  canvas.style.width=SIZE+'px';
-  canvas.style.height=SIZE+'px';
-  const ctx=canvas.getContext('2d');
-  ctx.scale(dpr,dpr);
-  const cx=SIZE/2, cy=SIZE/2, R=SIZE/2-2;
-
-  // Fluid blobs — each has angle, speed, size, color
-  const blobs=[
-    {angle:0,    speed:0.004, r:R*0.72, color:'#cc44ff', alpha:0.72},
-    {angle:2.1,  speed:0.006, r:R*0.68, color:'#2244dd', alpha:0.68},
-    {angle:4.2,  speed:0.005, r:R*0.64, color:'#00d4ff', alpha:0.62},
-    {angle:1.0,  speed:0.0035,r:R*0.55, color:'#aa22ee', alpha:0.5},
-  ];
-  // Rim arcs — wispy spinning
-  const rims=[
-    {angle:0,   speed:0.018, arc:1.1, width:2.5, alpha:0.55},
-    {angle:2.4, speed:-0.014,arc:0.9, width:1.5, alpha:0.4},
-    {angle:4.8, speed:0.022, arc:0.7, width:1.2, alpha:0.3},
-  ];
-
-  let t=0;
-  function frame(){
-    ctx.clearRect(0,0,SIZE,SIZE);
-    const speed = _orbThinking ? 3.2 : 1;
-    t += 0.016 * speed;
-
-    // outer ambient glow
-    const glow=ctx.createRadialGradient(cx,cy,R*0.3,cx,cy,R*1.35);
-    glow.addColorStop(0,'rgba(60,30,120,0)');
-    glow.addColorStop(0.7,'rgba(40,20,100,0.18)');
-    glow.addColorStop(1,'rgba(20,10,60,0)');
-    ctx.fillStyle=glow;
-    ctx.fillRect(0,0,SIZE,SIZE);
-
-    // clip to circle
-    ctx.save();
-    ctx.beginPath();
-    ctx.arc(cx,cy,R,0,Math.PI*2);
-    ctx.clip();
-
-    // deep navy background
-    const bg=ctx.createRadialGradient(cx,cy*0.8,0,cx,cy,R);
-    bg.addColorStop(0,'#1a1060');
-    bg.addColorStop(0.6,'#0d0830');
-    bg.addColorStop(1,'#060420');
-    ctx.fillStyle=bg;
-    ctx.fillRect(0,0,SIZE,SIZE);
-
-    // fluid blob arcs (conic/arc based)
-    blobs.forEach((b,i)=>{
-      b.angle+=b.speed*speed;
-      const bx=cx+Math.cos(b.angle)*R*0.18;
-      const by=cy+Math.sin(b.angle)*R*0.18;
-      const grad=ctx.createRadialGradient(bx,by,0,cx,cy,b.r);
-      grad.addColorStop(0, b.color+'cc');
-      grad.addColorStop(0.4, b.color+'77');
-      grad.addColorStop(1,'transparent');
-      ctx.beginPath();
-      ctx.arc(bx,by,b.r,0,Math.PI*2);
-      ctx.fillStyle=grad;
-      ctx.globalAlpha=b.alpha;
-      ctx.fill();
-    });
-    ctx.globalAlpha=1;
-
-    // inner highlight — small bright crescent at top
-    const crest=ctx.createRadialGradient(cx-R*0.1,cy-R*0.55,0,cx-R*0.1,cy-R*0.4,R*0.55);
-    crest.addColorStop(0,'rgba(180,200,255,0.32)');
-    crest.addColorStop(1,'transparent');
-    ctx.fillStyle=crest;
-    ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.fill();
-
-    ctx.restore();
-
-    // spinning rim arcs (outside the clip — wispy trails)
-    ctx.save();
-    rims.forEach(rim=>{
-      rim.angle+=rim.speed*speed;
-      ctx.beginPath();
-      ctx.arc(cx,cy,R+0.5, rim.angle, rim.angle+rim.arc);
-      ctx.strokeStyle=`rgba(160,200,255,${rim.alpha})`;
-      ctx.lineWidth=rim.width;
-      ctx.lineCap='round';
-      ctx.shadowColor='rgba(140,180,255,0.8)';
-      ctx.shadowBlur=6;
-      ctx.stroke();
-      // second ghost trail
-      ctx.beginPath();
-      ctx.arc(cx,cy,R+1.5, rim.angle+0.15, rim.angle+rim.arc*0.6);
-      ctx.strokeStyle=`rgba(220,180,255,${rim.alpha*0.4})`;
-      ctx.lineWidth=rim.width*0.5;
-      ctx.stroke();
-    });
-    ctx.restore();
-
-    // hard glowing rim
-    ctx.beginPath();
-    ctx.arc(cx,cy,R,0,Math.PI*2);
-    ctx.strokeStyle='rgba(180,220,255,0.6)';
-    ctx.lineWidth=_orbThinking?1.5:1;
-    ctx.shadowColor='rgba(140,200,255,0.9)';
-    ctx.shadowBlur=_orbThinking?14:8;
-    ctx.stroke();
-    ctx.shadowBlur=0;
-
-    _orbRAF=requestAnimationFrame(frame);
-  }
-  frame();
-}
-
-// hook into orb thinking state toggle
-const _origSend=send;
-// patch orb into thinking by watching #orb class via existing code
-// The send() function already sets orb.classList.add/remove('thinking')
-// We just read _orbThinking from the orb element's class
-function _syncOrbThinking(){
-  const orb=document.getElementById('orb');
-  _orbThinking = orb ? orb.classList.contains('thinking') : false;
-  requestAnimationFrame(_syncOrbThinking);
-}
-_syncOrbThinking();
-
 boot();
 </script>
 </body>
