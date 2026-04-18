@@ -1,3 +1,4 @@
+<!-- vtek-1776514018 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,15 +9,73 @@
 <title>VTEK // Intel</title>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-:root{
-  --bg:#1a1a1c;--s1:#1f1f21;--s2:#222224;--s3:#272729;--s4:#2e2e30;--s5:#353537;
-  --t0:#ececee;--t1:#b0b0bc;--t2:#787882;--t3:#505058;
-  --accent:rgba(244,247,250,0.92);--accent-hi:#f4f7fa;--teal:#21e1df;
-  --hi:#e85c4b;--ok:#4ade80;--warn:#fbbf24;
-  --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,monospace;
-  --sans:'Inter',-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
-  --b1:1px solid rgba(255,255,255,0.07);--b2:1px solid rgba(255,255,255,0.10);
-  --safe-t:env(safe-area-inset-top,0px);--safe-b:env(safe-area-inset-bottom,0px);
+:root {
+  /* VTEK GEO — PLASMA WHITE */
+  --bg:    #000003;
+  --s1:    #0a0b10;
+  --s2:    #14161d;
+  --s3:    #1e2029;
+  --s4:    #292d36;
+  --s5:    #363b47;
+  --neo-raise: inset 0 1px 0 rgba(255,255,255,0.10), inset 0 -1px 0 rgba(0,0,0,0.72), 0 6px 28px rgba(0,0,0,0.92);
+  --neo-inset: inset 0 2px 6px rgba(0,0,0,0.85), inset 0 -1px 0 rgba(255,255,255,0.03);
+  --y:      rgba(244,247,250,0.92);
+  --y-hi:   #f4f7fa;
+  --y-mid:  rgba(232,237,242,0.55);
+  --y-dim:  rgba(232,237,242,0.20);
+  --y-deep: rgba(232,237,242,0.07);
+  --y2:     rgba(232,237,242,0.04);
+  --y3:     rgba(232,237,242,0.025);
+  --y4:     rgba(232,237,242,0.01);
+  --y-glow: none;
+  --y-glow-sm: none;
+  --t0: #c8cdd8;
+  --t1: #525a68;
+  --t2: #282d38;
+  --t3: #141820;
+  --wip:   #6a7280;
+  --blk:   #404550;
+  --rev:   #585e6a;
+  --app:   #8890a0;
+  --hld:   #1e2029;
+  --del:   #a8b0bc;
+  --accent:     #e8edf2;
+  --accent-hi:  #f4f7fa;
+  --accent-dim: #0e1018;
+  --accent-ice: #f4f7fa;
+  --accent-bg:  #080a10;
+  --accent-glow: rgba(232,237,242,0.15);
+  --teal:  #21e1df;
+  --warn:  #f4c06a;
+  --hi:    #e85c4b;
+  --ok:    #7dd3a0;
+  --b0: 1px solid rgba(255,255,255,0.028);
+  --b1: 1px solid rgba(255,255,255,0.055);
+  --b2: 1px solid rgba(255,255,255,0.085);
+  --b3: 1px solid rgba(255,255,255,0.120);
+  --sans: 'Inter', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+  --nav-h: 56px;
+  --safe-b: env(safe-area-inset-bottom, 0px);
+  --safe-t: env(safe-area-inset-top, 0px);
+  --ac: var(--y);
+  --ac-lo: var(--y3);
+  --ac-md: var(--y2);
+  --ac-bd: rgba(232,237,242,0.20);
+  --b-compat0: rgba(255,255,255,0.04);
+  --b-compat1: rgba(255,255,255,0.08);
+  --b-compat2: rgba(255,255,255,0.14);
+  --bd: var(--b2);
+  --row: var(--s2);
+  --row-hi: var(--s3);
+  --text: var(--t0);
+  --text2: var(--t1);
+  --text3: var(--t2);
+  --pill: var(--s3);
+  --r-pill:3px; --r-card:4px;
+  --chf:0px; --chf-md:0px; --chf-sm:0px;
+  --slab: var(--neo-raise);
+  --sh-r:none; --sh-rm:none; --sh-in:none; --sh-is:none; --sh-fl:none;
 }
 html,body{background:var(--bg);color:var(--t0);font-family:var(--sans);font-size:14px;line-height:1.4;overflow:hidden;height:100dvh;width:100vw;}
 body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-available;overflow:hidden;}
@@ -161,6 +220,41 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 
 .hide{display:none!important;}
 .dbg{display:none!important;}
+
+/* ── PAYLOAD UNIFIED TOPBAR/BTN STYLES ── */
+.tb-btn {
+  padding: 0 10px;
+  height: 30px;
+  border: var(--b2);
+  border-radius: 6px;
+  background: linear-gradient(180deg, var(--s4) 0%, var(--s3) 100%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.09), inset 0 -1px 0 rgba(0,0,0,0.65);
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--t1);
+  cursor: pointer;
+  transition: all 0.1s;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+}
+.tb-btn:hover { background: linear-gradient(180deg, var(--s5) 0%, var(--s4) 100%); color: var(--t0); }
+.tb-btn:active { background: var(--s4); }
+.tb-btn.go {
+  background: linear-gradient(180deg, #f4f7fa 0%, #e8edf2 100%);
+  border: none; color: #06080a; font-weight: 900;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.60), inset 0 -1px 0 rgba(0,0,0,0.18);
+}
+.tb-icon-btn {
+  width: 30px; height: 30px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--s2); border: var(--b2); border-radius: 3px;
+  cursor: pointer; color: var(--t1); transition: all 0.1s; flex-shrink: 0;
+}
+.tb-icon-btn:hover { background: var(--s3); color: var(--t0); }
 </style>
 </head>
 <body>
@@ -252,7 +346,7 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 
 <script>
 'use strict';
-const BUILD_ID='VTEK-INTEL-20260417-12';
+const BUILD_ID='VTEK-INTEL-20260418-13';
 const LS='vtek9';
 const HIST_KEY='vtek_intel_hist';
 const MODEL_KEY='vtek_intel_model';
