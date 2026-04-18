@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- VTEK // HANGAR | BUILD_ID: HGR-006 | 2026-04-18T18:00:00Z -->
+<!-- VTEK // HANGAR | BUILD_ID: HGR-007 | 2026-04-18T19:00:00Z -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -252,6 +252,26 @@ select.fc{cursor:pointer;}
 .toast{background:var(--s3);border:var(--b2);border-radius:4px;padding:8px 16px;font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:0.10em;text-transform:uppercase;color:var(--t0);opacity:0;transform:translateY(6px);transition:opacity 0.18s,transform 0.18s;box-shadow:0 4px 20px rgba(0,0,0,0.6);}
 .toast.show{opacity:1;transform:translateY(0);}
 
+/* ── DOSSIER ── */
+.dossier{background:var(--s2);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:14px 16px;margin-top:8px;}
+.dos-eye{font-family:var(--sans);font-size:10px;font-weight:700;letter-spacing:0.10em;text-transform:uppercase;color:var(--t2);display:flex;align-items:center;gap:6px;margin-bottom:10px;}
+.dos-eye-bar{width:14px;height:2px;flex-shrink:0;background:var(--g-ac);}
+.dos-big{font-family:var(--sans);font-size:44px;font-weight:900;color:#fff;line-height:1;letter-spacing:-0.03em;margin-bottom:4px;}
+.dos-unit{font-family:var(--sans);font-size:12px;font-weight:700;color:var(--t1);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:14px;}
+.dos-rows{border-top:1px solid rgba(255,255,255,0.05);padding-top:12px;display:flex;flex-direction:column;gap:8px;}
+.dos-row{display:flex;align-items:center;}
+.dos-rl{font-family:var(--sans);font-size:11px;color:var(--t2);text-transform:uppercase;font-weight:500;flex-shrink:0;width:90px;letter-spacing:0.04em;}
+.dos-rd{flex:1;height:1px;background:repeating-linear-gradient(90deg,rgba(255,255,255,0.06) 0,rgba(255,255,255,0.06) 2px,transparent 2px,transparent 6px);margin:0 10px;}
+.dos-rv{font-family:var(--mono);font-size:12px;font-weight:500;flex-shrink:0;color:var(--t0);}
+.breakdown{display:flex;flex-direction:column;gap:0;margin-top:10px;}
+.bk-row{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.03);}
+.bk-row:last-child{border-bottom:none;}
+.bk-dot{width:6px;height:6px;border-radius:1px;flex-shrink:0;}
+.bk-label{font-family:var(--sans);font-size:11px;color:var(--t2);text-transform:uppercase;letter-spacing:0.08em;font-weight:600;width:72px;flex-shrink:0;}
+.bk-bar-wrap{flex:1;height:3px;background:rgba(255,255,255,0.04);border-radius:1px;overflow:hidden;}
+.bk-bar{height:100%;border-radius:1px;}
+.bk-count{font-family:var(--mono);font-size:11px;color:var(--t1);width:24px;text-align:right;flex-shrink:0;}
+
 /* ── EMPTY ── */
 .empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 24px;gap:8px;text-align:center;}
 .eg{font-family:var(--mono);font-size:22px;color:var(--t3);}
@@ -287,6 +307,7 @@ select.fc{cursor:pointer;}
   <div id="h-alerts"></div>
   <div class="sec"><div class="sec-l">ACTIVE SHOWS</div><button class="sec-a" onclick="openOvShow()">+ REGISTER</button></div>
   <div class="show-grid" id="show-grid"></div>
+  <div id="h-dossier"></div>
 </div>
 
 <div class="page" id="pg-shots">
@@ -419,7 +440,7 @@ select.fc{cursor:pointer;}
 </div>
 
 <div class="toast-wrap"><div class="toast" id="toast"></div></div>
-<div class="bid">HGR-006</div>
+<div class="bid">HGR-007</div>
 
 <script>
 'use strict';
@@ -644,6 +665,37 @@ function rHangar(){
       </div>
     </div>`;
   }).join('');
+
+  // Dossier — shot breakdown across all shows
+  const dos=document.getElementById('h-dossier');
+  if(!shots.length){dos.innerHTML='';return;}
+  const total=shots.length;
+  const statuses=[
+    {key:'wip',label:'WIP',col:'var(--wip)'},
+    {key:'review',label:'REVIEW',col:'var(--rev)'},
+    {key:'blocked',label:'BLOCKED',col:'var(--blk)'},
+    {key:'approved',label:'APPROVED',col:'var(--app)'},
+    {key:'delivered',label:'DELIVERED',col:'var(--del)'},
+    {key:'hold',label:'HOLD',col:'var(--s4)'},
+  ];
+  const rows=statuses.map(st=>{
+    const n=shots.filter(s=>s.status===st.key).length;
+    if(!n)return'';
+    const pct=Math.round((n/total)*100);
+    return`<div class="bk-row">
+      <span class="bk-dot" style="background:${st.col}"></span>
+      <span class="bk-label">${st.label}</span>
+      <div class="bk-bar-wrap"><div class="bk-bar" style="width:${pct}%;background:${st.col};"></div></div>
+      <span class="bk-count">${n}</span>
+    </div>`;
+  }).join('');
+  dos.innerHTML=`<div class="sec" style="margin-top:16px;"><div class="sec-l">SHOT BREAKDOWN</div></div>
+    <div class="dossier">
+      <div class="dos-eye"><div class="dos-eye-bar"></div>MANIFEST</div>
+      <div class="dos-big">${total}</div>
+      <div class="dos-unit">SHOTS TOTAL</div>
+      <div class="breakdown">${rows}</div>
+    </div>`;
 }
 
 function drillShow(id){activeShow=id;goPage('shots');}
