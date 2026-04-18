@@ -57,14 +57,24 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 .hud-status-txt{font-family:var(--mono);font-size:8px;font-weight:700;color:var(--teal);letter-spacing:0.14em;}
 .hud-date-txt{font-family:var(--mono);font-size:9px;color:var(--t2);letter-spacing:0.06em;text-align:right;}
 
-/* stat row — 4 equal cards, no colored backgrounds */
-.hud-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px;}
-.hud-stat{background:var(--s2);border:var(--b1);padding:10px 4px 8px;text-align:center;}
-.hud-stat-n{font-family:var(--mono);font-size:18px;font-weight:800;color:var(--t0);line-height:1;}
-.hud-stat-n.urgent{color:var(--hi);}
-.hud-stat-n.warn{color:var(--warn);}
-.hud-stat-n.ok{color:var(--teal);}
-.hud-stat-l{font-family:var(--mono);font-size:7px;font-weight:700;color:var(--t3);letter-spacing:0.12em;margin-top:5px;}
+/* stat row — leaderboard style */
+.hud-stats{display:flex;flex-direction:column;gap:6px;margin-bottom:12px;}
+.hud-show-row{display:flex;align-items:center;gap:10px;}
+.hud-show-code{font-family:var(--mono);font-size:10px;font-weight:800;color:var(--t0);letter-spacing:0.08em;width:36px;flex-shrink:0;}
+.hud-bar-wrap{flex:1;height:5px;background:var(--s3);border-radius:2px;overflow:hidden;}
+.hud-bar-fill{height:100%;border-radius:2px;background:var(--teal);transition:width 0.3s;}
+.hud-bar-fill.warn{background:var(--warn);}
+.hud-bar-fill.danger{background:var(--hi);}
+.hud-show-pct{font-family:var(--mono);font-size:10px;font-weight:700;color:var(--t2);width:30px;text-align:right;flex-shrink:0;}
+.hud-show-meta{font-family:var(--mono);font-size:9px;color:var(--t3);width:52px;text-align:right;flex-shrink:0;}
+/* fallback pills when no shows */
+.hud-pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;}
+.hud-pill{background:var(--s2);border:var(--b1);padding:7px 10px;display:flex;flex-direction:column;align-items:center;gap:3px;flex:1;min-width:60px;}
+.hud-pill-n{font-family:var(--mono);font-size:16px;font-weight:800;color:var(--t0);}
+.hud-pill-n.urgent{color:var(--hi);}
+.hud-pill-n.warn{color:var(--warn);}
+.hud-pill-n.ok{color:var(--teal);}
+.hud-pill-l{font-family:var(--mono);font-size:7px;font-weight:700;color:var(--t3);letter-spacing:0.12em;}
 
 /* summary — plain sentence, no code flags */
 .hud-sum{font-size:13px;color:var(--t1);line-height:1.5;}
@@ -166,12 +176,6 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
       <option value="claude-sonnet-4-5-20251001">SONNET</option>
       <option value="claude-opus-4-6-20251001">OPUS</option>
     </select>
-    <button class="tb-btn" onclick="clearChat()" title="New conversation">
-      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 109-9"/><path d="M3 3v6h6"/></svg>
-    </button>
-    <button class="tb-btn" onclick="toggleKey()" title="API key">
-      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="14" r="4"/><path d="M11 11l10-10M16 6l3 3"/></svg>
-    </button>
   </div>
 </div>
 
@@ -239,7 +243,7 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 <div class="dbg" id="dbg">
   <div class="dbg-hd">
     <button class="dbg-btn" onclick="document.getElementById('dbg').classList.toggle('open')">&gt; DBG</button>
-    <span class="dbg-id">VTEK-INTEL-20260417-010</span>
+    <span class="dbg-id">VTEK-INTEL-20260417-011</span>
     <button class="dbg-copy" onclick="navigator.clipboard&&navigator.clipboard.writeText(document.getElementById('dbg-log').textContent);this.textContent='COPIED';setTimeout(()=>this.textContent='COPY',1500)">COPY</button>
   </div>
   <div class="dbg-body"><div class="dbg-log" id="dbg-log"></div></div>
@@ -247,7 +251,7 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 
 <script>
 'use strict';
-const BUILD_ID='VTEK-INTEL-20260417-010';
+const BUILD_ID='VTEK-INTEL-20260417-011';
 const LS='vtek9';
 const HIST_KEY='vtek_intel_hist';
 const MODEL_KEY='vtek_intel_model';
@@ -274,7 +278,7 @@ function renderBrief(){
   const shots=S.shots||[],tasks=S.tasks||[],shows=S.shows||[];
   const todStr=tod();
   const openTasks=tasks.filter(t=>!t.done);
-  const overdue=openTasks.filter(t=>t.due && t.due < todStr).length;
+  const overdue=openTasks.filter(t=>t.due&&t.due<todStr).length;
   const blocked=shots.filter(s=>s.status==='blocked').length;
   const wip=shots.filter(s=>s.status==='wip').length;
 
@@ -285,20 +289,56 @@ function renderBrief(){
   let nextBlock=null;
   plan.forEach(e=>{
     const bs=(e.startH||0)*60+(e.startM||0);
-    if(bs>=tm && !nextBlock){const t=tasks.find(x=>x.id===e.taskId);if(t)nextBlock={startH:e.startH,startM:e.startM,task:t};}
+    if(bs>=tm&&!nextBlock){const t=tasks.find(x=>x.id===e.taskId);if(t)nextBlock={startH:e.startH,startM:e.startM,task:t};}
   });
 
+  // Summary sentence
   let sum='';
   if(overdue) sum+='<span class="flag">'+overdue+' overdue</span>. ';
-  else sum+='All clear on deadlines. ';
+  else sum+='Deadlines clear. ';
   if(blocked) sum+=blocked+' shot'+(blocked>1?'s':'')+' blocked. ';
   if(nextBlock){
     const h=nextBlock.startH,m=String(nextBlock.startM||0).padStart(2,'0');
-    sum+='Next up: <strong>'+nextBlock.task.title+'</strong> at '+(h>12?h-12:h)+':'+m+(h>=12?'pm':'am')+'.';
+    sum+='Next: <strong>'+nextBlock.task.title+'</strong> at '+(h>12?h-12:h)+':'+m+(h>=12?'pm':'am')+'.';
+  } else if(!overdue&&!blocked){
+    sum+='<strong>'+openTasks.length+'</strong> task'+(openTasks.length===1?'':'s')+' open.';
   }
-  if(!sum.trim()) sum='<strong>'+openTasks.length+'</strong> open task'+(openTasks.length===1?'':'s')+'. Nothing scheduled yet.';
 
   const dateStr=now.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}).toUpperCase();
+
+  // Build leaderboard rows — one per show
+  let statsHtml='';
+  if(shows.length){
+    // Per-show progress bars
+    statsHtml='<div class="hud-stats">';
+    shows.forEach(sh=>{
+      const shShots=shots.filter(s=>s.sid===sh.id);
+      const total=shShots.length;
+      const done=shShots.filter(s=>s.status==='approved'||s.status==='delivered').length;
+      const blk=shShots.filter(s=>s.status==='blocked').length;
+      const pct=total?Math.round(done/total*100):0;
+      const barClass=blk?'danger':pct>=80?'ok':'';
+      const metaParts=[];
+      if(blk) metaParts.push(blk+' BLK');
+      if(shShots.filter(s=>s.status==='wip').length) metaParts.push(shShots.filter(s=>s.status==='wip').length+' WIP');
+      statsHtml+=
+        '<div class="hud-show-row">'+
+          '<div class="hud-show-code">'+escHtml(sh.code)+'</div>'+
+          '<div class="hud-bar-wrap"><div class="hud-bar-fill'+(barClass?' '+barClass:'')+'" style="width:'+pct+'%"></div></div>'+
+          '<div class="hud-show-pct">'+pct+'%</div>'+
+          '<div class="hud-show-meta">'+(metaParts.length?metaParts.join(' · '):''+done+'/'+total)+'</div>'+
+        '</div>';
+    });
+    statsHtml+='</div>';
+  } else {
+    // No shows — fallback pills
+    statsHtml='<div class="hud-pills">'+
+      '<div class="hud-pill"><div class="hud-pill-n '+(overdue?'urgent':'')+'">'+overdue+'</div><div class="hud-pill-l">OVERDUE</div></div>'+
+      '<div class="hud-pill"><div class="hud-pill-n">'+openTasks.length+'</div><div class="hud-pill-l">TASKS</div></div>'+
+      '<div class="hud-pill"><div class="hud-pill-n '+(blocked?'warn':'')+'">'+blocked+'</div><div class="hud-pill-l">BLOCKED</div></div>'+
+      '<div class="hud-pill"><div class="hud-pill-n '+(wip?'ok':'')+'">'+wip+'</div><div class="hud-pill-l">WIP</div></div>'+
+    '</div>';
+  }
 
   document.getElementById('brief').innerHTML=
     '<div class="hud-panel">'+
@@ -310,14 +350,10 @@ function renderBrief(){
         '</div>'+
         '<div class="hud-date-txt">'+dateStr+'</div>'+
       '</div>'+
-      '<div class="hud-stats">'+
-        '<div class="hud-stat"><div class="hud-stat-n '+(overdue?'urgent':'')+'">'+overdue+'</div><div class="hud-stat-l">OVERDUE</div></div>'+
-        '<div class="hud-stat"><div class="hud-stat-n">'+openTasks.length+'</div><div class="hud-stat-l">TASKS</div></div>'+
-        '<div class="hud-stat"><div class="hud-stat-n '+(blocked?'warn':'')+'">'+blocked+'</div><div class="hud-stat-l">BLOCKED</div></div>'+
-        '<div class="hud-stat"><div class="hud-stat-n '+(wip?'ok':'')+'">'+wip+'</div><div class="hud-stat-l">WIP</div></div>'+
-      '</div>'+
+      statsHtml+
       '<div class="hud-sum">'+sum+'</div>'+
     '</div>';
+}
 }
 
 // ═══ CONTEXT for AI ═══
@@ -565,9 +601,9 @@ async function send(){
 
   const key=getKey();
   if(!key){
-    toggleKey(true);
-    toast('ADD API KEY FIRST');
-    return;
+    const v=prompt('Anthropic API key (sk-ant-...):','');
+    if(v&&v.startsWith('sk-')){localStorage.setItem('vtek_claude_key',v.trim());toast('KEY SAVED');}
+    else{toast('NO KEY — tap send again after adding');return;}
   }
 
   input.value='';
@@ -699,6 +735,15 @@ function boot(){
     const fresh=JSON.parse(localStorage.getItem(LS)||'null');
     if(fresh){S=fresh;renderBrief();}
   },5000);
+
+  // Long-press message area to clear chat
+  let _clrTimer=null;
+  const msgsEl=document.getElementById('msgs');
+  if(msgsEl){
+    msgsEl.addEventListener('touchstart',()=>{_clrTimer=setTimeout(()=>{if(confirm('Clear conversation?')){history=[];saveHist();msgsEl.innerHTML='';renderBrief();toast('CLEARED');}},800);},{passive:true});
+    msgsEl.addEventListener('touchend',()=>clearTimeout(_clrTimer),{passive:true});
+    msgsEl.addEventListener('touchmove',()=>clearTimeout(_clrTimer),{passive:true});
+  }
 
   dbg('[INIT] '+BUILD_ID+' | key='+(getKey()?'SET':'MISSING')+' | model='+getModel().split('-')[1].toUpperCase()+' | hist='+history.length);
 }
