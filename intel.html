@@ -43,64 +43,73 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 /* MAIN */
 .main{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;display:flex;flex-direction:column;}
 
-/* ═══ HUD BRIEFING PANEL ═══ */
-.brief{padding:0;background:#0e1012;border-bottom:1px solid rgba(100,200,50,0.15);flex-shrink:0;overflow:hidden;position:relative;}
-.hud-panel{position:relative;padding:12px 14px 10px;}
+/* ═══ HARD SURFACE PANEL ═══ */
+.brief{padding:0;background:#141618;border-bottom:2px solid #0a0b0c;flex-shrink:0;overflow:hidden;}
+.hud-panel{
+  position:relative;margin:8px 8px 6px;
+  background:linear-gradient(160deg,#1e2228 0%,#181c20 60%,#1a1e22 100%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.07),inset 0 -1px 0 rgba(0,0,0,0.7),inset 1px 0 0 rgba(255,255,255,0.04),inset -1px 0 0 rgba(0,0,0,0.5),0 2px 10px rgba(0,0,0,0.7);
+  clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px));
+  padding:11px 13px 11px;
+}
+.hud-top{display:flex;align-items:flex-start;gap:8px;margin-bottom:9px;}
+.hud-title-block{flex:1;}
+.hud-designation{font-family:var(--mono);font-size:7px;font-weight:700;color:#384450;letter-spacing:0.24em;}
+.hud-name{font-family:var(--mono);font-size:13px;font-weight:800;color:#c0ccd6;letter-spacing:0.14em;margin-top:2px;text-shadow:0 1px 0 rgba(0,0,0,0.8),0 -1px 0 rgba(255,255,255,0.05);}
+.hud-status-row{display:flex;align-items:center;gap:5px;margin-top:4px;}
+.hud-dot{width:4px;height:4px;border-radius:50%;background:#64c832;box-shadow:0 0 4px rgba(100,200,50,0.7);flex-shrink:0;}
+.hud-status-txt{font-family:var(--mono);font-size:7px;font-weight:700;color:#64c832;letter-spacing:0.16em;}
+.hud-date-txt{font-family:var(--mono);font-size:7px;color:#2a3440;letter-spacing:0.08em;margin-left:auto;text-align:right;line-height:1.5;}
+.hud-badge{
+  width:34px;height:34px;flex-shrink:0;
+  background:linear-gradient(135deg,#1c2026 0%,#12161a 100%);
+  clip-path:polygon(0 0,100% 0,100% 100%,8px 100%,0 calc(100% - 8px));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.05),inset 1px 0 0 rgba(255,255,255,0.02);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:8px;font-weight:800;color:#243040;
+}
+.hud-inner{
+  background:linear-gradient(180deg,#0d0f11 0%,#101214 100%);
+  box-shadow:inset 0 2px 5px rgba(0,0,0,0.85),inset 1px 0 0 rgba(0,0,0,0.6),inset -1px 0 0 rgba(0,0,0,0.6),inset 0 -1px 0 rgba(255,255,255,0.025),0 1px 0 rgba(255,255,255,0.03);
+  padding:9px 7px;margin:0 0 8px;
+  clip-path:polygon(0 0,calc(100% - 6px) 0,100% 6px,100% 100%,6px 100%,0 calc(100% - 6px));
+}
+.hud-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;}
+.hud-stat{
+  background:linear-gradient(180deg,#09090b 0%,#0c0e10 100%);
+  box-shadow:inset 0 2px 3px rgba(0,0,0,0.8),inset 1px 0 0 rgba(0,0,0,0.6),inset -1px 0 0 rgba(0,0,0,0.5),inset 0 -1px 0 rgba(255,255,255,0.02),0 1px 0 rgba(255,255,255,0.03);
+  padding:9px 3px 7px;
+}
+.hud-stat-n{font-family:var(--mono);font-size:16px;font-weight:800;color:#607080;line-height:1;text-align:center;text-shadow:0 2px 4px rgba(0,0,0,0.9);}
+.hud-stat-n.urgent{color:#b04040;text-shadow:0 0 6px rgba(180,60,60,0.4),0 2px 4px rgba(0,0,0,0.9);}
+.hud-stat-n.warn{color:#906030;text-shadow:0 0 5px rgba(144,96,48,0.35),0 2px 4px rgba(0,0,0,0.9);}
+.hud-stat-n.ok{color:#548a2a;text-shadow:0 0 5px rgba(84,138,42,0.4),0 2px 4px rgba(0,0,0,0.9);}
+.hud-stat-l{font-family:var(--mono);font-size:7px;font-weight:700;color:#243040;letter-spacing:0.14em;text-align:center;margin-top:5px;}
+.hud-sum{font-family:var(--sans);font-size:11px;color:#404e5c;line-height:1.5;}
+.hud-sum strong{color:#7090a8;font-weight:600;}
+.hud-sum .flag{color:#64c832;font-family:var(--mono);font-size:9px;font-weight:700;}
+.hud-bolts{display:flex;justify-content:space-between;margin-top:9px;}
+.hud-bolt{width:12px;height:5px;background:linear-gradient(180deg,#1a1e22 0%,#101418 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,0.05),0 1px 2px rgba(0,0,0,0.6);}
+.hud-bolt::after{content:'';display:block;width:3px;height:3px;margin:1px auto;border-radius:50%;background:#0e1214;box-shadow:inset 0 1px 1px rgba(0,0,0,0.9);}
 
-/* left accent stripe */
-.hud-panel::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,transparent,#64c832 25%,#64c832 75%,transparent);}
-
-/* top row: corners + designation */
-.hud-top{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
-.hud-corner{width:9px;height:9px;border-top:1.5px solid #64c832;border-left:1.5px solid #64c832;flex-shrink:0;}
-.hud-corner.r{border:none;border-bottom:1.5px solid rgba(100,200,50,0.4);border-right:1.5px solid rgba(100,200,50,0.4);margin-left:auto;}
-.hud-title-block{flex:1;padding:0 8px;}
-.hud-designation{font-family:var(--mono);font-size:8px;font-weight:700;color:#64c832;letter-spacing:0.2em;}
-.hud-name{font-family:var(--mono);font-size:12px;font-weight:800;color:#dde4ec;letter-spacing:0.12em;margin-top:1px;}
-.hud-status-row{display:flex;align-items:center;gap:6px;padding:0 8px;}
-.hud-pulse{width:5px;height:5px;border-radius:50%;background:#64c832;box-shadow:0 0 6px #64c832,0 0 12px rgba(100,200,50,0.4);animation:hud-blink 2.4s ease-in-out infinite;flex-shrink:0;}
-@keyframes hud-blink{0%,100%{opacity:1;}48%,52%{opacity:0.15;}}
-.hud-status-txt{font-family:var(--mono);font-size:8px;font-weight:700;color:#64c832;letter-spacing:0.14em;}
-.hud-date-txt{font-family:var(--mono);font-size:8px;color:#374050;letter-spacing:0.08em;margin-left:auto;}
-
-/* scanning trace line */
-.hud-trace{height:1px;background:linear-gradient(90deg,transparent 0%,rgba(100,200,50,0.3) 20%,rgba(100,200,50,0.7) 50%,rgba(100,200,50,0.3) 80%,transparent 100%);margin:0 0 10px;position:relative;overflow:hidden;}
-.hud-trace::after{content:'';position:absolute;top:0;left:-20%;width:20%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.9),transparent);animation:hud-scan 3.2s linear infinite;}
-@keyframes hud-scan{0%{left:-20%;}100%{left:120%;}}
-
-/* stat boxes */
-.hud-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:9px;}
-.hud-stat{background:#0a0c0e;border:1px solid rgba(255,255,255,0.05);border-top:1px solid rgba(100,200,50,0.18);padding:8px 4px 7px;position:relative;}
-.hud-stat::before{content:'';position:absolute;top:0;left:0;width:2px;height:100%;background:rgba(100,200,50,0.12);}
-.hud-stat-n{font-family:var(--mono);font-size:17px;font-weight:800;color:#b8c4cc;line-height:1;text-align:center;}
-.hud-stat-n.urgent{color:#e85c4b;text-shadow:0 0 8px rgba(232,92,75,0.5);}
-.hud-stat-n.warn{color:#fbbf24;text-shadow:0 0 8px rgba(251,191,36,0.4);}
-.hud-stat-n.ok{color:#64c832;text-shadow:0 0 8px rgba(100,200,50,0.5);}
-.hud-stat-l{font-family:var(--mono);font-size:7px;font-weight:700;color:#2e3844;letter-spacing:0.14em;text-align:center;margin-top:5px;}
-
-/* summary */
-.hud-sum{font-family:var(--sans);font-size:12px;color:#6a7888;line-height:1.45;}
-.hud-sum strong{color:#b8c4cc;font-weight:600;}
-.hud-sum .flag{color:#64c832;font-family:var(--mono);font-size:10px;font-weight:700;}
-
-/* bottom corners */
-.hud-bottom{display:flex;align-items:flex-end;margin-top:10px;}
-.hud-bl{width:12px;height:6px;border-bottom:1px solid rgba(100,200,50,0.3);border-left:1px solid rgba(100,200,50,0.3);}
-.hud-br{width:12px;height:6px;border-bottom:1px solid rgba(100,200,50,0.3);border-right:1px solid rgba(100,200,50,0.3);margin-left:auto;}
-.hud-bottom-line{flex:1;height:1px;background:rgba(255,255,255,0.03);}
-
-/* ACTION CARDS — hard surface, no rounded corners */
-.card-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:10px 12px 8px;flex-shrink:0;background:#0e1012;border-bottom:1px solid rgba(100,200,50,0.1);}
-.ai-card{background:#111416;border:1px solid rgba(255,255,255,0.07);border-left:2px solid rgba(100,200,50,0.3);border-radius:0;padding:10px 11px;cursor:pointer;touch-action:manipulation;-webkit-user-select:none;user-select:none;display:flex;gap:10px;align-items:flex-start;min-height:58px;position:relative;overflow:hidden;}
-.ai-card::after{content:'';position:absolute;top:0;right:0;width:0;height:0;border-style:solid;border-width:0 7px 7px 0;border-color:transparent rgba(100,200,50,0.25) transparent transparent;}
-.ai-card:active{background:#161a1e;border-left-color:#64c832;}
-.ai-card:active::after{border-color:transparent #64c832 transparent transparent;}
-.ai-card-icon{width:18px;height:18px;flex-shrink:0;color:#64c832;display:flex;align-items:center;justify-content:center;margin-top:2px;}
-.ai-card-icon svg{width:16px;height:16px;stroke:currentColor;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+/* ACTION CARDS — hard surface plates */
+.card-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:6px 8px 6px;flex-shrink:0;background:#141618;border-bottom:2px solid #0a0b0c;}
+.ai-card{
+  background:linear-gradient(150deg,#1b1f24 0%,#161a1e 100%);
+  border:none;padding:10px 11px;cursor:pointer;touch-action:manipulation;-webkit-user-select:none;user-select:none;
+  display:flex;gap:10px;align-items:flex-start;min-height:52px;position:relative;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.055),inset 0 -1px 0 rgba(0,0,0,0.55),inset 1px 0 0 rgba(255,255,255,0.03),inset -1px 0 0 rgba(0,0,0,0.45),0 2px 4px rgba(0,0,0,0.45);
+  clip-path:polygon(0 0,calc(100% - 7px) 0,100% 7px,100% 100%,7px 100%,0 calc(100% - 7px));
+}
+.ai-card:active{background:linear-gradient(150deg,#1e2630 0%,#161c24 100%);}
+.ai-card-icon{width:14px;height:14px;flex-shrink:0;color:#2e4050;display:flex;align-items:center;justify-content:center;margin-top:2px;}
+.ai-card:active .ai-card-icon{color:#64c832;}
+.ai-card-icon svg{width:13px;height:13px;stroke:currentColor;stroke-width:1.9;fill:none;stroke-linecap:round;stroke-linejoin:round;}
 .ai-card-txt{flex:1;min-width:0;}
-.ai-card-title{font-family:var(--mono);font-size:9px;font-weight:800;color:#b8c4cc;letter-spacing:0.1em;line-height:1.2;}
-.ai-card-sub{font-size:10px;color:#3e4e5e;line-height:1.3;margin-top:3px;letter-spacing:0;}
+.ai-card-title{font-family:var(--mono);font-size:9px;font-weight:800;color:#5a7080;letter-spacing:0.1em;text-shadow:0 1px 0 rgba(0,0,0,0.8);}
+.ai-card-sub{font-size:10px;color:#283440;line-height:1.3;margin-top:3px;}
 
+/* ACTION CHIPS */
 /* MESSAGES — style tweak for dark HUD theme */
 .msgs{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:8px 16px 20px;display:flex;flex-direction:column;gap:10px;}
 .msg{display:flex;flex-direction:column;max-width:92%;}
@@ -252,7 +261,7 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 <div class="dbg" id="dbg">
   <div class="dbg-hd">
     <button class="dbg-btn" onclick="document.getElementById('dbg').classList.toggle('open')">&gt; DBG</button>
-    <span class="dbg-id">VTEK-INTEL-20260417-007</span>
+    <span class="dbg-id">VTEK-INTEL-20260417-008</span>
     <button class="dbg-copy" onclick="navigator.clipboard&&navigator.clipboard.writeText(document.getElementById('dbg-log').textContent);this.textContent='COPIED';setTimeout(()=>this.textContent='COPY',1500)">COPY</button>
   </div>
   <div class="dbg-body"><div class="dbg-log" id="dbg-log"></div></div>
@@ -260,7 +269,7 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 
 <script>
 'use strict';
-const BUILD_ID='VTEK-INTEL-20260417-007';
+const BUILD_ID='VTEK-INTEL-20260417-008';
 const LS='vtek9';
 const HIST_KEY='vtek_intel_hist';
 const MODEL_KEY='vtek_intel_model';
@@ -315,31 +324,24 @@ function renderBrief(){
   document.getElementById('brief').innerHTML=
     '<div class="hud-panel">'+
       '<div class="hud-top">'+
-        '<div class="hud-corner"></div>'+
         '<div class="hud-title-block">'+
           '<div class="hud-designation">SYS // INTEL MODULE</div>'+
           '<div class="hud-name">SECONDS</div>'+
+          '<div class="hud-status-row"><div class="hud-dot"></div><div class="hud-status-txt">ONLINE</div></div>'+
         '</div>'+
-        '<div class="hud-status-row">'+
-          '<div class="hud-pulse"></div>'+
-          '<div class="hud-status-txt">ONLINE</div>'+
-          '<div class="hud-date-txt">'+dateStr+'</div>'+
-        '</div>'+
-        '<div class="hud-corner r"></div>'+
+        '<div class="hud-badge">S//</div>'+
+        '<div class="hud-date-txt">'+dateStr+'</div>'+
       '</div>'+
-      '<div class="hud-trace"></div>'+
-      '<div class="hud-stats">'+
-        '<div class="hud-stat"><div class="hud-stat-n '+(overdue?'urgent':'')+'">'+overdue+'</div><div class="hud-stat-l">OVERDUE</div></div>'+
-        '<div class="hud-stat"><div class="hud-stat-n">'+openTasks.length+'</div><div class="hud-stat-l">TASKS</div></div>'+
-        '<div class="hud-stat"><div class="hud-stat-n '+(blocked?'warn':'')+'">'+blocked+'</div><div class="hud-stat-l">BLK</div></div>'+
-        '<div class="hud-stat"><div class="hud-stat-n '+(wip?'ok':'')+'">'+wip+'</div><div class="hud-stat-l">WIP</div></div>'+
+      '<div class="hud-inner">'+
+        '<div class="hud-stats">'+
+          '<div class="hud-stat"><div class="hud-stat-n '+(overdue?'urgent':'')+'">'+overdue+'</div><div class="hud-stat-l">OVERDUE</div></div>'+
+          '<div class="hud-stat"><div class="hud-stat-n">'+openTasks.length+'</div><div class="hud-stat-l">TASKS</div></div>'+
+          '<div class="hud-stat"><div class="hud-stat-n '+(blocked?'warn':'')+'">'+blocked+'</div><div class="hud-stat-l">BLK</div></div>'+
+          '<div class="hud-stat"><div class="hud-stat-n '+(wip?'ok':'')+'">'+wip+'</div><div class="hud-stat-l">WIP</div></div>'+
+        '</div>'+
       '</div>'+
       '<div class="hud-sum">'+sum+'</div>'+
-      '<div class="hud-bottom">'+
-        '<div class="hud-bl"></div>'+
-        '<div class="hud-bottom-line"></div>'+
-        '<div class="hud-br"></div>'+
-      '</div>'+
+      '<div class="hud-bolts"><div class="hud-bolt"></div><div class="hud-bolt"></div></div>'+
     '</div>';
 }
 
@@ -601,9 +603,6 @@ async function send(){
   const thinkId=addMsg('ai','',true);
   const sendBtn=document.getElementById('send-btn');
   sendBtn.disabled=true;
-  // pulse the scan trace during thinking
-  const trace=document.querySelector('.hud-trace');
-  if(trace) trace.style.animationDuration='0.8s';
 
   try{
     const model=getModel();
@@ -637,8 +636,6 @@ async function send(){
     dbg('[ERR] '+e.message);
   }finally{
     sendBtn.disabled=false;
-    const trace=document.querySelector('.hud-trace');
-    if(trace) trace.style.animationDuration='';
   }
 }
 
