@@ -1,4 +1,4 @@
-<!-- vtek-1776514015 -->
+<!-- vtek-1776514599 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -81,51 +81,82 @@ html,body{background:var(--bg);color:var(--t0);font-family:var(--sans);font-size
 body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-available;overflow:hidden;}
 
 /* TOPBAR */
-.topbar{
-  display:flex;align-items:center;gap:10px;
-  padding:calc(var(--safe-t) + 12px) 12px 12px;
-  background:var(--s1);
-  border-bottom:var(--b1);
-  flex-shrink:0;
-  touch-action:manipulation;
-  position:relative;
+.topbar {
+  height: calc(52px + var(--safe-t));
+  padding-top: var(--safe-t);
+  padding-left: 12px;
+  padding-right: 10px;
+  padding-bottom: 0;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  position: relative;
+  z-index: 10;
+  touch-action: manipulation;
 }
-.topbar::after{
-  content:'';position:absolute;bottom:-1px;left:8%;right:8%;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(127,144,162,0.3) 15%,rgba(255,255,255,0.5) 50%,rgba(127,144,162,0.3) 85%,transparent);
-  opacity:0.4;
+.topbar::after {
+  content: '';
+  position: absolute;
+  bottom: -1px; left: 8%; right: 8%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(127,144,162,0.3) 15%, rgba(200,220,232,0.7) 50%, rgba(127,144,162,0.3) 85%, transparent);
+  opacity: 0.35;
 }
-.back-btn{
-  display:flex;align-items:center;gap:6px;
-  background:none;border:none;
-  color:var(--t1);
-  font-family:var(--mono);font-size:10px;font-weight:600;
-  letter-spacing:0.08em;text-transform:uppercase;
-  padding:10px 12px 10px 8px;
-  min-height:44px;min-width:44px;
-  cursor:pointer;
-  touch-action:manipulation;
-  -webkit-user-select:none;user-select:none;
+
+.back-btn {
+  display: flex; align-items: center; gap: 4px;
+  background: none; border: none;
+  color: var(--t1);
+  font-family: var(--sans); font-size: 11px; font-weight: 600;
+  letter-spacing: 0.04em; text-transform: uppercase;
+  padding: 8px; min-height: 40px; min-width: 44px;
+  cursor: pointer; touch-action: manipulation;
+  -webkit-user-select: none; user-select: none; flex-shrink: 0;
 }
 .back-btn svg,.back-btn span{pointer-events:none;}
-.title{
-  font-family:var(--mono);font-size:14px;font-weight:800;
-  letter-spacing:0.10em;color:#f4f7fa;
+.title {
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: #f4f7fa;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
-.actions{margin-left:auto;display:flex;gap:6px;}
-.tb-btn{
-  padding:6px 12px;
-  background:var(--s3);
-  border:1px solid rgba(255,255,255,0.08);
-  color:var(--t0);
-  font-family:var(--sans);font-size:10px;font-weight:700;
-  letter-spacing:0.05em;
-  cursor:pointer;
-  min-height:32px;
-  border-radius:8px;
-  touch-action:manipulation;
-  -webkit-user-select:none;user-select:none;
+.actions { margin-left: auto; display: flex; gap: 4px; align-items: center; flex-shrink: 0; }
+.tb-btn {
+  padding: 0 10px;
+  height: 30px;
+  border: var(--b2);
+  border-radius: 6px;
+  background: linear-gradient(180deg, var(--s4) 0%, var(--s3) 100%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.09), inset 0 -1px 0 rgba(0,0,0,0.65);
+  font-family: var(--sans);
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 0.04em; text-transform: uppercase;
+  color: var(--t1); cursor: pointer; transition: all 0.1s;
+  white-space: nowrap; display: inline-flex; align-items: center;
+  touch-action: manipulation; -webkit-user-select: none; user-select: none; flex-shrink: 0;
 }
+.tb-btn:hover { background: linear-gradient(180deg, var(--s5) 0%, var(--s4) 100%); color: var(--t0); }
+.tb-btn:active { background: var(--s4); }
+.tb-btn.primary, .tb-btn.go {
+  background: linear-gradient(180deg, #f4f7fa 0%, #e8edf2 100%);
+  border: none; color: #06080a; font-weight: 900;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.60), inset 0 -1px 0 rgba(0,0,0,0.18);
+}
+.tb-btn.icon { min-width: 30px; padding: 0 8px; }
+.tb-icon-btn {
+  width: 30px; height: 30px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--s2); border: var(--b2); border-radius: 3px;
+  cursor: pointer; color: var(--t1); transition: all 0.1s; flex-shrink: 0;
+}
+.tb-icon-btn:hover { background: var(--s3); color: var(--t0); }
 .tb-btn:active{background:var(--s5);}
 .tb-btn.primary{
   background:var(--accent-hi);
@@ -477,40 +508,6 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 .dbg-log{color:#0f0;line-height:1.5;white-space:pre-wrap;padding:4px 10px;font-size:9px;}
 .dbg{display:none!important;}
 
-/* ── PAYLOAD UNIFIED TOPBAR/BTN STYLES ── */
-.tb-btn {
-  padding: 0 10px;
-  height: 30px;
-  border: var(--b2);
-  border-radius: 6px;
-  background: linear-gradient(180deg, var(--s4) 0%, var(--s3) 100%);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.09), inset 0 -1px 0 rgba(0,0,0,0.65);
-  font-family: var(--sans);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--t1);
-  cursor: pointer;
-  transition: all 0.1s;
-  white-space: nowrap;
-  display: inline-flex;
-  align-items: center;
-}
-.tb-btn:hover { background: linear-gradient(180deg, var(--s5) 0%, var(--s4) 100%); color: var(--t0); }
-.tb-btn:active { background: var(--s4); }
-.tb-btn.go {
-  background: linear-gradient(180deg, #f4f7fa 0%, #e8edf2 100%);
-  border: none; color: #06080a; font-weight: 900;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.60), inset 0 -1px 0 rgba(0,0,0,0.18);
-}
-.tb-icon-btn {
-  width: 30px; height: 30px;
-  display: flex; align-items: center; justify-content: center;
-  background: var(--s2); border: var(--b2); border-radius: 3px;
-  cursor: pointer; color: var(--t1); transition: all 0.1s; flex-shrink: 0;
-}
-.tb-icon-btn:hover { background: var(--s3); color: var(--t0); }
 </style>
 </head>
 <body>
@@ -649,7 +646,7 @@ body{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-av
 
 <script>
 'use strict';
-const BUILD='VTEK-SCHED-20260418-8';
+const BUILD='VTEK-SCHED-20260418-9';
 
 const _dbgEl=document.getElementById('dbg-log');
 function dbg(msg){const t=new Date().toTimeString().slice(0,8);_dbgEl.textContent+=t+' '+msg+'\n';_dbgEl.scrollTop=_dbgEl.scrollHeight;}
