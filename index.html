@@ -1,4 +1,4 @@
-<!-- VTEK HANGAR BUILD_ID=HGR-018 -->
+<!-- VTEK HANGAR BUILD_ID=HGR-019 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -382,276 +382,6 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 .search-input{width:100%;background:var(--s2);border:var(--b1);border-radius:10px;padding:9px 12px 9px 36px;font-family:var(--sans);font-size:13px;color:var(--t0);outline:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%238e8e93' stroke-width='1.5' viewBox='0 0 24 24'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:10px center}
 .search-input::placeholder{color:var(--t2)}
 
-/* ══════════════════════════════════════════════
-   ANIMATION SYSTEM — VTEK HANGAR
-══════════════════════════════════════════════ */
-
-/* Base keyframes */
-@keyframes fadeUp   { from { opacity:0; transform:translate3d(0,18px,0); } to { opacity:1; transform:translate3d(0,0,0); } }
-@keyframes fadeDown { from { opacity:0; transform:translate3d(0,-14px,0); } to { opacity:1; transform:translate3d(0,0,0); } }
-@keyframes slideInR { from { opacity:0; transform:translate3d(28px,0,0); } to { opacity:1; transform:translate3d(0,0,0); } }
-@keyframes slideInL { from { opacity:0; transform:translate3d(-28px,0,0); } to { opacity:1; transform:translate3d(0,0,0); } }
-@keyframes scaleIn  { from { opacity:0; transform:scale3d(0.94,0.94,1); } to { opacity:1; transform:scale3d(1,1,1); } }
-@keyframes sheetUp  { from { opacity:0; transform:translate3d(0,40px,0); } to { opacity:1; transform:translate3d(0,0,0); } }
-@keyframes shimmer  { from { background-position:-200% 0; } to { background-position:200% 0; } }
-@keyframes pulseAc  { 0%,100% { opacity:1; } 50% { opacity:.45; } }
-@keyframes navPop   { 0% { transform:scale(0.7); opacity:0; } 60% { transform:scale(1.15); } 100% { transform:scale(1); opacity:1; } }
-@keyframes barGrow  { from { transform:scaleX(0); transform-origin:left; } to { transform:scaleX(1); transform-origin:left; } }
-@keyframes dotPulse { 0%,100%{transform:scale(1);opacity:1;} 50%{transform:scale(1.4);opacity:.6;} }
-
-/* View transition container */
-.view {
-  transform-origin: center top;
-  will-change: transform, opacity;
-}
-
-/* View enter animations — direction-aware */
-.view.enter-right {
-  animation: slideInR 0.28s cubic-bezier(0.22,1,0.36,1) both;
-}
-.view.enter-left {
-  animation: slideInL 0.28s cubic-bezier(0.22,1,0.36,1) both;
-}
-.view.enter-up {
-  animation: sheetUp 0.30s cubic-bezier(0.22,1,0.36,1) both;
-}
-.view.enter-scale {
-  animation: scaleIn 0.24s cubic-bezier(0.22,1,0.36,1) both;
-}
-
-/* Staggered children — add .stagger to a container */
-.stagger > * {
-  opacity: 0;
-  animation: fadeUp 0.32s cubic-bezier(0.22,1,0.36,1) both;
-}
-.stagger > *:nth-child(1)  { animation-delay: 0.04s; }
-.stagger > *:nth-child(2)  { animation-delay: 0.08s; }
-.stagger > *:nth-child(3)  { animation-delay: 0.12s; }
-.stagger > *:nth-child(4)  { animation-delay: 0.16s; }
-.stagger > *:nth-child(5)  { animation-delay: 0.20s; }
-.stagger > *:nth-child(6)  { animation-delay: 0.24s; }
-.stagger > *:nth-child(7)  { animation-delay: 0.28s; }
-.stagger > *:nth-child(8)  { animation-delay: 0.32s; }
-.stagger > *:nth-child(9)  { animation-delay: 0.36s; }
-.stagger > *:nth-child(10) { animation-delay: 0.40s; }
-
-/* Chip-wrap stagger */
-.chip-wrap .stat-row {
-  opacity: 0;
-  animation: fadeUp 0.28s cubic-bezier(0.22,1,0.36,1) both;
-}
-.chip-wrap .stat-row:nth-child(1) { animation-delay: 0.05s; }
-.chip-wrap .stat-row:nth-child(2) { animation-delay: 0.12s; }
-
-/* Individual card entrance */
-.anim-card {
-  opacity: 0;
-  animation: fadeUp 0.30s cubic-bezier(0.22,1,0.36,1) both;
-}
-
-/* Shot rows — staggered on list render */
-.shot-row {
-  opacity: 0;
-  animation: fadeUp 0.28s cubic-bezier(0.22,1,0.36,1) both;
-}
-.shot-row:nth-child(1)  { animation-delay: 0.03s; }
-.shot-row:nth-child(2)  { animation-delay: 0.07s; }
-.shot-row:nth-child(3)  { animation-delay: 0.11s; }
-.shot-row:nth-child(4)  { animation-delay: 0.15s; }
-.shot-row:nth-child(5)  { animation-delay: 0.19s; }
-.shot-row:nth-child(6)  { animation-delay: 0.23s; }
-.shot-row:nth-child(7)  { animation-delay: 0.27s; }
-.shot-row:nth-child(8)  { animation-delay: 0.31s; }
-.shot-row:nth-child(9)  { animation-delay: 0.35s; }
-.shot-row:nth-child(10) { animation-delay: 0.39s; }
-
-/* Artist cards */
-.artist-card {
-  opacity: 0;
-  animation: fadeUp 0.30s cubic-bezier(0.22,1,0.36,1) both;
-}
-
-/* Hero block */
-.hero {
-  opacity: 0;
-  animation: fadeDown 0.26s cubic-bezier(0.22,1,0.36,1) both 0.02s;
-}
-.detail-meta {
-  opacity: 0;
-  animation: fadeUp 0.28s cubic-bezier(0.22,1,0.36,1) both 0.08s;
-}
-.task-card {
-  opacity: 0;
-  animation: fadeUp 0.28s cubic-bezier(0.22,1,0.36,1) both;
-}
-.task-card:nth-child(1) { animation-delay: 0.13s; }
-.task-card:nth-child(2) { animation-delay: 0.19s; }
-.task-card:nth-child(3) { animation-delay: 0.25s; }
-.task-card:nth-child(4) { animation-delay: 0.31s; }
-
-/* Notes card */
-.notes-card {
-  opacity: 0;
-  animation: fadeUp 0.28s cubic-bezier(0.22,1,0.36,1) both 0.34s;
-}
-
-/* Topbar */
-.topbar {
-  opacity: 0;
-  animation: fadeDown 0.22s cubic-bezier(0.22,1,0.36,1) both 0s;
-}
-
-/* Nav bar */
-.bnav {
-  opacity: 0;
-  animation: fadeUp 0.22s cubic-bezier(0.22,1,0.36,1) both 0.06s;
-}
-.nb svg, .nb .nl {
-  transition: transform 0.15s cubic-bezier(0.34,1.56,0.64,1), color 0.15s;
-}
-.nb.on svg { transform: scale(1.12); }
-.nb:active svg { transform: scale(0.88); }
-
-/* Bar fills animate on render */
-.bar-fill, .bk-fill, .bid-bar-fill {
-  animation: barGrow 0.6s cubic-bezier(0.22,1,0.36,1) both 0.3s;
-}
-
-/* Active status dots pulse */
-.blk-dot { animation: dotPulse 2s ease-in-out infinite; }
-.avail-lbl { animation: none; }
-
-/* Sheets slide up */
-.cfg-sheet, .import-sheet, .modal-sheet {
-  animation: sheetUp 0.30s cubic-bezier(0.22,1,0.36,1) both;
-}
-
-/* Workflow cards stagger */
-.intel-wf {
-  opacity: 0;
-  animation: fadeUp 0.28s cubic-bezier(0.22,1,0.36,1) both;
-}
-.intel-wf:nth-child(1) { animation-delay: 0.06s; }
-.intel-wf:nth-child(2) { animation-delay: 0.12s; }
-.intel-wf:nth-child(3) { animation-delay: 0.18s; }
-.intel-wf:nth-child(4) { animation-delay: 0.24s; }
-
-/* Intel hero */
-.intel-hero {
-  opacity: 0;
-  animation: scaleIn 0.26s cubic-bezier(0.22,1,0.36,1) both 0.04s;
-}
-
-/* Intel chat messages */
-.intel-msg {
-  opacity: 0;
-  animation: slideInR 0.22s cubic-bezier(0.22,1,0.36,1) both;
-}
-.intel-msg.user { animation-name: slideInL; }
-
-/* Show cards */
-.show-card {
-  opacity: 0;
-  animation: fadeUp 0.28s cubic-bezier(0.22,1,0.36,1) both;
-  transition: transform 0.16s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.16s;
-}
-.show-card:nth-child(1) { animation-delay: 0.10s; }
-.show-card:nth-child(2) { animation-delay: 0.16s; }
-.show-card:active { transform: scale(0.97); }
-
-/* Roster stats */
-.roster-stats .rs {
-  opacity: 0;
-  animation: scaleIn 0.24s cubic-bezier(0.22,1,0.36,1) both;
-}
-.roster-stats .rs:nth-child(1) { animation-delay: 0.04s; }
-.roster-stats .rs:nth-child(2) { animation-delay: 0.08s; }
-.roster-stats .rs:nth-child(3) { animation-delay: 0.12s; }
-.roster-stats .rs:nth-child(4) { animation-delay: 0.16s; }
-
-/* Press feedback on interactive elements */
-.tb-btn   { transition: transform 0.12s, opacity 0.12s; }
-.tb-btn:active { transform: scale(0.94); opacity:.85; }
-.tb-gear:active { transform: scale(0.90); }
-.intel-wf { transition: transform 0.14s cubic-bezier(0.34,1.56,0.64,1), border-color 0.15s; }
-.intel-wf:active { transform: scale(0.97); }
-.intel-send { transition: transform 0.14s cubic-bezier(0.34,1.56,0.64,1), opacity .15s; }
-.intel-send:active { transform: scale(0.90); }
-.artist-card { transition: transform 0.14s; }
-.artist-card:active { transform: scale(0.985); }
-
-/* Nav active indicator animated */
-.nb.on::after {
-  animation: scaleIn 0.20s cubic-bezier(0.34,1.56,0.64,1) both;
-}
-
-/* Fbar tabs */
-.ftab, .fchip {
-  transition: background 0.15s, color 0.15s, border-color 0.15s, transform 0.12s;
-}
-.ftab:active, .fchip:active { transform: scale(0.93); }
-
-/* Reset animations when view becomes inactive so they replay */
-.view:not(.active) * { animation: none !important; }
-
-
-/* ── TASKS VIEW ── */
-.task-item{background:var(--s2);border:var(--b1);border-radius:13px;margin-bottom:7px;overflow:hidden;display:flex;align-items:stretch;cursor:pointer;transition:transform .14s,opacity .14s;animation:fadeUp .28s cubic-bezier(0.22,1,0.36,1) both}
-.task-item:active{transform:scale(0.98);opacity:.85}
-.task-item.done{opacity:.45}
-.task-item.done .ti-title{text-decoration:line-through;color:var(--t2)}
-.ti-check{width:48px;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer}
-.ti-chk{width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;transition:border-color .15s,background .15s}
-.task-item.done .ti-chk{background:var(--ac);border-color:var(--ac)}
-.ti-chk svg{width:12px;height:12px;stroke:#1c1c1e;fill:none;stroke-width:2.5;opacity:0;transition:opacity .15s}
-.task-item.done .ti-chk svg{opacity:1}
-.ti-body{flex:1;padding:12px 12px 12px 0;min-width:0}
-.ti-title{font-family:var(--sans);font-size:14px;font-weight:600;color:var(--t0);line-height:1.3;margin-bottom:4px}
-.ti-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.ti-show{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.06em;padding:2px 6px;border-radius:4px;background:rgba(46,184,184,.12);color:var(--ac);text-transform:uppercase}
-.ti-due{font-family:var(--mono);font-size:9px;color:var(--t2)}
-.ti-due.overdue{color:#ff5c5c}
-.ti-pri{width:3px;flex-shrink:0;align-self:stretch;border-radius:0 0 0 0}
-.ti-dur{font-family:var(--mono);font-size:9px;color:var(--t2)}
-.ti-right{padding:12px 14px 12px 4px;display:flex;flex-direction:column;align-items:flex-end;justify-content:space-between;flex-shrink:0}
-.ti-edit{background:none;border:none;cursor:pointer;padding:2px;color:var(--t2)}
-.ti-edit svg{width:14px;height:14px;stroke:currentColor;fill:none}
-
-.task-section-hd{display:flex;align-items:center;gap:8px;padding:14px 0 8px;margin-bottom:2px}
-.task-section-lbl{font-family:var(--sans);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t2)}
-.task-section-line{flex:1;height:1px;background:rgba(255,255,255,.05)}
-.task-section-count{font-family:var(--mono);font-size:9px;color:var(--t2);background:var(--s2);padding:2px 6px;border-radius:4px}
-
-.tasks-empty{display:flex;flex-direction:column;align-items:center;gap:10px;padding:48px 20px;text-align:center}
-.tasks-empty svg{width:40px;height:40px;stroke:var(--t2);fill:none;opacity:.3}
-.tasks-empty p{font-family:var(--sans);font-size:13px;color:var(--t2)}
-
-/* priority colors */
-.pri-high{background:#ff5c5c}
-.pri-med{background:#f5a623}
-.pri-low{background:#6c9acd}
-.pri-none{background:transparent}
-
-/* add task modal extra fields */
-.priority-row{display:flex;gap:6px}
-.pri-opt{flex:1;height:36px;border-radius:8px;border:var(--b1);background:none;font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.06em;color:var(--t2);cursor:pointer;text-transform:uppercase;transition:border-color .15s,color .15s}
-.pri-opt.sel{border-color:var(--sel-c,rgba(255,255,255,.3));color:var(--t0)}
-
-/* Akiflow sync banner */
-.sync-banner{display:flex;align-items:center;gap:10px;padding:10px 14px;background:rgba(46,184,184,.07);border:1px solid rgba(46,184,184,.15);border-radius:12px;margin-bottom:12px}
-.sync-icon{width:32px;height:32px;border-radius:8px;background:rgba(46,184,184,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.sync-icon svg{width:16px;height:16px;stroke:var(--ac);fill:none}
-.sync-info{flex:1}
-.sync-title{font-family:var(--sans);font-size:12px;font-weight:600;color:var(--t0)}
-.sync-sub{font-family:var(--mono);font-size:9px;color:var(--t2);margin-top:1px}
-.sync-btn{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.06em;padding:6px 10px;border-radius:7px;border:1px solid rgba(46,184,184,.3);background:rgba(46,184,184,.1);color:var(--ac);cursor:pointer;text-transform:uppercase;white-space:nowrap}
-
-
-/* QAM backdrop */
-.qam-backdrop{position:fixed;inset:0;z-index:499;display:none}
-.qam-backdrop.open{display:block}
-
-
 /* ══ NAV FIXES HGR-015 ══ */
 .bnav-wrap{flex-shrink:0;display:flex;justify-content:center;align-items:flex-end;padding:10px 20px;padding-bottom:max(var(--safe-b),14px);background:var(--bg);position:relative;overflow:visible!important}
 .bnav{display:flex;align-items:center;background:var(--s2);border-radius:28px;padding:0 8px;height:60px;gap:0;box-shadow:0 4px 24px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.07);position:relative;width:100%;max-width:400px}
@@ -684,9 +414,111 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 .nb-action:active{transform:scale(0.90)!important}
 
 
-/* no nav animation — prevents jump on page transition */
-.bnav-wrap,.bnav,.nb-action{animation:none!important}
+
+/* ── NAV: no entrance animation, stable across page transitions ── */
+.bnav-wrap{animation:none!important}
+.bnav{animation:none!important}
+/* nb-action: no anim but keep its styles */
+.nb-action{animation:none!important}
+/* Only the active dot gets an animation */
 .nb.on::after{animation:dotAppear .22s cubic-bezier(0.34,1.56,0.64,1) both!important}
+/* nb active icon scale is a transition not animation — keep it */
+
+/* ── CONTENT: slower, more pronounced stagger ── */
+@keyframes fadeUp{from{opacity:0;transform:translate3d(0,22px,0)}to{opacity:1;transform:translate3d(0,0,0)}}
+@keyframes fadeDown{from{opacity:0;transform:translate3d(0,-16px,0)}to{opacity:1;transform:translate3d(0,0,0)}}
+@keyframes slideInR{from{opacity:0;transform:translate3d(32px,0,0)}to{opacity:1;transform:translate3d(0,0,0)}}
+@keyframes slideInL{from{opacity:0;transform:translate3d(-32px,0,0)}to{opacity:1;transform:translate3d(0,0,0)}}
+@keyframes scaleIn{from{opacity:0;transform:scale3d(0.93,0.93,1)}to{opacity:1;transform:scale3d(1,1,1)}}
+
+/* Stat chips — longer, more dramatic stagger */
+.chip-wrap .stat-row{opacity:0;animation:fadeUp 0.45s cubic-bezier(0.22,1,0.36,1) both}
+.chip-wrap .stat-row:nth-child(1){animation-delay:0.08s}
+.chip-wrap .stat-row:nth-child(2){animation-delay:0.18s}
+
+/* Shot rows — wider spread */
+.shot-row{opacity:0;animation:fadeUp 0.40s cubic-bezier(0.22,1,0.36,1) both}
+.shot-row:nth-child(1){animation-delay:0.05s}
+.shot-row:nth-child(2){animation-delay:0.11s}
+.shot-row:nth-child(3){animation-delay:0.17s}
+.shot-row:nth-child(4){animation-delay:0.23s}
+.shot-row:nth-child(5){animation-delay:0.29s}
+.shot-row:nth-child(6){animation-delay:0.35s}
+.shot-row:nth-child(7){animation-delay:0.41s}
+.shot-row:nth-child(8){animation-delay:0.47s}
+.shot-row:nth-child(9){animation-delay:0.53s}
+.shot-row:nth-child(10){animation-delay:0.59s}
+
+/* Artist cards */
+.artist-card{opacity:0;animation:fadeUp 0.40s cubic-bezier(0.22,1,0.36,1) both}
+.artist-card:nth-child(1){animation-delay:0.06s}
+.artist-card:nth-child(2){animation-delay:0.14s}
+.artist-card:nth-child(3){animation-delay:0.22s}
+.artist-card:nth-child(4){animation-delay:0.30s}
+.artist-card:nth-child(5){animation-delay:0.38s}
+.artist-card:nth-child(6){animation-delay:0.46s}
+.artist-card:nth-child(7){animation-delay:0.54s}
+
+/* Show cards */
+.show-card{opacity:0;animation:fadeUp 0.40s cubic-bezier(0.22,1,0.36,1) both}
+.show-card:nth-child(1){animation-delay:0.12s}
+.show-card:nth-child(2){animation-delay:0.22s}
+
+/* Task cards in detail */
+.task-card{opacity:0;animation:fadeUp 0.38s cubic-bezier(0.22,1,0.36,1) both}
+.task-card:nth-child(1){animation-delay:0.16s}
+.task-card:nth-child(2){animation-delay:0.26s}
+.task-card:nth-child(3){animation-delay:0.36s}
+.task-card:nth-child(4){animation-delay:0.46s}
+
+/* Hero + meta in detail */
+.hero{opacity:0;animation:fadeDown 0.35s cubic-bezier(0.22,1,0.36,1) both 0.02s}
+.detail-meta{opacity:0;animation:fadeUp 0.38s cubic-bezier(0.22,1,0.36,1) both 0.10s}
+.notes-card{opacity:0;animation:fadeUp 0.38s cubic-bezier(0.22,1,0.36,1) both 0.50s}
+
+/* Intel workflows */
+.intel-wf{opacity:0;animation:fadeUp 0.38s cubic-bezier(0.22,1,0.36,1) both}
+.intel-wf:nth-child(1){animation-delay:0.08s}
+.intel-wf:nth-child(2){animation-delay:0.18s}
+.intel-wf:nth-child(3){animation-delay:0.28s}
+.intel-wf:nth-child(4){animation-delay:0.38s}
+
+/* Roster stats */
+.roster-stats .rs{opacity:0;animation:scaleIn 0.35s cubic-bezier(0.22,1,0.36,1) both}
+.roster-stats .rs:nth-child(1){animation-delay:0.05s}
+.roster-stats .rs:nth-child(2){animation-delay:0.11s}
+.roster-stats .rs:nth-child(3){animation-delay:0.17s}
+.roster-stats .rs:nth-child(4){animation-delay:0.23s}
+
+/* Task items */
+.task-item{opacity:0;animation:fadeUp 0.36s cubic-bezier(0.22,1,0.36,1) both}
+
+/* Intel hero */
+.intel-hero{opacity:0;animation:scaleIn 0.35s cubic-bezier(0.22,1,0.36,1) both 0.04s}
+
+/* Alerts */
+.blocker-strip{opacity:0;animation:fadeUp 0.38s cubic-bezier(0.22,1,0.36,1) both 0.22s}
+.avail-strip{opacity:0;animation:fadeUp 0.38s cubic-bezier(0.22,1,0.36,1) both 0.28s}
+
+/* Bar fills */
+.bar-fill,.bk-fill{animation:barGrow 0.7s cubic-bezier(0.22,1,0.36,1) both 0.4s}
+
+/* Reset on inactive views */
+.view:not(.active) .shot-row,
+.view:not(.active) .artist-card,
+.view:not(.active) .show-card,
+.view:not(.active) .task-card,
+.view:not(.active) .task-item,
+.view:not(.active) .intel-wf,
+.view:not(.active) .roster-stats .rs,
+.view:not(.active) .chip-wrap .stat-row,
+.view:not(.active) .hero,
+.view:not(.active) .detail-meta,
+.view:not(.active) .notes-card,
+.view:not(.active) .intel-hero,
+.view:not(.active) .blocker-strip,
+.view:not(.active) .avail-strip
+{animation:none!important;opacity:0}
 
 </style>
 </head>
