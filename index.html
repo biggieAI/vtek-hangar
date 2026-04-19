@@ -1,4 +1,4 @@
-<!-- VTEK HANGAR BUILD_ID=HGR-025 -->
+<!-- VTEK HANGAR BUILD_ID=HGR-026 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -613,6 +613,30 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 .pri-opt[data-pri="med"].sel{background:rgba(245,166,35,0.15);color:#f5a623}
 .pri-opt[data-pri="low"].sel{background:rgba(108,154,205,0.15);color:#6c9acd}
 .pri-opt[data-pri="none"].sel{background:rgba(142,142,147,0.12);color:var(--t1)}
+
+
+/* ── PRIORITY PILLS — always colored, dim when not selected ── */
+.priority-row{display:flex;gap:6px;flex-wrap:nowrap}
+.pri-opt{
+  flex:1;height:34px;border-radius:6px;border:none;
+  font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.06em;
+  cursor:pointer;text-transform:uppercase;
+  transition:opacity .15s, transform .15s;
+  display:flex;align-items:center;justify-content:center;gap:5px;
+  opacity:0.28;
+}
+.pri-opt:active{transform:scale(0.92)}
+.pri-opt.sel{opacity:1}
+
+/* Each pill always has its color — opacity controls selected state */
+.pri-opt[data-pri="high"]{background:rgba(255,92,92,0.18);color:#ff5c5c}
+.pri-opt[data-pri="med"] {background:rgba(245,166,35,0.18);color:#f5a623}
+.pri-opt[data-pri="low"] {background:rgba(108,154,205,0.18);color:#6c9acd}
+.pri-opt[data-pri="none"]{background:rgba(142,142,147,0.15);color:var(--t2)}
+.pri-opt[data-pri="high"].sel{background:rgba(255,92,92,0.20);box-shadow:0 0 10px rgba(255,92,92,.2)}
+.pri-opt[data-pri="med"].sel {background:rgba(245,166,35,0.20);box-shadow:0 0 10px rgba(245,166,35,.15)}
+.pri-opt[data-pri="low"].sel {background:rgba(108,154,205,0.20);box-shadow:0 0 10px rgba(108,154,205,.15)}
+.pri-opt[data-pri="none"].sel{background:rgba(142,142,147,0.18)}
 
 </style>
 </head>
