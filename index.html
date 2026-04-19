@@ -1,4 +1,4 @@
-<!-- VTEK HANGAR BUILD_ID=HGR-027 -->
+<!-- VTEK HANGAR BUILD_ID=HGR-028 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -649,6 +649,146 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 .pri-opt[data-pri="low"].sel {border-color:rgba(108,154,205,.7)}
 .pri-opt[data-pri="none"].sel{border-color:rgba(142,142,147,.45)}
 
+
+/* ── OPS MODULE ── */
+.ops-tabs{display:flex;gap:0;padding:0 12px 0;flex-shrink:0;border-bottom:1px solid rgba(255,255,255,.05);background:var(--bg)}
+.ops-tab{flex:1;height:40px;background:none;border:none;border-bottom:2px solid transparent;font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t2);cursor:pointer;transition:color .15s,border-color .15s}
+.ops-tab.on{color:var(--ac);border-bottom-color:var(--ac)}
+.ops-panel{display:none;flex:1;overflow:hidden;flex-direction:column}
+.ops-panel.on{display:flex}
+/* CREW tab */
+.crew-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:10px 12px;flex-shrink:0}
+.crew-stat{background:var(--s2);border:var(--b1);border-radius:10px;padding:8px 6px;text-align:center}
+.cs-n{font-family:var(--mono);font-size:18px;font-weight:700;color:var(--t0);line-height:1;margin-bottom:2px}
+.cs-l{font-family:var(--sans);font-size:7px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t2)}
+.crew-list{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:0 12px 12px}
+.crew-card{background:var(--s2);border:var(--b1);border-radius:14px;margin-bottom:8px;overflow:hidden}
+.crew-card.penciled{border-style:dashed;border-color:rgba(255,255,255,.12);opacity:.8}
+.cc-head{display:flex;align-items:center;gap:12px;padding:12px 14px;cursor:pointer}
+.cc-avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:13px;font-weight:700;color:#1c1c1e;flex-shrink:0}
+.cc-avatar.penciled-av{background:var(--s3)!important;border:2px dashed rgba(255,255,255,.2);color:var(--t1)}
+.cc-info{flex:1;min-width:0}
+.cc-name{font-family:var(--sans);font-size:13px;font-weight:700;color:var(--t0)}
+.cc-role{font-family:var(--mono);font-size:9px;color:var(--t2);letter-spacing:.04em;margin-top:2px}
+.cc-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0}
+.cc-avail{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.05em;padding:3px 8px;border-radius:5px}
+.cc-load{font-family:var(--mono);font-size:8px;color:var(--t2)}
+.cc-expand{max-height:0;overflow:hidden;transition:max-height .25s ease}
+.cc-expand.open{max-height:600px}
+.cc-body{padding:0 14px 14px;border-top:1px solid rgba(255,255,255,.05)}
+.cc-section{margin-top:10px}
+.cc-sec-lbl{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--t2);margin-bottom:6px}
+.cc-contact-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.cc-contact-row:last-child{border-bottom:none}
+.cc-contact-lbl{font-family:var(--mono);font-size:8px;color:var(--t2);width:44px;flex-shrink:0;letter-spacing:.05em;text-transform:uppercase}
+.cc-contact-val{font-size:12px;color:var(--t1);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cc-contact-val a{color:var(--ac);text-decoration:none}
+.cc-assign-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.03)}
+.cc-assign-row:last-child{border-bottom:none}
+.cc-assign-dot{width:6px;height:6px;border-radius:1px;flex-shrink:0}
+.cc-assign-show{font-family:var(--mono);font-size:9px;font-weight:700;color:var(--ac);width:32px;flex-shrink:0}
+.cc-assign-task{font-family:var(--mono);font-size:9px;color:var(--t1);flex:1}
+.cc-assign-status{font-family:var(--mono);font-size:8px;padding:2px 5px;border-radius:3px}
+.cc-assign-start{font-family:var(--mono);font-size:8px;color:var(--t2)}
+.cc-tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:6px}
+.cc-tag{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.05em;padding:2px 6px;border-radius:4px;background:rgba(255,255,255,.07);color:var(--t2)}
+.cc-tag.comp{background:rgba(46,184,184,.12);color:var(--ac)}
+.cc-tag.roto{background:rgba(156,74,255,.12);color:#b57aff}
+.cc-tag.paint{background:rgba(245,166,35,.12);color:#f5a623}
+.cc-tag.fx{background:rgba(255,92,92,.12);color:#ff8080}
+.cc-tag.lead{background:rgba(52,215,153,.12);color:#34d399}
+.cc-tag.prod{background:rgba(33,150,243,.12);color:#64b5f6}
+.cc-tag.penciled{background:rgba(255,255,255,.05);color:var(--t2);border:1px dashed rgba(255,255,255,.15)}
+.cc-actions{display:flex;gap:6px;margin-top:10px}
+.cc-act-btn{flex:1;height:34px;border-radius:8px;border:var(--b1);background:var(--s3);font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.06em;color:var(--t1);cursor:pointer}
+.cc-act-btn.primary{background:var(--ac);color:#1c1c1e;border-color:var(--ac)}
+.cc-act-btn.danger{color:#ff5c5c;border-color:rgba(255,92,92,.2)}
+.crew-add-btn{width:calc(100% - 0px);height:44px;border-radius:12px;border:1px dashed rgba(255,255,255,.15);background:none;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.08em;color:var(--t2);cursor:pointer;margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:8px}
+.crew-add-btn:active{background:var(--s2)}
+/* DEMAND tab */
+.demand-list{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:12px}
+.demand-card{background:var(--s2);border:var(--b1);border-radius:14px;margin-bottom:10px;overflow:hidden}
+.dc-head{padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.05);display:flex;align-items:center;gap:10px}
+.dc-show-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+.dc-show-name{font-family:var(--sans);font-size:13px;font-weight:700;color:var(--t0);flex:1}
+.dc-show-type{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.06em;padding:2px 6px;border-radius:4px;background:rgba(255,255,255,.07);color:var(--t2)}
+.dc-body{padding:12px 14px}
+.dc-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.dc-row:last-child{margin-bottom:0}
+.dc-lbl{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t2);width:62px;flex-shrink:0}
+.dc-bar-wrap{flex:1;height:6px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden}
+.dc-bar{height:100%;border-radius:3px;transition:width .3s ease}
+.dc-val{font-family:var(--mono);font-size:9px;color:var(--t0);min-width:32px;text-align:right}
+.dc-gap{font-family:var(--mono);font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;min-width:60px;text-align:center}
+.dc-gap.need{background:rgba(255,92,92,.15);color:#ff8080}
+.dc-gap.ok{background:rgba(52,215,153,.12);color:#34d399}
+.dc-gap.tight{background:rgba(245,166,35,.12);color:#f5a623}
+.dc-timeline{margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,.05)}
+.dc-tl-lbl{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t2);margin-bottom:6px}
+.dc-wk-grid{display:flex;gap:3px}
+.dc-wk{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
+.dc-wk-bar{width:100%;border-radius:3px;min-height:4px;transition:height .3s}
+.dc-wk-lbl{font-family:var(--mono);font-size:7px;color:var(--t2)}
+.dc-alert{display:flex;align-items:center;gap:6px;padding:6px 10px;border-radius:8px;margin-top:8px;background:rgba(255,92,92,.08);border:1px solid rgba(255,92,92,.15)}
+.dc-alert-dot{width:6px;height:6px;border-radius:50%;background:#ff5c5c;flex-shrink:0;animation:pulse 1.4s ease-in-out infinite}
+.dc-alert-txt{font-family:var(--mono);font-size:9px;color:#ff8080}
+.demand-add-btn{width:100%;height:44px;border-radius:12px;border:1px dashed rgba(255,255,255,.15);background:none;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.08em;color:var(--t2);cursor:pointer;margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:8px}
+/* ROLODEX tab */
+.rdx-search-wrap{padding:8px 12px;flex-shrink:0;border-bottom:1px solid rgba(255,255,255,.04)}
+.rdx-search{width:100%;height:36px;background:var(--s2);border:var(--b1);border-radius:10px;padding:0 12px;font-family:var(--mono);font-size:11px;color:var(--t0);outline:none;box-sizing:border-box}
+.rdx-search::placeholder{color:var(--t2)}
+.rdx-filter-bar{padding:6px 12px;flex-shrink:0;display:flex;gap:5px;overflow-x:auto}
+.rdx-filter-bar::-webkit-scrollbar{display:none}
+.rdx-filter{flex-shrink:0;height:24px;padding:0 9px;border-radius:6px;border:var(--b1);background:none;font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--t2);cursor:pointer;white-space:nowrap}
+.rdx-filter.on{background:var(--s2);color:var(--t0);border-color:rgba(255,255,255,.12)}
+.rdx-list{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:8px 12px 16px}
+.rdx-card{background:var(--s2);border:var(--b1);border-radius:12px;margin-bottom:6px;overflow:hidden;cursor:pointer}
+.rdx-head{display:flex;align-items:center;gap:10px;padding:10px 12px}
+.rdx-av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:12px;font-weight:700;color:#1c1c1e;flex-shrink:0}
+.rdx-info{flex:1;min-width:0}
+.rdx-name{font-family:var(--sans);font-size:12px;font-weight:700;color:var(--t0)}
+.rdx-title{font-family:var(--mono);font-size:8px;color:var(--t2);letter-spacing:.04em;margin-top:1px}
+.rdx-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0}
+.rdx-avail{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.05em;padding:2px 7px;border-radius:4px}
+.rdx-lastcheck{font-family:var(--mono);font-size:7px;color:var(--t2)}
+.rdx-expand{max-height:0;overflow:hidden;transition:max-height .25s ease}
+.rdx-expand.open{max-height:400px}
+.rdx-detail{padding:0 12px 12px;border-top:1px solid rgba(255,255,255,.04)}
+.rdx-detail-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.03)}
+.rdx-detail-row:last-child{border-bottom:none}
+.rdx-dl{font-family:var(--mono);font-size:8px;color:var(--t2);width:44px;flex-shrink:0;text-transform:uppercase;letter-spacing:.05em}
+.rdx-dv{font-size:11px;color:var(--t1);flex:1}
+.rdx-dv a{color:var(--ac);text-decoration:none}
+.rdx-tags{display:flex;gap:4px;flex-wrap:wrap;padding:6px 0 0}
+.rdx-ping-btn{width:100%;height:34px;border-radius:8px;border:1px solid rgba(46,184,184,.3);background:rgba(46,184,184,.08);font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.07em;color:var(--ac);cursor:pointer;margin-top:8px}
+.rdx-ping-btn:active{background:rgba(46,184,184,.15)}
+.rdx-add-btn{width:100%;height:44px;border-radius:12px;border:1px dashed rgba(255,255,255,.15);background:none;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.08em;color:var(--t2);cursor:pointer;margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:8px}
+/* OPS Modals */
+.ops-overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:10200;display:none;align-items:flex-end}
+.ops-overlay.open{display:flex}
+.ops-sheet{width:100%;background:var(--s1);border-radius:20px 20px 0 0;padding:0 0 max(var(--safe-b),20px);max-height:88dvh;overflow-y:auto}
+.ops-handle{width:36px;height:4px;background:var(--s3);border-radius:2px;margin:12px auto 0}
+.ops-sh-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px;border-bottom:1px solid rgba(255,255,255,.06)}
+.ops-sh-title{font-family:var(--sans);font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--t1)}
+.ops-sh-close{font-family:var(--sans);font-size:13px;font-weight:700;color:var(--ac);background:none;border:none;cursor:pointer;padding:4px 8px}
+.ops-form{padding:14px 16px}
+.ops-field{margin-bottom:12px}
+.ops-field-lbl{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t2);margin-bottom:5px}
+.ops-input{width:100%;height:42px;background:var(--s2);border:var(--b1);border-radius:10px;padding:0 12px;font-family:var(--sans);font-size:13px;color:var(--t0);outline:none;box-sizing:border-box}
+.ops-input:focus{border-color:rgba(46,184,184,.4)}
+.ops-textarea{width:100%;min-height:72px;background:var(--s2);border:var(--b1);border-radius:10px;padding:10px 12px;font-family:var(--sans);font-size:13px;color:var(--t0);outline:none;resize:none;box-sizing:border-box;line-height:1.5}
+.ops-textarea:focus{border-color:rgba(46,184,184,.4)}
+.ops-select{width:100%;height:42px;background:var(--s2);border:var(--b1);border-radius:10px;padding:0 12px;font-family:var(--sans);font-size:13px;color:var(--t0);outline:none;appearance:none;box-sizing:border-box}
+.ops-tag-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.ops-tag-btn{height:32px;border-radius:8px;border:var(--b1);background:var(--s2);font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.05em;color:var(--t2);cursor:pointer}
+.ops-tag-btn.on{border-color:rgba(46,184,184,.5);background:rgba(46,184,184,.12);color:var(--ac)}
+.ops-submit{width:100%;height:46px;background:#fff;border:none;border-radius:12px;font-family:var(--sans);font-size:14px;font-weight:700;color:#1c1c1e;cursor:pointer;margin-top:4px;letter-spacing:.04em}
+.ops-row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.avail-pill{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.05em;padding:3px 9px;border-radius:5px}
+.avail-active{background:rgba(46,184,184,.15);color:var(--ac)}
+.avail-avail{background:rgba(52,215,153,.15);color:#34d399}
+.avail-penciled{background:rgba(255,255,255,.07);color:var(--t1);border:1px dashed rgba(255,255,255,.2)}
+.avail-unavail{background:rgba(255,92,92,.12);color:#ff8080}
 </style>
 </head>
 <body>
@@ -716,7 +856,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
   
 
 
-<div class="bnav-wrap"><nav class="bnav"><button class="nb" onclick="navTo('tasks')"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg><span class="nl">TASKS</span></button><button class="nb" onclick="navTo('shows')"><svg viewBox="0 0 24 24" width="20" height="20"><rect x="2" y="7" width="20" height="14" rx="1"/><polyline points="16,7 12,3 8,7"/><line x1="12" y1="3" x2="12" y2="21"/></svg><span class="nl">SHOWS</span></button><button class="nb-action on" onclick="navTo('hangar')"><svg viewBox="0 0 24 24" width="22" height="22"><rect x="3" y="9" width="18" height="12"/><polyline points="3,9 12,3 21,9"/><line x1="9" y1="21" x2="9" y2="14"/><line x1="15" y1="21" x2="15" y2="14"/></svg></button><button class="nb" onclick="navTo('shots')"><svg viewBox="0 0 24 24" width="20" height="20"><rect x="3" y="3" width="18" height="18"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/></svg><span class="nl">SHOTS</span></button><button class="nb" onclick="navTo('intel')"><svg viewBox="0 0 24 24" width="20" height="20"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg><span class="nl">INTEL</span></button></nav></div>
+<div class="bnav-wrap"><nav class="bnav"><button class="nb" onclick="navTo('tasks')"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg><span class="nl">TASKS</span></button><button class="nb" onclick="navTo('shows')"><svg viewBox="0 0 24 24" width="20" height="20"><rect x="2" y="7" width="20" height="14" rx="1"/><polyline points="16,7 12,3 8,7"/><line x1="12" y1="3" x2="12" y2="21"/></svg><span class="nl">SHOWS</span></button><button class="nb-action on" onclick="navTo('hangar')"><svg viewBox="0 0 24 24" width="22" height="22"><rect x="3" y="9" width="18" height="12"/><polyline points="3,9 12,3 21,9"/><line x1="9" y1="21" x2="9" y2="14"/><line x1="15" y1="21" x2="15" y2="14"/></svg></button><button class="nb" onclick="navTo('ops')"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="nl">OPS</span></button><button class="nb" onclick="navTo('intel')"><svg viewBox="0 0 24 24" width="20" height="20"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg><span class="nl">INTEL</span></button></nav></div>
 </div>
 
 
@@ -743,7 +883,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 
   </div></div>
 
-<div class="bnav-wrap"><nav class="bnav"><button class="nb" onclick="navTo('tasks')"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg><span class="nl">TASKS</span></button><button class="nb on" onclick="navTo('shows')"><svg viewBox="0 0 24 24" width="20" height="20"><rect x="2" y="7" width="20" height="14" rx="1"/><polyline points="16,7 12,3 8,7"/><line x1="12" y1="3" x2="12" y2="21"/></svg><span class="nl">SHOWS</span></button><button class="nb-action" onclick="navTo('hangar')"><svg viewBox="0 0 24 24" width="22" height="22"><rect x="3" y="9" width="18" height="12"/><polyline points="3,9 12,3 21,9"/><line x1="9" y1="21" x2="9" y2="14"/><line x1="15" y1="21" x2="15" y2="14"/></svg></button><button class="nb" onclick="navTo('shots')"><svg viewBox="0 0 24 24" width="20" height="20"><rect x="3" y="3" width="18" height="18"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/></svg><span class="nl">SHOTS</span></button><button class="nb" onclick="navTo('intel')"><svg viewBox="0 0 24 24" width="20" height="20"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg><span class="nl">INTEL</span></button></nav></div>
+<div class="bnav-wrap"><nav class="bnav"><button class="nb" onclick="navTo('tasks')"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg><span class="nl">TASKS</span></button><button class="nb on" onclick="navTo('shows')"><svg viewBox="0 0 24 24" width="20" height="20"><rect x="2" y="7" width="20" height="14" rx="1"/><polyline points="16,7 12,3 8,7"/><line x1="12" y1="3" x2="12" y2="21"/></svg><span class="nl">SHOWS</span></button><button class="nb-action" onclick="navTo('hangar')"><svg viewBox="0 0 24 24" width="22" height="22"><rect x="3" y="9" width="18" height="12"/><polyline points="3,9 12,3 21,9"/><line x1="9" y1="21" x2="9" y2="14"/><line x1="15" y1="21" x2="15" y2="14"/></svg></button><button class="nb" onclick="navTo('ops')"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="nl">OPS</span></button><button class="nb" onclick="navTo('intel')"><svg viewBox="0 0 24 24" width="20" height="20"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg><span class="nl">INTEL</span></button></nav></div>
 </div>
 
 <!-- ═══════════════════════════════════════════════
@@ -780,7 +920,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
   
 
 
-<div class="bnav-wrap"><nav class="bnav"><button class="nb" onclick="navTo('tasks')"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg><span class="nl">TASKS</span></button><button class="nb" onclick="navTo('shows')"><svg viewBox="0 0 24 24" width="20" height="20"><rect x="2" y="7" width="20" height="14" rx="1"/><polyline points="16,7 12,3 8,7"/><line x1="12" y1="3" x2="12" y2="21"/></svg><span class="nl">SHOWS</span></button><button class="nb-action" onclick="navTo('hangar')"><svg viewBox="0 0 24 24" width="22" height="22"><rect x="3" y="9" width="18" height="12"/><polyline points="3,9 12,3 21,9"/><line x1="9" y1="21" x2="9" y2="14"/><line x1="15" y1="21" x2="15" y2="14"/></svg></button><button class="nb on" onclick="navTo('shots')"><svg viewBox="0 0 24 24" width="20" height="20"><rect x="3" y="3" width="18" height="18"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/></svg><span class="nl">SHOTS</span></button><button class="nb" onclick="navTo('intel')"><svg viewBox="0 0 24 24" width="20" height="20"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg><span class="nl">INTEL</span></button></nav></div>
+<div class="bnav-wrap"><nav class="bnav"><button class="nb" onclick="navTo('tasks')"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg><span class="nl">TASKS</span></button><button class="nb" onclick="navTo('shows')"><svg viewBox="0 0 24 24" width="20" height="20"><rect x="2" y="7" width="20" height="14" rx="1"/><polyline points="16,7 12,3 8,7"/><line x1="12" y1="3" x2="12" y2="21"/></svg><span class="nl">SHOWS</span></button><button class="nb-action" onclick="navTo('hangar')"><svg viewBox="0 0 24 24" width="22" height="22"><rect x="3" y="9" width="18" height="12"/><polyline points="3,9 12,3 21,9"/><line x1="9" y1="21" x2="9" y2="14"/><line x1="15" y1="21" x2="15" y2="14"/></svg></button><button class="nb" onclick="navTo('ops')"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="nl">OPS</span></button><button class="nb" onclick="navTo('intel')"><svg viewBox="0 0 24 24" width="20" height="20"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg><span class="nl">INTEL</span></button></nav></div>
 </div>
 
 <!-- ═══════════════════════════════════════════════
@@ -801,7 +941,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
   
 
 
-<div class="bnav-wrap"><nav class="bnav"><button class="nb" onclick="navTo('tasks')"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg><span class="nl">TASKS</span></button><button class="nb" onclick="navTo('shows')"><svg viewBox="0 0 24 24" width="20" height="20"><rect x="2" y="7" width="20" height="14" rx="1"/><polyline points="16,7 12,3 8,7"/><line x1="12" y1="3" x2="12" y2="21"/></svg><span class="nl">SHOWS</span></button><button class="nb-action" onclick="navTo('hangar')"><svg viewBox="0 0 24 24" width="22" height="22"><rect x="3" y="9" width="18" height="12"/><polyline points="3,9 12,3 21,9"/><line x1="9" y1="21" x2="9" y2="14"/><line x1="15" y1="21" x2="15" y2="14"/></svg></button><button class="nb on" onclick="navTo('shots')"><svg viewBox="0 0 24 24" width="20" height="20"><rect x="3" y="3" width="18" height="18"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/></svg><span class="nl">SHOTS</span></button><button class="nb" onclick="navTo('intel')"><svg viewBox="0 0 24 24" width="20" height="20"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg><span class="nl">INTEL</span></button></nav></div>
+<div class="bnav-wrap"><nav class="bnav"><button class="nb" onclick="navTo('tasks')"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg><span class="nl">TASKS</span></button><button class="nb" onclick="navTo('shows')"><svg viewBox="0 0 24 24" width="20" height="20"><rect x="2" y="7" width="20" height="14" rx="1"/><polyline points="16,7 12,3 8,7"/><line x1="12" y1="3" x2="12" y2="21"/></svg><span class="nl">SHOWS</span></button><button class="nb-action" onclick="navTo('hangar')"><svg viewBox="0 0 24 24" width="22" height="22"><rect x="3" y="9" width="18" height="12"/><polyline points="3,9 12,3 21,9"/><line x1="9" y1="21" x2="9" y2="14"/><line x1="15" y1="21" x2="15" y2="14"/></svg></button><button class="nb" onclick="navTo('ops')"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="nl">OPS</span></button><button class="nb" onclick="navTo('intel')"><svg viewBox="0 0 24 24" width="20" height="20"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg><span class="nl">INTEL</span></button></nav></div>
 </div>
 
 
@@ -830,11 +970,222 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
   
 
 
-<div class="bnav-wrap"><nav class="bnav"><button class="nb" onclick="navTo('tasks')"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg><span class="nl">TASKS</span></button><button class="nb" onclick="navTo('shows')"><svg viewBox="0 0 24 24" width="20" height="20"><rect x="2" y="7" width="20" height="14" rx="1"/><polyline points="16,7 12,3 8,7"/><line x1="12" y1="3" x2="12" y2="21"/></svg><span class="nl">SHOWS</span></button><button class="nb-action on" onclick="navTo('hangar')"><svg viewBox="0 0 24 24" width="22" height="22"><rect x="3" y="9" width="18" height="12"/><polyline points="3,9 12,3 21,9"/><line x1="9" y1="21" x2="9" y2="14"/><line x1="15" y1="21" x2="15" y2="14"/></svg></button><button class="nb" onclick="navTo('shots')"><svg viewBox="0 0 24 24" width="20" height="20"><rect x="3" y="3" width="18" height="18"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/></svg><span class="nl">SHOTS</span></button><button class="nb" onclick="navTo('intel')"><svg viewBox="0 0 24 24" width="20" height="20"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg><span class="nl">INTEL</span></button></nav></div>
+<div class="bnav-wrap"><nav class="bnav"><button class="nb" onclick="navTo('tasks')"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg><span class="nl">TASKS</span></button><button class="nb" onclick="navTo('shows')"><svg viewBox="0 0 24 24" width="20" height="20"><rect x="2" y="7" width="20" height="14" rx="1"/><polyline points="16,7 12,3 8,7"/><line x1="12" y1="3" x2="12" y2="21"/></svg><span class="nl">SHOWS</span></button><button class="nb-action on" onclick="navTo('hangar')"><svg viewBox="0 0 24 24" width="22" height="22"><rect x="3" y="9" width="18" height="12"/><polyline points="3,9 12,3 21,9"/><line x1="9" y1="21" x2="9" y2="14"/><line x1="15" y1="21" x2="15" y2="14"/></svg></button><button class="nb" onclick="navTo('ops')"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="nl">OPS</span></button><button class="nb" onclick="navTo('intel')"><svg viewBox="0 0 24 24" width="20" height="20"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg><span class="nl">INTEL</span></button></nav></div>
 </div>
 
 
 
+
+<!-- ═══════════════════════════════════════════════
+     VIEW: OPS
+═══════════════════════════════════════════════ -->
+<div class="view" id="v-ops">
+  <div class="topbar">
+    <div class="wm"><span class="wm-logo">VTEK</span><span class="wm-div">//</span><span class="wm-page" style="color:var(--ac)">OPS</span></div>
+    <div class="tb-r">
+      <button class="tb-btn" onclick="openOpsAdd()">+ ADD</button>
+    </div>
+  </div>
+  <!-- Tab bar -->
+  <div class="ops-tabs">
+    <button class="ops-tab on" id="ops-tab-crew" onclick="switchOpsTab('crew')">CREW</button>
+    <button class="ops-tab" id="ops-tab-demand" onclick="switchOpsTab('demand')">DEMAND</button>
+    <button class="ops-tab" id="ops-tab-rolodex" onclick="switchOpsTab('rolodex')">ROLODEX</button>
+  </div>
+
+  <!-- CREW PANEL -->
+  <div class="ops-panel on" id="ops-panel-crew">
+    <div class="crew-stats">
+      <div class="crew-stat"><div class="cs-n" id="ops-total">0</div><div class="cs-l">CREW</div></div>
+      <div class="crew-stat"><div class="cs-n" style="color:var(--sh-ip)" id="ops-active">0</div><div class="cs-l">ACTIVE</div></div>
+      <div class="crew-stat"><div class="cs-n" style="color:#34d399" id="ops-avail">0</div><div class="cs-l">AVAIL</div></div>
+      <div class="crew-stat"><div class="cs-n" style="color:rgba(255,255,255,.35)" id="ops-penciled">0</div><div class="cs-l">PENCILED</div></div>
+    </div>
+    <div class="crew-list" id="crew-list">
+      <button class="crew-add-btn" onclick="openCrewAdd()">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        ADD CREW MEMBER
+      </button>
+    </div>
+  </div>
+
+  <!-- DEMAND PANEL -->
+  <div class="ops-panel" id="ops-panel-demand">
+    <div class="demand-list" id="demand-list"></div>
+  </div>
+
+  <!-- ROLODEX PANEL -->
+  <div class="ops-panel" id="ops-panel-rolodex">
+    <div class="rdx-search-wrap">
+      <input class="rdx-search" id="rdx-search" placeholder="SEARCH ROLODEX…" oninput="renderRolodex()" type="search">
+    </div>
+    <div class="rdx-filter-bar">
+      <button class="rdx-filter on" data-rdx="ALL" onclick="setRdxFilter(this)">ALL</button>
+      <button class="rdx-filter" data-rdx="COMP" onclick="setRdxFilter(this)">COMP</button>
+      <button class="rdx-filter" data-rdx="ROTO" onclick="setRdxFilter(this)">ROTO</button>
+      <button class="rdx-filter" data-rdx="PAINT" onclick="setRdxFilter(this)">PAINT</button>
+      <button class="rdx-filter" data-rdx="FX" onclick="setRdxFilter(this)">FX</button>
+      <button class="rdx-filter" data-rdx="LEAD" onclick="setRdxFilter(this)">LEAD</button>
+      <button class="rdx-filter" data-rdx="PROD" onclick="setRdxFilter(this)">PROD</button>
+    </div>
+    <div class="rdx-list" id="rdx-list">
+      <button class="rdx-add-btn" onclick="openRdxAdd()">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        ADD TO ROLODEX
+      </button>
+    </div>
+  </div>
+
+  <div class="bnav-wrap"><nav class="bnav"><button class="nb" onclick="navTo('tasks')"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg><span class="nl">TASKS</span></button><button class="nb" onclick="navTo('shows')"><svg viewBox="0 0 24 24" width="20" height="20"><rect x="2" y="7" width="20" height="14" rx="1"/><polyline points="16,7 12,3 8,7"/><line x1="12" y1="3" x2="12" y2="21"/></svg><span class="nl">SHOWS</span></button><button class="nb-action" onclick="navTo('hangar')"><svg viewBox="0 0 24 24" width="22" height="22"><rect x="3" y="9" width="18" height="12"/><polyline points="3,9 12,3 21,9"/><line x1="9" y1="21" x2="9" y2="14"/><line x1="15" y1="21" x2="15" y2="14"/></svg></button><button class="nb on" onclick="navTo('ops')"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="nl">OPS</span></button><button class="nb" onclick="navTo('intel')"><svg viewBox="0 0 24 24" width="20" height="20"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg><span class="nl">INTEL</span></button></nav></div>
+</div>
+
+<!-- OPS MODALS (outside views) -->
+<div class="ops-overlay" id="crewAddOverlay">
+  <div class="ops-sheet">
+    <div class="ops-handle"></div>
+    <div class="ops-sh-head">
+      <span class="ops-sh-title" id="crew-modal-title">ADD CREW MEMBER</span>
+      <button class="ops-sh-close" onclick="closeOpsOverlay('crewAddOverlay')">DONE</button>
+    </div>
+    <div class="ops-form">
+      <input type="hidden" id="crew-edit-idx" value="-1">
+      <div class="ops-row2">
+        <div class="ops-field"><div class="ops-field-lbl">NAME</div><input class="ops-input" id="crew-name" placeholder="Full name"></div>
+        <div class="ops-field"><div class="ops-field-lbl">INITIALS</div><input class="ops-input" id="crew-initials" placeholder="RR" maxlength="3"></div>
+      </div>
+      <div class="ops-field"><div class="ops-field-lbl">ROLE / TITLE</div><input class="ops-input" id="crew-role" placeholder="Compositor, Paint Artist…"></div>
+      <div class="ops-row2">
+        <div class="ops-field"><div class="ops-field-lbl">STATUS</div>
+          <select class="ops-select" id="crew-status">
+            <option value="active">ACTIVE</option>
+            <option value="avail">AVAILABLE</option>
+            <option value="penciled">PENCILED IN</option>
+            <option value="unavail">UNAVAILABLE</option>
+          </select>
+        </div>
+        <div class="ops-field"><div class="ops-field-lbl">SHOW</div><input class="ops-input" id="crew-show" placeholder="CRL, AIG…"></div>
+      </div>
+      <div class="ops-field"><div class="ops-field-lbl">EMAIL</div><input class="ops-input" id="crew-email" type="email" placeholder="name@email.com"></div>
+      <div class="ops-field"><div class="ops-field-lbl">PHONE</div><input class="ops-input" id="crew-phone" type="tel" placeholder="+1 555 000 0000"></div>
+      <div class="ops-field"><div class="ops-field-lbl">AGENCY / REP</div><input class="ops-input" id="crew-agency" placeholder="Agency or freelance"></div>
+      <div class="ops-field"><div class="ops-field-lbl">RATE TIER</div>
+        <select class="ops-select" id="crew-rate">
+          <option value="">–</option>
+          <option value="junior">JUNIOR</option>
+          <option value="mid">MID</option>
+          <option value="senior">SENIOR</option>
+          <option value="lead">LEAD</option>
+          <option value="sup">SUPERVISOR</option>
+        </select>
+      </div>
+      <div class="ops-field">
+        <div class="ops-field-lbl">SKILLS</div>
+        <div class="ops-tag-grid" id="crew-skill-grid">
+          <button class="ops-tag-btn" data-skill="COMP" onclick="toggleSkill(this)">COMP</button>
+          <button class="ops-tag-btn" data-skill="ROTO" onclick="toggleSkill(this)">ROTO</button>
+          <button class="ops-tag-btn" data-skill="PAINT" onclick="toggleSkill(this)">PAINT</button>
+          <button class="ops-tag-btn" data-skill="FX" onclick="toggleSkill(this)">FX</button>
+          <button class="ops-tag-btn" data-skill="LEAD" onclick="toggleSkill(this)">LEAD</button>
+          <button class="ops-tag-btn" data-skill="PROD" onclick="toggleSkill(this)">PROD</button>
+          <button class="ops-tag-btn" data-skill="3D" onclick="toggleSkill(this)">3D</button>
+          <button class="ops-tag-btn" data-skill="GRADE" onclick="toggleSkill(this)">GRADE</button>
+          <button class="ops-tag-btn" data-skill="ANIM" onclick="toggleSkill(this)">ANIM</button>
+        </div>
+      </div>
+      <div class="ops-field"><div class="ops-field-lbl">NOTES</div><textarea class="ops-textarea" id="crew-notes" placeholder="Any notes about this person…"></textarea></div>
+      <div class="ops-field"><div class="ops-field-lbl">START DATE</div><input class="ops-input" id="crew-start" type="date"></div>
+      <div class="ops-field"><div class="ops-field-lbl">END DATE</div><input class="ops-input" id="crew-end" type="date"></div>
+      <button class="ops-submit" onclick="saveCrew()">SAVE CREW MEMBER</button>
+      <button id="crew-delete-btn" class="ops-submit" style="margin-top:8px;background:rgba(255,92,92,.12);color:#ff5c5c;border:1px solid rgba(255,92,92,.2);display:none" onclick="deleteCrew()">DELETE</button>
+    </div>
+  </div>
+</div>
+
+<div class="ops-overlay" id="rdxAddOverlay">
+  <div class="ops-sheet">
+    <div class="ops-handle"></div>
+    <div class="ops-sh-head">
+      <span class="ops-sh-title" id="rdx-modal-title">ADD TO ROLODEX</span>
+      <button class="ops-sh-close" onclick="closeOpsOverlay('rdxAddOverlay')">DONE</button>
+    </div>
+    <div class="ops-form">
+      <input type="hidden" id="rdx-edit-idx" value="-1">
+      <div class="ops-row2">
+        <div class="ops-field"><div class="ops-field-lbl">NAME</div><input class="ops-input" id="rdx-name" placeholder="Full name"></div>
+        <div class="ops-field"><div class="ops-field-lbl">INITIALS</div><input class="ops-input" id="rdx-initials" placeholder="RR" maxlength="3"></div>
+      </div>
+      <div class="ops-field"><div class="ops-field-lbl">TITLE</div><input class="ops-input" id="rdx-title-input" placeholder="Compositor, Coordinator…"></div>
+      <div class="ops-field"><div class="ops-field-lbl">EMAIL</div><input class="ops-input" id="rdx-email" type="email" placeholder="name@email.com"></div>
+      <div class="ops-field"><div class="ops-field-lbl">PHONE</div><input class="ops-input" id="rdx-phone" type="tel" placeholder="+1 555 000 0000"></div>
+      <div class="ops-field"><div class="ops-field-lbl">INSTAGRAM / SOCIALS</div><input class="ops-input" id="rdx-social" placeholder="@handle or URL"></div>
+      <div class="ops-field"><div class="ops-field-lbl">COMPANY / STUDIO</div><input class="ops-input" id="rdx-company" placeholder="Studio name or freelance"></div>
+      <div class="ops-field"><div class="ops-field-lbl">AVAILABILITY</div>
+        <select class="ops-select" id="rdx-avail">
+          <option value="unknown">UNKNOWN</option>
+          <option value="avail">AVAILABLE</option>
+          <option value="booked">BOOKED</option>
+          <option value="wrapping">WRAPPING SOON</option>
+        </select>
+      </div>
+      <div class="ops-field"><div class="ops-field-lbl">LAST CHECKED</div><input class="ops-input" id="rdx-lastcheck" type="date"></div>
+      <div class="ops-field">
+        <div class="ops-field-lbl">SKILLS</div>
+        <div class="ops-tag-grid" id="rdx-skill-grid">
+          <button class="ops-tag-btn" data-skill="COMP" onclick="toggleSkillRdx(this)">COMP</button>
+          <button class="ops-tag-btn" data-skill="ROTO" onclick="toggleSkillRdx(this)">ROTO</button>
+          <button class="ops-tag-btn" data-skill="PAINT" onclick="toggleSkillRdx(this)">PAINT</button>
+          <button class="ops-tag-btn" data-skill="FX" onclick="toggleSkillRdx(this)">FX</button>
+          <button class="ops-tag-btn" data-skill="LEAD" onclick="toggleSkillRdx(this)">LEAD</button>
+          <button class="ops-tag-btn" data-skill="PROD" onclick="toggleSkillRdx(this)">PROD</button>
+          <button class="ops-tag-btn" data-skill="3D" onclick="toggleSkillRdx(this)">3D</button>
+          <button class="ops-tag-btn" data-skill="GRADE" onclick="toggleSkillRdx(this)">GRADE</button>
+          <button class="ops-tag-btn" data-skill="ANIM" onclick="toggleSkillRdx(this)">ANIM</button>
+        </div>
+      </div>
+      <div class="ops-field"><div class="ops-field-lbl">NOTES</div><textarea class="ops-textarea" id="rdx-notes" placeholder="How you know them, quality notes, rate range…"></textarea></div>
+      <button class="ops-submit" onclick="saveRdx()">SAVE TO ROLODEX</button>
+      <button id="rdx-delete-btn" class="ops-submit" style="margin-top:8px;background:rgba(255,92,92,.12);color:#ff5c5c;border:1px solid rgba(255,92,92,.2);display:none" onclick="deleteRdx()">DELETE</button>
+    </div>
+  </div>
+</div>
+
+<div class="ops-overlay" id="demandAddOverlay">
+  <div class="ops-sheet">
+    <div class="ops-handle"></div>
+    <div class="ops-sh-head">
+      <span class="ops-sh-title">ADD SHOW / PROJECT</span>
+      <button class="ops-sh-close" onclick="closeOpsOverlay('demandAddOverlay')">DONE</button>
+    </div>
+    <div class="ops-form">
+      <div class="ops-row2">
+        <div class="ops-field"><div class="ops-field-lbl">SHOW CODE</div><input class="ops-input" id="dem-code" placeholder="CRL" maxlength="6"></div>
+        <div class="ops-field"><div class="ops-field-lbl">TYPE</div>
+          <select class="ops-select" id="dem-type">
+            <option value="active">ACTIVE</option>
+            <option value="upcoming">UPCOMING</option>
+            <option value="theoretical">THEORETICAL</option>
+          </select>
+        </div>
+      </div>
+      <div class="ops-field"><div class="ops-field-lbl">SHOW NAME</div><input class="ops-input" id="dem-name" placeholder="Full show name"></div>
+      <div class="ops-field"><div class="ops-field-lbl">CLIENT</div><input class="ops-input" id="dem-client" placeholder="Client / studio"></div>
+      <div class="ops-row2">
+        <div class="ops-field"><div class="ops-field-lbl">START DATE</div><input class="ops-input" id="dem-start" type="date"></div>
+        <div class="ops-field"><div class="ops-field-lbl">DELIVERY DATE</div><input class="ops-input" id="dem-due" type="date"></div>
+      </div>
+      <div class="ops-row2">
+        <div class="ops-field"><div class="ops-field-lbl">SHOT COUNT</div><input class="ops-input" id="dem-shots" type="number" placeholder="0" min="0"></div>
+        <div class="ops-field"><div class="ops-field-lbl">TOTAL BID DAYS</div><input class="ops-input" id="dem-bid" type="number" placeholder="0" min="0"></div>
+      </div>
+      <div class="ops-row2">
+        <div class="ops-field"><div class="ops-field-lbl">COMP NEEDED</div><input class="ops-input" id="dem-comp" type="number" placeholder="0" min="0"></div>
+        <div class="ops-field"><div class="ops-field-lbl">ROTO/PAINT NEEDED</div><input class="ops-input" id="dem-roto" type="number" placeholder="0" min="0"></div>
+      </div>
+      <div class="ops-field"><div class="ops-field-lbl">NOTES</div><textarea class="ops-textarea" id="dem-notes" placeholder="Pipeline requirements, special needs…"></textarea></div>
+      <button class="ops-submit" onclick="saveDemand()">ADD SHOW</button>
+    </div>
+  </div>
+</div>
 
 <!-- ═══════════════════════════════════════════════
      VIEW: INTEL
@@ -922,7 +1273,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
   
 
 
-<div class="bnav-wrap"><nav class="bnav"><button class="nb" onclick="navTo('tasks')"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg><span class="nl">TASKS</span></button><button class="nb" onclick="navTo('shows')"><svg viewBox="0 0 24 24" width="20" height="20"><rect x="2" y="7" width="20" height="14" rx="1"/><polyline points="16,7 12,3 8,7"/><line x1="12" y1="3" x2="12" y2="21"/></svg><span class="nl">SHOWS</span></button><button class="nb-action" onclick="navTo('hangar')"><svg viewBox="0 0 24 24" width="22" height="22"><rect x="3" y="9" width="18" height="12"/><polyline points="3,9 12,3 21,9"/><line x1="9" y1="21" x2="9" y2="14"/><line x1="15" y1="21" x2="15" y2="14"/></svg></button><button class="nb" onclick="navTo('shots')"><svg viewBox="0 0 24 24" width="20" height="20"><rect x="3" y="3" width="18" height="18"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/></svg><span class="nl">SHOTS</span></button><button class="nb on" onclick="navTo('intel')"><svg viewBox="0 0 24 24" width="20" height="20"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg><span class="nl">INTEL</span></button></nav></div>
+<div class="bnav-wrap"><nav class="bnav"><button class="nb" onclick="navTo('tasks')"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg><span class="nl">TASKS</span></button><button class="nb" onclick="navTo('shows')"><svg viewBox="0 0 24 24" width="20" height="20"><rect x="2" y="7" width="20" height="14" rx="1"/><polyline points="16,7 12,3 8,7"/><line x1="12" y1="3" x2="12" y2="21"/></svg><span class="nl">SHOWS</span></button><button class="nb-action" onclick="navTo('hangar')"><svg viewBox="0 0 24 24" width="22" height="22"><rect x="3" y="9" width="18" height="12"/><polyline points="3,9 12,3 21,9"/><line x1="9" y1="21" x2="9" y2="14"/><line x1="15" y1="21" x2="15" y2="14"/></svg></button><button class="nb" onclick="navTo('ops')"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="nl">OPS</span></button><button class="nb on" onclick="navTo('intel')"><svg viewBox="0 0 24 24" width="20" height="20"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg><span class="nl">INTEL</span></button></nav></div>
 </div>
 
 
@@ -966,7 +1317,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
   
 
 
-<div class="bnav-wrap"><nav class="bnav"><button class="nb on" onclick="navTo('tasks')"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg><span class="nl">TASKS</span></button><button class="nb" onclick="navTo('shows')"><svg viewBox="0 0 24 24" width="20" height="20"><rect x="2" y="7" width="20" height="14" rx="1"/><polyline points="16,7 12,3 8,7"/><line x1="12" y1="3" x2="12" y2="21"/></svg><span class="nl">SHOWS</span></button><button class="nb-action" onclick="navTo('hangar')"><svg viewBox="0 0 24 24" width="22" height="22"><rect x="3" y="9" width="18" height="12"/><polyline points="3,9 12,3 21,9"/><line x1="9" y1="21" x2="9" y2="14"/><line x1="15" y1="21" x2="15" y2="14"/></svg></button><button class="nb" onclick="navTo('shots')"><svg viewBox="0 0 24 24" width="20" height="20"><rect x="3" y="3" width="18" height="18"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/></svg><span class="nl">SHOTS</span></button><button class="nb" onclick="navTo('intel')"><svg viewBox="0 0 24 24" width="20" height="20"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg><span class="nl">INTEL</span></button></nav></div>
+<div class="bnav-wrap"><nav class="bnav"><button class="nb on" onclick="navTo('tasks')"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg><span class="nl">TASKS</span></button><button class="nb" onclick="navTo('shows')"><svg viewBox="0 0 24 24" width="20" height="20"><rect x="2" y="7" width="20" height="14" rx="1"/><polyline points="16,7 12,3 8,7"/><line x1="12" y1="3" x2="12" y2="21"/></svg><span class="nl">SHOWS</span></button><button class="nb-action" onclick="navTo('hangar')"><svg viewBox="0 0 24 24" width="22" height="22"><rect x="3" y="9" width="18" height="12"/><polyline points="3,9 12,3 21,9"/><line x1="9" y1="21" x2="9" y2="14"/><line x1="15" y1="21" x2="15" y2="14"/></svg></button><button class="nb" onclick="navTo('ops')"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="nl">OPS</span></button><button class="nb" onclick="navTo('intel')"><svg viewBox="0 0 24 24" width="20" height="20"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg><span class="nl">INTEL</span></button></nav></div>
 </div>
 
 
@@ -1220,7 +1571,7 @@ let currentShot = null;
 
 
 // Nav hierarchy: hangar(0) < shots(1) < detail(2) | roster(3) | intel(4)
-const VIEW_DEPTH = {hangar:0, shows:1, shots:2, detail:3, roster:1, intel:1, tasks:1};
+const VIEW_DEPTH = {hangar:0, shows:1, shots:2, detail:3, roster:1, intel:1, tasks:1, ops:1};
 let currentView = 'hangar';
 
 function navTo(view, dir) {
@@ -1256,6 +1607,7 @@ function navTo(view, dir) {
   if (view === 'hangar') { renderChips(); renderShowGrid(); }
   if (view === 'roster') renderRoster();
   if (view === 'shots')  { renderShotListFiltered([...SHOTS]); }
+  if (view === 'ops')    { renderOps(); }
 }
 
 
@@ -2134,6 +2486,498 @@ const ARTISTS = [
 ];
 
 const STATUS_LABELS = {ip:'In Progress',avail:'Available',hld:'On Hold',rdy:'Ready'};
+
+// ── OPS MODULE ──────────────────────────────────
+const OPS_KEY = 'vtek_ops';
+let OPS = { crew: [], rolodex: [], demand: [] };
+let opsCurrentTab = 'crew';
+let rdxFilter = 'ALL';
+let openCrewIdx = -1;
+let openRdxIdx = -1;
+
+function loadOps() {
+  try {
+    const raw = localStorage.getItem(OPS_KEY);
+    if (raw) OPS = JSON.parse(raw);
+    if (!OPS.crew) OPS.crew = [];
+    if (!OPS.rolodex) OPS.rolodex = [];
+    if (!OPS.demand) OPS.demand = [];
+    // Seed demand from existing SHOWS if demand is empty
+    if (OPS.demand.length === 0 && typeof SHOWS !== 'undefined') {
+      SHOWS.forEach(s => {
+        OPS.demand.push({id:'dem'+Date.now()+Math.random(), code:s.code, name:s.name, client:s.client||'', type:'active', due:s.due||'', start:'', shots:0, bid:0, comp:s.teamSize||2, roto:0, notes:''});
+      });
+    }
+  } catch(e) {}
+}
+function saveOps() {
+  try { localStorage.setItem(OPS_KEY, JSON.stringify(OPS)); } catch(e) {}
+}
+
+function switchOpsTab(tab) {
+  opsCurrentTab = tab;
+  document.querySelectorAll('.ops-tab').forEach(b => b.classList.remove('on'));
+  document.querySelectorAll('.ops-panel').forEach(p => p.classList.remove('on'));
+  document.getElementById('ops-tab-'+tab).classList.add('on');
+  document.getElementById('ops-panel-'+tab).classList.add('on');
+  if (tab === 'crew') renderCrew();
+  if (tab === 'demand') renderDemand();
+  if (tab === 'rolodex') renderRolodex();
+}
+
+function renderOps() {
+  loadOps();
+  if (opsCurrentTab === 'crew') renderCrew();
+  if (opsCurrentTab === 'demand') renderDemand();
+  if (opsCurrentTab === 'rolodex') renderRolodex();
+}
+
+// ── AVAIL COLOR HELPERS
+const AVAIL_META = {
+  active:   { label:'ACTIVE',    cls:'avail-active' },
+  avail:    { label:'AVAILABLE', cls:'avail-avail' },
+  penciled: { label:'PENCILED',  cls:'avail-penciled' },
+  unavail:  { label:'UNAVAIL',   cls:'avail-unavail' },
+  unknown:  { label:'UNKNOWN',   cls:'' },
+  booked:   { label:'BOOKED',    cls:'avail-unavail' },
+  wrapping: { label:'WRAPPING',  cls:'avail-penciled' },
+};
+function availBadge(s) {
+  const m = AVAIL_META[s] || {label:s?.toUpperCase()||'–', cls:''};
+  return `<span class="avail-pill ${m.cls}">${m.label}</span>`;
+}
+
+const CREW_COLORS = ['#9c4aff','#2196f3','#34d399','#f5a623','#ff9800','#ce93d8','#00e5ff','#ff5c5c','#2eb8b8','#e8c84a'];
+function crewColor(i) { return CREW_COLORS[i % CREW_COLORS.length]; }
+
+function initials(name) {
+  return name.split(' ').filter(Boolean).slice(0,2).map(w=>w[0].toUpperCase()).join('');
+}
+
+// ── CREW RENDER
+function renderCrew() {
+  const el = document.getElementById('crew-list');
+  if (!el) return;
+  const active = OPS.crew.filter(c => c.status === 'active').length;
+  const avail  = OPS.crew.filter(c => c.status === 'avail').length;
+  const penciled = OPS.crew.filter(c => c.status === 'penciled').length;
+  const elT = document.getElementById('ops-total');
+  const elA = document.getElementById('ops-active');
+  const elAv = document.getElementById('ops-avail');
+  const elP = document.getElementById('ops-penciled');
+  if (elT) elT.textContent = OPS.crew.length;
+  if (elA) elA.textContent = active;
+  if (elAv) elAv.textContent = avail;
+  if (elP) elP.textContent = penciled;
+
+  const cards = OPS.crew.map((c,i) => {
+    const isPenciled = c.status === 'penciled';
+    const av = AVAIL_META[c.status] || {label:'–',cls:''};
+    const skills = (c.skills||[]).map(s => `<span class="cc-tag ${s.toLowerCase()}">${s}</span>`).join('');
+    const assignments = (c.assignments||[]).map(a => {
+      return `<div class="cc-assign-row">
+        <div class="cc-assign-dot" style="background:var(--ac)"></div>
+        <div class="cc-assign-show">${a.show||''}</div>
+        <div class="cc-assign-task">${a.task||''}</div>
+        <div class="cc-assign-status" style="background:rgba(46,184,184,.1);color:var(--ac)">${a.status||''}</div>
+        <div class="cc-assign-start">${a.start ? 'FROM '+a.start : ''}</div>
+      </div>`;
+    }).join('');
+    const contactRows = [
+      c.email ? `<div class="cc-contact-row"><span class="cc-contact-lbl">EMAIL</span><span class="cc-contact-val"><a href="mailto:${c.email}">${c.email}</a></span></div>` : '',
+      c.phone ? `<div class="cc-contact-row"><span class="cc-contact-lbl">PHONE</span><span class="cc-contact-val"><a href="tel:${c.phone}">${c.phone}</a></span></div>` : '',
+      c.agency ? `<div class="cc-contact-row"><span class="cc-contact-lbl">AGENCY</span><span class="cc-contact-val">${c.agency}</span></div>` : '',
+      c.rate ? `<div class="cc-contact-row"><span class="cc-contact-lbl">RATE</span><span class="cc-contact-val">${c.rate.toUpperCase()}</span></div>` : '',
+      c.show ? `<div class="cc-contact-row"><span class="cc-contact-lbl">SHOW</span><span class="cc-contact-val">${c.show}</span></div>` : '',
+    ].filter(Boolean).join('');
+    const datesRow = (c.start || c.end) ? `<div class="cc-contact-row"><span class="cc-contact-lbl">DATES</span><span class="cc-contact-val">${c.start||'–'} → ${c.end||'ongoing'}</span></div>` : '';
+    const notesRow = c.notes ? `<div class="cc-contact-row"><span class="cc-contact-lbl">NOTES</span><span class="cc-contact-val" style="white-space:pre-wrap;word-break:break-word">${c.notes}</span></div>` : '';
+    const col = c.color || crewColor(i);
+    const init = c.initials || initials(c.name||'?');
+    return `<div class="crew-card${isPenciled?' penciled':''}" id="crew-card-${i}">
+      <div class="cc-head" onclick="toggleCrewCard(${i})">
+        <div class="cc-avatar${isPenciled?' penciled-av':''}" style="${isPenciled?'':'background:'+col}">${init}</div>
+        <div class="cc-info">
+          <div class="cc-name">${c.name||'Unnamed'}${isPenciled?' <span style="font-size:9px;color:var(--t2);font-family:var(--mono)">[PENCILED]</span>':''}</div>
+          <div class="cc-role">${c.role||'–'}</div>
+        </div>
+        <div class="cc-right">
+          ${availBadge(c.status)}
+          <div class="cc-load">${c.assignments&&c.assignments.length?c.assignments.length+' assignment'+(c.assignments.length>1?'s':''):'No assignments'}</div>
+        </div>
+      </div>
+      <div class="cc-expand" id="cc-exp-${i}">
+        <div class="cc-body">
+          ${contactRows||datesRow||notesRow ? `<div class="cc-section"><div class="cc-sec-lbl">CONTACT & INFO</div>${contactRows}${datesRow}${notesRow}</div>` : ''}
+          ${(c.skills&&c.skills.length) ? `<div class="cc-section"><div class="cc-sec-lbl">SKILLS</div><div class="cc-tags">${skills}</div></div>` : ''}
+          ${(c.assignments&&c.assignments.length) ? `<div class="cc-section"><div class="cc-sec-lbl">ASSIGNMENTS</div>${assignments}</div>` : ''}
+          <div class="cc-actions">
+            <button class="cc-act-btn" onclick="openCrewEdit(${i})">EDIT</button>
+            <button class="cc-act-btn primary" onclick="pingCrew(${i})">PING</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  el.innerHTML = cards + `<button class="crew-add-btn" onclick="openCrewAdd()">
+    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    ADD CREW MEMBER
+  </button>`;
+}
+
+function toggleCrewCard(i) {
+  const exp = document.getElementById('cc-exp-'+i);
+  if (!exp) return;
+  if (openCrewIdx === i) {
+    exp.classList.remove('open');
+    openCrewIdx = -1;
+  } else {
+    if (openCrewIdx >= 0) {
+      const prev = document.getElementById('cc-exp-'+openCrewIdx);
+      if (prev) prev.classList.remove('open');
+    }
+    exp.classList.add('open');
+    openCrewIdx = i;
+  }
+}
+
+function pingCrew(i) {
+  const c = OPS.crew[i];
+  if (!c) return;
+  if (c.email) window.location.href = `mailto:${c.email}?subject=Availability Check&body=Hey ${c.name.split(' ')[0]},%0A%0AHope all's well! Checking in on your availability — do you have any open dates coming up?%0A%0AThanks`;
+  else if (c.phone) window.location.href = `tel:${c.phone}`;
+  else toast('NO CONTACT INFO');
+}
+
+// ── CREW MODAL
+function openCrewAdd() {
+  document.getElementById('crew-edit-idx').value = '-1';
+  document.getElementById('crew-modal-title').textContent = 'ADD CREW MEMBER';
+  ['crew-name','crew-initials','crew-role','crew-show','crew-email','crew-phone','crew-agency','crew-notes','crew-start','crew-end'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('crew-status').value = 'active';
+  document.getElementById('crew-rate').value = '';
+  document.querySelectorAll('#crew-skill-grid .ops-tag-btn').forEach(b=>b.classList.remove('on'));
+  document.getElementById('crew-delete-btn').style.display = 'none';
+  openOpsOverlay('crewAddOverlay');
+}
+function openCrewEdit(i) {
+  const c = OPS.crew[i];
+  if (!c) return;
+  document.getElementById('crew-edit-idx').value = i;
+  document.getElementById('crew-modal-title').textContent = 'EDIT CREW MEMBER';
+  document.getElementById('crew-name').value = c.name||'';
+  document.getElementById('crew-initials').value = c.initials||'';
+  document.getElementById('crew-role').value = c.role||'';
+  document.getElementById('crew-show').value = c.show||'';
+  document.getElementById('crew-email').value = c.email||'';
+  document.getElementById('crew-phone').value = c.phone||'';
+  document.getElementById('crew-agency').value = c.agency||'';
+  document.getElementById('crew-notes').value = c.notes||'';
+  document.getElementById('crew-start').value = c.start||'';
+  document.getElementById('crew-end').value = c.end||'';
+  document.getElementById('crew-status').value = c.status||'active';
+  document.getElementById('crew-rate').value = c.rate||'';
+  document.querySelectorAll('#crew-skill-grid .ops-tag-btn').forEach(b=>{
+    b.classList.toggle('on', (c.skills||[]).includes(b.dataset.skill));
+  });
+  document.getElementById('crew-delete-btn').style.display = 'block';
+  openOpsOverlay('crewAddOverlay');
+}
+function saveCrew() {
+  const idx = parseInt(document.getElementById('crew-edit-idx').value);
+  const name = document.getElementById('crew-name').value.trim();
+  if (!name) { toast('NAME REQUIRED'); return; }
+  const skills = [...document.querySelectorAll('#crew-skill-grid .ops-tag-btn.on')].map(b=>b.dataset.skill);
+  const crew = {
+    name, initials: document.getElementById('crew-initials').value.trim() || initials(name),
+    role: document.getElementById('crew-role').value.trim(),
+    show: document.getElementById('crew-show').value.trim(),
+    email: document.getElementById('crew-email').value.trim(),
+    phone: document.getElementById('crew-phone').value.trim(),
+    agency: document.getElementById('crew-agency').value.trim(),
+    notes: document.getElementById('crew-notes').value.trim(),
+    start: document.getElementById('crew-start').value,
+    end: document.getElementById('crew-end').value,
+    status: document.getElementById('crew-status').value,
+    rate: document.getElementById('crew-rate').value,
+    skills, assignments: idx >= 0 ? (OPS.crew[idx].assignments||[]) : [],
+    color: idx >= 0 ? (OPS.crew[idx].color || crewColor(idx)) : crewColor(OPS.crew.length),
+  };
+  if (idx >= 0) OPS.crew[idx] = crew; else OPS.crew.unshift(crew);
+  saveOps(); closeOpsOverlay('crewAddOverlay'); renderCrew(); toast('CREW SAVED');
+}
+function deleteCrew() {
+  const idx = parseInt(document.getElementById('crew-edit-idx').value);
+  if (idx < 0) return;
+  OPS.crew.splice(idx, 1);
+  saveOps(); closeOpsOverlay('crewAddOverlay'); openCrewIdx=-1; renderCrew(); toast('REMOVED');
+}
+function toggleSkill(btn) { btn.classList.toggle('on'); }
+
+// ── DEMAND RENDER
+function renderDemand() {
+  const el = document.getElementById('demand-list');
+  if (!el) return;
+  // Auto-seed from SHOWS
+  const showCodes = OPS.demand.map(d=>d.code);
+  if (typeof SHOWS !== 'undefined') {
+    SHOWS.forEach(s => {
+      if (!showCodes.includes(s.code)) {
+        OPS.demand.push({id:'dem'+Date.now()+Math.random(), code:s.code, name:s.name, client:s.client||'', type:'active', due:s.due||'', start:'', shots:0, bid:s.teamSize?s.teamSize*5*(s.weeksLeft||12):0, comp:s.teamSize||2, roto:0, notes:''});
+        saveOps();
+      }
+    });
+  }
+  if (!OPS.demand.length) {
+    el.innerHTML = `<div style="padding:40px 20px;text-align:center;font-family:var(--mono);font-size:10px;color:var(--t2)">NO SHOWS TRACKED<br><br><button class="demand-add-btn" onclick="openOpsOverlay('demandAddOverlay')">+ ADD SHOW / PROJECT</button></div>`;
+    return;
+  }
+  const typeColors = {active:'var(--ac)', upcoming:'#f5a623', theoretical:'rgba(255,255,255,.35)'};
+  el.innerHTML = OPS.demand.map((d,i) => {
+    const weeks = d.due ? Math.max(1, Math.round((new Date(d.due+'T12:00:00') - new Date()) / (7*24*60*60*1000))) : 12;
+    const capacity = (d.comp||0) * 5 * weeks;
+    const bidDays = parseFloat(d.bid)||0;
+    const gap = capacity - bidDays;
+    const pct = bidDays > 0 ? Math.min(100, Math.round(capacity/bidDays*100)) : 0;
+    const gapClass = gap < 0 ? 'need' : gap < bidDays*0.1 ? 'tight' : 'ok';
+    const gapText = gap < 0 ? `${Math.abs(Math.round(gap))}d SHORT` : gap === 0 ? 'EXACT' : 'ON TRACK';
+    // Weekly demand bars (6 weeks)
+    const wkBars = Array.from({length:Math.min(6,weeks)}, (_,wi) => {
+      const wkLoad = bidDays / Math.max(1,weeks);
+      const wkCap = (d.comp||0)*5;
+      const h = Math.max(4, Math.round(wkLoad/Math.max(1,wkCap)*28));
+      const clr = wkLoad > wkCap ? '#ff5c5c' : wkLoad > wkCap*0.8 ? '#f5a623' : 'var(--ac)';
+      return `<div class="dc-wk"><div class="dc-wk-bar" style="height:${h}px;background:${clr}"></div><div class="dc-wk-lbl">W${wi+1}</div></div>`;
+    }).join('');
+    const alertHtml = gap < 0 ? `<div class="dc-alert"><div class="dc-alert-dot"></div><div class="dc-alert-txt">UNDER-RESOURCED — need ~${Math.ceil(Math.abs(gap)/5/weeks)} more artist${Math.ceil(Math.abs(gap)/5/weeks)>1?'s':''} to hit delivery</div></div>` : '';
+    return `<div class="demand-card">
+      <div class="dc-head">
+        <div class="dc-show-dot" style="background:${typeColors[d.type]||'var(--t2)'}"></div>
+        <div class="dc-show-name">${d.name||d.code} <span style="font-family:var(--mono);font-size:9px;color:var(--t2)">${d.code}</span></div>
+        <div class="dc-show-type">${(d.type||'active').toUpperCase()}</div>
+      </div>
+      <div class="dc-body">
+        <div class="dc-row">
+          <div class="dc-lbl">CAPACITY</div>
+          <div class="dc-bar-wrap"><div class="dc-bar" style="width:${Math.min(100,pct)}%;background:${gap<0?'#ff5c5c':gap<bidDays*0.1?'#f5a623':'var(--ac)'}"></div></div>
+          <div class="dc-val">${capacity||0}d</div>
+          <div class="dc-gap ${gapClass}">${gapText}</div>
+        </div>
+        <div class="dc-row">
+          <div class="dc-lbl">BID TOTAL</div>
+          <div class="dc-bar-wrap"><div class="dc-bar" style="width:${bidDays>0?Math.min(100,Math.round(bidDays/Math.max(capacity,bidDays)*100)):0}%;background:var(--t2)"></div></div>
+          <div class="dc-val">${bidDays}d</div>
+          <div class="dc-gap" style="color:var(--t2)">${d.comp||0} COMP · ${d.roto||0} R/P</div>
+        </div>
+        <div class="dc-row">
+          <div class="dc-lbl">TIMELINE</div>
+          <div class="dc-bar-wrap"></div>
+          <div class="dc-val" style="font-size:8px">${weeks}wk${weeks!==1?'s':''}</div>
+          <div class="dc-gap" style="color:var(--t2)">${d.due||'TBD'}</div>
+        </div>
+        ${alertHtml}
+        <div class="dc-timeline"><div class="dc-tl-lbl">WEEKLY LOAD EST.</div><div class="dc-wk-grid">${wkBars}</div></div>
+        <div style="display:flex;gap:6px;margin-top:10px">
+          <button class="cc-act-btn" style="flex:1" onclick="editDemand(${i})">EDIT</button>
+          <button class="cc-act-btn danger" onclick="deleteDemand(${i})">REMOVE</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('') + `<button class="demand-add-btn" onclick="openOpsOverlay('demandAddOverlay')">
+    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    ADD SHOW / PROJECT
+  </button>`;
+}
+
+function saveDemand() {
+  const code = document.getElementById('dem-code').value.trim().toUpperCase();
+  const name = document.getElementById('dem-name').value.trim();
+  if (!code||!name) { toast('CODE + NAME REQUIRED'); return; }
+  OPS.demand.push({
+    id: 'dem'+Date.now(), code, name,
+    client: document.getElementById('dem-client').value.trim(),
+    type: document.getElementById('dem-type').value,
+    start: document.getElementById('dem-start').value,
+    due: document.getElementById('dem-due').value,
+    shots: parseInt(document.getElementById('dem-shots').value)||0,
+    bid: parseFloat(document.getElementById('dem-bid').value)||0,
+    comp: parseInt(document.getElementById('dem-comp').value)||0,
+    roto: parseInt(document.getElementById('dem-roto').value)||0,
+    notes: document.getElementById('dem-notes').value.trim(),
+  });
+  saveOps(); closeOpsOverlay('demandAddOverlay'); renderDemand(); toast('SHOW ADDED');
+}
+function editDemand(i) {
+  const d = OPS.demand[i];
+  if (!d) return;
+  document.getElementById('dem-code').value = d.code||'';
+  document.getElementById('dem-name').value = d.name||'';
+  document.getElementById('dem-client').value = d.client||'';
+  document.getElementById('dem-type').value = d.type||'active';
+  document.getElementById('dem-start').value = d.start||'';
+  document.getElementById('dem-due').value = d.due||'';
+  document.getElementById('dem-shots').value = d.shots||0;
+  document.getElementById('dem-bid').value = d.bid||0;
+  document.getElementById('dem-comp').value = d.comp||0;
+  document.getElementById('dem-roto').value = d.roto||0;
+  document.getElementById('dem-notes').value = d.notes||'';
+  openOpsOverlay('demandAddOverlay');
+}
+function deleteDemand(i) { OPS.demand.splice(i,1); saveOps(); renderDemand(); toast('REMOVED'); }
+
+// ── ROLODEX RENDER
+function setRdxFilter(btn) {
+  rdxFilter = btn.dataset.rdx;
+  document.querySelectorAll('.rdx-filter').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  renderRolodex();
+}
+function renderRolodex() {
+  const el = document.getElementById('rdx-list');
+  if (!el) return;
+  const q = (document.getElementById('rdx-search')?.value||'').toLowerCase();
+  let data = OPS.rolodex.filter(r => {
+    const matchQ = !q || r.name?.toLowerCase().includes(q) || r.title?.toLowerCase().includes(q) || r.company?.toLowerCase().includes(q) || r.notes?.toLowerCase().includes(q);
+    const matchF = rdxFilter==='ALL' || (r.skills||[]).includes(rdxFilter);
+    return matchQ && matchF;
+  });
+  if (!data.length) {
+    el.innerHTML = `<div style="padding:30px 0;text-align:center;font-family:var(--mono);font-size:10px;color:var(--t2)">NO CONTACTS${q?' MATCH':''}${!OPS.rolodex.length?' — ADD YOUR FIRST':''}</div>
+    <button class="rdx-add-btn" onclick="openRdxAdd()">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>ADD TO ROLODEX</button>`;
+    return;
+  }
+  const rdxAvailColors = {avail:'#34d399', unknown:'var(--t2)', booked:'#ff8080', wrapping:'#f5a623'};
+  el.innerHTML = data.map((r,i) => {
+    const realIdx = OPS.rolodex.indexOf(r);
+    const col = r.color || CREW_COLORS[realIdx % CREW_COLORS.length];
+    const init = r.initials || initials(r.name||'?');
+    const availMeta = AVAIL_META[r.avail] || {label:'UNKNOWN',cls:''};
+    const skills = (r.skills||[]).map(s=>`<span class="cc-tag ${s.toLowerCase()}">${s}</span>`).join('');
+    const detailRows = [
+      r.email ? `<div class="rdx-detail-row"><span class="rdx-dl">EMAIL</span><span class="rdx-dv"><a href="mailto:${r.email}">${r.email}</a></span></div>` : '',
+      r.phone ? `<div class="rdx-detail-row"><span class="rdx-dl">PHONE</span><span class="rdx-dv"><a href="tel:${r.phone}">${r.phone}</a></span></div>` : '',
+      r.social ? `<div class="rdx-detail-row"><span class="rdx-dl">SOCIAL</span><span class="rdx-dv">${r.social}</span></div>` : '',
+      r.company ? `<div class="rdx-detail-row"><span class="rdx-dl">STUDIO</span><span class="rdx-dv">${r.company}</span></div>` : '',
+      r.notes ? `<div class="rdx-detail-row"><span class="rdx-dl">NOTES</span><span class="rdx-dv" style="white-space:pre-wrap">${r.notes}</span></div>` : '',
+    ].filter(Boolean).join('');
+    return `<div class="rdx-card" id="rdx-card-${realIdx}">
+      <div class="rdx-head" onclick="toggleRdxCard(${realIdx})">
+        <div class="rdx-av" style="background:${col}">${init}</div>
+        <div class="rdx-info">
+          <div class="rdx-name">${r.name||'Unnamed'}</div>
+          <div class="rdx-title">${r.title||'–'}</div>
+        </div>
+        <div class="rdx-right">
+          <span class="avail-pill ${availMeta.cls}" style="font-size:8px">${availMeta.label}</span>
+          <div class="rdx-lastcheck">${r.lastcheck ? 'CHK '+r.lastcheck : 'NEVER CHECKED'}</div>
+        </div>
+      </div>
+      <div class="rdx-expand" id="rdx-exp-${realIdx}">
+        <div class="rdx-detail">
+          ${detailRows}
+          ${skills ? `<div class="rdx-tags">${skills}</div>` : ''}
+          <div style="display:flex;gap:6px;margin-top:8px">
+            <button class="rdx-ping-btn" style="flex:1" onclick="pingRdx(${realIdx})">PING FOR AVAIL</button>
+            <button class="cc-act-btn" onclick="openRdxEdit(${realIdx})" style="min-width:60px">EDIT</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('') + `<button class="rdx-add-btn" onclick="openRdxAdd()">
+    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    ADD TO ROLODEX
+  </button>`;
+}
+
+function toggleRdxCard(i) {
+  const exp = document.getElementById('rdx-exp-'+i);
+  if (!exp) return;
+  if (openRdxIdx === i) { exp.classList.remove('open'); openRdxIdx=-1; }
+  else {
+    if (openRdxIdx>=0){const p=document.getElementById('rdx-exp-'+openRdxIdx);if(p)p.classList.remove('open');}
+    exp.classList.add('open'); openRdxIdx=i;
+  }
+}
+function pingRdx(i) {
+  const r = OPS.rolodex[i];
+  if (!r) return;
+  // Update last check date
+  OPS.rolodex[i].lastcheck = new Date().toISOString().split('T')[0];
+  saveOps();
+  if (r.email) window.location.href = `mailto:${r.email}?subject=Availability&body=Hey ${r.name.split(' ')[0]},%0A%0AHope you're doing well! Wanted to check in on your availability — are you open for work in the coming weeks?%0A%0AThanks`;
+  else if (r.phone) window.location.href = `tel:${r.phone}`;
+  else toast('NO CONTACT INFO');
+}
+function openRdxAdd() {
+  document.getElementById('rdx-edit-idx').value = '-1';
+  document.getElementById('rdx-modal-title').textContent = 'ADD TO ROLODEX';
+  ['rdx-name','rdx-initials','rdx-title-input','rdx-email','rdx-phone','rdx-social','rdx-company','rdx-notes','rdx-lastcheck'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('rdx-avail').value = 'unknown';
+  document.querySelectorAll('#rdx-skill-grid .ops-tag-btn').forEach(b=>b.classList.remove('on'));
+  document.getElementById('rdx-delete-btn').style.display='none';
+  openOpsOverlay('rdxAddOverlay');
+}
+function openRdxEdit(i) {
+  const r = OPS.rolodex[i];
+  if (!r) return;
+  document.getElementById('rdx-edit-idx').value = i;
+  document.getElementById('rdx-modal-title').textContent = 'EDIT CONTACT';
+  document.getElementById('rdx-name').value = r.name||'';
+  document.getElementById('rdx-initials').value = r.initials||'';
+  document.getElementById('rdx-title-input').value = r.title||'';
+  document.getElementById('rdx-email').value = r.email||'';
+  document.getElementById('rdx-phone').value = r.phone||'';
+  document.getElementById('rdx-social').value = r.social||'';
+  document.getElementById('rdx-company').value = r.company||'';
+  document.getElementById('rdx-notes').value = r.notes||'';
+  document.getElementById('rdx-lastcheck').value = r.lastcheck||'';
+  document.getElementById('rdx-avail').value = r.avail||'unknown';
+  document.querySelectorAll('#rdx-skill-grid .ops-tag-btn').forEach(b=>{
+    b.classList.toggle('on', (r.skills||[]).includes(b.dataset.skill));
+  });
+  document.getElementById('rdx-delete-btn').style.display='block';
+  openOpsOverlay('rdxAddOverlay');
+}
+function saveRdx() {
+  const idx = parseInt(document.getElementById('rdx-edit-idx').value);
+  const name = document.getElementById('rdx-name').value.trim();
+  if (!name) { toast('NAME REQUIRED'); return; }
+  const skills = [...document.querySelectorAll('#rdx-skill-grid .ops-tag-btn.on')].map(b=>b.dataset.skill);
+  const entry = {
+    name, initials: document.getElementById('rdx-initials').value.trim() || initials(name),
+    title: document.getElementById('rdx-title-input').value.trim(),
+    email: document.getElementById('rdx-email').value.trim(),
+    phone: document.getElementById('rdx-phone').value.trim(),
+    social: document.getElementById('rdx-social').value.trim(),
+    company: document.getElementById('rdx-company').value.trim(),
+    notes: document.getElementById('rdx-notes').value.trim(),
+    lastcheck: document.getElementById('rdx-lastcheck').value,
+    avail: document.getElementById('rdx-avail').value,
+    skills,
+    color: idx>=0 ? (OPS.rolodex[idx].color||CREW_COLORS[idx%CREW_COLORS.length]) : CREW_COLORS[OPS.rolodex.length%CREW_COLORS.length],
+  };
+  if (idx>=0) OPS.rolodex[idx]=entry; else OPS.rolodex.unshift(entry);
+  saveOps(); closeOpsOverlay('rdxAddOverlay'); renderRolodex(); toast('CONTACT SAVED');
+}
+function deleteRdx() {
+  const idx = parseInt(document.getElementById('rdx-edit-idx').value);
+  if (idx<0) return;
+  OPS.rolodex.splice(idx,1);
+  saveOps(); closeOpsOverlay('rdxAddOverlay'); openRdxIdx=-1; renderRolodex(); toast('REMOVED');
+}
+function toggleSkillRdx(btn) { btn.classList.toggle('on'); }
+
+// ── OPS OVERLAY HELPERS
+function openOpsOverlay(id) { document.getElementById(id)?.classList.add('open'); }
+function closeOpsOverlay(id) { document.getElementById(id)?.classList.remove('open'); }
+function openOpsAdd() {
+  if (opsCurrentTab==='crew') openCrewAdd();
+  else if (opsCurrentTab==='demand') openOpsOverlay('demandAddOverlay');
+  else if (opsCurrentTab==='rolodex') openRdxAdd();
+}
+
 
 function renderRoster() {
   const el = document.getElementById('roster-list');
