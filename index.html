@@ -1,4 +1,4 @@
-<!-- VTEK HANGAR BUILD_ID=HGR-012 -->
+<!-- VTEK HANGAR BUILD_ID=HGR-013 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -381,6 +381,219 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 .search-bar{padding:8px 12px;flex-shrink:0;background:var(--bg);border-bottom:1px solid rgba(255,255,255,.04)}
 .search-input{width:100%;background:var(--s2);border:var(--b1);border-radius:10px;padding:9px 12px 9px 36px;font-family:var(--sans);font-size:13px;color:var(--t0);outline:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%238e8e93' stroke-width='1.5' viewBox='0 0 24 24'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:10px center}
 .search-input::placeholder{color:var(--t2)}
+
+/* ══════════════════════════════════════════════
+   ANIMATION SYSTEM — VTEK HANGAR
+══════════════════════════════════════════════ */
+
+/* Base keyframes */
+@keyframes fadeUp   { from { opacity:0; transform:translate3d(0,18px,0); } to { opacity:1; transform:translate3d(0,0,0); } }
+@keyframes fadeDown { from { opacity:0; transform:translate3d(0,-14px,0); } to { opacity:1; transform:translate3d(0,0,0); } }
+@keyframes slideInR { from { opacity:0; transform:translate3d(28px,0,0); } to { opacity:1; transform:translate3d(0,0,0); } }
+@keyframes slideInL { from { opacity:0; transform:translate3d(-28px,0,0); } to { opacity:1; transform:translate3d(0,0,0); } }
+@keyframes scaleIn  { from { opacity:0; transform:scale3d(0.94,0.94,1); } to { opacity:1; transform:scale3d(1,1,1); } }
+@keyframes sheetUp  { from { opacity:0; transform:translate3d(0,40px,0); } to { opacity:1; transform:translate3d(0,0,0); } }
+@keyframes shimmer  { from { background-position:-200% 0; } to { background-position:200% 0; } }
+@keyframes pulseAc  { 0%,100% { opacity:1; } 50% { opacity:.45; } }
+@keyframes navPop   { 0% { transform:scale(0.7); opacity:0; } 60% { transform:scale(1.15); } 100% { transform:scale(1); opacity:1; } }
+@keyframes barGrow  { from { transform:scaleX(0); transform-origin:left; } to { transform:scaleX(1); transform-origin:left; } }
+@keyframes dotPulse { 0%,100%{transform:scale(1);opacity:1;} 50%{transform:scale(1.4);opacity:.6;} }
+
+/* View transition container */
+.view {
+  transform-origin: center top;
+  will-change: transform, opacity;
+}
+
+/* View enter animations — direction-aware */
+.view.enter-right {
+  animation: slideInR 0.28s cubic-bezier(0.22,1,0.36,1) both;
+}
+.view.enter-left {
+  animation: slideInL 0.28s cubic-bezier(0.22,1,0.36,1) both;
+}
+.view.enter-up {
+  animation: sheetUp 0.30s cubic-bezier(0.22,1,0.36,1) both;
+}
+.view.enter-scale {
+  animation: scaleIn 0.24s cubic-bezier(0.22,1,0.36,1) both;
+}
+
+/* Staggered children — add .stagger to a container */
+.stagger > * {
+  opacity: 0;
+  animation: fadeUp 0.32s cubic-bezier(0.22,1,0.36,1) both;
+}
+.stagger > *:nth-child(1)  { animation-delay: 0.04s; }
+.stagger > *:nth-child(2)  { animation-delay: 0.08s; }
+.stagger > *:nth-child(3)  { animation-delay: 0.12s; }
+.stagger > *:nth-child(4)  { animation-delay: 0.16s; }
+.stagger > *:nth-child(5)  { animation-delay: 0.20s; }
+.stagger > *:nth-child(6)  { animation-delay: 0.24s; }
+.stagger > *:nth-child(7)  { animation-delay: 0.28s; }
+.stagger > *:nth-child(8)  { animation-delay: 0.32s; }
+.stagger > *:nth-child(9)  { animation-delay: 0.36s; }
+.stagger > *:nth-child(10) { animation-delay: 0.40s; }
+
+/* Chip-wrap stagger */
+.chip-wrap .stat-row {
+  opacity: 0;
+  animation: fadeUp 0.28s cubic-bezier(0.22,1,0.36,1) both;
+}
+.chip-wrap .stat-row:nth-child(1) { animation-delay: 0.05s; }
+.chip-wrap .stat-row:nth-child(2) { animation-delay: 0.12s; }
+
+/* Individual card entrance */
+.anim-card {
+  opacity: 0;
+  animation: fadeUp 0.30s cubic-bezier(0.22,1,0.36,1) both;
+}
+
+/* Shot rows — staggered on list render */
+.shot-row {
+  opacity: 0;
+  animation: fadeUp 0.28s cubic-bezier(0.22,1,0.36,1) both;
+}
+.shot-row:nth-child(1)  { animation-delay: 0.03s; }
+.shot-row:nth-child(2)  { animation-delay: 0.07s; }
+.shot-row:nth-child(3)  { animation-delay: 0.11s; }
+.shot-row:nth-child(4)  { animation-delay: 0.15s; }
+.shot-row:nth-child(5)  { animation-delay: 0.19s; }
+.shot-row:nth-child(6)  { animation-delay: 0.23s; }
+.shot-row:nth-child(7)  { animation-delay: 0.27s; }
+.shot-row:nth-child(8)  { animation-delay: 0.31s; }
+.shot-row:nth-child(9)  { animation-delay: 0.35s; }
+.shot-row:nth-child(10) { animation-delay: 0.39s; }
+
+/* Artist cards */
+.artist-card {
+  opacity: 0;
+  animation: fadeUp 0.30s cubic-bezier(0.22,1,0.36,1) both;
+}
+
+/* Hero block */
+.hero {
+  opacity: 0;
+  animation: fadeDown 0.26s cubic-bezier(0.22,1,0.36,1) both 0.02s;
+}
+.detail-meta {
+  opacity: 0;
+  animation: fadeUp 0.28s cubic-bezier(0.22,1,0.36,1) both 0.08s;
+}
+.task-card {
+  opacity: 0;
+  animation: fadeUp 0.28s cubic-bezier(0.22,1,0.36,1) both;
+}
+.task-card:nth-child(1) { animation-delay: 0.13s; }
+.task-card:nth-child(2) { animation-delay: 0.19s; }
+.task-card:nth-child(3) { animation-delay: 0.25s; }
+.task-card:nth-child(4) { animation-delay: 0.31s; }
+
+/* Notes card */
+.notes-card {
+  opacity: 0;
+  animation: fadeUp 0.28s cubic-bezier(0.22,1,0.36,1) both 0.34s;
+}
+
+/* Topbar */
+.topbar {
+  opacity: 0;
+  animation: fadeDown 0.22s cubic-bezier(0.22,1,0.36,1) both 0s;
+}
+
+/* Nav bar */
+.bnav {
+  opacity: 0;
+  animation: fadeUp 0.22s cubic-bezier(0.22,1,0.36,1) both 0.06s;
+}
+.nb svg, .nb .nl {
+  transition: transform 0.15s cubic-bezier(0.34,1.56,0.64,1), color 0.15s;
+}
+.nb.on svg { transform: scale(1.12); }
+.nb:active svg { transform: scale(0.88); }
+
+/* Bar fills animate on render */
+.bar-fill, .bk-fill, .bid-bar-fill {
+  animation: barGrow 0.6s cubic-bezier(0.22,1,0.36,1) both 0.3s;
+}
+
+/* Active status dots pulse */
+.blk-dot { animation: dotPulse 2s ease-in-out infinite; }
+.avail-lbl { animation: none; }
+
+/* Sheets slide up */
+.cfg-sheet, .import-sheet, .modal-sheet {
+  animation: sheetUp 0.30s cubic-bezier(0.22,1,0.36,1) both;
+}
+
+/* Workflow cards stagger */
+.intel-wf {
+  opacity: 0;
+  animation: fadeUp 0.28s cubic-bezier(0.22,1,0.36,1) both;
+}
+.intel-wf:nth-child(1) { animation-delay: 0.06s; }
+.intel-wf:nth-child(2) { animation-delay: 0.12s; }
+.intel-wf:nth-child(3) { animation-delay: 0.18s; }
+.intel-wf:nth-child(4) { animation-delay: 0.24s; }
+
+/* Intel hero */
+.intel-hero {
+  opacity: 0;
+  animation: scaleIn 0.26s cubic-bezier(0.22,1,0.36,1) both 0.04s;
+}
+
+/* Intel chat messages */
+.intel-msg {
+  opacity: 0;
+  animation: slideInR 0.22s cubic-bezier(0.22,1,0.36,1) both;
+}
+.intel-msg.user { animation-name: slideInL; }
+
+/* Show cards */
+.show-card {
+  opacity: 0;
+  animation: fadeUp 0.28s cubic-bezier(0.22,1,0.36,1) both;
+  transition: transform 0.16s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.16s;
+}
+.show-card:nth-child(1) { animation-delay: 0.10s; }
+.show-card:nth-child(2) { animation-delay: 0.16s; }
+.show-card:active { transform: scale(0.97); }
+
+/* Roster stats */
+.roster-stats .rs {
+  opacity: 0;
+  animation: scaleIn 0.24s cubic-bezier(0.22,1,0.36,1) both;
+}
+.roster-stats .rs:nth-child(1) { animation-delay: 0.04s; }
+.roster-stats .rs:nth-child(2) { animation-delay: 0.08s; }
+.roster-stats .rs:nth-child(3) { animation-delay: 0.12s; }
+.roster-stats .rs:nth-child(4) { animation-delay: 0.16s; }
+
+/* Press feedback on interactive elements */
+.tb-btn   { transition: transform 0.12s, opacity 0.12s; }
+.tb-btn:active { transform: scale(0.94); opacity:.85; }
+.tb-gear:active { transform: scale(0.90); }
+.intel-wf { transition: transform 0.14s cubic-bezier(0.34,1.56,0.64,1), border-color 0.15s; }
+.intel-wf:active { transform: scale(0.97); }
+.intel-send { transition: transform 0.14s cubic-bezier(0.34,1.56,0.64,1), opacity .15s; }
+.intel-send:active { transform: scale(0.90); }
+.artist-card { transition: transform 0.14s; }
+.artist-card:active { transform: scale(0.985); }
+
+/* Nav active indicator animated */
+.nb.on::after {
+  animation: scaleIn 0.20s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+
+/* Fbar tabs */
+.ftab, .fchip {
+  transition: background 0.15s, color 0.15s, border-color 0.15s, transform 0.12s;
+}
+.ftab:active, .fchip:active { transform: scale(0.93); }
+
+/* Reset animations when view becomes inactive so they replay */
+.view:not(.active) * { animation: none !important; }
+
 </style>
 </head>
 <body>
@@ -853,13 +1066,46 @@ const SHOTS = [
 let currentShow = {code:'CRL',name:'Cerulean',client:'Netflix'};
 let currentShot = null;
 
-function navTo(view) {
-  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-  document.getElementById('v-' + view).classList.add('active');
-  if (view === 'hangar') renderChips();
+
+// Nav hierarchy: hangar(0) < shots(1) < detail(2) | roster(3) | intel(4)
+const VIEW_DEPTH = {hangar:0, shots:1, detail:2, roster:3, intel:4};
+let currentView = 'hangar';
+
+function navTo(view, dir) {
+  const from = currentView;
+  const fromDepth = VIEW_DEPTH[from] ?? 0;
+  const toDepth   = VIEW_DEPTH[view] ?? 0;
+
+  // Determine direction if not forced
+  if (!dir) {
+    if (toDepth > fromDepth) dir = 'right';
+    else if (toDepth < fromDepth) dir = 'left';
+    else dir = 'scale';
+  }
+
+  // Hide current
+  const oldEl = document.getElementById('v-' + from);
+  if (oldEl) oldEl.classList.remove('active');
+
+  // Show new with enter class
+  const newEl = document.getElementById('v-' + view);
+  if (!newEl) return;
+
+  // Strip old anim classes
+  newEl.classList.remove('enter-right','enter-left','enter-up','enter-scale');
+  // Force reflow so animation replays
+  void newEl.offsetWidth;
+  newEl.classList.add('active', 'enter-' + dir);
+
+  // Clean up anim class after it runs
+  setTimeout(() => newEl.classList.remove('enter-right','enter-left','enter-up','enter-scale'), 400);
+
+  currentView = view;
+  if (view === 'hangar') { renderChips(); renderShowGrid(); }
   if (view === 'roster') renderRoster();
-  if (view === 'intel') {}
+  if (view === 'shots')  { renderShotListFiltered([...SHOTS]); }
 }
+
 
 function goShots(code, name, client) {
   currentShow = {code, name, client};
@@ -867,10 +1113,11 @@ function goShots(code, name, client) {
   document.getElementById('shots-name').textContent = name;
   document.getElementById('shots-count').textContent = SHOTS.length + ' SHOTS';
   renderShotList();
-  navTo('shots');
+  navTo('shots','right');
 }
 
 function goDetail(shot) {
+  // called from shots list — go right (deeper)
   currentShot = shot;
   const sc = SC[shot.status] || '#8e8e93';
   document.getElementById('detail-code').textContent = shot.code;
@@ -879,7 +1126,7 @@ function goDetail(shot) {
   chip.style.background = hexToRgba(sc, 0.18);
   chip.style.color = sc;
   renderDetail(shot);
-  navTo('detail');
+  navTo('detail','right');
 }
 
 function hexToRgba(hex, a) {
@@ -1053,10 +1300,18 @@ function renderCfg(){
   }).join('');
 }
 function togChip(k){let a=loadChips();if(a.includes(k)){if(a.length<=1)return;a=a.filter(x=>x!==k);}else{if(a.length>=6)return;a.push(k);}saveChips(a);renderCfg();renderChips();}
-function openCfg(){renderCfg();document.getElementById('cfgOverlay').classList.add('open');}
+function openCfg(){renderCfg();openOverlay('cfgOverlay');}
 function closeCfg(){document.getElementById('cfgOverlay').classList.remove('open');}
 function closeCfgOut(e){if(e.target.id==='cfgOverlay')closeCfg();}
 
+
+// Re-trigger sheet animation on open
+function openOverlay(id) {
+  const el = document.getElementById(id);
+  const sheet = el.querySelector('.cfg-sheet,.import-sheet,.modal-sheet');
+  if (sheet) { sheet.style.animation='none'; void sheet.offsetWidth; sheet.style.animation=''; }
+  el.classList.add('open');
+}
 document.addEventListener('DOMContentLoaded',()=>{loadPersistedData();renderChips();renderShotList();renderRoster();renderShowGrid();});
 // ── PERSISTENCE ───────────────────────────────────
 const DATA_KEY = 'vtek_hgr_data';
@@ -1186,7 +1441,7 @@ function renderShotListFiltered(shots) {
 }
 
 // ── SHOW/SHOT MODALS ──────────────────────────────
-function openModal(id) { document.getElementById(id).classList.add('open'); }
+function openModal(id) { openOverlay(id); }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 function closeModalOut(e, id) { if(e.target.id===id) closeModal(id); }
 
@@ -1474,7 +1729,7 @@ function renderRoster() {
 // ── CSV IMPORT ────────────────────────────────────
 let parsedCSV = null;
 
-function openImport() { document.getElementById('importOverlay').classList.add('open'); }
+function openImport() { openOverlay('importOverlay'); }
 function closeImport() {
   document.getElementById('importOverlay').classList.remove('open');
   resetImport();
@@ -1627,7 +1882,7 @@ function runImport() {
       renderRoster();
       setTimeout(() => {
         closeImport();
-        navTo('shots');
+        navTo('shots','right');
       }, 1400);
     }
   }, 40);
