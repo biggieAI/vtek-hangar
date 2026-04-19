@@ -1,4 +1,4 @@
-<!-- VTEK HANGAR BUILD_ID=HGR-013 -->
+<!-- VTEK HANGAR BUILD_ID=HGR-014 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -594,6 +594,58 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 /* Reset animations when view becomes inactive so they replay */
 .view:not(.active) * { animation: none !important; }
 
+
+/* ── TASKS VIEW ── */
+.task-item{background:var(--s2);border:var(--b1);border-radius:13px;margin-bottom:7px;overflow:hidden;display:flex;align-items:stretch;cursor:pointer;transition:transform .14s,opacity .14s;animation:fadeUp .28s cubic-bezier(0.22,1,0.36,1) both}
+.task-item:active{transform:scale(0.98);opacity:.85}
+.task-item.done{opacity:.45}
+.task-item.done .ti-title{text-decoration:line-through;color:var(--t2)}
+.ti-check{width:48px;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer}
+.ti-chk{width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;transition:border-color .15s,background .15s}
+.task-item.done .ti-chk{background:var(--ac);border-color:var(--ac)}
+.ti-chk svg{width:12px;height:12px;stroke:#1c1c1e;fill:none;stroke-width:2.5;opacity:0;transition:opacity .15s}
+.task-item.done .ti-chk svg{opacity:1}
+.ti-body{flex:1;padding:12px 12px 12px 0;min-width:0}
+.ti-title{font-family:var(--sans);font-size:14px;font-weight:600;color:var(--t0);line-height:1.3;margin-bottom:4px}
+.ti-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ti-show{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.06em;padding:2px 6px;border-radius:4px;background:rgba(46,184,184,.12);color:var(--ac);text-transform:uppercase}
+.ti-due{font-family:var(--mono);font-size:9px;color:var(--t2)}
+.ti-due.overdue{color:#ff5c5c}
+.ti-pri{width:3px;flex-shrink:0;align-self:stretch;border-radius:0 0 0 0}
+.ti-dur{font-family:var(--mono);font-size:9px;color:var(--t2)}
+.ti-right{padding:12px 14px 12px 4px;display:flex;flex-direction:column;align-items:flex-end;justify-content:space-between;flex-shrink:0}
+.ti-edit{background:none;border:none;cursor:pointer;padding:2px;color:var(--t2)}
+.ti-edit svg{width:14px;height:14px;stroke:currentColor;fill:none}
+
+.task-section-hd{display:flex;align-items:center;gap:8px;padding:14px 0 8px;margin-bottom:2px}
+.task-section-lbl{font-family:var(--sans);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t2)}
+.task-section-line{flex:1;height:1px;background:rgba(255,255,255,.05)}
+.task-section-count{font-family:var(--mono);font-size:9px;color:var(--t2);background:var(--s2);padding:2px 6px;border-radius:4px}
+
+.tasks-empty{display:flex;flex-direction:column;align-items:center;gap:10px;padding:48px 20px;text-align:center}
+.tasks-empty svg{width:40px;height:40px;stroke:var(--t2);fill:none;opacity:.3}
+.tasks-empty p{font-family:var(--sans);font-size:13px;color:var(--t2)}
+
+/* priority colors */
+.pri-high{background:#ff5c5c}
+.pri-med{background:#f5a623}
+.pri-low{background:#6c9acd}
+.pri-none{background:transparent}
+
+/* add task modal extra fields */
+.priority-row{display:flex;gap:6px}
+.pri-opt{flex:1;height:36px;border-radius:8px;border:var(--b1);background:none;font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.06em;color:var(--t2);cursor:pointer;text-transform:uppercase;transition:border-color .15s,color .15s}
+.pri-opt.sel{border-color:var(--sel-c,rgba(255,255,255,.3));color:var(--t0)}
+
+/* Akiflow sync banner */
+.sync-banner{display:flex;align-items:center;gap:10px;padding:10px 14px;background:rgba(46,184,184,.07);border:1px solid rgba(46,184,184,.15);border-radius:12px;margin-bottom:12px}
+.sync-icon{width:32px;height:32px;border-radius:8px;background:rgba(46,184,184,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sync-icon svg{width:16px;height:16px;stroke:var(--ac);fill:none}
+.sync-info{flex:1}
+.sync-title{font-family:var(--sans);font-size:12px;font-weight:600;color:var(--t0)}
+.sync-sub{font-family:var(--mono);font-size:9px;color:var(--t2);margin-top:1px}
+.sync-btn{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.06em;padding:6px 10px;border-radius:7px;border:1px solid rgba(46,184,184,.3);background:rgba(46,184,184,.1);color:var(--ac);cursor:pointer;text-transform:uppercase;white-space:nowrap}
+
 </style>
 </head>
 <body>
@@ -969,6 +1021,95 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
   </div>
 </div>
 
+
+<!-- ═══════════════════════════════════════════════
+     VIEW: TASKS
+═══════════════════════════════════════════════ -->
+<div class="view" id="v-tasks">
+  <div class="topbar">
+    <div class="wm"><span class="wm-logo">VTEK</span><span class="wm-div">//</span><span class="wm-page" style="color:var(--vr-pf)">TASKS</span></div>
+    <div class="tb-r">
+      <button class="tb-btn" onclick="openAddTask()">+ TASK</button>
+    </div>
+  </div>
+  <div class="page-area"><div class="page">
+
+    <div class="sync-banner">
+      <div class="sync-icon"><svg viewBox="0 0 24 24"><polyline points="23,4 23,11 16,11"/><polyline points="1,20 1,13 8,13"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 11M1 13l4.64 5.36A9 9 0 0020.49 15"/></svg></div>
+      <div class="sync-info"><div class="sync-title">Akiflow Sync</div><div class="sync-sub" id="sync-status">Not synced yet</div></div>
+      <button class="sync-btn" onclick="syncToAkiflow()">SYNC</button>
+    </div>
+
+    <!-- Filter tabs -->
+    <div style="display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;padding-bottom:2px">
+      <button class="ftab on" onclick="setTaskTab('all',this)" style="flex-shrink:0">ALL</button>
+      <button class="ftab" onclick="setTaskTab('today',this)" style="flex-shrink:0">TODAY</button>
+      <button class="ftab" onclick="setTaskTab('high',this)" style="flex-shrink:0">HIGH PRI</button>
+      <button class="ftab" onclick="setTaskTab('show',this)" style="flex-shrink:0">BY SHOW</button>
+      <button class="ftab" onclick="setTaskTab('done',this)" style="flex-shrink:0">DONE</button>
+    </div>
+
+    <div id="task-list-wrap"></div>
+
+  </div></div>
+
+</div>
+
+<!-- ADD TASK MODAL -->
+<div class="modal-overlay" id="addTaskModal" onclick="closeModalOut(event,'addTaskModal')">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-head"><span class="modal-title" id="taskModalTitle">New Task</span><button class="modal-close" onclick="closeModal('addTaskModal')">&#x2715;</button></div>
+    <div class="modal-body">
+      <div class="field-group"><label class="field-label">Task</label><input class="field-input" id="f-task-title" placeholder="What needs to be done?"></div>
+      <div class="field-row">
+        <div class="field-group"><label class="field-label">Due Date</label><input class="field-input" id="f-task-due" type="date"></div>
+        <div class="field-group"><label class="field-label">Est. Time</label>
+          <select class="field-select" id="f-task-dur">
+            <option value="">—</option>
+            <option value="15m">15 min</option><option value="30m">30 min</option>
+            <option value="1h">1 hr</option><option value="2h">2 hr</option>
+            <option value="4h">4 hr</option><option value="1d">Full day</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-group"><label class="field-label">Priority</label>
+        <div class="priority-row">
+          <button class="pri-opt" data-pri="high" onclick="selectPri(this)" style="--sel-c:#ff5c5c">HIGH</button>
+          <button class="pri-opt" data-pri="med"  onclick="selectPri(this)" style="--sel-c:#f5a623">MED</button>
+          <button class="pri-opt" data-pri="low"  onclick="selectPri(this)" style="--sel-c:#6c9acd">LOW</button>
+          <button class="pri-opt sel" data-pri="none" onclick="selectPri(this)" style="--sel-c:rgba(255,255,255,.2)">NONE</button>
+        </div>
+      </div>
+      <div class="field-group"><label class="field-label">Show</label>
+        <select class="field-select" id="f-task-show">
+          <option value="">— No show —</option>
+        </select>
+      </div>
+      <div class="field-group"><label class="field-label">Notes</label><input class="field-input" id="f-task-notes" placeholder="Optional notes..."></div>
+      <div class="modal-actions">
+        <button class="btn-primary" onclick="saveTask()">SAVE TASK</button>
+        <button class="btn-secondary" onclick="closeModal('addTaskModal')">CANCEL</button>
+        <button class="btn-danger" id="deleteTaskBtn" onclick="deleteTask()" style="display:none">DELETE</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <div class="bnav-wrap">
+    <div class="qam" id="qam-tasks">
+      <div class="qa-btn" onclick="closeQAM();openAddShot()"><div class="qa-icon"><svg viewBox="0 0 24 24" stroke="var(--sh-ip)"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></div><div class="qa-lbl">SHOT</div></div>
+      <div class="qa-btn" onclick="closeQAM();openAddTask()"><div class="qa-icon"><svg viewBox="0 0 24 24" stroke="var(--vr-pf)"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div><div class="qa-lbl">TASK</div></div>
+      <div class="qa-btn" onclick="closeQAM();openAddShow()"><div class="qa-icon"><svg viewBox="0 0 24 24" stroke="var(--ac)"><rect x="3" y="9" width="18" height="12"/><polyline points="3,9 12,3 21,9"/><line x1="12" y1="9" x2="12" y2="21"/></svg></div><div class="qa-lbl">SHOW</div></div>
+    </div>
+    <nav class="bnav">
+      <button class="nb" onclick="navTo('hangar')"><svg viewBox="0 0 24 24"><rect x="3" y="9" width="18" height="12"/><polyline points="3,9 12,3 21,9"/><line x1="9" y1="21" x2="9" y2="14"/><line x1="15" y1="21" x2="15" y2="14"/></svg><span class="nl">HANGAR</span></button><button class="nb" onclick="navTo('shots')"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/></svg><span class="nl">SHOTS</span></button>
+      <button class="nb-action" id="navAction-tasks" onclick="toggleQAM()">
+        <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </button>
+      <button class="nb" onclick="navTo('roster')"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2 20c0-4 3.1-7 7-7"/><circle cx="17" cy="10" r="2.5"/><path d="M14.5 20c0-3 1.1-5 3.5-6"/></svg><span class="nl">ROSTER</span></button><button class="nb" onclick="navTo('intel')"><svg viewBox="0 0 24 24"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg><span class="nl">INTEL</span></button>
+    </nav>
+  </div>
 <!-- CONFIG PANEL -->
 <div class="cfg-overlay" id="cfgOverlay" onclick="closeCfgOut(event)">
   <div class="cfg-sheet">
@@ -1068,7 +1209,7 @@ let currentShot = null;
 
 
 // Nav hierarchy: hangar(0) < shots(1) < detail(2) | roster(3) | intel(4)
-const VIEW_DEPTH = {hangar:0, shots:1, detail:2, roster:3, intel:4};
+const VIEW_DEPTH = {hangar:0, shots:1, detail:2, roster:3, intel:4, tasks:3};
 let currentView = 'hangar';
 
 function navTo(view, dir) {
@@ -1312,7 +1453,260 @@ function openOverlay(id) {
   if (sheet) { sheet.style.animation='none'; void sheet.offsetWidth; sheet.style.animation=''; }
   el.classList.add('open');
 }
-document.addEventListener('DOMContentLoaded',()=>{loadPersistedData();renderChips();renderShotList();renderRoster();renderShowGrid();});
+document.addEventListener('DOMContentLoaded',()=>{loadPersistedData();loadTasks();renderChips();renderShotList();renderRoster();renderShowGrid();renderTasks();});
+// ── TASKS DATA ────────────────────────────────────
+let TASKS = [];
+let editingTaskIdx = -1;
+let activeTaskTab = 'all';
+let selectedPri = 'none';
+
+const PRI_COLOR = {high:'#ff5c5c', med:'#f5a623', low:'#6c9acd', none:'transparent'};
+const PRI_LABEL = {high:'HIGH', med:'MED', low:'LOW', none:''};
+
+function loadTasks() {
+  try {
+    const raw = localStorage.getItem('vtek_tasks');
+    if (raw) TASKS = JSON.parse(raw);
+  } catch(e) {}
+}
+function saveTasks() {
+  localStorage.setItem('vtek_tasks', JSON.stringify(TASKS));
+}
+
+function isToday(dateStr) {
+  if (!dateStr) return false;
+  const today = new Date().toISOString().split('T')[0];
+  return dateStr === today;
+}
+function isOverdue(dateStr) {
+  if (!dateStr) return false;
+  return dateStr < new Date().toISOString().split('T')[0];
+}
+function formatDate(d) {
+  if (!d) return '';
+  const [y,m,day] = d.split('-');
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return months[+m-1] + ' ' + day;
+}
+
+function setTaskTab(tab, el) {
+  activeTaskTab = tab;
+  document.querySelectorAll('#v-tasks .ftab').forEach(b => b.classList.remove('on'));
+  if (el) el.classList.add('on');
+  renderTasks();
+}
+
+function renderTasks() {
+  const wrap = document.getElementById('task-list-wrap');
+  if (!wrap) return;
+
+  let filtered = [...TASKS];
+  if (activeTaskTab === 'today') filtered = filtered.filter(t => isToday(t.due) && !t.done);
+  else if (activeTaskTab === 'high') filtered = filtered.filter(t => t.pri === 'high' && !t.done);
+  else if (activeTaskTab === 'done') filtered = filtered.filter(t => t.done);
+  else if (activeTaskTab === 'show') { /* group by show below */ }
+  else filtered = filtered.filter(t => !t.done); // all = incomplete
+
+  if (!filtered.length && activeTaskTab !== 'show') {
+    wrap.innerHTML = `<div class="tasks-empty">
+      <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+      <p>${activeTaskTab === 'done' ? 'No completed tasks yet' : 'Nothing here — tap + to add'}</p>
+    </div>`;
+    return;
+  }
+
+  if (activeTaskTab === 'show') {
+    const byShow = {};
+    TASKS.filter(t => !t.done).forEach(t => {
+      const key = t.show || '— No Show —';
+      if (!byShow[key]) byShow[key] = [];
+      byShow[key].push(t);
+    });
+    wrap.innerHTML = Object.entries(byShow).map(([show, tasks]) =>
+      `<div class="task-section-hd"><div class="task-section-lbl">${show}</div><div class="task-section-line"></div><div class="task-section-count">${tasks.length}</div></div>` +
+      tasks.map((t,i) => taskHTML(t, TASKS.indexOf(t))).join('')
+    ).join('');
+    return;
+  }
+
+  // Group by priority for ALL tab
+  if (activeTaskTab === 'all') {
+    const high = filtered.filter(t => t.pri === 'high');
+    const med  = filtered.filter(t => t.pri === 'med');
+    const low  = filtered.filter(t => t.pri === 'low');
+    const none = filtered.filter(t => !t.pri || t.pri === 'none');
+    let html = '';
+    if (high.length) html += `<div class="task-section-hd"><div class="task-section-lbl" style="color:#ff5c5c">HIGH</div><div class="task-section-line"></div><div class="task-section-count">${high.length}</div></div>` + high.map(t => taskHTML(t, TASKS.indexOf(t))).join('');
+    if (med.length)  html += `<div class="task-section-hd"><div class="task-section-lbl" style="color:#f5a623">MED</div><div class="task-section-line"></div><div class="task-section-count">${med.length}</div></div>` + med.map(t => taskHTML(t, TASKS.indexOf(t))).join('');
+    if (low.length)  html += `<div class="task-section-hd"><div class="task-section-lbl" style="color:#6c9acd">LOW</div><div class="task-section-line"></div><div class="task-section-count">${low.length}</div></div>` + low.map(t => taskHTML(t, TASKS.indexOf(t))).join('');
+    if (none.length) html += `<div class="task-section-hd"><div class="task-section-lbl">OTHER</div><div class="task-section-line"></div><div class="task-section-count">${none.length}</div></div>` + none.map(t => taskHTML(t, TASKS.indexOf(t))).join('');
+    wrap.innerHTML = html || '<div class="tasks-empty"><p>All clear</p></div>';
+    return;
+  }
+
+  wrap.innerHTML = filtered.map(t => taskHTML(t, TASKS.indexOf(t))).join('');
+}
+
+function taskHTML(t, idx) {
+  const priColor = PRI_COLOR[t.pri] || 'transparent';
+  const overdue = !t.done && isOverdue(t.due);
+  const todayFlag = !t.done && isToday(t.due);
+  return `<div class="task-item${t.done?' done':''}" style="animation-delay:${Math.min(idx,8)*0.05}s">
+    <div class="ti-pri" style="background:${priColor}"></div>
+    <div class="ti-check" onclick="toggleTask(${idx})">
+      <div class="ti-chk"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+    </div>
+    <div class="ti-body">
+      <div class="ti-title">${t.title}</div>
+      <div class="ti-meta">
+        ${t.show ? `<span class="ti-show">${t.show}</span>` : ''}
+        ${t.due ? `<span class="ti-due${overdue?' overdue':''}">${todayFlag?'TODAY':overdue?'OVERDUE — ':''} ${formatDate(t.due)}</span>` : ''}
+        ${t.dur ? `<span class="ti-dur">&#9201; ${t.dur}</span>` : ''}
+      </div>
+    </div>
+    <div class="ti-right">
+      <button class="ti-edit" onclick="event.stopPropagation();openEditTask(${idx})">
+        <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+      </button>
+    </div>
+  </div>`;
+}
+
+function toggleTask(idx) {
+  TASKS[idx].done = !TASKS[idx].done;
+  saveTasks();
+  renderTasks();
+}
+
+function selectPri(el) {
+  selectedPri = el.dataset.pri;
+  document.querySelectorAll('.pri-opt').forEach(b => b.classList.remove('sel'));
+  el.classList.add('sel');
+}
+
+function openAddTask(prefill) {
+  editingTaskIdx = -1;
+  selectedPri = 'none';
+  document.getElementById('taskModalTitle').textContent = 'New Task';
+  document.getElementById('deleteTaskBtn').style.display = 'none';
+  document.getElementById('f-task-title').value = prefill?.title || '';
+  document.getElementById('f-task-due').value = prefill?.due || '';
+  document.getElementById('f-task-dur').value = prefill?.dur || '';
+  document.getElementById('f-task-notes').value = prefill?.notes || '';
+  document.querySelectorAll('.pri-opt').forEach(b => {
+    b.classList.toggle('sel', b.dataset.pri === 'none');
+  });
+  // populate show dropdown
+  const sel = document.getElementById('f-task-show');
+  sel.innerHTML = '<option value="">— No show —</option>' +
+    SHOWS.map(s => `<option value="${s.code}">${s.code} — ${s.name}</option>`).join('');
+  sel.value = prefill?.show || '';
+  openModal('addTaskModal');
+}
+
+function openEditTask(idx) {
+  editingTaskIdx = idx;
+  const t = TASKS[idx];
+  selectedPri = t.pri || 'none';
+  document.getElementById('taskModalTitle').textContent = 'Edit Task';
+  document.getElementById('deleteTaskBtn').style.display = 'block';
+  document.getElementById('f-task-title').value = t.title;
+  document.getElementById('f-task-due').value = t.due || '';
+  document.getElementById('f-task-dur').value = t.dur || '';
+  document.getElementById('f-task-notes').value = t.notes || '';
+  document.querySelectorAll('.pri-opt').forEach(b => {
+    b.classList.toggle('sel', b.dataset.pri === selectedPri);
+  });
+  const sel = document.getElementById('f-task-show');
+  sel.innerHTML = '<option value="">— No show —</option>' +
+    SHOWS.map(s => `<option value="${s.code}">${s.code} — ${s.name}</option>`).join('');
+  sel.value = t.show || '';
+  openModal('addTaskModal');
+}
+
+function saveTask() {
+  const title = document.getElementById('f-task-title').value.trim();
+  if (!title) return;
+  const task = {
+    title,
+    due:   document.getElementById('f-task-due').value,
+    dur:   document.getElementById('f-task-dur').value,
+    show:  document.getElementById('f-task-show').value,
+    notes: document.getElementById('f-task-notes').value.trim(),
+    pri:   selectedPri,
+    done:  false,
+    created: new Date().toISOString()
+  };
+  if (editingTaskIdx >= 0) { task.done = TASKS[editingTaskIdx].done; TASKS[editingTaskIdx] = task; }
+  else TASKS.unshift(task);
+  saveTasks();
+  renderTasks();
+  closeModal('addTaskModal');
+}
+
+function deleteTask() {
+  if (editingTaskIdx < 0) return;
+  TASKS.splice(editingTaskIdx, 1);
+  saveTasks();
+  renderTasks();
+  closeModal('addTaskModal');
+}
+
+// ── AKIFLOW SYNC ──────────────────────────────────
+function syncToAkiflow() {
+  const pending = TASKS.filter(t => !t.done);
+  if (!pending.length) { document.getElementById('sync-status').textContent = 'No tasks to sync'; return; }
+  // Build iOS Reminders-compatible format — deep link via URL scheme
+  // Akiflow supports calendar/reminders integration
+  const btn = document.querySelector('.sync-btn');
+  btn.textContent = 'SYNCING...';
+  btn.style.opacity = '.5';
+
+  // Try to open Akiflow deep link for each task
+  // akiflow://create?title=...&due=...&duration=...
+  let i = 0;
+  function syncNext() {
+    if (i >= pending.length) {
+      const now = new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+      document.getElementById('sync-status').textContent = `${pending.length} tasks synced at ${now}`;
+      btn.textContent = 'SYNC';
+      btn.style.opacity = '1';
+      return;
+    }
+    const t = pending[i++];
+    const params = new URLSearchParams({
+      title: t.title,
+      ...(t.due ? {due: t.due} : {}),
+      ...(t.dur ? {duration: t.dur} : {}),
+      ...(t.notes ? {notes: t.notes} : {})
+    });
+    // Try Akiflow URL scheme
+    window.location.href = `akiflow://create?${params.toString()}`;
+    setTimeout(syncNext, 600);
+  }
+  syncNext();
+}
+
+// ── QAM (Quick Action Menu) ───────────────────────
+let qamOpen = false;
+function toggleQAM() {
+  qamOpen = !qamOpen;
+  document.querySelectorAll('.qam').forEach(el => el.classList.toggle('open', qamOpen));
+  document.querySelectorAll('.nb-action').forEach(el => el.classList.toggle('open', qamOpen));
+  // Backdrop tap to close
+  if (qamOpen) {
+    setTimeout(() => document.addEventListener('click', closeQAMOutside, {once:true}), 50);
+  }
+}
+function closeQAMOutside(e) {
+  if (!e.target.closest('.nb-action') && !e.target.closest('.qam')) closeQAM();
+}
+function closeQAM() {
+  qamOpen = false;
+  document.querySelectorAll('.qam').forEach(el => el.classList.remove('open'));
+  document.querySelectorAll('.nb-action').forEach(el => el.classList.remove('open'));
+}
+
 // ── PERSISTENCE ───────────────────────────────────
 const DATA_KEY = 'vtek_hgr_data';
 function persistData() {
