@@ -1,4 +1,4 @@
-<!-- VTEK HANGAR BUILD_ID=HGR-010 -->
+<!-- VTEK HANGAR BUILD_ID=HGR-011 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -259,6 +259,63 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 .cfg-item.on .cfg-chk{background:var(--ac);border-color:var(--ac)}
 .cfg-item.on .cfg-chk::after{content:'';display:block;width:8px;height:5px;border-left:1.5px solid #1c1c1e;border-bottom:1.5px solid #1c1c1e;transform:rotate(-45deg) translateY(-1px)}
 .cfg-note{font-family:var(--mono);font-size:8px;color:var(--t2);padding:4px 16px 8px;text-align:center}
+
+/* ── ROSTER ── */
+.roster-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px}
+.rs{background:var(--s2);border:var(--b1);border-radius:10px;padding:10px 6px;text-align:center}
+.rs-n{font-family:var(--mono);font-size:20px;font-weight:600;color:var(--t0);line-height:1;margin-bottom:2px}
+.rs-l{font-family:var(--sans);font-size:8px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--t2)}
+.artist-card{background:var(--s2);border:var(--b1);border-radius:14px;margin-bottom:8px;overflow:hidden;cursor:pointer}
+.ac-head{display:flex;align-items:center;gap:12px;padding:12px 14px}
+.ac-avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:14px;font-weight:700;color:#1c1c1e;flex-shrink:0}
+.ac-info{flex:1;min-width:0}
+.ac-name{font-family:var(--sans);font-size:14px;font-weight:600;color:var(--t0)}
+.ac-role{font-family:var(--sans);font-size:11px;color:var(--t2);margin-top:1px}
+.ac-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0}
+.ac-status{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.05em;padding:3px 8px;border-radius:5px;text-transform:uppercase}
+.ac-load{font-family:var(--mono);font-size:9px;color:var(--t2)}
+.ac-shots{border-top:1px solid rgba(255,255,255,.05);background:rgba(0,0,0,.12)}
+.ac-shot-row{display:flex;align-items:center;gap:8px;padding:7px 14px;border-bottom:1px solid rgba(255,255,255,.03)}
+.ac-shot-row:last-child{border-bottom:none}
+.ac-shot-dot{width:6px;height:6px;border-radius:1px;flex-shrink:0}
+.ac-shot-code{font-family:var(--mono);font-size:10px;font-weight:700;color:var(--t1);width:110px;flex-shrink:0}
+.ac-shot-task{font-family:var(--mono);font-size:9px;color:var(--t2);width:50px;flex-shrink:0;text-transform:uppercase}
+.ac-shot-status{font-family:var(--mono);font-size:8px;font-weight:700;padding:2px 5px;border-radius:3px;flex-shrink:0}
+.ac-shot-due{font-family:var(--mono);font-size:8px;color:var(--t2);margin-left:auto}
+.ac-avail-badge{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.08em;padding:4px 10px;border-radius:6px;background:rgba(46,184,184,.12);color:var(--ac);border:1px solid rgba(46,184,184,.25);text-transform:uppercase;text-align:center;margin:10px 14px}
+
+/* ── CSV IMPORT ── */
+.import-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:300;display:none;align-items:flex-end}
+.import-overlay.open{display:flex}
+.import-sheet{width:100%;background:var(--s1);border-radius:20px 20px 0 0;padding:0 0 max(var(--safe-b),24px);max-height:90dvh;display:flex;flex-direction:column}
+.import-handle{width:36px;height:4px;background:var(--s3);border-radius:2px;margin:12px auto 0;flex-shrink:0}
+.import-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 12px;border-bottom:1px solid rgba(255,255,255,.06);flex-shrink:0}
+.import-title{font-family:var(--sans);font-size:13px;font-weight:700;letter-spacing:.04em;color:var(--t0)}
+.import-close{font-family:var(--sans);font-size:13px;font-weight:700;color:var(--t2);background:none;border:none;cursor:pointer;padding:4px 8px}
+.import-body{flex:1;overflow-y:auto;padding:16px}
+.import-drop{border:2px dashed rgba(255,255,255,.12);border-radius:14px;padding:32px 20px;display:flex;flex-direction:column;align-items:center;gap:10px;cursor:pointer;margin-bottom:16px;transition:border-color .15s}
+.import-drop.drag{border-color:var(--ac)}
+.import-drop svg{width:32px;height:32px;stroke:var(--t2);fill:none}
+.import-drop-lbl{font-family:var(--sans);font-size:13px;font-weight:600;color:var(--t1)}
+.import-drop-sub{font-family:var(--mono);font-size:9px;color:var(--t2);letter-spacing:.06em;text-transform:uppercase}
+.import-file-input{display:none}
+.import-preview{background:var(--s2);border:var(--b1);border-radius:12px;padding:14px;margin-bottom:14px;display:none}
+.import-preview.show{display:block}
+.import-preview-title{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--t2);margin-bottom:10px}
+.import-stat-row{display:flex;gap:10px;margin-bottom:10px}
+.import-stat{flex:1;background:var(--s1);border-radius:8px;padding:8px;text-align:center}
+.import-stat-n{font-family:var(--mono);font-size:18px;font-weight:600;color:var(--t0)}
+.import-stat-l{font-family:var(--mono);font-size:8px;color:var(--t2);letter-spacing:.06em;text-transform:uppercase;margin-top:2px}
+.import-sample{font-family:var(--mono);font-size:9px;color:var(--t1);line-height:1.6}
+.import-actions{display:flex;gap:8px}
+.import-btn-primary{flex:1;height:44px;border:none;border-radius:12px;background:#fff;font-family:var(--sans);font-size:14px;font-weight:700;color:#1c1c1e;cursor:pointer}
+.import-btn-secondary{height:44px;padding:0 16px;border:var(--b1);border-radius:12px;background:none;font-family:var(--sans);font-size:13px;font-weight:600;color:var(--t1);cursor:pointer}
+.import-progress{background:var(--s2);border:var(--b1);border-radius:12px;padding:14px;margin-bottom:14px;display:none}
+.import-progress.show{display:block}
+.import-prog-lbl{font-family:var(--mono);font-size:9px;color:var(--t1);margin-bottom:8px}
+.import-prog-track{height:4px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden}
+.import-prog-fill{height:100%;background:var(--ac);border-radius:2px;transition:width .3s}
+.import-log{font-family:var(--mono);font-size:9px;color:var(--t2);margin-top:8px;line-height:1.8}
 </style>
 </head>
 <body>
@@ -349,7 +406,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
   <nav class="bnav" id="nav-hangar">
     <button class="nb on" onclick="navTo('hangar')"><svg viewBox="0 0 24 24"><rect x="3" y="9" width="18" height="12"/><polyline points="3,9 12,3 21,9"/><line x1="9" y1="21" x2="9" y2="14"/><line x1="15" y1="21" x2="15" y2="14"/></svg><span class="nl">HANGAR</span></button>
     <button class="nb" onclick="navTo('shots')"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/></svg><span class="nl">SHOTS</span></button>
-    <button class="nb"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2 20c0-4 3.1-7 7-7"/><circle cx="17" cy="10" r="2.5"/><path d="M14.5 20c0-3 1.1-5 3.5-6"/></svg><span class="nl">ROSTER</span></button>
+    <button class="nb" onclick="navTo('roster')"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2 20c0-4 3.1-7 7-7"/><circle cx="17" cy="10" r="2.5"/><path d="M14.5 20c0-3 1.1-5 3.5-6"/></svg><span class="nl">ROSTER</span></button>
     <button class="nb"><svg viewBox="0 0 24 24"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg><span class="nl">INTEL</span></button>
   </nav>
 </div>
@@ -385,7 +442,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
   <nav class="bnav">
     <button class="nb" onclick="navTo('hangar')"><svg viewBox="0 0 24 24"><rect x="3" y="9" width="18" height="12"/><polyline points="3,9 12,3 21,9"/><line x1="9" y1="21" x2="9" y2="14"/><line x1="15" y1="21" x2="15" y2="14"/></svg><span class="nl">HANGAR</span></button>
     <button class="nb on" onclick="navTo('shots')"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/></svg><span class="nl">SHOTS</span></button>
-    <button class="nb"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2 20c0-4 3.1-7 7-7"/><circle cx="17" cy="10" r="2.5"/><path d="M14.5 20c0-3 1.1-5 3.5-6"/></svg><span class="nl">ROSTER</span></button>
+    <button class="nb" onclick="navTo('roster')"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2 20c0-4 3.1-7 7-7"/><circle cx="17" cy="10" r="2.5"/><path d="M14.5 20c0-3 1.1-5 3.5-6"/></svg><span class="nl">ROSTER</span></button>
     <button class="nb"><svg viewBox="0 0 24 24"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg><span class="nl">INTEL</span></button>
   </nav>
 </div>
@@ -409,6 +466,79 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
     <button class="nb"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2 20c0-4 3.1-7 7-7"/><circle cx="17" cy="10" r="2.5"/><path d="M14.5 20c0-3 1.1-5 3.5-6"/></svg><span class="nl">ROSTER</span></button>
     <button class="nb"><svg viewBox="0 0 24 24"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg><span class="nl">INTEL</span></button>
   </nav>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════
+     VIEW: ROSTER
+═══════════════════════════════════════════════ -->
+<div class="view" id="v-roster">
+  <div class="topbar">
+    <div class="wm"><span class="wm-logo">VTEK</span><span class="wm-div">//</span><span class="wm-page" style="color:var(--vr-rev)">ROSTER</span></div>
+    <div class="tb-r">
+      <button class="tb-btn" onclick="openImport()">&#8679; IMPORT CSV</button>
+    </div>
+  </div>
+  <div class="page-area"><div class="page">
+    <div class="roster-stats">
+      <div class="rs"><div class="rs-n" id="r-total">7</div><div class="rs-l">ARTISTS</div></div>
+      <div class="rs"><div class="rs-n" style="color:var(--sh-ip)" id="r-active">5</div><div class="rs-l">ACTIVE</div></div>
+      <div class="rs"><div class="rs-n" style="color:var(--ac)" id="r-avail">2</div><div class="rs-l">AVAILABLE</div></div>
+      <div class="rs"><div class="rs-n" style="color:#ff5c5c" id="r-over">2</div><div class="rs-l">OVER BID</div></div>
+    </div>
+    <div class="sec" style="margin-top:0"><div class="sec-l">COMPOSITORS</div></div>
+    <div id="roster-list"></div>
+  </div></div>
+  <nav class="bnav">
+    <button class="nb" onclick="navTo('hangar')"><svg viewBox="0 0 24 24"><rect x="3" y="9" width="18" height="12"/><polyline points="3,9 12,3 21,9"/><line x1="9" y1="21" x2="9" y2="14"/><line x1="15" y1="21" x2="15" y2="14"/></svg><span class="nl">HANGAR</span></button>
+    <button class="nb" onclick="navTo('shots')"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/></svg><span class="nl">SHOTS</span></button>
+    <button class="nb on"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2 20c0-4 3.1-7 7-7"/><circle cx="17" cy="10" r="2.5"/><path d="M14.5 20c0-3 1.1-5 3.5-6"/></svg><span class="nl">ROSTER</span></button>
+    <button class="nb"><svg viewBox="0 0 24 24"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg><span class="nl">INTEL</span></button>
+  </nav>
+</div>
+
+<!-- CSV IMPORT SHEET -->
+<div class="import-overlay" id="importOverlay" onclick="closeImportOut(event)">
+  <div class="import-sheet">
+    <div class="import-handle"></div>
+    <div class="import-head">
+      <span class="import-title">Import ShotGrid CSV</span>
+      <button class="import-close" onclick="closeImport()">&#x2715;</button>
+    </div>
+    <div class="import-body">
+      <div class="import-drop" id="importDrop" onclick="document.getElementById('csvInput').click()"
+           ondragover="e=>{e.preventDefault();this.classList.add('drag')}"
+           ondragleave="this.classList.remove('drag')"
+           ondrop="handleDrop(event)">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17,8 12,3 7,8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        <div class="import-drop-lbl">Drop CSV or tap to browse</div>
+        <div class="import-drop-sub">ShotGrid export format</div>
+      </div>
+      <input type="file" id="csvInput" class="import-file-input" accept=".csv" onchange="handleFileSelect(event)">
+
+      <div class="import-preview" id="importPreview">
+        <div class="import-preview-title">PREVIEW</div>
+        <div class="import-stat-row">
+          <div class="import-stat"><div class="import-stat-n" id="prev-shots">0</div><div class="import-stat-l">SHOTS</div></div>
+          <div class="import-stat"><div class="import-stat-n" id="prev-tasks">0</div><div class="import-stat-l">TASKS</div></div>
+          <div class="import-stat"><div class="import-stat-n" id="prev-artists">0</div><div class="import-stat-l">ARTISTS</div></div>
+          <div class="import-stat"><div class="import-stat-n" id="prev-show">—</div><div class="import-stat-l">SHOW</div></div>
+        </div>
+        <div class="import-sample" id="prev-sample"></div>
+      </div>
+
+      <div class="import-progress" id="importProgress">
+        <div class="import-prog-lbl" id="prog-lbl">Parsing CSV...</div>
+        <div class="import-prog-track"><div class="import-prog-fill" id="prog-fill" style="width:0%"></div></div>
+        <div class="import-log" id="prog-log"></div>
+      </div>
+
+      <div class="import-actions">
+        <button class="import-btn-primary" id="importRunBtn" onclick="runImport()" style="display:none">LOAD INTO HANGAR</button>
+        <button class="import-btn-secondary" onclick="closeImport()">CANCEL</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- CONFIG PANEL -->
@@ -512,6 +642,7 @@ function navTo(view) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.getElementById('v-' + view).classList.add('active');
   if (view === 'hangar') renderChips();
+  if (view === 'roster') renderRoster();
 }
 
 function goShots(code, name, client) {
@@ -710,7 +841,265 @@ function openCfg(){renderCfg();document.getElementById('cfgOverlay').classList.a
 function closeCfg(){document.getElementById('cfgOverlay').classList.remove('open');}
 function closeCfgOut(e){if(e.target.id==='cfgOverlay')closeCfg();}
 
-document.addEventListener('DOMContentLoaded',()=>{renderChips();renderShotList();});
+document.addEventListener('DOMContentLoaded',()=>{renderChips();renderShotList();renderRoster();});
+// ── ROSTER DATA ──────────────────────────────────
+const ARTISTS = [
+  {name:'Ruben Rodas', initials:'RR', color:'#9c4aff', role:'Compositor / Supervisor', status:'ip',
+   shots:[
+     {code:'016_BFR_0070',task:'COMP',status:'crvw',due:'03/24'},
+     {code:'018_REU_0005',task:'COMP',status:'crvw',due:'03/04'},
+     {code:'044_WRK_0090',task:'COMP',status:'ip',due:null},
+   ]},
+  {name:'Arslan Naqvi', initials:'AN', color:'#2196f3', role:'Compositor', status:'ip',
+   shots:[
+     {code:'016_BFR_0070',task:'COMP',status:'crvw',due:'03/24'},
+     {code:'016_BFR_0090',task:'COMP',status:'crvw',due:'03/24'},
+     {code:'049_FND_0010',task:'COMP',status:'cmpt',due:'03/24'},
+   ]},
+  {name:'Christina Spring', initials:'CS', color:'#34d399', role:'Compositor', status:'ip',
+   shots:[
+     {code:'003_BFR_0190',task:'COMP',status:'cmpt',due:'03/05'},
+     {code:'018_REU_0215',task:'PAINT',status:'rdy',due:null},
+     {code:'018_REU_0215',task:'ROTO',status:'rdy',due:null},
+   ]},
+  {name:'Cyntia Buell', initials:'CB', color:'#f5a623', role:'Compositor / Paint', status:'ip',
+   shots:[
+     {code:'003_BFR_0180',task:'COMP',status:'apdi',due:'03/12'},
+     {code:'008_BFR_0340',task:'PAINT',status:'cmpt',due:null},
+   ]},
+  {name:'Anteneh Adamu', initials:'AA', color:'#ff9800', role:'Compositor', status:'ip',
+   shots:[
+     {code:'018_REU_0215',task:'COMP',status:'nts',due:null},
+     {code:'028_FAM_0020',task:'COMP',status:'apdi',due:'03/24'},
+   ]},
+  {name:'Victoria Root', initials:'VR', color:'#ce93d8', role:'Paint / Compositor', status:'avail',
+   shots:[]},
+  {name:'Ethan LeCuyer', initials:'EL', color:'#00e5ff', role:'Ingest / Coordinator', status:'avail',
+   shots:[]},
+];
+
+const STATUS_LABELS = {ip:'In Progress',avail:'Available',hld:'On Hold',rdy:'Ready'};
+
+function renderRoster() {
+  const el = document.getElementById('roster-list');
+  if (!el) return;
+  el.innerHTML = ARTISTS.map((a,i) => {
+    const isAvail = a.shots.length === 0;
+    const statusColor = isAvail ? 'var(--ac)' : SC[a.status] || 'var(--sh-ip)';
+    const statusLbl = isAvail ? 'AVAILABLE' : a.status.toUpperCase();
+    const load = a.shots.length;
+    const overBid = a.shots.filter(s => {
+      const sh = SHOTS.find(x => x.code === s.code);
+      if (!sh) return false;
+      const t = sh.tasks.find(t => t.name === s.task);
+      return t && t.used > t.bid && t.bid > 0;
+    }).length;
+
+    const shotRows = isAvail
+      ? `<div class="ac-avail-badge">No active assignments</div>`
+      : a.shots.map(s => {
+          const sc2 = SC[s.status] || '#8e8e93';
+          return `<div class="ac-shot-row">
+            <div class="ac-shot-dot" style="background:${sc2}"></div>
+            <div class="ac-shot-code">${s.code}</div>
+            <div class="ac-shot-task">${s.task}</div>
+            <div class="ac-shot-status" style="background:${hexToRgba(sc2,0.12)};color:${sc2}">${s.status.toUpperCase()}</div>
+            <div class="ac-shot-due">${s.due ? 'DUE '+s.due : '&mdash;'}</div>
+          </div>`;
+        }).join('');
+
+    return `<div class="artist-card">
+      <div class="ac-head">
+        <div class="ac-avatar" style="background:${a.color}">${a.initials}</div>
+        <div class="ac-info">
+          <div class="ac-name">${a.name}</div>
+          <div class="ac-role">${a.role}</div>
+        </div>
+        <div class="ac-right">
+          <div class="ac-status" style="background:${hexToRgba(isAvail?'#2eb8b8':SC[a.status]||'#a0aab8',0.15)};color:${statusColor}">${statusLbl}</div>
+          <div class="ac-load">${load === 0 ? 'Open' : load + ' shot' + (load===1?'':'s')}${overBid > 0 ? ' &middot; <span style="color:#ff5c5c">'+overBid+' over</span>' : ''}</div>
+        </div>
+      </div>
+      <div class="ac-shots">${shotRows}</div>
+    </div>`;
+  }).join('');
+
+  // Update stats
+  const active = ARTISTS.filter(a => a.shots.length > 0).length;
+  const avail = ARTISTS.filter(a => a.shots.length === 0).length;
+  const over = ARTISTS.filter(a => a.shots.some(s => {
+    const sh = SHOTS.find(x => x.code === s.code);
+    const t = sh && sh.tasks.find(t => t.name === s.task);
+    return t && t.used > t.bid && t.bid > 0;
+  })).length;
+  document.getElementById('r-total').textContent = ARTISTS.length;
+  document.getElementById('r-active').textContent = active;
+  document.getElementById('r-avail').textContent = avail;
+  document.getElementById('r-over').textContent = over;
+}
+
+// ── CSV IMPORT ────────────────────────────────────
+let parsedCSV = null;
+
+function openImport() { document.getElementById('importOverlay').classList.add('open'); }
+function closeImport() {
+  document.getElementById('importOverlay').classList.remove('open');
+  resetImport();
+}
+function closeImportOut(e) { if(e.target.id==='importOverlay') closeImport(); }
+function resetImport() {
+  parsedCSV = null;
+  document.getElementById('importPreview').classList.remove('show');
+  document.getElementById('importProgress').classList.remove('show');
+  document.getElementById('importRunBtn').style.display = 'none';
+  document.getElementById('prog-fill').style.width = '0%';
+  document.getElementById('prog-log').textContent = '';
+  document.getElementById('csvInput').value = '';
+}
+
+function handleDrop(e) {
+  e.preventDefault();
+  document.getElementById('importDrop').classList.remove('drag');
+  const file = e.dataTransfer.files[0];
+  if (file && file.name.endsWith('.csv')) processCSV(file);
+}
+function handleFileSelect(e) {
+  const file = e.target.files[0];
+  if (file) processCSV(file);
+}
+
+function processCSV(file) {
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const text = e.target.result;
+    const lines = text.split('\n').filter(l => l.trim());
+    // Parse CSV rows — handle quoted multiline fields
+    const rows = parseCSVRows(text);
+
+    // Skip header rows (ShotGrid exports have 2 header rows)
+    const dataRows = rows.filter(r => r[0] && r[0].startsWith('http'));
+
+    // Group by shot code (col 2)
+    const shotMap = {};
+    dataRows.forEach(r => {
+      const thumbUrl = r[0]?.trim();
+      const status   = r[1]?.trim();
+      const code     = r[2]?.trim();
+      const desc     = r[3]?.trim();
+      const tags     = r[4]?.trim();
+      const matte    = r[5]?.trim();
+      const taskSt   = r[6]?.trim();
+      const taskName = r[7]?.trim();
+      const due      = r[8]?.trim();
+      const assignee = r[9]?.trim();
+      const bid      = parseFloat(r[10]) || 0;
+      const bidpm    = parseFloat(r[11]) || 0;
+      const latVer   = r[12]?.trim();
+      const del      = r[20]?.trim();
+      const pctBid   = parseFloat(r[17]) || 0;
+      const cg       = r[18]?.trim() === 'x';
+
+      if (!code) return;
+      if (!shotMap[code]) {
+        shotMap[code] = {
+          code, desc, tags: tags ? tags.split(',').map(t=>t.trim()).filter(Boolean) : [],
+          status, verStatus: latVer || 'rev', del, pctBid, cg,
+          matte: matte === 'x', thumbUrl,
+          tasks: [], notes: desc || ''
+        };
+      }
+      if (taskName && taskName !== 'Turnover') {
+        shotMap[code].tasks.push({
+          name: taskName.toUpperCase().substring(0,8),
+          status: taskSt || 'wtg',
+          who: assignee || '—',
+          bid, used: bid + bidpm,
+          verStatus: latVer || 'rev',
+          verNote: '', due: due || null,
+          versions: latVer ? [{n:'v001',s:latVer,note:'Latest',date:due||'',latest:true}] : []
+        });
+      }
+    });
+
+    parsedCSV = Object.values(shotMap);
+
+    // Preview stats
+    const artists = new Set();
+    dataRows.forEach(r => { if(r[9]) r[9].split(',').forEach(a => artists.add(a.trim())); });
+    const showCode = parsedCSV[0]?.code?.split('_')[1] || '???';
+
+    document.getElementById('prev-shots').textContent = parsedCSV.length;
+    document.getElementById('prev-tasks').textContent = dataRows.length;
+    document.getElementById('prev-artists').textContent = artists.size;
+    document.getElementById('prev-show').textContent = showCode;
+    document.getElementById('prev-sample').innerHTML = parsedCSV.slice(0,3).map(s =>
+      `&#x25AA; ${s.code} &mdash; ${s.status?.toUpperCase()} &mdash; ${s.desc?.substring(0,40)}${s.desc?.length>40?'...':''}`
+    ).join('<br>');
+
+    document.getElementById('importPreview').classList.add('show');
+    document.getElementById('importRunBtn').style.display = 'flex';
+  };
+  reader.readAsText(file);
+}
+
+function parseCSVRows(text) {
+  const rows = [];
+  let row = [], cell = '', inQuote = false;
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    if (ch === '"') {
+      if (inQuote && text[i+1] === '"') { cell += '"'; i++; }
+      else inQuote = !inQuote;
+    } else if (ch === ',' && !inQuote) {
+      row.push(cell); cell = '';
+    } else if ((ch === '\n' || ch === '\r') && !inQuote) {
+      if (ch === '\r' && text[i+1] === '\n') i++;
+      row.push(cell); rows.push(row); row = []; cell = '';
+    } else {
+      cell += ch;
+    }
+  }
+  if (cell || row.length) { row.push(cell); rows.push(row); }
+  return rows;
+}
+
+function runImport() {
+  if (!parsedCSV || !parsedCSV.length) return;
+  const prog = document.getElementById('importProgress');
+  const fill = document.getElementById('prog-fill');
+  const log  = document.getElementById('prog-log');
+  const lbl  = document.getElementById('prog-lbl');
+  prog.classList.add('show');
+  document.getElementById('importPreview').classList.remove('show');
+  document.getElementById('importRunBtn').style.display = 'none';
+
+  let i = 0;
+  const total = parsedCSV.length;
+  const interval = setInterval(() => {
+    i++;
+    const pct = Math.round((i/total)*100);
+    fill.style.width = pct + '%';
+    lbl.textContent = `Importing shots... ${i}/${total}`;
+    log.innerHTML += `&#x2713; ${parsedCSV[i-1]?.code}<br>`;
+    log.scrollTop = log.scrollHeight;
+    if (i >= total) {
+      clearInterval(interval);
+      // Replace SHOTS array
+      SHOTS.length = 0;
+      parsedCSV.forEach(s => SHOTS.push(s));
+      lbl.textContent = `Done — ${total} shots loaded`;
+      fill.style.width = '100%';
+      log.innerHTML += `<br><span style="color:var(--ac)">&#x2713; HANGAR updated</span>`;
+      renderShotList();
+      renderRoster();
+      setTimeout(() => {
+        closeImport();
+        navTo('shots');
+      }, 1400);
+    }
+  }, 40);
+}
+
 </script>
 </body>
 </html>
