@@ -1,4 +1,4 @@
-<!-- VTEK HANGAR BUILD_ID=HGR-020 -->
+<!-- VTEK HANGAR BUILD_ID=HGR-021 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -522,7 +522,6 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 
 
 /* ── SVG containment — prevent any SVG escaping its container ── */
-svg{max-width:100%;max-height:100%;overflow:hidden}
 
 /* Sync banner SVG specifically */
 .sync-icon svg{width:16px!important;height:16px!important;max-width:16px!important;max-height:16px!important;flex-shrink:0}
@@ -556,6 +555,30 @@ svg{max-width:100%;max-height:100%;overflow:hidden}
 
 /* SC chip icon SVG */
 .sc-icon svg{width:16px!important;height:16px!important}
+
+
+/* ── SYNC BANNER FIX ── */
+.sync-banner{display:flex!important;flex-direction:row!important;align-items:center!important;gap:10px;padding:10px 14px;background:rgba(46,184,184,.07);border:1px solid rgba(46,184,184,.15);border-radius:12px;margin-bottom:12px;width:100%;box-sizing:border-box;overflow:hidden}
+.sync-icon{width:32px!important;height:32px!important;min-width:32px!important;min-height:32px!important;max-width:32px!important;max-height:32px!important;border-radius:8px;background:rgba(46,184,184,.15);display:flex!important;align-items:center!important;justify-content:center!important;flex-shrink:0!important;overflow:hidden!important}
+.sync-icon svg{display:block!important;width:16px!important;height:16px!important;min-width:16px!important;min-height:16px!important;max-width:16px!important;max-height:16px!important;stroke:var(--ac);fill:none;flex-shrink:0!important}
+.sync-info{flex:1!important;min-width:0!important;overflow:hidden}
+.sync-title{font-family:var(--sans);font-size:12px;font-weight:600;color:var(--t0);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sync-sub{font-family:var(--mono);font-size:9px;color:var(--t2);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sync-btn{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.06em;padding:6px 10px;border-radius:7px;border:1px solid rgba(46,184,184,.3);background:rgba(46,184,184,.1);color:var(--ac);cursor:pointer;text-transform:uppercase;white-space:nowrap;flex-shrink:0}
+
+/* ── TASKS EMPTY STATE FIX ── */
+.tasks-empty{display:flex;flex-direction:column;align-items:center;gap:10px;padding:48px 20px;text-align:center}
+.tasks-empty svg{display:block!important;width:40px!important;height:40px!important;min-width:40px!important;min-height:40px!important;max-width:40px!important;max-height:40px!important;stroke:var(--t2);fill:none;opacity:.3}
+.tasks-empty p{font-family:var(--sans);font-size:13px;color:var(--t2)}
+
+/* ── GLOBAL SVG SAFETY — don't let svg{max-width:100%} break icon containers ── */
+/* Override only for structural SVGs in icon containers */
+.sync-icon>svg,.bk-icon>svg,.st-icon>svg,.sc-icon>svg,
+.intel-icon>svg,.intel-wf-icon>svg,.show-thumb-ph>svg,
+.shot-thumb>svg,.ac-avatar>svg,.ti-chk>svg{
+  max-width:unset!important;
+  max-height:unset!important;
+}
 
 </style>
 </head>
