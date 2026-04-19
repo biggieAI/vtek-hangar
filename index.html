@@ -1,4 +1,4 @@
-<!-- VTEK HANGAR BUILD_ID=HGR-014 -->
+<!-- VTEK HANGAR BUILD_ID=HGR-015b -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -645,6 +645,35 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 .sync-title{font-family:var(--sans);font-size:12px;font-weight:600;color:var(--t0)}
 .sync-sub{font-family:var(--mono);font-size:9px;color:var(--t2);margin-top:1px}
 .sync-btn{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.06em;padding:6px 10px;border-radius:7px;border:1px solid rgba(46,184,184,.3);background:rgba(46,184,184,.1);color:var(--ac);cursor:pointer;text-transform:uppercase;white-space:nowrap}
+
+
+/* QAM backdrop */
+.qam-backdrop{position:fixed;inset:0;z-index:499;display:none}
+.qam-backdrop.open{display:block}
+
+
+/* ══ NAV FIXES HGR-015 ══ */
+.bnav-wrap{flex-shrink:0;display:flex;justify-content:center;align-items:flex-end;padding:0 20px;padding-bottom:max(var(--safe-b),14px);background:var(--bg);position:relative;overflow:visible!important}
+.bnav{display:flex;align-items:center;background:var(--s2);border-radius:28px;padding:0 8px;height:60px;gap:0;box-shadow:0 4px 24px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.07);position:relative;width:100%;max-width:400px}
+.nb{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;background:none;border:none;cursor:pointer;color:var(--t2);position:relative;padding:8px 0;border-radius:20px;transition:color .18s;min-width:0}
+.nb svg{width:20px;height:20px;min-width:20px;min-height:20px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s cubic-bezier(0.34,1.56,0.64,1)}
+.nb .nl{font-family:var(--sans);font-size:7.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;transition:color .18s;white-space:nowrap}
+.nb.on{color:var(--ac)}
+.nb.on svg{transform:scale(1.18)}
+.nb:active svg{transform:scale(0.85)!important}
+.nb.on::after{content:'';position:absolute;bottom:6px;left:50%;transform:translateX(-50%);width:4px;height:4px;min-width:4px;min-height:4px;border-radius:50%;background:var(--ac);box-shadow:0 0 6px var(--ac);animation:dotAppear .22s cubic-bezier(0.34,1.56,0.64,1) both}
+.nb-action{flex-shrink:0!important;width:50px!important;height:50px!important;min-width:50px!important;min-height:50px!important;max-width:50px!important;max-height:50px!important;border-radius:50%!important;background:var(--s3);border:1.5px solid rgba(255,255,255,.12);cursor:pointer;display:flex!important;align-items:center;justify-content:center;position:relative;top:-10px;box-shadow:0 4px 16px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.10);transition:transform .18s cubic-bezier(0.34,1.56,0.64,1),box-shadow .18s;margin:0 4px;overflow:hidden}
+.nb-action svg{width:22px!important;height:22px!important;min-width:22px!important;min-height:22px!important;max-width:22px!important;stroke:var(--t1);fill:none;stroke-width:2;stroke-linecap:round;transition:transform .18s cubic-bezier(0.34,1.56,0.64,1),stroke .18s}
+.nb-action.open svg{transform:rotate(45deg);stroke:var(--ac)}
+.nb-action::before{content:'';position:absolute;inset:-3px;border-radius:50%;border:1.5px solid transparent;transition:border-color .18s}
+.nb-action.open::before{border-color:rgba(46,184,184,.4)}
+/* QAM — hidden by default, fixed position above nav */
+.qam{position:fixed!important;bottom:100px;left:50%;transform:translateX(-50%)!important;display:flex!important;gap:10px;pointer-events:none;opacity:0;transition:opacity .18s;z-index:500;width:auto;height:auto}
+.qam.open{pointer-events:auto;opacity:1}
+.qa-btn{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;width:64px}
+.qa-icon{width:48px!important;height:48px!important;min-width:48px!important;min-height:48px!important;max-width:48px!important;max-height:48px!important;border-radius:14px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.10);background:#2c2c34;overflow:hidden;flex-shrink:0}
+.qa-icon svg{width:20px!important;height:20px!important;min-width:20px!important;min-height:20px!important;max-width:20px!important;max-height:20px!important;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.qa-lbl{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.05em;color:var(--t1);text-transform:uppercase;white-space:nowrap}
 
 </style>
 </head>
@@ -1693,6 +1722,7 @@ function toggleQAM() {
   qamOpen = !qamOpen;
   document.querySelectorAll('.qam').forEach(el => el.classList.toggle('open', qamOpen));
   document.querySelectorAll('.nb-action').forEach(el => el.classList.toggle('open', qamOpen));
+  const bd = document.getElementById('qamBackdrop'); if(bd) bd.classList.toggle('open', qamOpen);
   // Backdrop tap to close
   if (qamOpen) {
     setTimeout(() => document.addEventListener('click', closeQAMOutside, {once:true}), 50);
@@ -1705,6 +1735,7 @@ function closeQAM() {
   qamOpen = false;
   document.querySelectorAll('.qam').forEach(el => el.classList.remove('open'));
   document.querySelectorAll('.nb-action').forEach(el => el.classList.remove('open'));
+  const bd = document.getElementById('qamBackdrop'); if(bd) bd.classList.remove('open');
 }
 
 // ── PERSISTENCE ───────────────────────────────────
