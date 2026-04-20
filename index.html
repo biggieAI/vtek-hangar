@@ -1,4 +1,4 @@
-<!-- VTEK HANGAR BUILD_ID=HGR-034 -->
+<!-- VTEK HANGAR BUILD_ID=HGR-035 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -491,7 +491,29 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 .roster-stats .rs:nth-child(4){animation-delay:0.23s}
 
 /* Task items */
-.task-item{opacity:0;animation:fadeUp 0.36s cubic-bezier(0.22,1,0.36,1) both}
+.task-item{opacity:0;animation:fadeUp 0.36s cubic-bezier(0.22,1,0.36,1) both;display:flex;align-items:center;gap:10px;padding:12px 14px 12px 10px;background:var(--s2);border-radius:12px;margin:0 12px 6px;position:relative;overflow:hidden;cursor:pointer}
+.task-item.done{opacity:.45}
+.task-item.done .ti-title{text-decoration:line-through;color:var(--t2)}
+.ti-pri{width:3px;height:36px;border-radius:2px;flex-shrink:0}
+.ti-check{flex-shrink:0;cursor:pointer;padding:4px}
+.ti-chk{width:22px;height:22px;border-radius:6px;border:1.5px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;background:none;transition:background .15s,border-color .15s}
+.task-item.done .ti-chk{background:var(--ac);border-color:var(--ac)}
+.task-item.done .ti-chk svg{stroke:#1c1c1e}
+.ti-chk svg{stroke:transparent;transition:stroke .15s}
+.ti-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.ti-title{font-family:var(--sans);font-size:13px;font-weight:600;color:var(--t0);line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ti-meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.ti-show{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.06em;color:var(--ac);background:rgba(46,184,184,.1);padding:2px 5px;border-radius:3px}
+.ti-due{font-family:var(--mono);font-size:9px;color:var(--t2)}
+.ti-due.overdue{color:#ff5c5c}
+.ti-dur{font-family:var(--mono);font-size:9px;color:var(--t2)}
+.ti-right{flex-shrink:0;display:flex;align-items:center}
+.ti-edit{width:32px;height:32px;border-radius:8px;border:none;background:none;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--t2)}
+.ti-edit:active{background:var(--s3)}
+.task-section-hd{display:flex;align-items:center;gap:8px;padding:10px 14px 4px}
+.task-section-lbl{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.10em;text-transform:uppercase}
+.task-section-line{flex:1;height:1px;background:rgba(255,255,255,.06)}
+.task-section-count{font-family:var(--mono);font-size:10px;color:var(--t2)}
 
 /* Intel hero */
 .intel-hero{opacity:0;animation:scaleIn 0.35s cubic-bezier(0.22,1,0.36,1) both 0.04s}
