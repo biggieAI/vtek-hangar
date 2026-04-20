@@ -1,4 +1,4 @@
-<!-- VTEK HANGAR BUILD_ID=HGR-035 -->
+<!-- VTEK HANGAR BUILD_ID=HGR-036 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -796,16 +796,18 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 .ops-form{padding:14px 16px}
 .ops-field{margin-bottom:12px}
 .ops-field-lbl{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t2);margin-bottom:5px}
-.ops-input{width:100%;height:42px;background:var(--s2);border:var(--b1);border-radius:10px;padding:0 12px;font-family:var(--sans);font-size:16px;color:var(--t0);outline:none;box-sizing:border-box}
+.ops-input{width:100%;height:46px;background:var(--s2);border:var(--b1);border-radius:10px;padding:0 12px;font-family:var(--sans);font-size:16px;color:var(--t0);outline:none;box-sizing:border-box;-webkit-appearance:none}
 .ops-input:focus{border-color:rgba(46,184,184,.4)}
 .ops-textarea{width:100%;min-height:72px;background:var(--s2);border:var(--b1);border-radius:10px;padding:10px 12px;font-family:var(--sans);font-size:16px;color:var(--t0);outline:none;resize:none;box-sizing:border-box;line-height:1.5;overflow:hidden}
 .ops-textarea:focus{border-color:rgba(46,184,184,.4)}
-.ops-select{width:100%;height:42px;background:var(--s2);border:var(--b1);border-radius:10px;padding:0 12px;font-family:var(--sans);font-size:16px;color:var(--t0);outline:none;appearance:none;box-sizing:border-box}
+.ops-select-wrap{position:relative;width:100%}
+.ops-select-wrap::after{content:'';position:absolute;right:12px;top:50%;transform:translateY(-50%);width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid var(--t2);pointer-events:none}
+.ops-select{width:100%;height:46px;background:var(--s2);border:var(--b1);border-radius:10px;padding:0 32px 0 12px;font-family:var(--sans);font-size:16px;color:var(--t0);outline:none;appearance:none;-webkit-appearance:none;box-sizing:border-box;cursor:pointer}
 .ops-tag-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
 .ops-tag-btn{height:32px;border-radius:8px;border:var(--b1);background:var(--s2);font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.05em;color:var(--t2);cursor:pointer}
 .ops-tag-btn.on{border-color:rgba(46,184,184,.5);background:rgba(46,184,184,.12);color:var(--ac)}
 .ops-submit{width:100%;height:46px;background:#fff;border:none;border-radius:12px;font-family:var(--sans);font-size:14px;font-weight:700;color:#1c1c1e;cursor:pointer;margin-top:4px;letter-spacing:.04em}
-.ops-row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ops-row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:start}
 .avail-pill{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.05em;padding:3px 9px;border-radius:5px}
 .avail-active{background:rgba(46,184,184,.15);color:var(--ac)}
 .avail-avail{background:rgba(52,215,153,.15);color:#34d399}
@@ -1080,12 +1082,12 @@ svg{overflow:hidden;flex-shrink:0}
       <div class="ops-field"><div class="ops-field-lbl">ROLE / TITLE</div><input class="ops-input" id="crew-role" placeholder="Compositor, Paint Artist…"></div>
       <div class="ops-row2">
         <div class="ops-field"><div class="ops-field-lbl">STATUS</div>
-          <select class="ops-select" id="crew-status">
+          <div class="ops-select-wrap"><select class="ops-select" id="crew-status">
             <option value="active">ACTIVE</option>
             <option value="avail">AVAILABLE</option>
             <option value="penciled">PENCILED IN</option>
             <option value="unavail">UNAVAILABLE</option>
-          </select>
+          </select></div>
         </div>
         <div class="ops-field"><div class="ops-field-lbl">SHOW</div><input class="ops-input" id="crew-show" placeholder="CRL, AIG…"></div>
       </div>
@@ -1093,14 +1095,14 @@ svg{overflow:hidden;flex-shrink:0}
       <div class="ops-field"><div class="ops-field-lbl">PHONE</div><input class="ops-input" id="crew-phone" type="tel" placeholder="+1 555 000 0000"></div>
       <div class="ops-field"><div class="ops-field-lbl">AGENCY / REP</div><input class="ops-input" id="crew-agency" placeholder="Agency or freelance"></div>
       <div class="ops-field"><div class="ops-field-lbl">RATE TIER</div>
-        <select class="ops-select" id="crew-rate">
+        <div class="ops-select-wrap"><select class="ops-select" id="crew-rate">
           <option value="">–</option>
           <option value="junior">JUNIOR</option>
           <option value="mid">MID</option>
           <option value="senior">SENIOR</option>
           <option value="lead">LEAD</option>
           <option value="sup">SUPERVISOR</option>
-        </select>
+        </select></div>
       </div>
       <div class="ops-field">
         <div class="ops-field-lbl">SKILLS</div>
@@ -1171,12 +1173,12 @@ svg{overflow:hidden;flex-shrink:0}
       <div class="ops-field"><div class="ops-field-lbl">INSTAGRAM / SOCIALS</div><input class="ops-input" id="rdx-social" placeholder="@handle or URL"></div>
       <div class="ops-field"><div class="ops-field-lbl">COMPANY / STUDIO</div><input class="ops-input" id="rdx-company" placeholder="Studio name or freelance"></div>
       <div class="ops-field"><div class="ops-field-lbl">AVAILABILITY</div>
-        <select class="ops-select" id="rdx-avail">
+        <div class="ops-select-wrap"><select class="ops-select" id="rdx-avail">
           <option value="unknown">UNKNOWN</option>
           <option value="avail">AVAILABLE</option>
           <option value="booked">BOOKED</option>
           <option value="wrapping">WRAPPING SOON</option>
-        </select>
+        </select></div>
       </div>
       <div class="ops-field"><div class="ops-field-lbl">LAST CHECKED</div><input class="ops-input" id="rdx-lastcheck" type="date"></div>
       <div class="ops-field">
@@ -1211,11 +1213,11 @@ svg{overflow:hidden;flex-shrink:0}
       <div class="ops-row2">
         <div class="ops-field"><div class="ops-field-lbl">SHOW CODE</div><input class="ops-input" id="dem-code" placeholder="CRL" maxlength="6"></div>
         <div class="ops-field"><div class="ops-field-lbl">TYPE</div>
-          <select class="ops-select" id="dem-type">
+          <div class="ops-select-wrap"><select class="ops-select" id="dem-type">
             <option value="active">ACTIVE</option>
             <option value="upcoming">UPCOMING</option>
             <option value="theoretical">THEORETICAL</option>
-          </select>
+          </select></div>
         </div>
       </div>
       <div class="ops-field"><div class="ops-field-lbl">SHOW NAME</div><input class="ops-input" id="dem-name" placeholder="Full show name"></div>
