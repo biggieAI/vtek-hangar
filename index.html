@@ -1,4 +1,4 @@
-<!-- VTEK HANGAR BUILD_ID=HGR-031 -->
+<!-- VTEK HANGAR BUILD_ID=HGR-032 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -789,6 +789,8 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 .avail-avail{background:rgba(52,215,153,.15);color:#34d399}
 .avail-penciled{background:rgba(255,255,255,.07);color:var(--t1);border:1px dashed rgba(255,255,255,.2)}
 .avail-unavail{background:rgba(255,92,92,.12);color:#ff8080}
+/* SVG blowout protection — explicit sized SVGs override this */
+svg{overflow:hidden;flex-shrink:0}
 </style>
 </head>
 <body>
@@ -802,7 +804,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
     <div class="wm"><span class="wm-logo">VTEK</span><span class="wm-div">//</span><span class="wm-page">HANGAR</span></div>
     <div class="tb-r">
       <button class="tb-gear" onclick="openCfg()">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:block"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>
       </button>
       <button class="tb-btn" onclick="openAddShow()">+ SHOW</button>
     </div>
@@ -891,7 +893,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 ═══════════════════════════════════════════════ -->
 <div class="view" id="v-shots">
   <div class="topbar">
-    <button class="tb-back" onclick="navTo('hangar')"><svg viewBox="0 0 16 16"><polyline points="10,3 4,8 10,13"/></svg>HOME</button>
+    <button class="tb-back" onclick="navTo('hangar')"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;flex-shrink:0"><polyline points="10,3 4,8 10,13"/></svg>HOME</button>
     <div style="display:flex;flex-direction:column;margin-left:4px">
       <span class="tb-title" id="shots-code">CRL</span>
       <span style="font-size:10px;color:var(--t2);font-family:var(--sans)" id="shots-name">Cerulean</span>
@@ -928,7 +930,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 ═══════════════════════════════════════════════ -->
 <div class="view" id="v-detail">
   <div class="topbar">
-    <button class="tb-back" onclick="navTo('shots')"><svg viewBox="0 0 16 16"><polyline points="10,3 4,8 10,13"/></svg>SHOTS</button>
+    <button class="tb-back" onclick="navTo('shots')"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;flex-shrink:0"><polyline points="10,3 4,8 10,13"/></svg>SHOTS</button>
     <span class="tb-title" id="detail-code">016_BFR_0070</span>
     <div class="tb-r">
       <div class="tb-pill" id="detail-status-chip">CRVW</div>
@@ -1225,7 +1227,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
   <div class="page-area"><div class="page">
 
     <div class="intel-hero">
-      <div class="intel-icon"><svg viewBox="0 0 24 24"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg></div>
+      <div class="intel-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" style="display:block"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg></div>
       <div class="intel-hero-info">
         <div class="intel-hero-title">HANGAR INTEL</div>
         <div class="intel-hero-sub">AI-powered production analysis &middot; Powered by Claude</div>
@@ -1240,7 +1242,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
             <div class="intel-wf-name">Daily Brief</div>
             <div class="intel-wf-desc">What needs my attention today — blockers, over-bid, pending review</div>
           </div>
-          <svg class="intel-wf-arrow" viewBox="0 0 24 24"><polyline points="9,18 15,12 9,6"/></svg>
+          <svg class="intel-wf-arrow" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;flex-shrink:0"><polyline points="9,18 15,12 9,6"/></svg>
         </div>
       </div>
 
@@ -1251,7 +1253,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
             <div class="intel-wf-name">Risk Report</div>
             <div class="intel-wf-desc">Shots over bid, stalled, or approaching deadline without a version</div>
           </div>
-          <svg class="intel-wf-arrow" viewBox="0 0 24 24"><polyline points="9,18 15,12 9,6"/></svg>
+          <svg class="intel-wf-arrow" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;flex-shrink:0"><polyline points="9,18 15,12 9,6"/></svg>
         </div>
       </div>
 
@@ -1262,7 +1264,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
             <div class="intel-wf-name">Status Draft</div>
             <div class="intel-wf-desc">Generate a client-ready status update from current shot data</div>
           </div>
-          <svg class="intel-wf-arrow" viewBox="0 0 24 24"><polyline points="9,18 15,12 9,6"/></svg>
+          <svg class="intel-wf-arrow" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;flex-shrink:0"><polyline points="9,18 15,12 9,6"/></svg>
         </div>
       </div>
 
@@ -1273,7 +1275,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
             <div class="intel-wf-name">Ask Anything</div>
             <div class="intel-wf-desc">Query your show data in plain language</div>
           </div>
-          <svg class="intel-wf-arrow" viewBox="0 0 24 24"><polyline points="9,18 15,12 9,6"/></svg>
+          <svg class="intel-wf-arrow" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;flex-shrink:0"><polyline points="9,18 15,12 9,6"/></svg>
         </div>
       </div>
     </div>
@@ -1289,7 +1291,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
           onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChat()}"
           oninput="this.style.height='40px';this.style.height=Math.min(this.scrollHeight,120)+'px'"></textarea>
         <button class="intel-send" id="chatSendBtn" onclick="sendChat()">
-          <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22,2 15,22 11,13 2,9"/></svg>
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22,2 15,22 11,13 2,9"/></svg>
         </button>
       </div>
     </div>
@@ -1479,7 +1481,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
            ondragover="e=>{e.preventDefault();this.classList.add('drag')}"
            ondragleave="this.classList.remove('drag')"
            ondrop="handleDrop(event)">
-        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17,8 12,3 7,8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17,8 12,3 7,8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
         <div class="import-drop-lbl">Drop CSV or tap to browse</div>
         <div class="import-drop-sub">ShotGrid export format</div>
       </div>
@@ -2004,7 +2006,7 @@ function taskHTML(t, idx) {
   return `<div class="task-item${t.done?' done':''}" style="animation-delay:${Math.min(idx,8)*0.05}s">
     <div class="ti-pri" style="background:${priColor}"></div>
     <div class="ti-check" onclick="toggleTask(${idx})">
-      <div class="ti-chk"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+      <div class="ti-chk"><svg viewBox="0 0 12 12" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block"><polyline points="2,6 5,9 10,3"/></svg></div>
     </div>
     <div class="ti-body">
       <div class="ti-title">${t.title}</div>
@@ -2016,7 +2018,7 @@ function taskHTML(t, idx) {
     </div>
     <div class="ti-right">
       <button class="ti-edit" onclick="event.stopPropagation();openEditTask(${idx})">
-        <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;flex-shrink:0"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
       </button>
     </div>
   </div>`;
