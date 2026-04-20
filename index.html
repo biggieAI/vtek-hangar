@@ -1,4 +1,4 @@
-<!-- VTEK HANGAR BUILD_ID=HGR-028 -->
+<!-- VTEK HANGAR BUILD_ID=HGR-029 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -764,9 +764,9 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 .rdx-ping-btn:active{background:rgba(46,184,184,.15)}
 .rdx-add-btn{width:100%;height:44px;border-radius:12px;border:1px dashed rgba(255,255,255,.15);background:none;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.08em;color:var(--t2);cursor:pointer;margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:8px}
 /* OPS Modals */
-.ops-overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:10200;display:none;align-items:flex-end}
+.ops-overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:10200;display:none;align-items:flex-end;overflow:hidden}
 .ops-overlay.open{display:flex}
-.ops-sheet{width:100%;background:var(--s1);border-radius:20px 20px 0 0;padding:0 0 max(var(--safe-b),20px);max-height:88dvh;overflow-y:auto}
+.ops-sheet{width:100%;max-width:100vw;box-sizing:border-box;background:var(--s1);border-radius:20px 20px 0 0;padding:0 0 max(var(--safe-b),20px);max-height:88dvh;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;touch-action:pan-y;-webkit-overflow-scrolling:touch}
 .ops-handle{width:36px;height:4px;background:var(--s3);border-radius:2px;margin:12px auto 0}
 .ops-sh-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px;border-bottom:1px solid rgba(255,255,255,.06)}
 .ops-sh-title{font-family:var(--sans);font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--t1)}
@@ -1092,12 +1092,39 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
           <button class="ops-tag-btn" data-skill="ANIM" onclick="toggleSkill(this)">ANIM</button>
         </div>
       </div>
+      <!-- SHOT ASSIGNMENTS — live from SHOTS array -->
+      <div class="ops-field">
+        <div class="ops-field-lbl" style="display:flex;align-items:center;justify-content:space-between">
+          SHOT ASSIGNMENTS
+          <button class="ops-tag-btn on" style="height:24px;padding:0 10px;font-size:8px;border-radius:6px" onclick="openShotPicker()">+ ADD SHOT</button>
+        </div>
+        <div id="crew-assignments-list" style="margin-top:6px;display:flex;flex-direction:column;gap:4px"></div>
+        <div id="crew-assignments-empty" style="font-family:var(--mono);font-size:9px;color:var(--t2);padding:8px 0;display:none">No assignments — tap + ADD SHOT to assign from live shot data</div>
+      </div>
       <div class="ops-field"><div class="ops-field-lbl">NOTES</div><textarea class="ops-textarea" id="crew-notes" placeholder="Any notes about this person…"></textarea></div>
-      <div class="ops-field"><div class="ops-field-lbl">START DATE</div><input class="ops-input" id="crew-start" type="date"></div>
-      <div class="ops-field"><div class="ops-field-lbl">END DATE</div><input class="ops-input" id="crew-end" type="date"></div>
+      <div class="ops-row2">
+        <div class="ops-field"><div class="ops-field-lbl">START DATE</div><input class="ops-input" id="crew-start" type="date"></div>
+        <div class="ops-field"><div class="ops-field-lbl">END DATE</div><input class="ops-input" id="crew-end" type="date"></div>
+      </div>
       <button class="ops-submit" onclick="saveCrew()">SAVE CREW MEMBER</button>
       <button id="crew-delete-btn" class="ops-submit" style="margin-top:8px;background:rgba(255,92,92,.12);color:#ff5c5c;border:1px solid rgba(255,92,92,.2);display:none" onclick="deleteCrew()">DELETE</button>
     </div>
+  </div>
+</div>
+
+<!-- SHOT PICKER OVERLAY -->
+<div class="ops-overlay" id="shotPickerOverlay">
+  <div class="ops-sheet" style="max-height:70dvh">
+    <div class="ops-handle"></div>
+    <div class="ops-sh-head">
+      <span class="ops-sh-title">ASSIGN SHOT</span>
+      <button class="ops-sh-close" onclick="closeOpsOverlay('shotPickerOverlay')">CLOSE</button>
+    </div>
+    <div style="padding:8px 16px 4px">
+      <input class="rdx-search" id="shot-picker-search" placeholder="SEARCH SHOTS…" oninput="renderShotPicker()" type="search" style="width:100%;box-sizing:border-box">
+    </div>
+    <div style="padding:4px 12px 6px;display:flex;gap:5px;overflow-x:auto" id="shot-picker-show-tabs"></div>
+    <div id="shot-picker-list" style="overflow-y:auto;-webkit-overflow-scrolling:touch;max-height:calc(70dvh - 130px);padding:0 12px 16px"></div>
   </div>
 </div>
 
@@ -2650,8 +2677,119 @@ function pingCrew(i) {
   else toast('NO CONTACT INFO');
 }
 
+// ── SHOT PICKER ──────────────────────────────────
+let pendingAssignments = []; // working copy during modal edit
+let shotPickerShowFilter = 'ALL';
+
+function openShotPicker() {
+  shotPickerShowFilter = 'ALL';
+  renderShotPickerTabs();
+  renderShotPicker();
+  const el = document.getElementById('shot-picker-search');
+  if (el) el.value = '';
+  openOpsOverlay('shotPickerOverlay');
+}
+
+function renderShotPickerTabs() {
+  const el = document.getElementById('shot-picker-show-tabs');
+  if (!el) return;
+  const shows = ['ALL', ...new Set(SHOTS.map(s => {
+    const parts = s.code.split('_');
+    return parts.length >= 2 ? parts[1] : s.code.substring(0,3);
+  }))];
+  el.innerHTML = shows.map(sh => `<button class="rdx-filter${sh===shotPickerShowFilter?' on':''}" onclick="setShotPickerShow('${sh}')">${sh}</button>`).join('');
+}
+
+function setShotPickerShow(sh) {
+  shotPickerShowFilter = sh;
+  renderShotPickerTabs();
+  renderShotPicker();
+}
+
+function renderShotPicker() {
+  const el = document.getElementById('shot-picker-list');
+  if (!el) return;
+  const q = (document.getElementById('shot-picker-search')?.value || '').toLowerCase();
+  const alreadyAssigned = new Set(pendingAssignments.map(a => a.shotCode + '|' + a.task));
+
+  let filtered = SHOTS.filter(s => {
+    const matchQ = !q || s.code.toLowerCase().includes(q) || (s.desc||'').toLowerCase().includes(q);
+    const showCode = s.code.split('_')[1] || s.code.substring(0,3);
+    const matchShow = shotPickerShowFilter === 'ALL' || showCode === shotPickerShowFilter;
+    return matchQ && matchShow;
+  });
+
+  if (!filtered.length) {
+    el.innerHTML = `<div style="padding:20px;text-align:center;font-family:var(--mono);font-size:9px;color:var(--t2)">NO SHOTS MATCH</div>`;
+    return;
+  }
+
+  el.innerHTML = filtered.map(s => {
+    const sc = SC[s.status] || '#8e8e93';
+    const tasks = (s.tasks || [{name:'COMP', status: s.status}]);
+    return tasks.map(t => {
+      const key = s.code + '|' + t.name;
+      const assigned = alreadyAssigned.has(key);
+      return `<div class="cc-assign-row" style="padding:8px 4px;cursor:pointer;border-radius:8px;background:${assigned?'rgba(46,184,184,.08)':'transparent'}" onclick="toggleShotAssign('${s.code}','${t.name}','${s.status}','${(s.code.split('_')[1]||s.code.substring(0,3))}')">
+        <div class="cc-assign-dot" style="background:${sc}"></div>
+        <div class="cc-assign-show" style="font-size:8px">${s.code.split('_')[1]||'?'}</div>
+        <div class="cc-assign-task" style="flex:1;font-size:10px">${s.code}</div>
+        <div style="font-family:var(--mono);font-size:8px;color:var(--t2);width:40px">${t.name}</div>
+        <div class="cc-assign-status" style="background:${hexToRgba(sc,0.12)};color:${sc};border-radius:4px;padding:2px 6px;font-family:var(--mono);font-size:8px">${s.status.toUpperCase()}</div>
+        ${assigned ? `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="var(--ac)" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>` : `<div style="width:14px"></div>`}
+      </div>`;
+    }).join('');
+  }).join('');
+}
+
+function toggleShotAssign(shotCode, task, status, show) {
+  const key = shotCode + '|' + task;
+  const idx = pendingAssignments.findIndex(a => a.shotCode === shotCode && a.task === task);
+  if (idx >= 0) {
+    pendingAssignments.splice(idx, 1);
+  } else {
+    pendingAssignments.push({ shotCode, task, status, show });
+  }
+  renderShotPicker();
+  renderCrewAssignmentsList();
+}
+
+function renderCrewAssignmentsList() {
+  const el = document.getElementById('crew-assignments-list');
+  const empty = document.getElementById('crew-assignments-empty');
+  if (!el) return;
+  if (!pendingAssignments.length) {
+    el.innerHTML = '';
+    if (empty) empty.style.display = 'block';
+    return;
+  }
+  if (empty) empty.style.display = 'none';
+  el.innerHTML = pendingAssignments.map((a, i) => {
+    const sc = SC[a.status] || '#8e8e93';
+    // Pull live status from SHOTS
+    const liveShot = SHOTS.find(s => s.code === a.shotCode);
+    const liveTask = liveShot?.tasks?.find(t => t.name === a.task);
+    const liveStatus = liveTask?.status || liveShot?.status || a.status;
+    const liveSc = SC[liveStatus] || '#8e8e93';
+    return `<div style="display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--s2);border-radius:8px;border:var(--b1)">
+      <div style="width:6px;height:6px;border-radius:1px;background:${liveSc};flex-shrink:0"></div>
+      <div style="font-family:var(--mono);font-size:9px;font-weight:700;color:var(--ac);width:30px;flex-shrink:0">${a.show}</div>
+      <div style="font-family:var(--mono);font-size:9px;color:var(--t0);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${a.shotCode}</div>
+      <div style="font-family:var(--mono);font-size:8px;color:var(--t2);width:38px;flex-shrink:0">${a.task}</div>
+      <div style="font-family:var(--mono);font-size:8px;padding:2px 5px;border-radius:3px;background:${hexToRgba(liveSc,0.12)};color:${liveSc}">${liveStatus.toUpperCase()}</div>
+      <button onclick="removeCrewAssign(${i})" style="background:none;border:none;color:var(--t2);font-size:14px;cursor:pointer;padding:0;line-height:1;flex-shrink:0">×</button>
+    </div>`;
+  }).join('');
+}
+
+function removeCrewAssign(i) {
+  pendingAssignments.splice(i, 1);
+  renderCrewAssignmentsList();
+}
+
 // ── CREW MODAL
 function openCrewAdd() {
+  pendingAssignments = [];
   document.getElementById('crew-edit-idx').value = '-1';
   document.getElementById('crew-modal-title').textContent = 'ADD CREW MEMBER';
   ['crew-name','crew-initials','crew-role','crew-show','crew-email','crew-phone','crew-agency','crew-notes','crew-start','crew-end'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
@@ -2659,11 +2797,14 @@ function openCrewAdd() {
   document.getElementById('crew-rate').value = '';
   document.querySelectorAll('#crew-skill-grid .ops-tag-btn').forEach(b=>b.classList.remove('on'));
   document.getElementById('crew-delete-btn').style.display = 'none';
+  renderCrewAssignmentsList();
   openOpsOverlay('crewAddOverlay');
 }
+
 function openCrewEdit(i) {
   const c = OPS.crew[i];
   if (!c) return;
+  pendingAssignments = (c.assignments || []).map(a => ({...a}));
   document.getElementById('crew-edit-idx').value = i;
   document.getElementById('crew-modal-title').textContent = 'EDIT CREW MEMBER';
   document.getElementById('crew-name').value = c.name||'';
@@ -2682,8 +2823,10 @@ function openCrewEdit(i) {
     b.classList.toggle('on', (c.skills||[]).includes(b.dataset.skill));
   });
   document.getElementById('crew-delete-btn').style.display = 'block';
+  renderCrewAssignmentsList();
   openOpsOverlay('crewAddOverlay');
 }
+
 function saveCrew() {
   const idx = parseInt(document.getElementById('crew-edit-idx').value);
   const name = document.getElementById('crew-name').value.trim();
@@ -2701,18 +2844,26 @@ function saveCrew() {
     end: document.getElementById('crew-end').value,
     status: document.getElementById('crew-status').value,
     rate: document.getElementById('crew-rate').value,
-    skills, assignments: idx >= 0 ? (OPS.crew[idx].assignments||[]) : [],
+    skills,
+    assignments: pendingAssignments.map(a => {
+      // Always sync live status at save time
+      const liveShot = SHOTS.find(s => s.code === a.shotCode);
+      const liveTask = liveShot?.tasks?.find(t => t.name === a.task);
+      return { ...a, status: liveTask?.status || liveShot?.status || a.status };
+    }),
     color: idx >= 0 ? (OPS.crew[idx].color || crewColor(idx)) : crewColor(OPS.crew.length),
   };
   if (idx >= 0) OPS.crew[idx] = crew; else OPS.crew.unshift(crew);
   saveOps(); closeOpsOverlay('crewAddOverlay'); renderCrew(); toast('CREW SAVED');
 }
+
 function deleteCrew() {
   const idx = parseInt(document.getElementById('crew-edit-idx').value);
   if (idx < 0) return;
   OPS.crew.splice(idx, 1);
   saveOps(); closeOpsOverlay('crewAddOverlay'); openCrewIdx=-1; renderCrew(); toast('REMOVED');
 }
+
 function toggleSkill(btn) { btn.classList.toggle('on'); }
 
 // ── DEMAND RENDER
