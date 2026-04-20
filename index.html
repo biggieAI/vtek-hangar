@@ -1,4 +1,4 @@
-<!-- VTEK HANGAR BUILD_ID=HGR-036 -->
+<!-- VTEK HANGAR BUILD_ID=HGR-037 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -813,8 +813,24 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 .avail-avail{background:rgba(52,215,153,.15);color:#34d399}
 .avail-penciled{background:rgba(255,255,255,.07);color:var(--t1);border:1px dashed rgba(255,255,255,.2)}
 .avail-unavail{background:rgba(255,92,92,.12);color:#ff8080}
-/* SVG blowout protection — explicit sized SVGs override this */
-svg{overflow:hidden;flex-shrink:0}
+/* ── STAFFING TIMELINE ── */
+.stl-section{margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.06)}
+.stl-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.stl-hd-lbl{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--t2)}
+.stl-hd-sub{font-family:var(--mono);font-size:8px;color:var(--t2)}
+.stl-wk-row{display:flex;gap:2px;margin-bottom:4px;padding-left:72px}
+.stl-wk-lbl{flex:1;font-family:var(--mono);font-size:7px;color:var(--t2);text-align:center;letter-spacing:0}
+.stl-row{display:flex;align-items:center;gap:6px;margin-bottom:2px}
+.stl-role-col{width:66px;flex-shrink:0}
+.stl-role-lbl{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.05em;color:var(--t1)}
+.stl-role-meta{font-family:var(--mono);font-size:7px;color:var(--t2);margin-top:1px}
+.stl-gantt{display:flex;gap:2px;flex:1;height:14px;align-items:center}
+.stl-cell{flex:1;height:14px}
+.stl-empty{background:rgba(255,255,255,.05);border-radius:2px}
+.stl-filled{border-radius:2px}
+.stl-status{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.04em;padding:2px 6px;border-radius:4px;white-space:nowrap;flex-shrink:0}
+.stl-crew-line{font-family:var(--mono);font-size:9px;padding:2px 0 6px 72px;border-bottom:1px solid rgba(255,255,255,.04);margin-bottom:4px}
+.stl-crew-line:last-child{border-bottom:none;margin-bottom:0}
 </style>
 </head>
 <body>
@@ -2997,23 +3013,136 @@ function renderDemand() {
     return;
   }
   const typeColors = {active:'var(--ac)', upcoming:'#f5a623', theoretical:'rgba(255,255,255,.35)'};
+  const today = new Date();
+
   el.innerHTML = OPS.demand.map((d,i) => {
-    const weeks = d.due ? Math.max(1, Math.round((new Date(d.due+'T12:00:00') - new Date()) / (7*24*60*60*1000))) : 12;
-    const capacity = (d.comp||0) * 5 * weeks;
-    const bidDays = parseFloat(d.bid)||0;
-    const gap = capacity - bidDays;
-    const pct = bidDays > 0 ? Math.min(100, Math.round(capacity/bidDays*100)) : 0;
-    const gapClass = gap < 0 ? 'need' : gap < bidDays*0.1 ? 'tight' : 'ok';
-    const gapText = gap < 0 ? `${Math.abs(Math.round(gap))}d SHORT` : gap === 0 ? 'EXACT' : 'ON TRACK';
-    // Weekly demand bars (6 weeks)
-    const wkBars = Array.from({length:Math.min(6,weeks)}, (_,wi) => {
-      const wkLoad = bidDays / Math.max(1,weeks);
-      const wkCap = (d.comp||0)*5;
-      const h = Math.max(4, Math.round(wkLoad/Math.max(1,wkCap)*28));
-      const clr = wkLoad > wkCap ? '#ff5c5c' : wkLoad > wkCap*0.8 ? '#f5a623' : 'var(--ac)';
-      return `<div class="dc-wk"><div class="dc-wk-bar" style="height:${h}px;background:${clr}"></div><div class="dc-wk-lbl">W${wi+1}</div></div>`;
+    const dueDate   = d.due   ? new Date(d.due+'T12:00:00')   : null;
+    const startDate = d.start ? new Date(d.start+'T12:00:00') : null;
+    const weeksTotal = (dueDate && startDate)
+      ? Math.max(1, Math.round((dueDate - startDate) / (7*24*60*60*1000)))
+      : dueDate ? Math.max(1, Math.round((dueDate - today) / (7*24*60*60*1000))) : 12;
+    const weeksLeft  = dueDate ? Math.max(0, Math.round((dueDate - today) / (7*24*60*60*1000))) : weeksTotal;
+    const bidDays    = parseFloat(d.bid)||0;
+    const compNeed   = parseInt(d.comp)||0;
+    const rotoNeed   = parseInt(d.roto)||0;
+    const capacity   = compNeed * 5 * weeksTotal;
+    const gap        = capacity - bidDays;
+    const gapClass   = gap < 0 ? 'need' : gap < bidDays*0.1 ? 'tight' : 'ok';
+    const gapText    = gap < 0 ? `${Math.abs(Math.round(gap))}d SHORT` : gap === 0 ? 'EXACT' : 'ON TRACK';
+    const alertHtml  = gap < 0
+      ? `<div class="dc-alert"><div class="dc-alert-dot"></div><div class="dc-alert-txt">UNDER-RESOURCED — need ~${Math.ceil(Math.abs(gap)/5/weeksTotal)} more artist${Math.ceil(Math.abs(gap)/5/weeksTotal)>1?'s':''} to hit delivery</div></div>`
+      : '';
+
+    // ── STAFFING TIMELINE ──────────────────────────────
+    // Build role rows: each role has a start offset, duration, headcount
+    // Logic: ROTO starts first (needs to precede comp), PAINT overlaps roto,
+    // COMP starts after roto lead time (~25% into show), all end at delivery
+    const roles = [];
+
+    if (compNeed > 0) {
+      // Comp starts ~20% into show, runs to delivery
+      const startOffset = Math.round(weeksTotal * 0.15);
+      const duration    = weeksTotal - startOffset;
+      const startBy     = startDate
+        ? new Date(startDate.getTime() + startOffset*7*24*60*60*1000)
+        : new Date(today.getTime() + (weeksLeft - duration)*7*24*60*60*1000);
+      // Cross-ref crew
+      const activeCrew = OPS.crew.filter(c =>
+        c.skills && c.skills.includes('COMP') &&
+        (c.show === d.code || !c.show) &&
+        c.status === 'active'
+      );
+      const penciled = OPS.crew.filter(c =>
+        c.skills && c.skills.includes('COMP') &&
+        c.status === 'penciled'
+      );
+      roles.push({
+        role:'COMP', color:'var(--ac)', headcount:compNeed,
+        startOffset, duration, startBy,
+        activeCrew, penciled,
+        covered: activeCrew.length >= compNeed,
+        partial: activeCrew.length > 0 && activeCrew.length < compNeed,
+      });
+    }
+
+    if (rotoNeed > 0) {
+      // Roto starts earliest — needs to feed comp
+      const startOffset = 0;
+      const duration    = Math.round(weeksTotal * 0.65);
+      const startBy     = startDate ? new Date(startDate) : new Date(today.getTime() + (weeksLeft - duration)*7*24*60*60*1000);
+      const activeCrew  = OPS.crew.filter(c =>
+        c.skills && (c.skills.includes('ROTO') || c.skills.includes('PAINT')) &&
+        (c.show === d.code || !c.show) && c.status === 'active'
+      );
+      const penciled = OPS.crew.filter(c =>
+        c.skills && (c.skills.includes('ROTO') || c.skills.includes('PAINT')) &&
+        c.status === 'penciled'
+      );
+      roles.push({
+        role:'ROTO/PAINT', color:'#9c4aff', headcount:rotoNeed,
+        startOffset, duration, startBy,
+        activeCrew, penciled,
+        covered: activeCrew.length >= rotoNeed,
+        partial: activeCrew.length > 0 && activeCrew.length < rotoNeed,
+      });
+    }
+
+    // Always add a SUP row (1 person, full show)
+    const supCrew = OPS.crew.filter(c =>
+      c.skills && (c.skills.includes('LEAD') || c.rate === 'sup' || c.rate === 'lead') &&
+      (c.show === d.code || !c.show) && c.status === 'active'
+    );
+    roles.push({
+      role:'SUP/LEAD', color:'#f5a623', headcount:1,
+      startOffset:0, duration:weeksTotal, startBy: startDate || today,
+      activeCrew: supCrew, penciled:[],
+      covered: supCrew.length >= 1,
+      partial: false,
+    });
+
+    const fmtDate = dt => dt ? dt.toLocaleDateString('en-US',{month:'short',day:'numeric'}) : '—';
+    const totalBars = Math.min(weeksTotal, 12); // cap display at 12 weeks
+
+    const ganttRows = roles.map(r => {
+      const statusColor = r.covered ? '#34d399' : r.partial ? '#f5a623' : '#ff5c5c';
+      const statusLabel = r.covered ? 'COVERED' : r.partial ? `${r.activeCrew.length}/${r.headcount}` : 'OPEN';
+      const crewNames   = r.activeCrew.map(c => c.name.split(' ')[0]).join(', ');
+      const pencilNames = r.penciled.map(c => c.name.split(' ')[0]).join(', ');
+
+      // Gantt bar cells
+      const cells = Array.from({length: totalBars}, (_,wi) => {
+        const inRange = wi >= r.startOffset && wi < r.startOffset + r.duration;
+        const isStart = wi === r.startOffset;
+        const isEnd   = wi === Math.min(r.startOffset + r.duration - 1, totalBars - 1);
+        if (!inRange) return `<div class="stl-cell stl-empty"></div>`;
+        return `<div class="stl-cell stl-filled" style="background:${r.color};opacity:${r.covered?0.7:r.partial?0.5:0.35};border-radius:${isStart?'4px 0 0 4px':''}${isEnd&&!isStart?'0 4px 4px 0':''}${isStart&&isEnd?'4px':''}"></div>`;
+      }).join('');
+
+      const crewLine = crewNames
+        ? `<span style="color:var(--t1)">${crewNames}</span>`
+        : pencilNames
+          ? `<span style="color:var(--t2);font-style:italic">${pencilNames} (penciled)</span>`
+          : `<span style="color:#ff8080">No crew assigned</span>`;
+
+      return `<div class="stl-row">
+        <div class="stl-role-col">
+          <div class="stl-role-lbl">${r.role}</div>
+          <div class="stl-role-meta">${r.headcount}× · ${fmtDate(r.startBy)}</div>
+        </div>
+        <div class="stl-gantt">${cells}</div>
+        <div class="stl-status" style="background:${r.covered?'rgba(52,215,153,.12)':r.partial?'rgba(245,166,35,.12)':'rgba(255,92,92,.12)'};color:${statusColor}">${statusLabel}</div>
+      </div>
+      <div class="stl-crew-line">${crewLine}</div>`;
     }).join('');
-    const alertHtml = gap < 0 ? `<div class="dc-alert"><div class="dc-alert-dot"></div><div class="dc-alert-txt">UNDER-RESOURCED — need ~${Math.ceil(Math.abs(gap)/5/weeks)} more artist${Math.ceil(Math.abs(gap)/5/weeks)>1?'s':''} to hit delivery</div></div>` : '';
+
+    // Week labels
+    const wkLabels = Array.from({length: totalBars}, (_,wi) => {
+      const wkDate = startDate
+        ? new Date(startDate.getTime() + wi*7*24*60*60*1000)
+        : new Date(today.getTime() + (weeksLeft - weeksTotal + wi)*7*24*60*60*1000);
+      return `<div class="stl-wk-lbl">W${wi+1}</div>`;
+    }).join('');
+
     return `<div class="demand-card">
       <div class="dc-head">
         <div class="dc-show-dot" style="background:${typeColors[d.type]||'var(--t2)'}"></div>
@@ -3023,24 +3152,28 @@ function renderDemand() {
       <div class="dc-body">
         <div class="dc-row">
           <div class="dc-lbl">CAPACITY</div>
-          <div class="dc-bar-wrap"><div class="dc-bar" style="width:${Math.min(100,pct)}%;background:${gap<0?'#ff5c5c':gap<bidDays*0.1?'#f5a623':'var(--ac)'}"></div></div>
+          <div class="dc-bar-wrap"><div class="dc-bar" style="width:${bidDays>0?Math.min(100,Math.round(capacity/bidDays*100)):0}%;background:${gap<0?'#ff5c5c':gap<bidDays*0.1?'#f5a623':'var(--ac)'}"></div></div>
           <div class="dc-val">${capacity||0}d</div>
           <div class="dc-gap ${gapClass}">${gapText}</div>
         </div>
         <div class="dc-row">
-          <div class="dc-lbl">BID TOTAL</div>
+          <div class="dc-lbl">BID</div>
           <div class="dc-bar-wrap"><div class="dc-bar" style="width:${bidDays>0?Math.min(100,Math.round(bidDays/Math.max(capacity,bidDays)*100)):0}%;background:var(--t2)"></div></div>
           <div class="dc-val">${bidDays}d</div>
-          <div class="dc-gap" style="color:var(--t2)">${d.comp||0} COMP · ${d.roto||0} R/P</div>
-        </div>
-        <div class="dc-row">
-          <div class="dc-lbl">TIMELINE</div>
-          <div class="dc-bar-wrap"></div>
-          <div class="dc-val" style="font-size:8px">${weeks}wk${weeks!==1?'s':''}</div>
-          <div class="dc-gap" style="color:var(--t2)">${d.due||'TBD'}</div>
+          <div class="dc-gap" style="color:var(--t2)">${weeksTotal}wk · ${d.due||'TBD'}</div>
         </div>
         ${alertHtml}
-        <div class="dc-timeline"><div class="dc-tl-lbl">WEEKLY LOAD EST.</div><div class="dc-wk-grid">${wkBars}</div></div>
+
+        <!-- STAFFING TIMELINE -->
+        <div class="stl-section">
+          <div class="stl-hd">
+            <span class="stl-hd-lbl">STAFFING TIMELINE</span>
+            <span class="stl-hd-sub">${fmtDate(startDate||today)} → ${fmtDate(dueDate)}</span>
+          </div>
+          <div class="stl-wk-row">${wkLabels}</div>
+          ${ganttRows}
+        </div>
+
         <div style="display:flex;gap:6px;margin-top:10px">
           <button class="cc-act-btn" style="flex:1" onclick="editDemand(${i})">EDIT</button>
           <button class="cc-act-btn danger" onclick="deleteDemand(${i})">REMOVE</button>
