@@ -1,4 +1,4 @@
-<!-- VTEK HANGAR BUILD_ID=HGR-032 -->
+<!-- VTEK HANGAR BUILD_ID=HGR-033 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1917,8 +1917,24 @@ const PRI_LABEL = {high:'HIGH', med:'MED', low:'LOW', none:''};
 function loadTasks() {
   try {
     const raw = localStorage.getItem('vtek_tasks');
-    if (raw) TASKS = JSON.parse(raw);
+    if (raw) { TASKS = JSON.parse(raw); return; }
   } catch(e) {}
+  // Seed mockup tasks on first load
+  const today = new Date();
+  const d = (offset) => { const dt = new Date(today); dt.setDate(dt.getDate()+offset); return dt.toISOString().split('T')[0]; };
+  TASKS = [
+    {title:'Comp review — 016_BFR_0070', due:d(0),  dur:'1h',  show:'CRL', pri:'high', notes:'Client feedback round 3. Address motion blur on BG plate and edge fringe on hero.', done:false, created:Date.now()},
+    {title:'Deliver paint fixes — 018_REU_0215', due:d(0),  dur:'2h',  show:'CRL', pri:'high', notes:'Wire removal + dust busting. Confirm clean plate matches.', done:false, created:Date.now()},
+    {title:'Roto QC pass — seq 044', due:d(1),  dur:'30m', show:'CRL', pri:'med',  notes:'Check edge quality on all roto delivered this week before sending to comp.', done:false, created:Date.now()},
+    {title:'Update ShotGrid status — AIG deliveries', due:d(1),  dur:'15m', show:'AIG', pri:'med',  notes:'Mark 003_BFR_0180 and 028_FAM_0020 as delivered.', done:false, created:Date.now()},
+    {title:'Send bid estimate to Katherine', due:d(2),  dur:'30m', show:'CRL', pri:'high', notes:'Remaining comp bid for seqs 044 and 049. Include over-bid breakdown.', done:false, created:Date.now()},
+    {title:'Pull Cerulean turnover package', due:d(2),  dur:'1h',  show:'CRL', pri:'med',  notes:'Confirm all EXRs and OCIOs are correct. Check frame handles.', done:false, created:Date.now()},
+    {title:'OCIO config update — Nuke env', due:d(4),  dur:'2h',  show:'',    pri:'low',  notes:'Bump to latest ACES config. Test on CRL shots before rolling to team.', done:false, created:Date.now()},
+    {title:'Deadline credential renewal', due:d(5),  dur:'15m', show:'',    pri:'low',  notes:'AWS Deadline Cloud creds expire. Renew before render queue goes down.', done:false, created:Date.now()},
+    {title:'Pitch deck — new show inquiry', due:d(7),  dur:'4h',  show:'',    pri:'med',  notes:'Prepare CBFX capabilities deck for potential episodic. Reference Cerulean work.', done:false, created:Date.now()},
+    {title:'Review AdditiveKeyer gizmo with team', due:d(9),  dur:'1h',  show:'CRL', pri:'low',  notes:'Walk Arslan and Christina through fog/atmospheric presets. Document workflow.', done:false, created:Date.now()},
+  ];
+  saveTasks();
 }
 function saveTasks() {
   localStorage.setItem('vtek_tasks', JSON.stringify(TASKS));
