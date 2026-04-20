@@ -1,4 +1,4 @@
-<!-- VTEK HANGAR BUILD_ID=HGR-047 -->
+<!-- VTEK HANGAR BUILD_ID=HGR-048 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1089,7 +1089,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
   <!-- ROLODEX PANEL -->
   <div class="ops-panel" id="ops-panel-rolodex">
     <div class="rdx-search-wrap">
-      <input class="rdx-search" id="rdx-search" placeholder="SEARCH ROLODEXâ€¦" oninput="renderRolodex()" type="search">
+      <input class="rdx-search" id="rdx-search" placeholder="SEARCH ROLODEX..." oninput="renderRolodex()" type="search">
     </div>
     <div class="rdx-filter-bar">
       <button class="rdx-filter on" data-rdx="ALL" onclick="setRdxFilter(this)">ALL</button>
@@ -1125,7 +1125,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
         <div class="ops-field"><div class="ops-field-lbl">NAME</div><input class="ops-input" id="crew-name" placeholder="Full name"></div>
         <div class="ops-field"><div class="ops-field-lbl">INITIALS</div><input class="ops-input" id="crew-initials" placeholder="RR" maxlength="3"></div>
       </div>
-      <div class="ops-field"><div class="ops-field-lbl">ROLE / TITLE</div><input class="ops-input" id="crew-role" placeholder="Compositor, Paint Artistâ€¦"></div>
+      <div class="ops-field"><div class="ops-field-lbl">ROLE / TITLE</div><input class="ops-input" id="crew-role" placeholder="Compositor, Paint Artist..."></div>
       <div class="ops-row2">
         <div class="ops-field"><div class="ops-field-lbl">STATUS</div>
           <div class="ops-select-wrap"><select class="ops-select" id="crew-status">
@@ -1135,14 +1135,14 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
             <option value="unavail">UNAVAILABLE</option>
           </select></div>
         </div>
-        <div class="ops-field"><div class="ops-field-lbl">SHOW</div><input class="ops-input" id="crew-show" placeholder="CRL, AIGâ€¦"></div>
+        <div class="ops-field"><div class="ops-field-lbl">SHOW</div><input class="ops-input" id="crew-show" placeholder="CRL, AIG..."></div>
       </div>
       <div class="ops-field"><div class="ops-field-lbl">EMAIL</div><input class="ops-input" id="crew-email" type="email" placeholder="name@email.com"></div>
       <div class="ops-field"><div class="ops-field-lbl">PHONE</div><input class="ops-input" id="crew-phone" type="tel" placeholder="+1 555 000 0000"></div>
       <div class="ops-field"><div class="ops-field-lbl">AGENCY / REP</div><input class="ops-input" id="crew-agency" placeholder="Agency or freelance"></div>
       <div class="ops-field"><div class="ops-field-lbl">RATE TIER</div>
         <div class="ops-select-wrap"><select class="ops-select" id="crew-rate">
-          <option value="">â€“</option>
+          <option value="">—</option>
           <option value="junior">JUNIOR</option>
           <option value="mid">MID</option>
           <option value="senior">SENIOR</option>
@@ -1173,7 +1173,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
         <div id="crew-assignments-list" style="margin-top:6px;display:flex;flex-direction:column;gap:4px"></div>
         <div id="crew-assignments-empty" style="font-family:var(--mono);font-size:9px;color:var(--t2);padding:8px 0;display:none">No assignments  -  tap + ADD SHOT to assign from live shot data</div>
       </div>
-      <div class="ops-field"><div class="ops-field-lbl">NOTES</div><textarea class="ops-textarea" id="crew-notes" placeholder="Any notes about this personâ€¦" oninput="autoExpand(this)"></textarea></div>
+      <div class="ops-field"><div class="ops-field-lbl">NOTES</div><textarea class="ops-textarea" id="crew-notes" placeholder="Any notes about this person..." oninput="autoExpand(this)"></textarea></div>
       <div class="ops-row2">
         <div class="ops-field"><div class="ops-field-lbl">START DATE</div><input class="ops-input" id="crew-start" type="date"></div>
         <div class="ops-field"><div class="ops-field-lbl">END DATE</div><input class="ops-input" id="crew-end" type="date"></div>
@@ -1193,7 +1193,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
       <button class="ops-sh-close" onclick="closeOpsOverlay('shotPickerOverlay')">CLOSE</button>
     </div>
     <div style="padding:8px 16px 4px">
-      <input class="rdx-search" id="shot-picker-search" placeholder="SEARCH SHOTSâ€¦" oninput="renderShotPicker()" type="search" style="width:100%;box-sizing:border-box">
+      <input class="rdx-search" id="shot-picker-search" placeholder="SEARCH SHOTS..." oninput="renderShotPicker()" type="search" style="width:100%;box-sizing:border-box">
     </div>
     <div style="padding:4px 12px 6px;display:flex;gap:5px;overflow-x:auto" id="shot-picker-show-tabs"></div>
     <div id="shot-picker-list" style="overflow-y:auto;-webkit-overflow-scrolling:touch;max-height:calc(70dvh - 130px);padding:0 12px 16px"></div>
@@ -1213,7 +1213,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
         <div class="ops-field"><div class="ops-field-lbl">NAME</div><input class="ops-input" id="rdx-name" placeholder="Full name"></div>
         <div class="ops-field"><div class="ops-field-lbl">INITIALS</div><input class="ops-input" id="rdx-initials" placeholder="RR" maxlength="3"></div>
       </div>
-      <div class="ops-field"><div class="ops-field-lbl">TITLE</div><input class="ops-input" id="rdx-title-input" placeholder="Compositor, Coordinatorâ€¦"></div>
+      <div class="ops-field"><div class="ops-field-lbl">TITLE</div><input class="ops-input" id="rdx-title-input" placeholder="Compositor, Coordinator..."></div>
       <div class="ops-field"><div class="ops-field-lbl">EMAIL</div><input class="ops-input" id="rdx-email" type="email" placeholder="name@email.com"></div>
       <div class="ops-field"><div class="ops-field-lbl">PHONE</div><input class="ops-input" id="rdx-phone" type="tel" placeholder="+1 555 000 0000"></div>
       <div class="ops-field"><div class="ops-field-lbl">INSTAGRAM / SOCIALS</div><input class="ops-input" id="rdx-social" placeholder="@handle or URL"></div>
@@ -1241,7 +1241,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
           <button class="ops-tag-btn" data-skill="ANIM" onclick="toggleSkillRdx(this)">ANIM</button>
         </div>
       </div>
-      <div class="ops-field"><div class="ops-field-lbl">NOTES</div><textarea class="ops-textarea" id="rdx-notes" placeholder="How you know them, quality notes, rate rangeâ€¦" oninput="autoExpand(this)"></textarea></div>
+      <div class="ops-field"><div class="ops-field-lbl">NOTES</div><textarea class="ops-textarea" id="rdx-notes" placeholder="How you know them, quality notes, rate range..." oninput="autoExpand(this)"></textarea></div>
       <button class="ops-submit" onclick="saveRdx()">SAVE TO ROLODEX</button>
       <button id="rdx-delete-btn" class="ops-submit" style="margin-top:8px;background:rgba(255,92,92,.12);color:#ff5c5c;border:1px solid rgba(255,92,92,.2);display:none" onclick="deleteRdx()">DELETE</button>
     </div>
@@ -1280,7 +1280,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
         <div class="ops-field"><div class="ops-field-lbl">COMP NEEDED</div><input class="ops-input" id="dem-comp" type="number" placeholder="0" min="0"></div>
         <div class="ops-field"><div class="ops-field-lbl">ROTO/PAINT NEEDED</div><input class="ops-input" id="dem-roto" type="number" placeholder="0" min="0"></div>
       </div>
-      <div class="ops-field"><div class="ops-field-lbl">NOTES</div><textarea class="ops-textarea" id="dem-notes" placeholder="Pipeline requirements, special needsâ€¦" oninput="autoExpand(this)"></textarea></div>
+      <div class="ops-field"><div class="ops-field-lbl">NOTES</div><textarea class="ops-textarea" id="dem-notes" placeholder="Pipeline requirements, special needs..." oninput="autoExpand(this)"></textarea></div>
       <button class="ops-submit" onclick="saveDemand()">ADD SHOW</button>
     </div>
   </div>
@@ -2745,7 +2745,7 @@ const AVAIL_META = {
   wrapping: { label:'WRAPPING',  cls:'avail-penciled' },
 };
 function availBadge(s) {
-  const m = AVAIL_META[s] || {label:s?.toUpperCase()||'â€“', cls:''};
+  const m = AVAIL_META[s] || {label:s?.toUpperCase()||'—', cls:''};
   return `<span class="avail-pill ${m.cls}">${m.label}</span>`;
 }
 
@@ -2774,7 +2774,7 @@ function renderCrew() {
 
   const cards = OPS.crew.map((c,i) => {
     const isPenciled = c.status === 'penciled';
-    const av = AVAIL_META[c.status] || {label:'â€“',cls:''};
+    const av = AVAIL_META[c.status] || {label:'—',cls:''};
     const skills = (c.skills||[]).map(s => `<span class="cc-tag ${s.toLowerCase()}">${s}</span>`).join('');
     const assignments = (c.assignments||[]).map(a => {
       return `<div class="cc-assign-row">
@@ -2792,7 +2792,7 @@ function renderCrew() {
       c.rate ? `<div class="cc-contact-row"><span class="cc-contact-lbl">RATE</span><span class="cc-contact-val">${c.rate.toUpperCase()}</span></div>` : '',
       c.show ? `<div class="cc-contact-row"><span class="cc-contact-lbl">SHOW</span><span class="cc-contact-val">${c.show}</span></div>` : '',
     ].filter(Boolean).join('');
-    const datesRow = (c.start || c.end) ? `<div class="cc-contact-row"><span class="cc-contact-lbl">DATES</span><span class="cc-contact-val">${c.start||'â€“'} â†’ ${c.end||'ongoing'}</span></div>` : '';
+    const datesRow = (c.start || c.end) ? `<div class="cc-contact-row"><span class="cc-contact-lbl">DATES</span><span class="cc-contact-val">${c.start||'—'} → ${c.end||'ongoing'}</span></div>` : '';
     const notesRow = c.notes ? `<div class="cc-contact-row"><span class="cc-contact-lbl">NOTES</span><span class="cc-contact-val" style="white-space:pre-wrap;word-break:break-word">${c.notes}</span></div>` : '';
     const col = c.color || crewColor(i);
     const init = c.initials || initials(c.name||'?');
@@ -2801,7 +2801,7 @@ function renderCrew() {
         <div class="cc-avatar${isPenciled?' penciled-av':''}" style="${isPenciled?'':'background:'+col}">${init}</div>
         <div class="cc-info">
           <div class="cc-name">${c.name||'Unnamed'}${isPenciled?' <span style="font-size:9px;color:var(--t2);font-family:var(--mono)">[PENCILED]</span>':''}</div>
-          <div class="cc-role">${c.role||'â€“'}</div>
+          <div class="cc-role">${c.role||'—'}</div>
         </div>
         <div class="cc-right">
           ${availBadge(c.status)}
@@ -2952,7 +2952,7 @@ function renderCrewAssignmentsList() {
       <div style="font-family:var(--mono);font-size:9px;color:var(--t0);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${a.shotCode}</div>
       <div style="font-family:var(--mono);font-size:8px;color:var(--t2);width:38px;flex-shrink:0">${a.task}</div>
       <div style="font-family:var(--mono);font-size:8px;padding:2px 5px;border-radius:3px;background:${hexToRgba(liveSc,0.12)};color:${liveSc}">${liveStatus.toUpperCase()}</div>
-      <button onclick="removeCrewAssign(${i})" style="background:none;border:none;color:var(--t2);font-size:14px;cursor:pointer;padding:0;line-height:1;flex-shrink:0">Ã—</button>
+      <button onclick="removeCrewAssign(${i})" style="background:none;border:none;color:var(--t2);font-size:14px;cursor:pointer;padding:0;line-height:1;flex-shrink:0">&times;</button>
     </div>`;
   }).join('');
 }
@@ -3174,7 +3174,7 @@ function renderDemand() {
       return `<div class="stl-row">
         <div class="stl-role-col">
           <div class="stl-role-lbl">${r.role}</div>
-          <div class="stl-role-meta">${r.headcount}Ã— Â· ${fmtDate(r.startBy)}</div>
+          <div class="stl-role-meta">${r.headcount}&times; &middot; ${fmtDate(r.startBy)}</div>
         </div>
         <div class="stl-gantt">${cells}</div>
         <div class="stl-status" style="background:${r.covered?'rgba(52,215,153,.12)':r.partial?'rgba(245,166,35,.12)':'rgba(255,92,92,.12)'};color:${statusColor}">${statusLabel}</div>
@@ -3207,7 +3207,7 @@ function renderDemand() {
           <div class="dc-lbl">BID</div>
           <div class="dc-bar-wrap"><div class="dc-bar" style="width:${bidDays>0?Math.min(100,Math.round(bidDays/Math.max(capacity,bidDays)*100)):0}%;background:var(--t2)"></div></div>
           <div class="dc-val">${bidDays}d</div>
-          <div class="dc-gap" style="color:var(--t2)">${weeksTotal}wk Â· ${d.due||'TBD'}</div>
+          <div class="dc-gap" style="color:var(--t2)">${weeksTotal}wk &middot; ${d.due||'TBD'}</div>
         </div>
         ${alertHtml}
 
@@ -3215,7 +3215,7 @@ function renderDemand() {
         <div class="stl-section">
           <div class="stl-hd">
             <span class="stl-hd-lbl">STAFFING TIMELINE</span>
-            <span class="stl-hd-sub">${fmtDate(startDate||today)} â†’ ${fmtDate(dueDate)}</span>
+            <span class="stl-hd-sub">${fmtDate(startDate||today)} → ${fmtDate(dueDate)}</span>
           </div>
           <div class="stl-wk-row">${wkLabels}</div>
           ${ganttRows}
@@ -3310,7 +3310,7 @@ function renderRolodex() {
         <div class="rdx-av" style="background:${col}">${init}</div>
         <div class="rdx-info">
           <div class="rdx-name">${r.name||'Unnamed'}</div>
-          <div class="rdx-title">${r.title||'â€“'}</div>
+          <div class="rdx-title">${r.title||'—'}</div>
         </div>
         <div class="rdx-right">
           <span class="avail-pill ${availMeta.cls}" style="font-size:8px">${availMeta.label}</span>
@@ -3679,7 +3679,7 @@ const WIZARDS = {
       { key:'pri',      type:'select', question:"How urgent is this?",                hint:"This affects how it shows up in your list.", label:'PRIORITY',
         options:[{val:'high',lbl:'HIGH  -  needs to happen now'},{val:'med',lbl:'MED  -  this week'},{val:'low',lbl:'LOW  -  when I get to it'},{val:'none',lbl:'No priority'}] },
       { key:'show',     type:'showpick', question:"Is this for a specific show?",     hint:"Link it to a show for filtering.", label:'SHOW' },
-      { key:'notes',    type:'textarea', question:"Any notes to add?",                hint:"Context, links, reminders  -  anything useful.", placeholder:"Optional notesâ€¦", label:'NOTES' },
+      { key:'notes',    type:'textarea', question:"Any notes to add?",                hint:"Context, links, reminders  -  anything useful.", placeholder:"Optional notes...", label:'NOTES' },
     ],
   },
   crew: {
@@ -3696,7 +3696,7 @@ const WIZARDS = {
       { key:'phone',    type:'text',   question:"Phone number?",                      hint:"Optional  -  used for quick contact.", placeholder:"+1 555 000 0000", label:'PHONE' },
       { key:'rate',     type:'select', question:"What's their rate tier?",            hint:"Approximate seniority level.", label:'RATE TIER',
         options:[{val:'junior',lbl:'JUNIOR'},{val:'mid',lbl:'MID'},{val:'senior',lbl:'SENIOR'},{val:'lead',lbl:'LEAD'},{val:'sup',lbl:'SUPERVISOR'}] },
-      { key:'notes',    type:'textarea', question:"Any notes about them?",            hint:"How you know them, quality of work, preferencesâ€¦", placeholder:"Notesâ€¦", label:'NOTES' },
+      { key:'notes',    type:'textarea', question:"Any notes about them?",            hint:"How you know them, quality of work, preferences...", placeholder:"Notes...", label:'NOTES' },
     ],
   },
   show: {
@@ -3712,7 +3712,7 @@ const WIZARDS = {
       { key:'bid',      type:'text',   question:"How many total bid days?",           hint:"Sum of all tasks across all artists.", placeholder:"e.g. 240", label:'TOTAL BID DAYS' },
       { key:'comp',     type:'text',   question:"How many compositors needed?",       hint:"Headcount for comp department.", placeholder:"e.g. 3", label:'COMP HEADCOUNT' },
       { key:'roto',     type:'text',   question:"Roto / paint artists needed?",       hint:"Headcount for roto and paint.", placeholder:"e.g. 2", label:'ROTO/PAINT' },
-      { key:'notes',    type:'textarea', question:"Any special pipeline requirements?", hint:"Delivery format, special tools, client quirksâ€¦", placeholder:"Notesâ€¦", label:'NOTES' },
+      { key:'notes',    type:'textarea', question:"Any special pipeline requirements?", hint:"Delivery format, special tools, client quirks...", placeholder:"Notes...", label:'NOTES' },
     ],
   },
   rolodex: {
@@ -3727,7 +3727,7 @@ const WIZARDS = {
       { key:'email',     type:'text',    question:"Email address?",                   hint:"How you'd reach them.", placeholder:"name@email.com", label:'EMAIL' },
       { key:'phone',     type:'text',    question:"Phone number?",                    hint:"Optional.", placeholder:"+1 555 000 0000", label:'PHONE' },
       { key:'company',   type:'text',    question:"What studio or company are they at?", hint:"Or freelance.", placeholder:"e.g. ILM, freelance", label:'COMPANY' },
-      { key:'notes',     type:'textarea',question:"How do you know them? Any notes?", hint:"Quality, rate range, how you metâ€¦", placeholder:"Notesâ€¦", label:'NOTES' },
+      { key:'notes',     type:'textarea',question:"How do you know them? Any notes?", hint:"Quality, rate range, how you met...", placeholder:"Notes...", label:'NOTES' },
     ],
   },
 };
