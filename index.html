@@ -1,4 +1,4 @@
-<!-- VTEK HANGAR BUILD_ID=HGR-033 -->
+<!-- VTEK HANGAR BUILD_ID=HGR-034 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1919,10 +1919,17 @@ function loadTasks() {
     const raw = localStorage.getItem('vtek_tasks');
     if (raw) { TASKS = JSON.parse(raw); return; }
   } catch(e) {}
-  // Seed mockup tasks on first load
+  TASKS = getDemoTasks();
+  saveTasks();
+}
+function saveTasks() {
+  localStorage.setItem('vtek_tasks', JSON.stringify(TASKS));
+}
+
+function getDemoTasks() {
   const today = new Date();
   const d = (offset) => { const dt = new Date(today); dt.setDate(dt.getDate()+offset); return dt.toISOString().split('T')[0]; };
-  TASKS = [
+  return [
     {title:'Comp review — 016_BFR_0070', due:d(0),  dur:'1h',  show:'CRL', pri:'high', notes:'Client feedback round 3. Address motion blur on BG plate and edge fringe on hero.', done:false, created:Date.now()},
     {title:'Deliver paint fixes — 018_REU_0215', due:d(0),  dur:'2h',  show:'CRL', pri:'high', notes:'Wire removal + dust busting. Confirm clean plate matches.', done:false, created:Date.now()},
     {title:'Roto QC pass — seq 044', due:d(1),  dur:'30m', show:'CRL', pri:'med',  notes:'Check edge quality on all roto delivered this week before sending to comp.', done:false, created:Date.now()},
@@ -1934,10 +1941,13 @@ function loadTasks() {
     {title:'Pitch deck — new show inquiry', due:d(7),  dur:'4h',  show:'',    pri:'med',  notes:'Prepare CBFX capabilities deck for potential episodic. Reference Cerulean work.', done:false, created:Date.now()},
     {title:'Review AdditiveKeyer gizmo with team', due:d(9),  dur:'1h',  show:'CRL', pri:'low',  notes:'Walk Arslan and Christina through fog/atmospheric presets. Document workflow.', done:false, created:Date.now()},
   ];
-  saveTasks();
 }
-function saveTasks() {
-  localStorage.setItem('vtek_tasks', JSON.stringify(TASKS));
+
+function injectDemoTasks() {
+  TASKS = getDemoTasks();
+  saveTasks();
+  renderTasks();
+  toast('DEMO TASKS LOADED');
 }
 
 function isToday(dateStr) {
@@ -1979,6 +1989,7 @@ function renderTasks() {
       <svg viewBox="0 0 24 24" width="40" height="40"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
       <p>${activeTaskTab === 'done' ? 'No completed tasks yet' : 'Nothing here'}</p>
       ${activeTaskTab !== 'done' ? '<div style="font-family:var(--mono);font-size:11px;font-weight:700;color:var(--ac);letter-spacing:.08em;margin-top:6px;padding:8px 16px;border:1px solid rgba(46,184,184,.3);border-radius:8px;background:rgba(46,184,184,.08)">+ ADD TASK</div>' : ''}
+      ${activeTaskTab === 'all' ? `<div onclick="event.stopPropagation();injectDemoTasks()" style="font-family:var(--mono);font-size:10px;color:var(--t2);letter-spacing:.06em;margin-top:4px;padding:6px 14px;border:1px solid rgba(255,255,255,.08);border-radius:8px;cursor:pointer">LOAD DEMO DATA</div>` : ''}
     </div>`;;
     return;
   }
