@@ -2022,7 +2022,13 @@ function openOverlay(id) {
   if (sheet) { sheet.style.animation='none'; void sheet.offsetWidth; sheet.style.animation=''; }
   el.classList.add('open');
 }
-document.addEventListener('DOMContentLoaded',()=>{loadPersistedData();loadTasks();renderChips();renderShotList();renderRoster();renderShowGrid();renderShowsFull();renderTasks();});
+document.addEventListener('DOMContentLoaded',()=>{loadPersistedData();loadTasks();renderChips();renderShotList();renderRoster();renderShowGrid();renderShowsFull();renderTasks();
+  // Initialize nav active states
+  const NAV_IDX={tasks:0,shows:1,hangar:2,shots:1,detail:1,ops:3,intel:4,roster:3};
+  document.querySelectorAll('.bnav').forEach(nav=>{
+    nav.querySelectorAll('.nb,.nb-action').forEach((btn,i)=>{btn.classList.toggle('on',i===2);});
+  });
+});
 function renderShowsFull() {
   const grid = document.getElementById('shows-grid-full');
   if (!grid) return;
