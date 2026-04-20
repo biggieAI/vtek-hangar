@@ -1,4 +1,4 @@
-<!-- VTEK HANGAR BUILD_ID=HGR-046 -->
+<!-- VTEK HANGAR BUILD_ID=HGR-047 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -495,12 +495,11 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 .task-item.done{opacity:.45}
 .task-item.done .ti-title{text-decoration:line-through;color:var(--t2)}
 /* PENDING — checked, awaiting confirm */
-.task-item.pending{padding-left:94px;background:rgba(46,184,184,.07);border:1px solid rgba(46,184,184,.18)}
+.task-item.pending{padding-left:80px;background:rgba(46,184,184,.07);border:1px solid rgba(46,184,184,.18)}
 .task-item.pending .ti-title{color:var(--t1)}
 .task-item.pending .ti-chk{background:var(--ac);border-color:var(--ac)}
 .task-item.pending .ti-chk svg{stroke:#1c1c1e}
-/* left actions container — absolutely positioned in the indent gap */
-.ti-left-actions{position:absolute;left:8px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:4px;opacity:0;pointer-events:none;transition:opacity .2s}
+.ti-left-actions{position:absolute;left:8px;top:50%;transform:translateY(-50%);opacity:0;pointer-events:none;transition:opacity .18s}
 .task-item.pending .ti-left-actions{opacity:1;pointer-events:auto}
 /* COMPLETING — slides out */
 @keyframes taskSlideOut{0%{max-height:100px;opacity:1;margin-bottom:6px;transform:translateX(0) scaleY(1)}70%{opacity:0;transform:translateX(12px) scaleY(1)}100%{max-height:0;opacity:0;margin-bottom:0;padding-top:0;padding-bottom:0;transform:translateX(12px) scaleY(0)}}
@@ -511,8 +510,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 .task-item.done .ti-chk{background:var(--ac);border-color:var(--ac)}
 .task-item.done .ti-chk svg{stroke:#1c1c1e}
 .ti-chk svg{stroke:transparent;transition:stroke .15s}
-.ti-confirm-btn{width:72px;height:26px;padding:0;border-radius:6px;border:none;background:var(--ac);font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.06em;color:#1c1c1e;cursor:pointer;white-space:nowrap;text-align:center}
-.ti-undo-btn{width:72px;height:22px;padding:0;border-radius:5px;border:1px solid rgba(255,255,255,.12);background:none;font-family:var(--mono);font-size:7px;font-weight:700;letter-spacing:.06em;color:var(--t2);cursor:pointer;white-space:nowrap;text-align:center}
+.ti-confirm-btn{height:40px;padding:0 14px;border-radius:8px;border:none;background:var(--ac);font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.07em;color:#1c1c1e;cursor:pointer;white-space:nowrap}
 .ti-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
 .ti-title{font-family:var(--sans);font-size:13px;font-weight:600;color:var(--t0);line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ti-meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
@@ -2104,8 +2102,7 @@ function taskHTML(t, idx) {
   const todayFlag = !t.done && isToday(t.due);
   return '<div class="task-item' + (t.done?' done':'') + '" data-idx="' + idx + '" style="animation-delay:' + Math.min(idx,8)*0.05 + 's">' +
     '<div class="ti-left-actions">' +
-      '<button class="ti-confirm-btn" onclick="event.stopPropagation();confirmTask(' + idx + ')">DONE ✓</button>' +
-      '<button class="ti-undo-btn" onclick="event.stopPropagation();undoTask(' + idx + ')">UNDO</button>' +
+      '<button class="ti-confirm-btn" onclick="event.stopPropagation();confirmTask(' + idx + ')">COMPLETE</button>' +
     '</div>' +
     '<div class="ti-pri" style="background:' + priColor + '"></div>' +
     '<div class="ti-check" onclick="toggleTask(' + idx + ')">' +
@@ -2131,16 +2128,10 @@ function taskHTML(t, idx) {
 function toggleTask(idx) {
   const el = document.querySelector(`.task-item[data-idx="${idx}"]`);
   if (!el) { TASKS[idx].done = !TASKS[idx].done; saveTasks(); renderTasks(); return; }
-
-  if (el.classList.contains('pending')) {
-    el.classList.remove('pending');
-    return;
-  }
-  if (el.classList.contains('completing') || TASKS[idx].done) {
-    TASKS[idx].done = !TASKS[idx].done;
-    saveTasks(); renderTasks(); return;
-  }
-  el.classList.add('pending');
+  if (el.classList.contains('completing')) return;
+  if (TASKS[idx].done) { TASKS[idx].done = false; saveTasks(); renderTasks(); return; }
+  // Toggle pending — checkbox is the undo
+  el.classList.toggle('pending');
 }
 
 function confirmTask(idx) {
@@ -2148,18 +2139,10 @@ function confirmTask(idx) {
   if (!el) return;
   el.classList.remove('pending');
   el.classList.add('completing');
-  setTimeout(() => {
-    TASKS[idx].done = true;
-    saveTasks();
-    renderTasks();
-  }, 360);
+  setTimeout(() => { TASKS[idx].done = true; saveTasks(); renderTasks(); }, 360);
 }
 
-function undoTask(idx) {
-  const el = document.querySelector(`.task-item[data-idx="${idx}"]`);
-  if (!el) return;
-  el.classList.remove('pending');
-}
+function undoTask(idx) { /* no-op — kept for safety */ }
 
 function selectPri(el) {
   selectedPri = el.dataset.pri;
