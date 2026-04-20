@@ -397,7 +397,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 .nb-action.open svg{transform:rotate(45deg);stroke:var(--ac)}
 .nb-action::before{content:'';position:absolute;inset:-3px;border-radius:50%;border:1.5px solid transparent;transition:border-color .18s}
 .nb-action.open::before{border-color:rgba(46,184,184,.4)}
-/* QAM â€” hidden by default, fixed position above nav */
+/* QAM  -  hidden by default, fixed position above nav */
 .qam{position:fixed!important;bottom:100px;left:50%;transform:translateX(-50%)!important;display:flex!important;gap:10px;pointer-events:none;opacity:0;transition:opacity .18s;z-index:500;width:auto;height:auto}
 .qam.open{pointer-events:auto;opacity:1}
 .qa-btn{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;width:64px}
@@ -406,7 +406,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 .qa-lbl{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.05em;color:var(--t1);text-transform:uppercase;white-space:nowrap}
 
 
-/* center button â€” hangar home */
+/* center button  -  hangar home */
 .nb-action{flex-shrink:0!important;width:50px!important;height:50px!important;min-width:50px!important;min-height:50px!important;max-width:50px!important;max-height:50px!important;border-radius:50%!important;background:var(--s3);border:1.5px solid rgba(255,255,255,.12);cursor:pointer;display:flex!important;align-items:center;justify-content:center;position:relative;top:-10px;box-shadow:0 4px 16px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.10);transition:transform .18s cubic-bezier(0.34,1.56,0.64,1),box-shadow .18s,border-color .18s;margin:0 4px;overflow:hidden}
 .nb-action svg{width:22px!important;height:22px!important;min-width:22px!important;min-height:22px!important;max-width:22px!important;stroke:var(--t2);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;transition:stroke .18s}
 .nb-action.on{border-color:rgba(46,184,184,.5)!important;box-shadow:0 4px 20px rgba(0,0,0,.5),0 0 0 2px rgba(46,184,184,.2),inset 0 1px 0 rgba(255,255,255,.10)!important}
@@ -422,7 +422,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 .nb-action{animation:none!important}
 /* Only the active dot gets an animation */
 .nb.on::after{animation:dotAppear .22s cubic-bezier(0.34,1.56,0.64,1) both!important}
-/* nb active icon scale is a transition not animation â€” keep it */
+/* nb active icon scale is a transition not animation  -  keep it */
 
 /* â”€â”€ CONTENT: slower, more pronounced stagger â”€â”€ */
 @keyframes fadeUp{from{opacity:0;transform:translate3d(0,22px,0)}to{opacity:1;transform:translate3d(0,0,0)}}
@@ -431,12 +431,12 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 @keyframes slideInL{from{opacity:0;transform:translate3d(-32px,0,0)}to{opacity:1;transform:translate3d(0,0,0)}}
 @keyframes scaleIn{from{opacity:0;transform:scale3d(0.93,0.93,1)}to{opacity:1;transform:scale3d(1,1,1)}}
 
-/* Stat chips â€” longer, more dramatic stagger */
+/* Stat chips  -  longer, more dramatic stagger */
 .chip-wrap .stat-row{opacity:0;animation:fadeUp 0.45s cubic-bezier(0.22,1,0.36,1) both}
 .chip-wrap .stat-row:nth-child(1){animation-delay:0.08s}
 .chip-wrap .stat-row:nth-child(2){animation-delay:0.18s}
 
-/* Shot rows â€” wider spread */
+/* Shot rows  -  wider spread */
 .shot-row{opacity:0;animation:fadeUp 0.40s cubic-bezier(0.22,1,0.36,1) both}
 .shot-row:nth-child(1){animation-delay:0.05s}
 .shot-row:nth-child(2){animation-delay:0.11s}
@@ -543,7 +543,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 {animation:none!important;opacity:0}
 
 
-/* â”€â”€ SVG containment â€” prevent any SVG escaping its container â”€â”€ */
+/* â”€â”€ SVG containment  -  prevent any SVG escaping its container â”€â”€ */
 
 /* Sync banner SVG specifically */
 .sync-icon svg{width:16px!important;height:16px!important;max-width:16px!important;max-height:16px!important;flex-shrink:0}
@@ -566,7 +566,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 .intel-wf-icon svg{width:18px!important;height:18px!important}
 .intel-wf-arrow{width:18px!important;height:18px!important;flex-shrink:0}
 
-/* Roster avatar â€” no SVG inside but just in case */
+/* Roster avatar  -  no SVG inside but just in case */
 .ac-avatar{overflow:hidden}
 
 /* BK icon SVG */
@@ -593,7 +593,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 .tasks-empty svg{display:block!important;width:40px!important;height:40px!important;min-width:40px!important;min-height:40px!important;max-width:40px!important;max-height:40px!important;stroke:var(--t2);fill:none;opacity:.3}
 .tasks-empty p{font-family:var(--sans);font-size:13px;color:var(--t2)}
 
-/* â”€â”€ GLOBAL SVG SAFETY â€” don't let svg{max-width:100%} break icon containers â”€â”€ */
+/* â”€â”€ GLOBAL SVG SAFETY  -  don't let svg{max-width:100%} break icon containers â”€â”€ */
 /* Override only for structural SVGs in icon containers */
 .sync-icon>svg,.bk-icon>svg,.st-icon>svg,.sc-icon>svg,
 .intel-icon>svg,.intel-wf-icon>svg,.show-thumb-ph>svg,
@@ -637,7 +637,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 .pri-opt[data-pri="none"].sel{background:rgba(142,142,147,0.12);color:var(--t1)}
 
 
-/* â”€â”€ PRIORITY PILLS â€” always colored, dim when not selected â”€â”€ */
+/* â”€â”€ PRIORITY PILLS  -  always colored, dim when not selected â”€â”€ */
 .priority-row{display:flex;gap:6px;flex-wrap:nowrap}
 .pri-opt{
   flex:1;height:34px;border-radius:6px;border:none;
@@ -650,7 +650,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 .pri-opt:active{transform:scale(0.92)}
 .pri-opt.sel{opacity:1}
 
-/* Each pill always has its color â€” opacity controls selected state */
+/* Each pill always has its color  -  opacity controls selected state */
 .pri-opt[data-pri="high"]{background:rgba(255,92,92,0.18);color:#ff5c5c}
 .pri-opt[data-pri="med"] {background:rgba(245,166,35,0.18);color:#f5a623}
 .pri-opt[data-pri="low"] {background:rgba(108,154,205,0.18);color:#6c9acd}
@@ -936,10 +936,10 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
     <!-- Show count strip -->
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
       <div style="font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--t2)" id="shows-count-lbl">2 ACTIVE SHOWS</div>
-      <div style="font-family:var(--mono);font-size:9px;color:var(--t2)" id="shows-total-shots">â€”</div>
+      <div style="font-family:var(--mono);font-size:9px;color:var(--t2)" id="shows-total-shots"> - </div>
     </div>
 
-    <!-- Shows grid â€” full cards -->
+    <!-- Shows grid  -  full cards -->
     <div id="shows-grid-full" style="display:flex;flex-direction:column;gap:10px"></div>
 
   </div></div>
@@ -1153,14 +1153,14 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
           <button class="ops-tag-btn" data-skill="ANIM" onclick="toggleSkill(this)">ANIM</button>
         </div>
       </div>
-      <!-- SHOT ASSIGNMENTS â€” live from SHOTS array -->
+      <!-- SHOT ASSIGNMENTS  -  live from SHOTS array -->
       <div class="ops-field">
         <div class="ops-field-lbl" style="display:flex;align-items:center;justify-content:space-between">
           SHOT ASSIGNMENTS
           <button class="ops-tag-btn on" style="height:24px;padding:0 10px;font-size:8px;border-radius:6px" onclick="openShotPicker()">+ ADD SHOT</button>
         </div>
         <div id="crew-assignments-list" style="margin-top:6px;display:flex;flex-direction:column;gap:4px"></div>
-        <div id="crew-assignments-empty" style="font-family:var(--mono);font-size:9px;color:var(--t2);padding:8px 0;display:none">No assignments â€” tap + ADD SHOT to assign from live shot data</div>
+        <div id="crew-assignments-empty" style="font-family:var(--mono);font-size:9px;color:var(--t2);padding:8px 0;display:none">No assignments  -  tap + ADD SHOT to assign from live shot data</div>
       </div>
       <div class="ops-field"><div class="ops-field-lbl">NOTES</div><textarea class="ops-textarea" id="crew-notes" placeholder="Any notes about this personâ€¦" oninput="autoExpand(this)"></textarea></div>
       <div class="ops-row2">
@@ -1299,7 +1299,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
           <div class="intel-wf-icon" style="background:rgba(206,147,216,.15)"><svg viewBox="0 0 24 24" stroke="var(--vr-rev)" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
           <div class="intel-wf-info">
             <div class="intel-wf-name">Daily Brief</div>
-            <div class="intel-wf-desc">What needs my attention today â€” blockers, over-bid, pending review</div>
+            <div class="intel-wf-desc">What needs my attention today  -  blockers, over-bid, pending review</div>
           </div>
           <svg class="intel-wf-arrow" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;flex-shrink:0"><polyline points="9,18 15,12 9,6"/></svg>
         </div>
@@ -1427,7 +1427,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
         <div class="field-group"><label class="field-label">Due Date</label><input class="field-input" id="f-task-due" type="date"></div>
         <div class="field-group"><label class="field-label">Est. Time</label>
           <select class="field-select" id="f-task-dur">
-            <option value="">â€”</option>
+            <option value=""> - </option>
             <option value="15m">15 min</option><option value="30m">30 min</option>
             <option value="1h">1 hr</option><option value="2h">2 hr</option>
             <option value="4h">4 hr</option><option value="1d">Full day</option>
@@ -1444,7 +1444,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
       </div>
       <div class="field-group"><label class="field-label">Show</label>
         <select class="field-select" id="f-task-show">
-          <option value="">â€” No show â€”</option>
+          <option value=""> -  No show  - </option>
         </select>
       </div>
       <div class="field-group"><label class="field-label">Notes</label><textarea class="field-input" id="f-task-notes" placeholder="Optional notes..." rows="2" style="resize:none;overflow:hidden;line-height:1.5;padding-top:11px;padding-bottom:11px" oninput="autoExpand(this)"></textarea></div>
@@ -1552,7 +1552,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
           <div class="import-stat"><div class="import-stat-n" id="prev-shots">0</div><div class="import-stat-l">SHOTS</div></div>
           <div class="import-stat"><div class="import-stat-n" id="prev-tasks">0</div><div class="import-stat-l">TASKS</div></div>
           <div class="import-stat"><div class="import-stat-n" id="prev-artists">0</div><div class="import-stat-l">ARTISTS</div></div>
-          <div class="import-stat"><div class="import-stat-n" id="prev-show">â€”</div><div class="import-stat-l">SHOW</div></div>
+          <div class="import-stat"><div class="import-stat-n" id="prev-show"> - </div><div class="import-stat-l">SHOW</div></div>
         </div>
         <div class="import-sample" id="prev-sample"></div>
       </div>
@@ -1585,7 +1585,7 @@ const SC = {
 
 // â”€â”€ SAMPLE SHOT DATA (BFR show from CSV) â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const SHOTS = [
-  {code:'016_BFR_0070',desc:'Andy laptop comp â€” Plate 70% respeed',tags:['03/21','03/24','Problem','Trailer','GFX'],status:'crvw',verStatus:'pf',del:'03/05/26',pctBid:477,cg:true,matte:true,
+  {code:'016_BFR_0070',desc:'Andy laptop comp  -  Plate 70% respeed',tags:['03/21','03/24','Problem','Trailer','GFX'],status:'crvw',verStatus:'pf',del:'03/05/26',pctBid:477,cg:true,matte:true,
    tasks:[
     {name:'COMP',status:'crvw',who:'Arslan Naqvi, Ruben Rodas',bid:0.5,used:4.25,verStatus:'pf',verNote:'Laptop screen updated',due:'03/24',
      versions:[{n:'v003',s:'pf',note:'Laptop screen updated',date:'03/24',latest:true},{n:'v002',s:'nts',note:'Respeed timing off',date:'03/21'},{n:'v001',s:'rev',note:'First pass',date:'03/18'}]},
@@ -1601,20 +1601,20 @@ const SHOTS = [
      versions:[{n:'v001',s:'rev',note:'Phone screen tracking',date:'03/18',latest:true}]},
     {name:'PAINT',status:'rdy',who:'Christina Spring',bid:6.0,used:2.5,verStatus:'rev',verNote:'Paint roto needed',due:null,
      versions:[{n:'v001',s:'rev',note:'Paint roto needed',date:'03/17',latest:true}]},
-    {name:'ROTO',status:'rdy',who:'Christina Spring',bid:4.0,used:0,verStatus:'rev',verNote:'â€”',due:null,
-     versions:[{n:'v001',s:'rev',note:'â€”',date:'03/17',latest:true}]},
+    {name:'ROTO',status:'rdy',who:'Christina Spring',bid:4.0,used:0,verStatus:'rev',verNote:' - ',due:null,
+     versions:[{n:'v001',s:'rev',note:' - ',date:'03/17',latest:true}]},
     {name:'INGEST',status:'cmpt',who:'Coordinators',bid:0,used:0,verStatus:'rev',verNote:'Ingested',due:null,
      versions:[{n:'v001',s:'rev',note:'Ingested',date:'03/05',latest:true}]}
    ],
-   notes:'Phone screen ON comp. Miranda phone screen timing issue from 3/18 client call.\n\nHold pending updated GFX from editorial â€” do not proceed until file is received.'},
-  {code:'016_BFR_0090',desc:'Andy laptop comp â€” Plate 70% respeed',tags:['03/21','03/24','Problem','GFX'],status:'crvw',verStatus:'crvw',del:'03/05/26',pctBid:735,cg:true,matte:true,
+   notes:'Phone screen ON comp. Miranda phone screen timing issue from 3/18 client call.\n\nHold pending updated GFX from editorial  -  do not proceed until file is received.'},
+  {code:'016_BFR_0090',desc:'Andy laptop comp  -  Plate 70% respeed',tags:['03/21','03/24','Problem','GFX'],status:'crvw',verStatus:'crvw',del:'03/05/26',pctBid:735,cg:true,matte:true,
    tasks:[
     {name:'COMP',status:'crvw',who:'Arslan Naqvi, Ruben Rodas',bid:0.5,used:6.0,verStatus:'crvw',verNote:'Client review submitted',due:'03/24',
      versions:[{n:'v003',s:'crvw',note:'Client review submitted',date:'03/24',latest:true},{n:'v002',s:'nts',note:'Notes from client',date:'03/21'},{n:'v001',s:'rev',note:'First comp',date:'03/18'}]},
     {name:'INGEST',status:'cmpt',who:'Coordinators',bid:0,used:0,verStatus:'crvw',verNote:'Ingested',due:null,
      versions:[{n:'v001',s:'crvw',note:'Ingested',date:'03/05',latest:true}]}
    ],
-   notes:'Andy laptop comp. High bid overrun â€” multiple rounds of client notes on respeed timing.'},
+   notes:'Andy laptop comp. High bid overrun  -  multiple rounds of client notes on respeed timing.'},
   {code:'028_FAM_0020',desc:'Elevator numbers on INT elevator screens',tags:['03/21','03/24','Problem','Trailer'],status:'apdi',verStatus:'crvw',del:'03/05/26',pctBid:32,cg:false,matte:false,
    tasks:[
     {name:'COMP',status:'apdi',who:'Arslan Naqvi',bid:0.5,used:0.5,verStatus:'crvw',verNote:'APDI submitted',due:'03/24',
@@ -1624,7 +1624,7 @@ const SHOTS = [
     {name:'INGEST',status:'cmpt',who:'Coordinators',bid:0,used:0,verStatus:'crvw',verNote:'Ingested',due:null,
      versions:[{n:'v001',s:'crvw',note:'Ingested',date:'03/05',latest:true}]}
    ],
-   notes:'Elevator numbers on INT elevator screens â€” trailer shot.'},
+   notes:'Elevator numbers on INT elevator screens  -  trailer shot.'},
   {code:'044_WRK_0090',desc:'Andy laptop comp',tags:['03/21','03/24','Problem'],status:'crvw',verStatus:'rev',del:'03/12/26',pctBid:73,cg:false,matte:false,
    tasks:[
     {name:'COMP',status:'ip',who:'Ruben Rodas, Victoria Root',bid:6.0,used:8.75,verStatus:'rev',verNote:'Pending review',due:null,
@@ -1632,8 +1632,8 @@ const SHOTS = [
     {name:'INGEST',status:'cmpt',who:'Coordinators',bid:1.0,used:1.0,verStatus:'rev',verNote:'Ingested',due:null,
      versions:[{n:'v001',s:'rev',note:'Ingested',date:'03/12',latest:true}]}
    ],
-   notes:'Andy laptop comp â€” workspace scene.'},
-  {code:'049_FND_0010',desc:'iPad comp â€” split to keep hands stable',tags:['03/18','03/24','High','Problem'],status:'ip',verStatus:'fin',del:'03/05/26',pctBid:628,cg:false,matte:false,
+   notes:'Andy laptop comp  -  workspace scene.'},
+  {code:'049_FND_0010',desc:'iPad comp  -  split to keep hands stable',tags:['03/18','03/24','High','Problem'],status:'ip',verStatus:'fin',del:'03/05/26',pctBid:628,cg:false,matte:false,
    tasks:[
     {name:'COMP',status:'cmpt',who:'Arslan Naqvi',bid:0.5,used:5.75,verStatus:'fin',verNote:'Final approved',due:'03/24',
      versions:[{n:'v003',s:'fin',note:'Final approved',date:'03/24',latest:true},{n:'v002',s:'pf',note:'Prop final',date:'03/21'},{n:'v001',s:'rev',note:'First pass',date:'03/18'}]},
@@ -1642,7 +1642,7 @@ const SHOTS = [
     {name:'INGEST',status:'cmpt',who:'Coordinators',bid:0,used:0,verStatus:'fin',verNote:'Ingested',due:null,
      versions:[{n:'v001',s:'fin',note:'Ingested',date:'03/05',latest:true}]}
    ],
-   notes:'iPad comp. High overrun â€” split required to stabilize hands. Multiple comp passes needed due to plate quality.'},
+   notes:'iPad comp. High overrun  -  split required to stabilize hands. Multiple comp passes needed due to plate quality.'},
   {code:'018_REU_0005',desc:'Respeed',tags:['03/18','Done','Trailer'],status:'crvw',verStatus:'pf',del:'03/12/26',pctBid:0,cg:false,matte:false,
    tasks:[
     {name:'COMP',status:'crvw',who:'Ruben Rodas',bid:24.0,used:0,verStatus:'pf',verNote:'Prop final',due:'03/04',
@@ -1709,7 +1709,7 @@ function goShots(code, name, client) {
 }
 
 function goDetail(shot) {
-  // called from shots list â€” go right (deeper)
+  // called from shots list  -  go right (deeper)
   currentShot = shot;
   const sc = SC[shot.status] || '#8e8e93';
   document.getElementById('detail-code').textContent = shot.code;
@@ -1745,9 +1745,9 @@ function renderShotList() {
         <div class="task-name">${t.name}</div>
         <div><span class="task-stat-lbl" style="background:${hexToRgba(tc,0.12)};color:${tc}">${t.status}</span></div>
         <div class="task-who">${t.who}</div>
-        <div class="task-bid">${t.bid > 0 ? t.bid+'d' : 'â€”'} <span class="${over?'red':''}">${over?'+'+((t.used-t.bid).toFixed(2)):'ok'}</span></div>
+        <div class="task-bid">${t.bid > 0 ? t.bid+'d' : ' - '} <span class="${over?'red':''}">${over?'+'+((t.used-t.bid).toFixed(2)):'ok'}</span></div>
         <div class="task-vpip" style="background:${vc2}"></div>
-        <div class="task-due-lbl">${t.due||'â€”'}</div>
+        <div class="task-due-lbl">${t.due||' - '}</div>
       </div>`;
     }).join('');
     return `<div class="shot-row" style="--sc:${sc}" onclick="goDetail(SHOTS[${i}])">
@@ -1960,7 +1960,7 @@ function renderShowsFull() {
     </div>`;
   }).join('') || `<div class="tasks-empty">
     <svg viewBox="0 0 24 24" width="40" height="40"><rect x="3" y="9" width="18" height="12"/><polyline points="3,9 12,3 21,9"/></svg>
-    <p>No shows registered â€” tap + REGISTER</p>
+    <p>No shows registered  -  tap + REGISTER</p>
   </div>`;
 }
 
@@ -1989,15 +1989,15 @@ function getDemoTasks() {
   const today = new Date();
   const d = (offset) => { const dt = new Date(today); dt.setDate(dt.getDate()+offset); return dt.toISOString().split('T')[0]; };
   return [
-    {title:'Comp review â€” 016_BFR_0070', due:d(0),  dur:'1h',  show:'CRL', pri:'high', notes:'Client feedback round 3. Address motion blur on BG plate and edge fringe on hero.', done:false, created:Date.now()},
-    {title:'Deliver paint fixes â€” 018_REU_0215', due:d(0),  dur:'2h',  show:'CRL', pri:'high', notes:'Wire removal + dust busting. Confirm clean plate matches.', done:false, created:Date.now()},
-    {title:'Roto QC pass â€” seq 044', due:d(1),  dur:'30m', show:'CRL', pri:'med',  notes:'Check edge quality on all roto delivered this week before sending to comp.', done:false, created:Date.now()},
-    {title:'Update ShotGrid status â€” AIG deliveries', due:d(1),  dur:'15m', show:'AIG', pri:'med',  notes:'Mark 003_BFR_0180 and 028_FAM_0020 as delivered.', done:false, created:Date.now()},
+    {title:'Comp review  -  016_BFR_0070', due:d(0),  dur:'1h',  show:'CRL', pri:'high', notes:'Client feedback round 3. Address motion blur on BG plate and edge fringe on hero.', done:false, created:Date.now()},
+    {title:'Deliver paint fixes  -  018_REU_0215', due:d(0),  dur:'2h',  show:'CRL', pri:'high', notes:'Wire removal + dust busting. Confirm clean plate matches.', done:false, created:Date.now()},
+    {title:'Roto QC pass  -  seq 044', due:d(1),  dur:'30m', show:'CRL', pri:'med',  notes:'Check edge quality on all roto delivered this week before sending to comp.', done:false, created:Date.now()},
+    {title:'Update ShotGrid status  -  AIG deliveries', due:d(1),  dur:'15m', show:'AIG', pri:'med',  notes:'Mark 003_BFR_0180 and 028_FAM_0020 as delivered.', done:false, created:Date.now()},
     {title:'Send bid estimate to Katherine', due:d(2),  dur:'30m', show:'CRL', pri:'high', notes:'Remaining comp bid for seqs 044 and 049. Include over-bid breakdown.', done:false, created:Date.now()},
     {title:'Pull Cerulean turnover package', due:d(2),  dur:'1h',  show:'CRL', pri:'med',  notes:'Confirm all EXRs and OCIOs are correct. Check frame handles.', done:false, created:Date.now()},
-    {title:'OCIO config update â€” Nuke env', due:d(4),  dur:'2h',  show:'',    pri:'low',  notes:'Bump to latest ACES config. Test on CRL shots before rolling to team.', done:false, created:Date.now()},
+    {title:'OCIO config update  -  Nuke env', due:d(4),  dur:'2h',  show:'',    pri:'low',  notes:'Bump to latest ACES config. Test on CRL shots before rolling to team.', done:false, created:Date.now()},
     {title:'Deadline credential renewal', due:d(5),  dur:'15m', show:'',    pri:'low',  notes:'AWS Deadline Cloud creds expire. Renew before render queue goes down.', done:false, created:Date.now()},
-    {title:'Pitch deck â€” new show inquiry', due:d(7),  dur:'4h',  show:'',    pri:'med',  notes:'Prepare CBFX capabilities deck for potential episodic. Reference Cerulean work.', done:false, created:Date.now()},
+    {title:'Pitch deck  -  new show inquiry', due:d(7),  dur:'4h',  show:'',    pri:'med',  notes:'Prepare CBFX capabilities deck for potential episodic. Reference Cerulean work.', done:false, created:Date.now()},
     {title:'Review AdditiveKeyer gizmo with team', due:d(9),  dur:'1h',  show:'CRL', pri:'low',  notes:'Walk Arslan and Christina through fog/atmospheric presets. Document workflow.', done:false, created:Date.now()},
   ];
 }
@@ -2056,7 +2056,7 @@ function renderTasks() {
   if (activeTaskTab === 'show') {
     const byShow = {};
     TASKS.filter(t => !t.done).forEach(t => {
-      const key = t.show || 'â€” No Show â€”';
+      const key = t.show || ' -  No Show  - ';
       if (!byShow[key]) byShow[key] = [];
       byShow[key].push(t);
     });
@@ -2098,7 +2098,7 @@ function taskHTML(t, idx) {
       <div class="ti-title">${t.title}</div>
       <div class="ti-meta">
         ${t.show ? `<span class="ti-show">${t.show}</span>` : ''}
-        ${t.due ? `<span class="ti-due${overdue?' overdue':''}">${todayFlag?'TODAY':overdue?'OVERDUE â€” ':''} ${formatDate(t.due)}</span>` : ''}
+        ${t.due ? `<span class="ti-due${overdue?' overdue':''}">${todayFlag?'TODAY':overdue?'OVERDUE  -  ':''} ${formatDate(t.due)}</span>` : ''}
         ${t.dur ? `<span class="ti-dur">&#9201; ${t.dur}</span>` : ''}
       </div>
     </div>
@@ -2136,8 +2136,8 @@ function openAddTask(prefill) {
   });
   // populate show dropdown
   const sel = document.getElementById('f-task-show');
-  sel.innerHTML = '<option value="">â€” No show â€”</option>' +
-    SHOWS.map(s => `<option value="${s.code}">${s.code} â€” ${s.name}</option>`).join('');
+  sel.innerHTML = '<option value=""> -  No show  - </option>' +
+    SHOWS.map(s => `<option value="${s.code}">${s.code}  -  ${s.name}</option>`).join('');
   sel.value = prefill?.show || '';
   openModal('addTaskModal');
   requestAnimationFrame(() => autoExpandAll(document.getElementById('addTaskModal')));
@@ -2157,8 +2157,8 @@ function openEditTask(idx) {
     b.classList.toggle('sel', b.dataset.pri === selectedPri);
   });
   const sel = document.getElementById('f-task-show');
-  sel.innerHTML = '<option value="">â€” No show â€”</option>' +
-    SHOWS.map(s => `<option value="${s.code}">${s.code} â€” ${s.name}</option>`).join('');
+  sel.innerHTML = '<option value=""> -  No show  - </option>' +
+    SHOWS.map(s => `<option value="${s.code}">${s.code}  -  ${s.name}</option>`).join('');
   sel.value = t.show || '';
   openModal('addTaskModal');
   requestAnimationFrame(() => autoExpandAll(document.getElementById('addTaskModal')));
@@ -2196,7 +2196,7 @@ function deleteTask() {
 function syncToAkiflow() {
   const pending = TASKS.filter(t => !t.done);
   if (!pending.length) { document.getElementById('sync-status').textContent = 'No tasks to sync'; return; }
-  // Build iOS Reminders-compatible format â€” deep link via URL scheme
+  // Build iOS Reminders-compatible format  -  deep link via URL scheme
   // Akiflow supports calendar/reminders integration
   const btn = document.querySelector('.sync-btn');
   btn.textContent = 'SYNCING...';
@@ -2352,9 +2352,9 @@ function renderShotListFiltered(shots) {
         <div class="task-name">${t.name}</div>
         <div><span class="task-stat-lbl" style="background:${hexToRgba(tc,0.12)};color:${tc}">${t.status}</span></div>
         <div class="task-who">${t.who}</div>
-        <div class="task-bid">${t.bid>0?t.bid+'d':'â€”'} <span class="${over?'red':''}">${over?'+'+((t.used-t.bid).toFixed(2)):'ok'}</span></div>
+        <div class="task-bid">${t.bid>0?t.bid+'d':' - '} <span class="${over?'red':''}">${over?'+'+((t.used-t.bid).toFixed(2)):'ok'}</span></div>
         <div class="task-vpip" style="background:${vc2}"></div>
-        <div class="task-due-lbl">${t.due||'â€”'}</div>
+        <div class="task-due-lbl">${t.due||' - '}</div>
       </div>`;
     }).join('');
     return `<div class="shot-row" style="--sc:${sc2}" onclick="goDetail(SHOTS[${idx}])">
@@ -2368,7 +2368,7 @@ function renderShotListFiltered(shots) {
         <div class="shot-right">
           <div class="shot-s-chip" style="background:${hexToRgba(sc2,0.15)};color:${sc2}">${s.status.toUpperCase()}</div>
           <div class="shot-v-pip"><div class="shot-v-dot" style="background:${vc}"></div><span class="shot-v-lbl">${s.verStatus.toUpperCase()}</span></div>
-          <div class="shot-del">${s.del||'â€”'}</div>
+          <div class="shot-del">${s.del||' - '}</div>
         </div>
       </div>
       <div class="task-list">${tasks}</div>
@@ -2507,13 +2507,13 @@ const WORKFLOW_PROMPTS = {
     const blockers = SHOTS.filter(s => s.status === 'blkd' || s.status === 'hld');
     const overBid  = SHOTS.filter(s => s.pctBid > 100);
     const pending  = SHOTS.filter(s => s.verStatus === 'rev' || s.verStatus === 'nts');
-    return `You are HANGAR INTEL, a VFX production assistant for CBFX. Be concise and direct â€” bullet points preferred.
+    return `You are HANGAR INTEL, a VFX production assistant for CBFX. Be concise and direct  -  bullet points preferred.
 
 Current show data:
 - Total shots: ${SHOTS.length}
 - Blocked/On Hold: ${blockers.map(s=>s.code).join(', ')||'None'}
 - Over bid (>100%): ${overBid.map(s=>s.code+' ('+s.pctBid+'%)').join(', ')||'None'}
-- Pending review/notes: ${pending.map(s=>s.code+' â€” '+s.verStatus).join(', ')||'None'}
+- Pending review/notes: ${pending.map(s=>s.code+'  -  '+s.verStatus).join(', ')||'None'}
 
 Generate a concise daily brief for the VFX supervisor. What needs attention today?`;
   },
@@ -2536,7 +2536,7 @@ Shot summary:
 ${Object.entries(byStatus).map(([st,n]) => `- ${st.toUpperCase()}: ${n} shots`).join('\n')}
 
 Shots in client review / proposed final:
-${crvw.map(s => `- ${s.code}: ${s.desc?.substring(0,60)||'â€”'}`).join('\n')||'None currently'}
+${crvw.map(s => `- ${s.code}: ${s.desc?.substring(0,60)||' - '}`).join('\n')||'None currently'}
 
 Write a concise, professional status update suitable for sending to the client/studio.`;
   },
@@ -2819,7 +2819,7 @@ function toggleCrewCard(i) {
 function pingCrew(i) {
   const c = OPS.crew[i];
   if (!c) return;
-  if (c.email) window.location.href = `mailto:${c.email}?subject=Availability Check&body=Hey ${c.name.split(' ')[0]},%0A%0AHope all's well! Checking in on your availability â€” do you have any open dates coming up?%0A%0AThanks`;
+  if (c.email) window.location.href = `mailto:${c.email}?subject=Availability Check&body=Hey ${c.name.split(' ')[0]},%0A%0AHope all's well! Checking in on your availability  -  do you have any open dates coming up?%0A%0AThanks`;
   else if (c.phone) window.location.href = `tel:${c.phone}`;
   else toast('NO CONTACT INFO');
 }
@@ -3049,7 +3049,7 @@ function renderDemand() {
     const gapClass   = gap < 0 ? 'need' : gap < bidDays*0.1 ? 'tight' : 'ok';
     const gapText    = gap < 0 ? `${Math.abs(Math.round(gap))}d SHORT` : gap === 0 ? 'EXACT' : 'ON TRACK';
     const alertHtml  = gap < 0
-      ? `<div class="dc-alert"><div class="dc-alert-dot"></div><div class="dc-alert-txt">UNDER-RESOURCED â€” need ~${Math.ceil(Math.abs(gap)/5/weeksTotal)} more artist${Math.ceil(Math.abs(gap)/5/weeksTotal)>1?'s':''} to hit delivery</div></div>`
+      ? `<div class="dc-alert"><div class="dc-alert-dot"></div><div class="dc-alert-txt">UNDER-RESOURCED  -  need ~${Math.ceil(Math.abs(gap)/5/weeksTotal)} more artist${Math.ceil(Math.abs(gap)/5/weeksTotal)>1?'s':''} to hit delivery</div></div>`
       : '';
 
     // â”€â”€ STAFFING TIMELINE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
@@ -3085,7 +3085,7 @@ function renderDemand() {
     }
 
     if (rotoNeed > 0) {
-      // Roto starts earliest â€” needs to feed comp
+      // Roto starts earliest  -  needs to feed comp
       const startOffset = 0;
       const duration    = Math.round(weeksTotal * 0.65);
       const startBy     = startDate ? new Date(startDate) : new Date(today.getTime() + (weeksLeft - duration)*7*24*60*60*1000);
@@ -3119,7 +3119,7 @@ function renderDemand() {
       partial: false,
     });
 
-    const fmtDate = dt => dt ? dt.toLocaleDateString('en-US',{month:'short',day:'numeric'}) : 'â€”';
+    const fmtDate = dt => dt ? dt.toLocaleDateString('en-US',{month:'short',day:'numeric'}) : ' - ';
     const totalBars = Math.min(weeksTotal, 12); // cap display at 12 weeks
 
     const ganttRows = roles.map(r => {
@@ -3258,7 +3258,7 @@ function renderRolodex() {
     return matchQ && matchF;
   });
   if (!data.length) {
-    el.innerHTML = `<div style="padding:30px 0;text-align:center;font-family:var(--mono);font-size:10px;color:var(--t2)">NO CONTACTS${q?' MATCH':''}${!OPS.rolodex.length?' â€” ADD YOUR FIRST':''}</div>
+    el.innerHTML = `<div style="padding:30px 0;text-align:center;font-family:var(--mono);font-size:10px;color:var(--t2)">NO CONTACTS${q?' MATCH':''}${!OPS.rolodex.length?'  -  ADD YOUR FIRST':''}</div>
     <button class="rdx-add-btn" onclick="openModePickerFor('rolodex', openRdxAdd)">
       <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>ADD TO ROLODEX</button>`;
     return;
@@ -3321,7 +3321,7 @@ function pingRdx(i) {
   // Update last check date
   OPS.rolodex[i].lastcheck = new Date().toISOString().split('T')[0];
   saveOps();
-  if (r.email) window.location.href = `mailto:${r.email}?subject=Availability&body=Hey ${r.name.split(' ')[0]},%0A%0AHope you're doing well! Wanted to check in on your availability â€” are you open for work in the coming weeks?%0A%0AThanks`;
+  if (r.email) window.location.href = `mailto:${r.email}?subject=Availability&body=Hey ${r.name.split(' ')[0]},%0A%0AHope you're doing well! Wanted to check in on your availability  -  are you open for work in the coming weeks?%0A%0AThanks`;
   else if (r.phone) window.location.href = `tel:${r.phone}`;
   else toast('NO CONTACT INFO');
 }
@@ -3506,7 +3506,7 @@ function processCSV(file) {
   reader.onload = (e) => {
     const text = e.target.result;
     const lines = text.split('\n').filter(l => l.trim());
-    // Parse CSV rows â€” handle quoted multiline fields
+    // Parse CSV rows  -  handle quoted multiline fields
     const rows = parseCSVRows(text);
 
     // Skip header rows (ShotGrid exports have 2 header rows)
@@ -3545,7 +3545,7 @@ function processCSV(file) {
         shotMap[code].tasks.push({
           name: taskName.toUpperCase().substring(0,8),
           status: taskSt || 'wtg',
-          who: assignee || 'â€”',
+          who: assignee || ' - ',
           bid, used: bid + bidpm,
           verStatus: latVer || 'rev',
           verNote: '', due: due || null,
@@ -3620,7 +3620,7 @@ function runImport() {
       // Replace SHOTS array
       SHOTS.length = 0;
       parsedCSV.forEach(s => SHOTS.push(s));
-      lbl.textContent = `Done â€” ${total} shots loaded`;
+      lbl.textContent = `Done  -  ${total} shots loaded`;
       fill.style.width = '100%';
       log.innerHTML += `<br><span style="color:var(--ac)">&#x2713; HANGAR updated</span>`;
       renderShotList();
@@ -3644,14 +3644,14 @@ const WIZARDS = {
   task: {
     title: 'New Task',
     steps: [
-      { key:'title',    type:'text',   question:"What needs to get done?",            hint:"Be specific â€” this becomes the task title.", placeholder:"e.g. Comp review â€” 016_BFR_0070", label:'TASK' },
+      { key:'title',    type:'text',   question:"What needs to get done?",            hint:"Be specific  -  this becomes the task title.", placeholder:"e.g. Comp review  -  016_BFR_0070", label:'TASK' },
       { key:'due',      type:'date',   question:"When does it need to be done by?",   hint:"Pick a due date, or skip if open-ended.", label:'DUE DATE' },
       { key:'dur',      type:'select', question:"How long will it take?",             hint:"Rough estimate is fine.", label:'EST. TIME',
         options:[{val:'15m',lbl:'15 min'},{val:'30m',lbl:'30 min'},{val:'1h',lbl:'1 hour'},{val:'2h',lbl:'2 hours'},{val:'4h',lbl:'Half day'},{val:'1d',lbl:'Full day'}] },
       { key:'pri',      type:'select', question:"How urgent is this?",                hint:"This affects how it shows up in your list.", label:'PRIORITY',
-        options:[{val:'high',lbl:'HIGH â€” needs to happen now'},{val:'med',lbl:'MED â€” this week'},{val:'low',lbl:'LOW â€” when I get to it'},{val:'none',lbl:'No priority'}] },
+        options:[{val:'high',lbl:'HIGH  -  needs to happen now'},{val:'med',lbl:'MED  -  this week'},{val:'low',lbl:'LOW  -  when I get to it'},{val:'none',lbl:'No priority'}] },
       { key:'show',     type:'showpick', question:"Is this for a specific show?",     hint:"Link it to a show for filtering.", label:'SHOW' },
-      { key:'notes',    type:'textarea', question:"Any notes to add?",                hint:"Context, links, reminders â€” anything useful.", placeholder:"Optional notesâ€¦", label:'NOTES' },
+      { key:'notes',    type:'textarea', question:"Any notes to add?",                hint:"Context, links, reminders  -  anything useful.", placeholder:"Optional notesâ€¦", label:'NOTES' },
     ],
   },
   crew: {
@@ -3662,10 +3662,10 @@ const WIZARDS = {
       { key:'skills',   type:'chips',  question:"What are their skills?",             hint:"Select all that apply.", label:'SKILLS',
         options:['COMP','ROTO','PAINT','FX','LEAD','PROD','3D','GRADE','ANIM'] },
       { key:'status',   type:'select', question:"What's their current status?",       hint:"Are they working on something right now?", label:'STATUS',
-        options:[{val:'active',lbl:'ACTIVE â€” on a show'},{val:'avail',lbl:'AVAILABLE â€” open for work'},{val:'penciled',lbl:'PENCILED â€” tentatively planned'},{val:'unavail',lbl:'UNAVAILABLE'}] },
+        options:[{val:'active',lbl:'ACTIVE  -  on a show'},{val:'avail',lbl:'AVAILABLE  -  open for work'},{val:'penciled',lbl:'PENCILED  -  tentatively planned'},{val:'unavail',lbl:'UNAVAILABLE'}] },
       { key:'show',     type:'text',   question:"Which show are they on?",            hint:"Show code, e.g. CRL, AIG. Skip if not applicable.", placeholder:"e.g. CRL", label:'SHOW' },
       { key:'email',    type:'text',   question:"What's their email?",                hint:"Used for the PING button.", placeholder:"name@email.com", label:'EMAIL' },
-      { key:'phone',    type:'text',   question:"Phone number?",                      hint:"Optional â€” used for quick contact.", placeholder:"+1 555 000 0000", label:'PHONE' },
+      { key:'phone',    type:'text',   question:"Phone number?",                      hint:"Optional  -  used for quick contact.", placeholder:"+1 555 000 0000", label:'PHONE' },
       { key:'rate',     type:'select', question:"What's their rate tier?",            hint:"Approximate seniority level.", label:'RATE TIER',
         options:[{val:'junior',lbl:'JUNIOR'},{val:'mid',lbl:'MID'},{val:'senior',lbl:'SENIOR'},{val:'lead',lbl:'LEAD'},{val:'sup',lbl:'SUPERVISOR'}] },
       { key:'notes',    type:'textarea', question:"Any notes about them?",            hint:"How you know them, quality of work, preferencesâ€¦", placeholder:"Notesâ€¦", label:'NOTES' },
@@ -3678,7 +3678,7 @@ const WIZARDS = {
       { key:'name',     type:'text',   question:"Full show name?",                    hint:"As it appears in deliverables.", placeholder:"e.g. Cerulean", label:'SHOW NAME' },
       { key:'client',   type:'text',   question:"Who's the client or studio?",        hint:"Production company or direct client.", placeholder:"e.g. Netflix, A24", label:'CLIENT' },
       { key:'type',     type:'select', question:"What's the status of this show?",    hint:"Active = in production now.", label:'TYPE',
-        options:[{val:'active',lbl:'ACTIVE â€” in production now'},{val:'upcoming',lbl:'UPCOMING â€” confirmed, not started'},{val:'theoretical',lbl:'THEORETICAL â€” planning only'}] },
+        options:[{val:'active',lbl:'ACTIVE  -  in production now'},{val:'upcoming',lbl:'UPCOMING  -  confirmed, not started'},{val:'theoretical',lbl:'THEORETICAL  -  planning only'}] },
       { key:'start',    type:'date',   question:"When does work start?",              hint:"Or when did it start.", label:'START DATE' },
       { key:'due',      type:'date',   question:"When is final delivery?",            hint:"Hard deadline.", label:'DELIVERY DATE' },
       { key:'bid',      type:'text',   question:"How many total bid days?",           hint:"Sum of all tasks across all artists.", placeholder:"e.g. 240", label:'TOTAL BID DAYS' },
@@ -3695,7 +3695,7 @@ const WIZARDS = {
       { key:'skills',    type:'chips',   question:"What are their skills?",           hint:"Select all that apply.", label:'SKILLS',
         options:['COMP','ROTO','PAINT','FX','LEAD','PROD','3D','GRADE','ANIM'] },
       { key:'avail',     type:'select',  question:"Do you know their availability?",  hint:"Last known status.", label:'AVAILABILITY',
-        options:[{val:'avail',lbl:'AVAILABLE â€” open right now'},{val:'booked',lbl:'BOOKED â€” on something'},{val:'wrapping',lbl:'WRAPPING SOON'},{val:'unknown',lbl:"DON'T KNOW"}] },
+        options:[{val:'avail',lbl:'AVAILABLE  -  open right now'},{val:'booked',lbl:'BOOKED  -  on something'},{val:'wrapping',lbl:'WRAPPING SOON'},{val:'unknown',lbl:"DON'T KNOW"}] },
       { key:'email',     type:'text',    question:"Email address?",                   hint:"How you'd reach them.", placeholder:"name@email.com", label:'EMAIL' },
       { key:'phone',     type:'text',    question:"Phone number?",                    hint:"Optional.", placeholder:"+1 555 000 0000", label:'PHONE' },
       { key:'company',   type:'text',    question:"What studio or company are they at?", hint:"Or freelance.", placeholder:"e.g. ILM, freelance", label:'COMPANY' },
@@ -3932,7 +3932,7 @@ function wizCommit() {
 
 </script>
 <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-     MODE PICKER â€” Form vs Wizard
+     MODE PICKER  -  Form vs Wizard
 â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
 <div id="modePickerOverlay" style="position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:10300;display:none;align-items:flex-end;justify-content:center">
   <div style="width:100%;max-width:480px;background:#161718;border-radius:24px 24px 0 0;padding:0 0 max(var(--safe-b),28px)">
