@@ -1,4 +1,4 @@
-<!-- VTEK HANGAR BUILD_ID=HGR-044 -->
+<!-- VTEK HANGAR BUILD_ID=HGR-045 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -2121,25 +2121,21 @@ function taskHTML(t, idx) {
 }
 
 function toggleTask(idx) {
-  // Stage 1: tap checkbox → pending state (indented + confirm button appears)
   const el = document.querySelector(`.task-item[data-idx="${idx}"]`);
   if (!el) { TASKS[idx].done = !TASKS[idx].done; saveTasks(); renderTasks(); return; }
 
   if (el.classList.contains('pending')) {
-    // Already pending — undo (cancel)
-    el.classList.remove('pending');
+    // Already pending — checkbox tap cancels it
+    undoTask(idx);
     return;
   }
   if (el.classList.contains('completing') || TASKS[idx].done) {
-    // Already completing or done — just toggle back
     TASKS[idx].done = !TASKS[idx].done;
     saveTasks(); renderTasks(); return;
   }
 
   // Enter pending state
   el.classList.add('pending');
-
-  // Swap right side: hide edit button, show DONE + UNDO
   const right = el.querySelector('.ti-right');
   if (right) {
     right.innerHTML = `
