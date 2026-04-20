@@ -1,4 +1,4 @@
-<!-- VTEK HANGAR BUILD_ID=HGR-058 -->
+<!-- VTEK HANGAR BUILD_ID=HGR-059 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1033,8 +1033,8 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
     <button class="tb-back" onclick="navTo('shots')"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;flex-shrink:0"><polyline points="10,3 4,8 10,13"/></svg>SHOTS</button>
     <span class="tb-title" id="detail-code">016_BFR_0070</span>
     <div class="tb-r">
-      <div class="tb-pill" id="detail-status-chip">CRVW</div>
-      <button class="tb-btn">EDIT</button>
+      <div class="tb-pill" id="detail-status-chip" onclick="openQuickStatus()" style="cursor:pointer">CRVW</div>
+      <button class="tb-btn" onclick="openEditCurrentShot()">EDIT</button>
     </div>
   </div>
   <div class="page-area"><div class="page no-pad" id="detail-page"></div></div>
@@ -1378,9 +1378,17 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
           <svg class="intel-wf-arrow" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;flex-shrink:0"><polyline points="9,18 15,12 9,6"/></svg>
         </div>
       </div>
+      <div class="intel-wf" onclick="startWorkflow('log')">
+        <div class="intel-wf-head">
+          <div class="intel-wf-icon" style="background:rgba(52,211,153,.12)"><svg viewBox="0 0 24 24" stroke="#34d399" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+          <div class="intel-wf-info">
+            <div class="intel-wf-name">Quick Log</div>
+            <div class="intel-wf-desc">Describe what happened in plain English — I'll parse it and update shot data</div>
+          </div>
+          <svg class="intel-wf-arrow" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;flex-shrink:0"><polyline points="9,18 15,12 9,6"/></svg>
+        </div>
+      </div>
     </div>
-
-    <div class="intel-chat" id="intelChat">
       <div class="intel-chat-head">
         <span class="intel-chat-title" id="chatTitle">DAILY BRIEF</span>
         <button class="intel-chat-close" onclick="closeChat()">&#x2715;</button>
@@ -1427,6 +1435,17 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
       <div class="sync-info"><div class="sync-title">Akiflow Sync</div><div class="sync-sub" id="sync-status">Not synced yet</div></div>
       <button class="sync-btn" onclick="syncToAkiflow()">SYNC</button>
     </div>
+
+    <!-- SUGGEST AI Schedule -->
+    <div id="suggest-banner" style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:rgba(29,217,240,.07);border:1px solid rgba(29,217,240,.15);border-radius:12px;margin-bottom:12px">
+      <div style="flex:1">
+        <div style="font-family:var(--mono);font-size:10px;font-weight:700;color:var(--ac);letter-spacing:.06em">AI SCHEDULE</div>
+        <div style="font-size:12px;color:var(--t2);margin-top:2px">Auto-plan your day based on open tasks</div>
+      </div>
+      <button class="sync-btn" onclick="aiSuggestDay()" id="suggest-btn">SUGGEST</button>
+    </div>
+
+    <div id="suggest-output" style="display:none;margin-bottom:14px"></div>
 
     <!-- Filter tabs -->
     <div style="display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;padding-bottom:2px">
@@ -1531,6 +1550,45 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
         <button class="btn-primary" onclick="saveShot()">SAVE SHOT</button>
         <button class="btn-secondary" onclick="guardedClose('addShotModal', ()=>closeModal('addShotModal'))">CANCEL</button>
         <button class="btn-danger" id="deleteShotBtn" onclick="deleteShot()" style="display:none">DELETE</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- QUICK STATUS SHEET -->
+<div class="modal-overlay" id="quickStatusModal" onclick="closeModalOut(event,'quickStatusModal')">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-head"><span class="modal-title">Change Status</span><button class="modal-close" onclick="closeModal('quickStatusModal')">&#x2715;</button></div>
+    <div class="modal-body" id="quickStatusBody"></div>
+  </div>
+</div>
+
+<!-- LOG VERSION MODAL -->
+<div class="modal-overlay" id="logVerModal" onclick="closeModalOut(event,'logVerModal')">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-head"><span class="modal-title" id="logVerTitle">Log Version</span><button class="modal-close" onclick="guardedClose('logVerModal', ()=>closeModal('logVerModal'))">&#x2715;</button></div>
+    <div class="modal-body">
+      <div class="field-group"><label class="field-label">Version #</label><input class="field-input" id="lv-num" placeholder="e.g. v004" style="text-transform:lowercase"></div>
+      <div class="field-group"><label class="field-label">Version Status</label>
+        <select class="field-select" id="lv-status">
+          <option value="rev">Rev — Pending Review</option>
+          <option value="nts">Notes — Has Notes</option>
+          <option value="vwd">Viewed</option>
+          <option value="crvw">Client Review</option>
+          <option value="pf">Proposed Final</option>
+          <option value="apdi">Approved PDI</option>
+          <option value="cbb">CBB</option>
+          <option value="tech">Tech Check</option>
+          <option value="qc">QC Notes</option>
+          <option value="temp">Temp</option>
+        </select>
+      </div>
+      <div class="field-group"><label class="field-label">Note</label><input class="field-input" id="lv-note" placeholder="e.g. Respeed timing adjusted, screen updated"></div>
+      <div class="modal-actions">
+        <button class="btn-primary" onclick="saveVersion()">LOG VERSION</button>
+        <button class="btn-secondary" onclick="guardedClose('logVerModal', ()=>closeModal('logVerModal'))">CANCEL</button>
       </div>
     </div>
   </div>
@@ -1818,7 +1876,8 @@ function renderDetail(s) {
     return `<span class="${cls}">${t}</span>`;
   }).join('');
 
-  const tasks = s.tasks.map(t => {
+  const shotIdx = SHOTS.findIndex(x => x.code === s.code);
+  const tasks = s.tasks.map((t, tIdx) => {
     const tc = SC[t.status] || '#8e8e93';
     const pct = t.bid > 0 ? Math.min((t.used/t.bid)*100, 100) : 0;
     const over = t.used > t.bid && t.bid > 0;
@@ -1853,7 +1912,13 @@ function renderDetail(s) {
           <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${barColor}"></div></div>
         </div>
       </div>
-      <div class="ver-chain"><div class="vc-title">VERSION HISTORY</div><div class="ver-list">${vers}</div></div>
+      <div class="ver-chain">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding-right:4px">
+          <div class="vc-title">VERSION HISTORY</div>
+          <button onclick="openLogVersion(${shotIdx},${tIdx})" style="font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.06em;color:var(--ac);background:rgba(29,217,240,.1);border:1px solid rgba(29,217,240,.25);border-radius:6px;padding:3px 8px;cursor:pointer">+ LOG VER</button>
+        </div>
+        <div class="ver-list">${vers}</div>
+      </div>
     </div>`;
   }).join('');
 
@@ -2251,6 +2316,101 @@ function deleteTask() {
 }
 
 // â”€â”€ AKIFLOW SYNC â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── AI SUGGEST DAY ──────────────────────────────────────
+function timeToMins(t) { const [h,m]=(t||'09:00').split(':').map(Number); return h*60+(m||0); }
+function minsToTime(m) { const h=Math.floor(m/60),mn=m%60; return String(h).padStart(2,'0')+':'+String(mn).padStart(2,'0'); }
+function fmtMins(m) { const h=Math.floor(m/60),mn=m%60; return h>0?(h+'h'+(mn>0?' '+mn+'m':'')):(mn+'m'); }
+
+async function aiSuggestDay() {
+  const open = TASKS.filter(t => !t.done);
+  if (!open.length) { toast('NO OPEN TASKS'); return; }
+
+  const btn = document.getElementById('suggest-btn');
+  btn.textContent = 'THINKING...';
+  btn.disabled = true;
+
+  const startMins = timeToMins('09:00');
+  const endMins   = timeToMins('18:00');
+  const totalAvail = endMins - startMins;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-5',
+        max_tokens: 1000,
+        messages: [{
+          role: 'user',
+          content: `Build a daily schedule for a VFX compositor/supervisor.
+Work window: 09:00 to 18:00 (${totalAvail} minutes available)
+TODAY: ${new Date().toLocaleDateString('en-US',{weekday:'long',month:'short',day:'numeric'})}
+
+TASKS (priority ordered):
+${open.map((t,i)=>`${i+1}. [${(t.pri||'med').toUpperCase()}] ${t.title} | est:${t.dur||45}min | due:${t.due||'no date'}`).join('\n')}
+
+Rules:
+- Include a 45min lunch break around 12:30
+- Add 10-15min buffer between major tasks
+- Prioritize HIGH/CRITICAL first
+- Don't schedule more than available time
+- Fit as many tasks as possible
+
+Reply ONLY with valid JSON, no markdown:
+{"schedule":[{"time":"09:00","title":"task title","dur":45,"pri":"high","type":"task"},{"time":"12:30","title":"Lunch","dur":45,"type":"break"}],"note":"one sentence about the day"}`
+        }]
+      })
+    });
+    const data = await res.json();
+    const raw = data.content?.[0]?.text || '';
+    let parsed;
+    try { parsed = JSON.parse(raw.replace(/```json|```/g,'').trim()); }
+    catch(e) { toast('SCHEDULE PARSE ERROR'); btn.textContent='SUGGEST'; btn.disabled=false; return; }
+    renderSchedule(parsed);
+  } catch(e) {
+    toast('SUGGEST FAILED — CHECK NETWORK');
+  }
+  btn.textContent = 'SUGGEST';
+  btn.disabled = false;
+}
+
+const PRI_C = { critical:'#ff5c5c', high:'#ff9800', med:'#f5a623', low:'#6c9acd' };
+
+function renderSchedule(data) {
+  const { schedule = [], note = '' } = data;
+  const out = document.getElementById('suggest-output');
+  if (!schedule.length) { out.style.display='none'; return; }
+
+  let totalMins = 0;
+  const blocks = schedule.map(b => {
+    totalMins += (b.dur || 0);
+    const isBreak = b.type === 'break';
+    const pc = PRI_C[b.pri] || '#8e8e93';
+    return `<div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:8px">
+      <div style="font-family:var(--mono);font-size:10px;color:var(--t2);padding-top:3px;width:38px;flex-shrink:0">${b.time}</div>
+      <div style="flex:1;background:${isBreak?'var(--s1)':'var(--s2)'};border-radius:10px;padding:9px 12px;border-left:3px solid ${isBreak?'var(--s3)':pc};box-shadow:var(--nm-out-sm)">
+        <div style="font-size:13px;color:${isBreak?'var(--t2)':'var(--t0)'};font-weight:${isBreak?'400':'600'}">${b.title}</div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--t2);margin-top:3px">${fmtMins(b.dur||0)}${!isBreak&&b.pri?' · '+b.pri.toUpperCase():''}</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  out.style.display = 'block';
+  out.innerHTML = `
+    <div style="background:var(--s2);border-radius:14px;padding:14px;box-shadow:var(--nm-card)">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <div style="font-family:var(--mono);font-size:10px;font-weight:700;color:var(--ac);letter-spacing:.06em">TODAY'S SCHEDULE</div>
+        <button onclick="document.getElementById('suggest-output').style.display='none'" style="font-family:var(--mono);font-size:9px;color:var(--t2);background:none;border:none;cursor:pointer;padding:0">✕ CLEAR</button>
+      </div>
+      ${note ? `<div style="font-size:12px;color:var(--t1);margin-bottom:12px;padding:8px 10px;background:rgba(29,217,240,.06);border-radius:8px;border-left:2px solid var(--ac)">${note}</div>` : ''}
+      ${blocks}
+      <div style="display:flex;justify-content:space-between;padding-top:8px;border-top:1px solid rgba(255,255,255,.05);margin-top:4px">
+        <div style="font-family:var(--mono);font-size:9px;color:var(--t2)">TOTAL SCHEDULED</div>
+        <div style="font-family:var(--mono);font-size:10px;font-weight:700;color:var(--t0)">${fmtMins(totalMins)}</div>
+      </div>
+    </div>`;
+}
+
 function syncToAkiflow() {
   const pending = TASKS.filter(t => !t.done);
   if (!pending.length) { document.getElementById('sync-status').textContent = 'No tasks to sync'; return; }
@@ -2544,6 +2704,109 @@ function deleteShot() {
   renderShotList();
   closeModal('addShotModal');
 }
+// ── DETAIL EDIT / QUICK STATUS / VERSION LOG ──────────────
+function openEditCurrentShot() {
+  if (!currentShot) return;
+  const idx = SHOTS.findIndex(s => s.code === currentShot.code);
+  if (idx < 0) return;
+  openEditShot(idx);
+}
+
+const SHOT_STATUSES = [
+  {k:'wtg',l:'Waiting'},   {k:'bid',l:'Bidding'},    {k:'rdy',l:'Ready'},
+  {k:'ip',l:'In Progress'},{k:'crvw',l:'Client Review'},{k:'apdi',l:'Apprvd PDI'},
+  {k:'apprvd',l:'Approved'},{k:'dlvr',l:'Delivered'}, {k:'cmpt',l:'Complete'},
+  {k:'hld',l:'On Hold'},   {k:'blkd',l:'Blocked'},   {k:'omt',l:'Omit'}
+];
+
+function openQuickStatus() {
+  if (!currentShot) return;
+  const current = currentShot.status;
+  document.getElementById('quickStatusBody').innerHTML =
+    SHOT_STATUSES.map(s => {
+      const c = SC[s.k] || '#8e8e93';
+      const active = s.k === current;
+      return `<div onclick="applyQuickStatus('${s.k}')" style="display:flex;align-items:center;gap:12px;padding:13px 16px;border-radius:12px;margin-bottom:6px;background:${active?`rgba(${hexToRgb(c)},.12)`:'var(--s2)'};cursor:pointer;border:1px solid ${active?c+'44':'transparent'}">
+        <div style="width:10px;height:10px;border-radius:50%;background:${c};flex-shrink:0"></div>
+        <div style="font-family:var(--mono);font-size:11px;font-weight:700;color:${active?c:'var(--t0)'};letter-spacing:.06em">${s.k.toUpperCase()}</div>
+        <div style="font-size:13px;color:var(--t1);flex:1">${s.l}</div>
+        ${active?`<svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="${c}" stroke-width="2.5"><polyline points="3,8 6,11 13,4"/></svg>`:''}
+      </div>`;
+    }).join('') + `<div style="height:8px"></div>`;
+  openModal('quickStatusModal');
+}
+
+function hexToRgb(hex) {
+  const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+  return `${r},${g},${b}`;
+}
+
+function applyQuickStatus(newStatus) {
+  if (!currentShot) return;
+  const idx = SHOTS.findIndex(s => s.code === currentShot.code);
+  if (idx < 0) return;
+  SHOTS[idx].status = newStatus;
+  currentShot = SHOTS[idx];
+  persistData();
+  // update chip in topbar
+  const c = SC[newStatus] || '#8e8e93';
+  const chip = document.getElementById('detail-status-chip');
+  chip.textContent = newStatus.toUpperCase();
+  chip.style.background = hexToRgba(c, 0.18);
+  chip.style.color = c;
+  renderDetail(currentShot);
+  renderShotList();
+  closeModal('quickStatusModal');
+  toast('STATUS → ' + newStatus.toUpperCase());
+}
+
+let logVerShotIdx = -1;
+let logVerTaskIdx = -1;
+
+function openLogVersion(shotIdx, taskIdx) {
+  logVerShotIdx = shotIdx;
+  logVerTaskIdx = taskIdx;
+  const t = SHOTS[shotIdx]?.tasks[taskIdx];
+  if (!t) return;
+  // suggest next version number
+  const maxVer = t.versions.reduce((m, v) => {
+    const n = parseInt((v.n||'v0').replace(/[^0-9]/g,'')) || 0;
+    return Math.max(m, n);
+  }, 0);
+  const nextN = 'v' + String(maxVer + 1).padStart(3, '0');
+  document.getElementById('lv-num').value = nextN;
+  document.getElementById('lv-status').value = 'rev';
+  document.getElementById('lv-note').value = '';
+  document.getElementById('logVerTitle').textContent = `Log Version — ${t.name}`;
+  openModal('logVerModal');
+}
+
+function saveVersion() {
+  const n = document.getElementById('lv-num').value.trim();
+  const s = document.getElementById('lv-status').value;
+  const note = document.getElementById('lv-note').value.trim();
+  if (!n) { toast('VERSION # REQUIRED'); return; }
+  const shot = SHOTS[logVerShotIdx];
+  if (!shot) return;
+  const task = shot.tasks[logVerTaskIdx];
+  if (!task) return;
+  // mark all existing as not latest
+  task.versions.forEach(v => v.latest = false);
+  const today = new Date();
+  const dateStr = (today.getMonth()+1).toString().padStart(2,'0') + '/' + today.getDate().toString().padStart(2,'0');
+  task.versions.unshift({ n, s, note: note || '—', date: dateStr, latest: true });
+  task.verStatus = s;
+  task.status = s === 'pf' || s === 'apdi' ? s : task.status;
+  // update shot-level verStatus to latest task's verStatus
+  shot.verStatus = s;
+  currentShot = shot;
+  persistData();
+  renderDetail(currentShot);
+  renderShotList();
+  closeModal('logVerModal');
+  toast('VERSION LOGGED — ' + n.toUpperCase());
+}
+
 function openAddShow() { openModal('addShowModal'); }
 function saveShow() {
   const code   = document.getElementById('f-show-code').value.trim().toUpperCase();
@@ -2598,10 +2861,26 @@ ${crvw.map(s => `- ${s.code}: ${s.desc?.substring(0,60)||' - '}`).join('\n')||'N
 
 Write a concise, professional status update suitable for sending to the client/studio.`;
   },
-  ask: () => `You are HANGAR INTEL, an AI assistant embedded in a VFX production management app called VTEK HANGAR by CBFX. You have access to ${SHOTS.length} shots and ${ARTISTS.length} artists. Answer questions about the production concisely and helpfully. Current show data: ${JSON.stringify(SHOTS.slice(0,5))}`
+  ask: () => `You are HANGAR INTEL, an AI assistant embedded in a VFX production management app called VTEK HANGAR by CBFX. You have access to ${SHOTS.length} shots and ${ARTISTS.length} artists. Answer questions about the production concisely and helpfully. Current show data: ${JSON.stringify(SHOTS.slice(0,5))}`,
+  log: () => {
+    const shotList = SHOTS.map(s => `${s.code} (${s.status})`).join(', ');
+    return `You are HANGAR INTEL's Quick Log parser. The user will describe something that happened on a VFX show in plain English. Parse their message and extract structured production updates.
+
+Known shots: ${shotList}
+
+Rules:
+- Identify any shot codes mentioned (full codes like 016_BFR_0070 or partial matches)
+- Extract: status changes, new version numbers, notes, assignee changes, delivery date changes
+- Shot statuses: wtg, bid, rdy, ip, crvw, apdi, apprvd, dlvr, cmpt, hld, blkd, omt
+- Version statuses: rev, nts, vwd, crvw, pf, apdi, cbb, tech, qc, temp
+- Respond ONLY with valid JSON in this exact format:
+{"updates":[{"shotCode":"016_BFR_0070","shotStatus":"crvw","newVersion":"v004","verStatus":"pf","note":"client approved","taskName":"COMP","assignee":"Ruben Rodas","del":"03/28/26"}],"summary":"one sentence plain English summary of what was logged"}
+- Include only fields that are explicitly mentioned or clearly implied
+- If nothing production-related is parseable, return {"updates":[],"summary":"Nothing to log — try describing a shot status change or version update"}`;
+  }
 };
 
-const WORKFLOW_TITLES = { brief:'DAILY BRIEF', risk:'RISK REPORT', status:'STATUS DRAFT', ask:'ASK INTEL' };
+const WORKFLOW_TITLES = { brief:'DAILY BRIEF', risk:'RISK REPORT', status:'STATUS DRAFT', ask:'ASK INTEL', log:'QUICK LOG' };
 
 function startWorkflow(wf) {
   currentWorkflow = wf;
@@ -2613,10 +2892,12 @@ function startWorkflow(wf) {
   msgs.innerHTML = '';
   chat.classList.add('open');
   chat.scrollIntoView({behavior:'smooth',block:'nearest'});
-  if (wf !== 'ask') {
-    sendToAI(WORKFLOW_PROMPTS[wf](), true);
+  if (wf === 'ask' || wf === 'log') {
+    addMsg('ai', wf === 'log'
+      ? 'Describe what happened — shot codes, status changes, new versions, notes. Plain English.'
+      : 'What do you want to know about the show?');
   } else {
-    addMsg('ai', 'What do you want to know about the show?');
+    sendToAI(WORKFLOW_PROMPTS[wf](), true);
   }
 }
 
@@ -2662,14 +2943,58 @@ async function sendToAI(userText, isSystem = false) {
     const data = await res.json();
     const reply = data.content?.[0]?.text || 'No response.';
     thinking.remove();
-    addMsg('ai', reply);
-    if (!isSystem) chatHistory.push({role:'assistant', content: reply});
-    else chatHistory = [{role:'user',content:systemPrompt},{role:'assistant',content:reply}];
+    if (currentWorkflow === 'log' && !isSystem) {
+      applyLogUpdates(reply);
+    } else {
+      addMsg('ai', reply);
+      if (!isSystem) chatHistory.push({role:'assistant', content: reply});
+      else chatHistory = [{role:'user',content:systemPrompt},{role:'assistant',content:reply}];
+    }
   } catch(e) {
     thinking.remove();
     addMsg('ai', 'Error connecting to Claude API. Check your network.');
   }
   document.getElementById('chatSendBtn').disabled = false;
+}
+
+function applyLogUpdates(raw) {
+  let parsed;
+  try {
+    const clean = raw.replace(/```json|```/g,'').trim();
+    parsed = JSON.parse(clean);
+  } catch(e) {
+    addMsg('ai', 'Could not parse — be more specific. e.g. "016_BFR_0070 is now client review, logged v004 as proposed final"');
+    return;
+  }
+  const { updates = [], summary = '' } = parsed;
+  if (!updates.length) { addMsg('ai', summary || 'Nothing to log.'); return; }
+  let changed = 0;
+  updates.forEach(u => {
+    const idx = SHOTS.findIndex(s => s.code === u.shotCode || s.code.includes(u.shotCode));
+    if (idx < 0) return;
+    const shot = SHOTS[idx];
+    if (u.shotStatus) shot.status = u.shotStatus;
+    if (u.del) shot.del = u.del;
+    if (u.newVersion) {
+      const tIdx = u.taskName ? shot.tasks.findIndex(t => t.name === u.taskName) : 0;
+      const task = shot.tasks[tIdx >= 0 ? tIdx : 0];
+      if (task) {
+        task.versions.forEach(v => v.latest = false);
+        const today = new Date();
+        const ds = (today.getMonth()+1).toString().padStart(2,'0')+'/'+today.getDate().toString().padStart(2,'0');
+        task.versions.unshift({ n: u.newVersion, s: u.verStatus||'rev', note: u.note||'—', date: ds, latest: true });
+        if (u.verStatus) { task.verStatus = u.verStatus; shot.verStatus = u.verStatus; }
+        if (u.assignee) task.who = u.assignee;
+      }
+    }
+    changed++;
+  });
+  if (changed) {
+    persistData(); renderShotList(); renderShowGrid();
+    if (currentShot) { const i=SHOTS.findIndex(s=>s.code===currentShot.code); if(i>=0){currentShot=SHOTS[i];renderDetail(currentShot);} }
+  }
+  addMsg('ai', `✓ ${summary}${changed ? ` — ${changed} shot${changed>1?'s':''} updated` : ''}`);
+  chatHistory.push({role:'assistant', content: summary});
 }
 
 function sendChat() {
