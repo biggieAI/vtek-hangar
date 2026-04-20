@@ -1,4 +1,4 @@
-<!-- VTEK HANGAR BUILD_ID=HGR-040 -->
+<!-- VTEK HANGAR BUILD_ID=HGR-041 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,14 +32,14 @@ html{height:-webkit-fill-available;background:var(--bg)}
 body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg);min-height:-webkit-fill-available;overflow:hidden;-webkit-font-smoothing:antialiased;overscroll-behavior:none}
 ::-webkit-scrollbar{display:none}
 
-/* ── SHELL ── */
+/* â”€â”€ SHELL â”€â”€ */
 .shell{display:flex;flex-direction:column;height:100dvh;min-height:-webkit-fill-available;overflow:hidden;background:var(--bg)}
 
-/* ── VIEWS ── */
+/* â”€â”€ VIEWS â”€â”€ */
 .view{display:none;flex-direction:column;flex:1;overflow:hidden;min-height:0}
 .view.active{display:flex}
 
-/* ── TOPBAR ── */
+/* â”€â”€ TOPBAR â”€â”€ */
 .topbar{height:calc(52px + var(--safe-t));padding-top:var(--safe-t);padding-left:14px;padding-right:12px;flex-shrink:0;display:flex;align-items:center;gap:8px;background:var(--bg);border-bottom:1px solid rgba(255,255,255,.06);z-index:10}
 .wm{display:flex;align-items:center}
 .wm-logo{font-family:var(--mono);font-size:14px;font-weight:700;letter-spacing:.10em;color:var(--t0)}
@@ -55,12 +55,12 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 .tb-btn{height:30px;padding:0 12px;border:none;border-radius:8px;background:#fff;font-family:var(--sans);font-size:11px;font-weight:700;color:#1c1c1e;cursor:pointer}
 .tb-count{font-family:var(--mono);font-size:10px;color:var(--t2)}
 
-/* ── PAGE SCROLL AREA ── */
+/* â”€â”€ PAGE SCROLL AREA â”€â”€ */
 .page-area{flex:1;overflow:hidden;min-height:0}
 .page{height:100%;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding:14px 14px calc(56px + var(--safe-b) + 16px);background:var(--bg)}
 .page.no-pad{padding:0 0 calc(56px + var(--safe-b) + 16px)}
 
-/* ── NAV ── */
+/* â”€â”€ NAV â”€â”€ */
 .bnav{padding-top:8px;padding-bottom:max(var(--safe-b),8px);display:flex;flex-shrink:0;background:var(--bg);border-top:1px solid rgba(255,255,255,.06)}
 .nb{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;background:none;border:none;cursor:pointer;color:var(--t2);position:relative;padding-top:2px}
 .nb svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
@@ -68,7 +68,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 .nb.on{color:var(--ac)}
 .nb.on::after{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:26px;height:2px;background:var(--g-ac)}
 
-/* ── STAT CHIPS ── */
+/* â”€â”€ STAT CHIPS â”€â”€ */
 .chip-wrap{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
 .stat-row{display:grid;gap:5px}
 .sc{background:var(--s2);border:var(--b1);border-radius:12px;padding:10px 6px 9px;text-align:center;box-shadow:inset 0 1px 0 rgba(255,255,255,.05)}
@@ -77,13 +77,13 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 .sc-n{font-family:var(--mono);font-size:20px;font-weight:500;line-height:1;margin-bottom:3px;color:var(--t0)}
 .sc-l{font-family:var(--sans);font-size:8px;font-weight:700;color:var(--t1);letter-spacing:.07em;text-transform:uppercase}
 
-/* ── SECTIONS ── */
+/* â”€â”€ SECTIONS â”€â”€ */
 .sec{display:flex;align-items:center;gap:8px;margin:14px 0 8px;padding-bottom:7px;border-bottom:1px solid rgba(255,255,255,.05)}
 .sec-l{font-family:var(--sans);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t1)}
 .sec-r{margin-left:auto;font-family:var(--sans);font-size:10px;font-weight:600;color:var(--ac);letter-spacing:.04em;text-transform:uppercase;cursor:pointer}
 .sec-count{font-family:var(--mono);font-size:9px;color:var(--t2);background:var(--s2);padding:2px 6px;border-radius:4px}
 
-/* ── ALERTS ── */
+/* â”€â”€ ALERTS â”€â”€ */
 .blocker-strip{background:rgba(255,92,92,.08);border:1px solid rgba(255,92,92,.22);border-left:2px solid var(--sh-blkd);border-radius:8px;padding:9px 12px;margin-bottom:6px}
 .blk-eye{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--sh-blkd);margin-bottom:5px;opacity:.7}
 .blk-item{font-family:var(--mono);font-size:10px;color:var(--t1);display:flex;align-items:center;gap:8px;padding:2px 0}
@@ -92,7 +92,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 .avail-lbl{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ac);flex-shrink:0}
 .avail-names{font-family:var(--mono);font-size:10px;color:var(--t1)}
 
-/* ── SHOW CARDS ── */
+/* â”€â”€ SHOW CARDS â”€â”€ */
 .show-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .show-card{background:var(--s2);border:var(--b1);border-left:3px solid var(--ac);border-radius:14px;overflow:hidden;cursor:pointer;active:opacity:.8}
 .show-thumb-ph{width:100%;height:68px;background:var(--s3);display:flex;align-items:center;justify-content:center}
@@ -106,7 +106,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 .seg{flex:1}
 .show-meta{font-family:var(--mono);font-size:9px;color:var(--t1);letter-spacing:.03em}
 
-/* ── DOSSIER ── */
+/* â”€â”€ DOSSIER â”€â”€ */
 .dossier{background:var(--s2);border:var(--b1);border-radius:12px;padding:14px 14px 12px}
 .dos-eye{font-family:var(--sans);font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t1);display:flex;align-items:center;gap:6px;margin-bottom:10px}
 .dos-eye-bar{width:12px;height:1px;background:var(--g-ac);flex-shrink:0}
@@ -123,7 +123,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 .bk-fill{height:100%;border-radius:1px}
 .bk-n{font-family:var(--mono);font-size:11px;color:var(--t0);width:18px;text-align:right;flex-shrink:0}
 
-/* ── SHOT STATUS LEGEND ── */
+/* â”€â”€ SHOT STATUS LEGEND â”€â”€ */
 .st-row{display:flex;align-items:center;gap:10px;padding:6px 10px;border-radius:8px;background:var(--s2);margin-bottom:3px;border:var(--b1)}
 .st-icon{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .st-icon svg{width:12px;height:12px}
@@ -131,7 +131,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 .st-label{font-family:var(--sans);font-size:11px;color:var(--t1);flex:1}
 .st-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
 
-/* ── SHOTS PAGE ── */
+/* â”€â”€ SHOTS PAGE â”€â”€ */
 .fbar{padding:8px 12px;flex-shrink:0;display:flex;gap:6px;align-items:center;background:var(--bg);border-bottom:1px solid rgba(255,255,255,.04);overflow-x:auto}
 .fbar::-webkit-scrollbar{display:none}
 .ftab{flex-shrink:0;height:26px;padding:0 10px;border-radius:6px;border:var(--b1);background:none;font-family:var(--sans);font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--t2);cursor:pointer;white-space:nowrap}
@@ -141,7 +141,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 .fchip-dot{width:6px;height:6px;border-radius:1px}
 .fchip span{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.06em;color:var(--t1)}
 
-/* ── SHOT ROWS ── */
+/* â”€â”€ SHOT ROWS â”€â”€ */
 .shot-list{display:flex;flex-direction:column}
 .shot-row{border-bottom:none;cursor:pointer;position:relative;padding-left:3px;margin:0 10px 6px;background:var(--s2);border-radius:12px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.25)}
 .shot-row::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--sc,var(--s3));border-radius:12px 0 0 12px}
@@ -176,7 +176,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 .task-vpip{width:8px;height:8px;border-radius:2px;flex-shrink:0}
 .task-due-lbl{font-family:var(--mono);font-size:8px;color:var(--t2);flex-shrink:0}
 
-/* ── SHOT DETAIL ── */
+/* â”€â”€ SHOT DETAIL â”€â”€ */
 .hero{width:100%;height:190px;background:var(--s2);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;flex-shrink:0;border-bottom:3px solid var(--dc,var(--ac))}
 .hero img{width:100%;height:100%;object-fit:cover}
 .hero-ph{display:flex;flex-direction:column;align-items:center;gap:6px}
@@ -241,7 +241,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 .notes-lbl{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--t2);margin-bottom:8px}
 .notes-body{font-size:12px;color:var(--t1);line-height:1.6;white-space:pre-wrap}
 
-/* ── CONFIG PANEL ── */
+/* â”€â”€ CONFIG PANEL â”€â”€ */
 .cfg-overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:200;display:none;align-items:flex-end}
 .cfg-overlay.open{display:flex}
 .cfg-sheet{width:100%;background:var(--s1);border-radius:20px 20px 0 0;padding:0 0 max(var(--safe-b),20px);max-height:82dvh;overflow-y:auto}
@@ -260,7 +260,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 .cfg-item.on .cfg-chk::after{content:'';display:block;width:8px;height:5px;border-left:1.5px solid #1c1c1e;border-bottom:1.5px solid #1c1c1e;transform:rotate(-45deg) translateY(-1px)}
 .cfg-note{font-family:var(--mono);font-size:8px;color:var(--t2);padding:4px 16px 8px;text-align:center}
 
-/* ── ROSTER ── */
+/* â”€â”€ ROSTER â”€â”€ */
 .roster-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px}
 .rs{background:var(--s2);border:var(--b1);border-radius:10px;padding:10px 6px;text-align:center}
 .rs-n{font-family:var(--mono);font-size:20px;font-weight:600;color:var(--t0);line-height:1;margin-bottom:2px}
@@ -284,7 +284,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 .ac-shot-due{font-family:var(--mono);font-size:8px;color:var(--t2);margin-left:auto}
 .ac-avail-badge{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.08em;padding:4px 10px;border-radius:6px;background:rgba(46,184,184,.12);color:var(--ac);border:1px solid rgba(46,184,184,.25);text-transform:uppercase;text-align:center;margin:10px 14px}
 
-/* ── CSV IMPORT ── */
+/* â”€â”€ CSV IMPORT â”€â”€ */
 .import-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:300;display:none;align-items:flex-end}
 .import-overlay.open{display:flex}
 .import-sheet{width:100%;background:var(--s1);border-radius:20px 20px 0 0;padding:0 0 max(var(--safe-b),24px);max-height:90dvh;display:flex;flex-direction:column}
@@ -317,7 +317,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 .import-prog-fill{height:100%;background:var(--ac);border-radius:2px;transition:width .3s}
 .import-log{font-family:var(--mono);font-size:9px;color:var(--t2);margin-top:8px;line-height:1.8}
 
-/* ── INTEL ── */
+/* â”€â”€ INTEL â”€â”€ */
 .intel-hero{background:linear-gradient(135deg,rgba(46,184,184,.08) 0%,rgba(156,74,255,.06) 100%);border:1px solid rgba(46,184,184,.15);border-radius:14px;padding:16px;margin-bottom:12px;display:flex;align-items:center;gap:12px}
 .intel-icon{width:40px;height:40px;border-radius:10px;background:rgba(46,184,184,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .intel-icon svg{width:20px;height:20px;stroke:var(--ac);fill:none}
@@ -352,7 +352,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 .intel-send svg{width:16px;height:16px;stroke:#1c1c1e;fill:none;stroke-width:2}
 .intel-send:disabled{opacity:.4}
 
-/* ── MODALS ── */
+/* â”€â”€ MODALS â”€â”€ */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:400;display:none;align-items:flex-end}
 .modal-overlay.open{display:flex}
 .modal-sheet{width:100%;background:var(--s1);border-radius:20px 20px 0 0;padding:0 0 max(var(--safe-b),24px);max-height:88dvh;overflow-y:auto}
@@ -382,7 +382,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 .search-input{width:100%;background:var(--s2);border:var(--b1);border-radius:10px;padding:9px 12px 9px 36px;font-family:var(--sans);font-size:16px;color:var(--t0);outline:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%238e8e93' stroke-width='1.5' viewBox='0 0 24 24'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:10px center}
 .search-input::placeholder{color:var(--t2)}
 
-/* ══ NAV FIXES HGR-015 ══ */
+/* â•â• NAV FIXES HGR-015 â•â• */
 .bnav-wrap{flex-shrink:0;display:flex;justify-content:center;align-items:flex-end;padding:10px 20px;padding-bottom:max(var(--safe-b),14px);background:var(--bg);position:relative;overflow:visible!important}
 .bnav{display:flex;align-items:center;background:var(--s2);border-radius:28px;padding:0 8px;height:60px;gap:0;box-shadow:0 4px 24px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.07);position:relative;width:100%;max-width:400px}
 .nb{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;background:none;border:none;cursor:pointer;color:var(--t2);position:relative;padding:8px 0;border-radius:20px;transition:color .18s;min-width:0}
@@ -397,7 +397,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 .nb-action.open svg{transform:rotate(45deg);stroke:var(--ac)}
 .nb-action::before{content:'';position:absolute;inset:-3px;border-radius:50%;border:1.5px solid transparent;transition:border-color .18s}
 .nb-action.open::before{border-color:rgba(46,184,184,.4)}
-/* QAM — hidden by default, fixed position above nav */
+/* QAM â€” hidden by default, fixed position above nav */
 .qam{position:fixed!important;bottom:100px;left:50%;transform:translateX(-50%)!important;display:flex!important;gap:10px;pointer-events:none;opacity:0;transition:opacity .18s;z-index:500;width:auto;height:auto}
 .qam.open{pointer-events:auto;opacity:1}
 .qa-btn{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;width:64px}
@@ -406,7 +406,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 .qa-lbl{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.05em;color:var(--t1);text-transform:uppercase;white-space:nowrap}
 
 
-/* center button — hangar home */
+/* center button â€” hangar home */
 .nb-action{flex-shrink:0!important;width:50px!important;height:50px!important;min-width:50px!important;min-height:50px!important;max-width:50px!important;max-height:50px!important;border-radius:50%!important;background:var(--s3);border:1.5px solid rgba(255,255,255,.12);cursor:pointer;display:flex!important;align-items:center;justify-content:center;position:relative;top:-10px;box-shadow:0 4px 16px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.10);transition:transform .18s cubic-bezier(0.34,1.56,0.64,1),box-shadow .18s,border-color .18s;margin:0 4px;overflow:hidden}
 .nb-action svg{width:22px!important;height:22px!important;min-width:22px!important;min-height:22px!important;max-width:22px!important;stroke:var(--t2);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;transition:stroke .18s}
 .nb-action.on{border-color:rgba(46,184,184,.5)!important;box-shadow:0 4px 20px rgba(0,0,0,.5),0 0 0 2px rgba(46,184,184,.2),inset 0 1px 0 rgba(255,255,255,.10)!important}
@@ -415,28 +415,28 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 
 
 
-/* ── NAV: no entrance animation, stable across page transitions ── */
+/* â”€â”€ NAV: no entrance animation, stable across page transitions â”€â”€ */
 .bnav-wrap{animation:none!important}
 .bnav{animation:none!important}
 /* nb-action: no anim but keep its styles */
 .nb-action{animation:none!important}
 /* Only the active dot gets an animation */
 .nb.on::after{animation:dotAppear .22s cubic-bezier(0.34,1.56,0.64,1) both!important}
-/* nb active icon scale is a transition not animation — keep it */
+/* nb active icon scale is a transition not animation â€” keep it */
 
-/* ── CONTENT: slower, more pronounced stagger ── */
+/* â”€â”€ CONTENT: slower, more pronounced stagger â”€â”€ */
 @keyframes fadeUp{from{opacity:0;transform:translate3d(0,22px,0)}to{opacity:1;transform:translate3d(0,0,0)}}
 @keyframes fadeDown{from{opacity:0;transform:translate3d(0,-16px,0)}to{opacity:1;transform:translate3d(0,0,0)}}
 @keyframes slideInR{from{opacity:0;transform:translate3d(32px,0,0)}to{opacity:1;transform:translate3d(0,0,0)}}
 @keyframes slideInL{from{opacity:0;transform:translate3d(-32px,0,0)}to{opacity:1;transform:translate3d(0,0,0)}}
 @keyframes scaleIn{from{opacity:0;transform:scale3d(0.93,0.93,1)}to{opacity:1;transform:scale3d(1,1,1)}}
 
-/* Stat chips — longer, more dramatic stagger */
+/* Stat chips â€” longer, more dramatic stagger */
 .chip-wrap .stat-row{opacity:0;animation:fadeUp 0.45s cubic-bezier(0.22,1,0.36,1) both}
 .chip-wrap .stat-row:nth-child(1){animation-delay:0.08s}
 .chip-wrap .stat-row:nth-child(2){animation-delay:0.18s}
 
-/* Shot rows — wider spread */
+/* Shot rows â€” wider spread */
 .shot-row{opacity:0;animation:fadeUp 0.40s cubic-bezier(0.22,1,0.36,1) both}
 .shot-row:nth-child(1){animation-delay:0.05s}
 .shot-row:nth-child(2){animation-delay:0.11s}
@@ -543,7 +543,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 {animation:none!important;opacity:0}
 
 
-/* ── SVG containment — prevent any SVG escaping its container ── */
+/* â”€â”€ SVG containment â€” prevent any SVG escaping its container â”€â”€ */
 
 /* Sync banner SVG specifically */
 .sync-icon svg{width:16px!important;height:16px!important;max-width:16px!important;max-height:16px!important;flex-shrink:0}
@@ -566,7 +566,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 .intel-wf-icon svg{width:18px!important;height:18px!important}
 .intel-wf-arrow{width:18px!important;height:18px!important;flex-shrink:0}
 
-/* Roster avatar — no SVG inside but just in case */
+/* Roster avatar â€” no SVG inside but just in case */
 .ac-avatar{overflow:hidden}
 
 /* BK icon SVG */
@@ -579,7 +579,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 .sc-icon svg{width:16px!important;height:16px!important}
 
 
-/* ── SYNC BANNER FIX ── */
+/* â”€â”€ SYNC BANNER FIX â”€â”€ */
 .sync-banner{display:flex!important;flex-direction:row!important;align-items:center!important;gap:10px;padding:10px 14px;background:rgba(46,184,184,.07);border:1px solid rgba(46,184,184,.15);border-radius:12px;margin-bottom:12px;width:100%;box-sizing:border-box;overflow:hidden}
 .sync-icon{width:32px!important;height:32px!important;min-width:32px!important;min-height:32px!important;max-width:32px!important;max-height:32px!important;border-radius:8px;background:rgba(46,184,184,.15);display:flex!important;align-items:center!important;justify-content:center!important;flex-shrink:0!important;overflow:hidden!important}
 .sync-icon svg{display:block!important;width:16px!important;height:16px!important;min-width:16px!important;min-height:16px!important;max-width:16px!important;max-height:16px!important;stroke:var(--ac);fill:none;flex-shrink:0!important}
@@ -588,12 +588,12 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 .sync-sub{font-family:var(--mono);font-size:9px;color:var(--t2);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sync-btn{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.06em;padding:6px 10px;border-radius:7px;border:1px solid rgba(46,184,184,.3);background:rgba(46,184,184,.1);color:var(--ac);cursor:pointer;text-transform:uppercase;white-space:nowrap;flex-shrink:0}
 
-/* ── TASKS EMPTY STATE FIX ── */
+/* â”€â”€ TASKS EMPTY STATE FIX â”€â”€ */
 .tasks-empty{display:flex;flex-direction:column;align-items:center;gap:10px;padding:48px 20px;text-align:center}
 .tasks-empty svg{display:block!important;width:40px!important;height:40px!important;min-width:40px!important;min-height:40px!important;max-width:40px!important;max-height:40px!important;stroke:var(--t2);fill:none;opacity:.3}
 .tasks-empty p{font-family:var(--sans);font-size:13px;color:var(--t2)}
 
-/* ── GLOBAL SVG SAFETY — don't let svg{max-width:100%} break icon containers ── */
+/* â”€â”€ GLOBAL SVG SAFETY â€” don't let svg{max-width:100%} break icon containers â”€â”€ */
 /* Override only for structural SVGs in icon containers */
 .sync-icon>svg,.bk-icon>svg,.st-icon>svg,.sc-icon>svg,
 .intel-icon>svg,.intel-wf-icon>svg,.show-thumb-ph>svg,
@@ -603,7 +603,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 }
 
 
-/* ── SHOWS PAGE ── */
+/* â”€â”€ SHOWS PAGE â”€â”€ */
 .show-card-full{background:var(--s2);border:var(--b1);border-left:3px solid var(--ac);border-radius:16px;overflow:hidden;cursor:pointer;transition:transform .14s;animation:fadeUp .38s cubic-bezier(0.22,1,0.36,1) both}
 .show-card-full:nth-child(1){animation-delay:.06s}
 .show-card-full:nth-child(2){animation-delay:.14s}
@@ -637,7 +637,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 .pri-opt[data-pri="none"].sel{background:rgba(142,142,147,0.12);color:var(--t1)}
 
 
-/* ── PRIORITY PILLS — always colored, dim when not selected ── */
+/* â”€â”€ PRIORITY PILLS â€” always colored, dim when not selected â”€â”€ */
 .priority-row{display:flex;gap:6px;flex-wrap:nowrap}
 .pri-opt{
   flex:1;height:34px;border-radius:6px;border:none;
@@ -650,7 +650,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 .pri-opt:active{transform:scale(0.92)}
 .pri-opt.sel{opacity:1}
 
-/* Each pill always has its color — opacity controls selected state */
+/* Each pill always has its color â€” opacity controls selected state */
 .pri-opt[data-pri="high"]{background:rgba(255,92,92,0.18);color:#ff5c5c}
 .pri-opt[data-pri="med"] {background:rgba(245,166,35,0.18);color:#f5a623}
 .pri-opt[data-pri="low"] {background:rgba(108,154,205,0.18);color:#6c9acd}
@@ -672,7 +672,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 .pri-opt[data-pri="none"].sel{border-color:rgba(142,142,147,.45)}
 
 
-/* ── OPS MODULE ── */
+/* â”€â”€ OPS MODULE â”€â”€ */
 .ops-tabs{display:flex;gap:0;padding:0 12px 0;flex-shrink:0;border-bottom:1px solid rgba(255,255,255,.05);background:var(--bg)}
 .ops-tab{flex:1;height:40px;background:none;border:none;border-bottom:2px solid transparent;font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t2);cursor:pointer;transition:color .15s,border-color .15s}
 .ops-tab.on{color:var(--ac);border-bottom-color:var(--ac)}
@@ -813,7 +813,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 .avail-avail{background:rgba(52,215,153,.15);color:#34d399}
 .avail-penciled{background:rgba(255,255,255,.07);color:var(--t1);border:1px dashed rgba(255,255,255,.2)}
 .avail-unavail{background:rgba(255,92,92,.12);color:#ff8080}
-/* ── STAFFING TIMELINE ── */
+/* â”€â”€ STAFFING TIMELINE â”€â”€ */
 .stl-section{margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.06)}
 .stl-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
 .stl-hd-lbl{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--t2)}
@@ -831,7 +831,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 .stl-status{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.04em;padding:2px 6px;border-radius:4px;white-space:nowrap;flex-shrink:0}
 .stl-crew-line{font-family:var(--mono);font-size:9px;padding:2px 0 6px 72px;border-bottom:1px solid rgba(255,255,255,.04);margin-bottom:4px}
 .stl-crew-line:last-child{border-bottom:none;margin-bottom:0}
-/* ── WIZARD ── */
+/* â”€â”€ WIZARD â”€â”€ */
 #wizardOverlay{background:#0e0f11}
 .wiz-text-input{width:100%;background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,.15);border-radius:0;padding:14px 0;font-family:var(--sans);font-size:20px;color:var(--t0);outline:none;box-sizing:border-box;-webkit-appearance:none;line-height:1.4;resize:none;overflow:hidden;transition:border-color .2s}
 .wiz-text-input:focus{border-bottom-color:rgba(255,255,255,.6)}
@@ -855,9 +855,9 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 <body>
 <div class="shell">
 
-<!-- ═══════════════════════════════════════════════
+<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
      VIEW: HANGAR (HOME)
-═══════════════════════════════════════════════ -->
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
 <div class="view active" id="v-hangar">
   <div class="topbar">
     <div class="wm"><span class="wm-logo">VTEK</span><span class="wm-div">//</span><span class="wm-page">HANGAR</span></div>
@@ -921,9 +921,9 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 </div>
 
 
-<!-- ═══════════════════════════════════════════════
+<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
      VIEW: SHOWS
-═══════════════════════════════════════════════ -->
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
 <div class="view" id="v-shows">
   <div class="topbar">
     <div class="wm"><span class="wm-logo">VTEK</span><span class="wm-div">//</span><span class="wm-page" style="color:var(--ac)">SHOWS</span></div>
@@ -936,10 +936,10 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
     <!-- Show count strip -->
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
       <div style="font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--t2)" id="shows-count-lbl">2 ACTIVE SHOWS</div>
-      <div style="font-family:var(--mono);font-size:9px;color:var(--t2)" id="shows-total-shots">—</div>
+      <div style="font-family:var(--mono);font-size:9px;color:var(--t2)" id="shows-total-shots">â€”</div>
     </div>
 
-    <!-- Shows grid — full cards -->
+    <!-- Shows grid â€” full cards -->
     <div id="shows-grid-full" style="display:flex;flex-direction:column;gap:10px"></div>
 
   </div></div>
@@ -947,9 +947,9 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 <div class="bnav-wrap"><nav class="bnav"><button class="nb" onclick="navTo('tasks')"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg><span class="nl">TASKS</span></button><button class="nb on" onclick="navTo('shows')"><svg viewBox="0 0 24 24" width="20" height="20"><rect x="2" y="7" width="20" height="14" rx="1"/><polyline points="16,7 12,3 8,7"/><line x1="12" y1="3" x2="12" y2="21"/></svg><span class="nl">SHOWS</span></button><button class="nb-action" onclick="navTo('hangar')"><svg viewBox="0 0 24 24" width="22" height="22"><rect x="3" y="9" width="18" height="12"/><polyline points="3,9 12,3 21,9"/><line x1="9" y1="21" x2="9" y2="14"/><line x1="15" y1="21" x2="15" y2="14"/></svg></button><button class="nb" onclick="navTo('ops')"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="nl">OPS</span></button><button class="nb" onclick="navTo('intel')"><svg viewBox="0 0 24 24" width="20" height="20"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg><span class="nl">INTEL</span></button></nav></div>
 </div>
 
-<!-- ═══════════════════════════════════════════════
+<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
      VIEW: SHOTS LIST
-═══════════════════════════════════════════════ -->
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
 <div class="view" id="v-shots">
   <div class="topbar">
     <button class="tb-back" onclick="navTo('hangar')"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;flex-shrink:0"><polyline points="10,3 4,8 10,13"/></svg>HOME</button>
@@ -984,9 +984,9 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 <div class="bnav-wrap"><nav class="bnav"><button class="nb" onclick="navTo('tasks')"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg><span class="nl">TASKS</span></button><button class="nb" onclick="navTo('shows')"><svg viewBox="0 0 24 24" width="20" height="20"><rect x="2" y="7" width="20" height="14" rx="1"/><polyline points="16,7 12,3 8,7"/><line x1="12" y1="3" x2="12" y2="21"/></svg><span class="nl">SHOWS</span></button><button class="nb-action" onclick="navTo('hangar')"><svg viewBox="0 0 24 24" width="22" height="22"><rect x="3" y="9" width="18" height="12"/><polyline points="3,9 12,3 21,9"/><line x1="9" y1="21" x2="9" y2="14"/><line x1="15" y1="21" x2="15" y2="14"/></svg></button><button class="nb" onclick="navTo('ops')"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="nl">OPS</span></button><button class="nb" onclick="navTo('intel')"><svg viewBox="0 0 24 24" width="20" height="20"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg><span class="nl">INTEL</span></button></nav></div>
 </div>
 
-<!-- ═══════════════════════════════════════════════
+<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
      VIEW: SHOT DETAIL
-═══════════════════════════════════════════════ -->
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
 <div class="view" id="v-detail">
   <div class="topbar">
     <button class="tb-back" onclick="navTo('shots')"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;flex-shrink:0"><polyline points="10,3 4,8 10,13"/></svg>SHOTS</button>
@@ -1006,9 +1006,9 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 </div>
 
 
-<!-- ═══════════════════════════════════════════════
+<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
      VIEW: ROSTER
-═══════════════════════════════════════════════ -->
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
 <div class="view" id="v-roster">
   <div class="topbar">
     <div class="wm"><span class="wm-logo">VTEK</span><span class="wm-div">//</span><span class="wm-page" style="color:var(--vr-rev)">ROSTER</span></div>
@@ -1037,9 +1037,9 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 
 
 
-<!-- ═══════════════════════════════════════════════
+<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
      VIEW: OPS
-═══════════════════════════════════════════════ -->
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
 <div class="view" id="v-ops">
   <div class="topbar">
     <div class="wm"><span class="wm-logo">VTEK</span><span class="wm-div">//</span><span class="wm-page" style="color:var(--ac)">OPS</span></div>
@@ -1078,7 +1078,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
   <!-- ROLODEX PANEL -->
   <div class="ops-panel" id="ops-panel-rolodex">
     <div class="rdx-search-wrap">
-      <input class="rdx-search" id="rdx-search" placeholder="SEARCH ROLODEX…" oninput="renderRolodex()" type="search">
+      <input class="rdx-search" id="rdx-search" placeholder="SEARCH ROLODEXâ€¦" oninput="renderRolodex()" type="search">
     </div>
     <div class="rdx-filter-bar">
       <button class="rdx-filter on" data-rdx="ALL" onclick="setRdxFilter(this)">ALL</button>
@@ -1114,7 +1114,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
         <div class="ops-field"><div class="ops-field-lbl">NAME</div><input class="ops-input" id="crew-name" placeholder="Full name"></div>
         <div class="ops-field"><div class="ops-field-lbl">INITIALS</div><input class="ops-input" id="crew-initials" placeholder="RR" maxlength="3"></div>
       </div>
-      <div class="ops-field"><div class="ops-field-lbl">ROLE / TITLE</div><input class="ops-input" id="crew-role" placeholder="Compositor, Paint Artist…"></div>
+      <div class="ops-field"><div class="ops-field-lbl">ROLE / TITLE</div><input class="ops-input" id="crew-role" placeholder="Compositor, Paint Artistâ€¦"></div>
       <div class="ops-row2">
         <div class="ops-field"><div class="ops-field-lbl">STATUS</div>
           <div class="ops-select-wrap"><select class="ops-select" id="crew-status">
@@ -1124,14 +1124,14 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
             <option value="unavail">UNAVAILABLE</option>
           </select></div>
         </div>
-        <div class="ops-field"><div class="ops-field-lbl">SHOW</div><input class="ops-input" id="crew-show" placeholder="CRL, AIG…"></div>
+        <div class="ops-field"><div class="ops-field-lbl">SHOW</div><input class="ops-input" id="crew-show" placeholder="CRL, AIGâ€¦"></div>
       </div>
       <div class="ops-field"><div class="ops-field-lbl">EMAIL</div><input class="ops-input" id="crew-email" type="email" placeholder="name@email.com"></div>
       <div class="ops-field"><div class="ops-field-lbl">PHONE</div><input class="ops-input" id="crew-phone" type="tel" placeholder="+1 555 000 0000"></div>
       <div class="ops-field"><div class="ops-field-lbl">AGENCY / REP</div><input class="ops-input" id="crew-agency" placeholder="Agency or freelance"></div>
       <div class="ops-field"><div class="ops-field-lbl">RATE TIER</div>
         <div class="ops-select-wrap"><select class="ops-select" id="crew-rate">
-          <option value="">–</option>
+          <option value="">â€“</option>
           <option value="junior">JUNIOR</option>
           <option value="mid">MID</option>
           <option value="senior">SENIOR</option>
@@ -1153,16 +1153,16 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
           <button class="ops-tag-btn" data-skill="ANIM" onclick="toggleSkill(this)">ANIM</button>
         </div>
       </div>
-      <!-- SHOT ASSIGNMENTS — live from SHOTS array -->
+      <!-- SHOT ASSIGNMENTS â€” live from SHOTS array -->
       <div class="ops-field">
         <div class="ops-field-lbl" style="display:flex;align-items:center;justify-content:space-between">
           SHOT ASSIGNMENTS
           <button class="ops-tag-btn on" style="height:24px;padding:0 10px;font-size:8px;border-radius:6px" onclick="openShotPicker()">+ ADD SHOT</button>
         </div>
         <div id="crew-assignments-list" style="margin-top:6px;display:flex;flex-direction:column;gap:4px"></div>
-        <div id="crew-assignments-empty" style="font-family:var(--mono);font-size:9px;color:var(--t2);padding:8px 0;display:none">No assignments — tap + ADD SHOT to assign from live shot data</div>
+        <div id="crew-assignments-empty" style="font-family:var(--mono);font-size:9px;color:var(--t2);padding:8px 0;display:none">No assignments â€” tap + ADD SHOT to assign from live shot data</div>
       </div>
-      <div class="ops-field"><div class="ops-field-lbl">NOTES</div><textarea class="ops-textarea" id="crew-notes" placeholder="Any notes about this person…" oninput="autoExpand(this)"></textarea></div>
+      <div class="ops-field"><div class="ops-field-lbl">NOTES</div><textarea class="ops-textarea" id="crew-notes" placeholder="Any notes about this personâ€¦" oninput="autoExpand(this)"></textarea></div>
       <div class="ops-row2">
         <div class="ops-field"><div class="ops-field-lbl">START DATE</div><input class="ops-input" id="crew-start" type="date"></div>
         <div class="ops-field"><div class="ops-field-lbl">END DATE</div><input class="ops-input" id="crew-end" type="date"></div>
@@ -1182,7 +1182,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
       <button class="ops-sh-close" onclick="closeOpsOverlay('shotPickerOverlay')">CLOSE</button>
     </div>
     <div style="padding:8px 16px 4px">
-      <input class="rdx-search" id="shot-picker-search" placeholder="SEARCH SHOTS…" oninput="renderShotPicker()" type="search" style="width:100%;box-sizing:border-box">
+      <input class="rdx-search" id="shot-picker-search" placeholder="SEARCH SHOTSâ€¦" oninput="renderShotPicker()" type="search" style="width:100%;box-sizing:border-box">
     </div>
     <div style="padding:4px 12px 6px;display:flex;gap:5px;overflow-x:auto" id="shot-picker-show-tabs"></div>
     <div id="shot-picker-list" style="overflow-y:auto;-webkit-overflow-scrolling:touch;max-height:calc(70dvh - 130px);padding:0 12px 16px"></div>
@@ -1202,7 +1202,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
         <div class="ops-field"><div class="ops-field-lbl">NAME</div><input class="ops-input" id="rdx-name" placeholder="Full name"></div>
         <div class="ops-field"><div class="ops-field-lbl">INITIALS</div><input class="ops-input" id="rdx-initials" placeholder="RR" maxlength="3"></div>
       </div>
-      <div class="ops-field"><div class="ops-field-lbl">TITLE</div><input class="ops-input" id="rdx-title-input" placeholder="Compositor, Coordinator…"></div>
+      <div class="ops-field"><div class="ops-field-lbl">TITLE</div><input class="ops-input" id="rdx-title-input" placeholder="Compositor, Coordinatorâ€¦"></div>
       <div class="ops-field"><div class="ops-field-lbl">EMAIL</div><input class="ops-input" id="rdx-email" type="email" placeholder="name@email.com"></div>
       <div class="ops-field"><div class="ops-field-lbl">PHONE</div><input class="ops-input" id="rdx-phone" type="tel" placeholder="+1 555 000 0000"></div>
       <div class="ops-field"><div class="ops-field-lbl">INSTAGRAM / SOCIALS</div><input class="ops-input" id="rdx-social" placeholder="@handle or URL"></div>
@@ -1230,7 +1230,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
           <button class="ops-tag-btn" data-skill="ANIM" onclick="toggleSkillRdx(this)">ANIM</button>
         </div>
       </div>
-      <div class="ops-field"><div class="ops-field-lbl">NOTES</div><textarea class="ops-textarea" id="rdx-notes" placeholder="How you know them, quality notes, rate range…" oninput="autoExpand(this)"></textarea></div>
+      <div class="ops-field"><div class="ops-field-lbl">NOTES</div><textarea class="ops-textarea" id="rdx-notes" placeholder="How you know them, quality notes, rate rangeâ€¦" oninput="autoExpand(this)"></textarea></div>
       <button class="ops-submit" onclick="saveRdx()">SAVE TO ROLODEX</button>
       <button id="rdx-delete-btn" class="ops-submit" style="margin-top:8px;background:rgba(255,92,92,.12);color:#ff5c5c;border:1px solid rgba(255,92,92,.2);display:none" onclick="deleteRdx()">DELETE</button>
     </div>
@@ -1269,15 +1269,15 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
         <div class="ops-field"><div class="ops-field-lbl">COMP NEEDED</div><input class="ops-input" id="dem-comp" type="number" placeholder="0" min="0"></div>
         <div class="ops-field"><div class="ops-field-lbl">ROTO/PAINT NEEDED</div><input class="ops-input" id="dem-roto" type="number" placeholder="0" min="0"></div>
       </div>
-      <div class="ops-field"><div class="ops-field-lbl">NOTES</div><textarea class="ops-textarea" id="dem-notes" placeholder="Pipeline requirements, special needs…" oninput="autoExpand(this)"></textarea></div>
+      <div class="ops-field"><div class="ops-field-lbl">NOTES</div><textarea class="ops-textarea" id="dem-notes" placeholder="Pipeline requirements, special needsâ€¦" oninput="autoExpand(this)"></textarea></div>
       <button class="ops-submit" onclick="saveDemand()">ADD SHOW</button>
     </div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════
+<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
      VIEW: INTEL
-═══════════════════════════════════════════════ -->
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
 <div class="view" id="v-intel">
   <div class="topbar">
     <div class="wm"><span class="wm-logo">VTEK</span><span class="wm-div">//</span><span class="wm-page" style="color:var(--vr-crvw)">INTEL</span></div>
@@ -1299,7 +1299,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
           <div class="intel-wf-icon" style="background:rgba(206,147,216,.15)"><svg viewBox="0 0 24 24" stroke="var(--vr-rev)" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
           <div class="intel-wf-info">
             <div class="intel-wf-name">Daily Brief</div>
-            <div class="intel-wf-desc">What needs my attention today — blockers, over-bid, pending review</div>
+            <div class="intel-wf-desc">What needs my attention today â€” blockers, over-bid, pending review</div>
           </div>
           <svg class="intel-wf-arrow" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;flex-shrink:0"><polyline points="9,18 15,12 9,6"/></svg>
         </div>
@@ -1369,9 +1369,9 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 
 
 
-<!-- ═══════════════════════════════════════════════
+<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
      VIEW: TASKS
-═══════════════════════════════════════════════ -->
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
 <div class="view" id="v-tasks">
   <div class="topbar">
     <div class="wm"><span class="wm-logo">VTEK</span><span class="wm-div">//</span><span class="wm-page" style="color:var(--vr-pf)">TASKS</span></div>
@@ -1427,7 +1427,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
         <div class="field-group"><label class="field-label">Due Date</label><input class="field-input" id="f-task-due" type="date"></div>
         <div class="field-group"><label class="field-label">Est. Time</label>
           <select class="field-select" id="f-task-dur">
-            <option value="">—</option>
+            <option value="">â€”</option>
             <option value="15m">15 min</option><option value="30m">30 min</option>
             <option value="1h">1 hr</option><option value="2h">2 hr</option>
             <option value="4h">4 hr</option><option value="1d">Full day</option>
@@ -1444,7 +1444,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
       </div>
       <div class="field-group"><label class="field-label">Show</label>
         <select class="field-select" id="f-task-show">
-          <option value="">— No show —</option>
+          <option value="">â€” No show â€”</option>
         </select>
       </div>
       <div class="field-group"><label class="field-label">Notes</label><textarea class="field-input" id="f-task-notes" placeholder="Optional notes..." rows="2" style="resize:none;overflow:hidden;line-height:1.5;padding-top:11px;padding-bottom:11px" oninput="autoExpand(this)"></textarea></div>
@@ -1552,7 +1552,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
           <div class="import-stat"><div class="import-stat-n" id="prev-shots">0</div><div class="import-stat-l">SHOTS</div></div>
           <div class="import-stat"><div class="import-stat-n" id="prev-tasks">0</div><div class="import-stat-l">TASKS</div></div>
           <div class="import-stat"><div class="import-stat-n" id="prev-artists">0</div><div class="import-stat-l">ARTISTS</div></div>
-          <div class="import-stat"><div class="import-stat-n" id="prev-show">—</div><div class="import-stat-l">SHOW</div></div>
+          <div class="import-stat"><div class="import-stat-n" id="prev-show">â€”</div><div class="import-stat-l">SHOW</div></div>
         </div>
         <div class="import-sample" id="prev-sample"></div>
       </div>
@@ -1572,7 +1572,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 </div>
 
 <script>
-// ── STATUS COLOR MAP ──────────────────────────────
+// â”€â”€ STATUS COLOR MAP â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const SC = {
   wtg:'#6c9acd',bid:'#50c878',blkd:'#ff5c5c',rdy:'#f5a623',
   ip:'#a0aab8',auto:'#636366',crvw:'#9c4aff',clnt:'#e8c84a',
@@ -1583,9 +1583,9 @@ const SC = {
   fin:'#4caf50',ip2:'#2196f3'
 };
 
-// ── SAMPLE SHOT DATA (BFR show from CSV) ─────────
+// â”€â”€ SAMPLE SHOT DATA (BFR show from CSV) â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const SHOTS = [
-  {code:'016_BFR_0070',desc:'Andy laptop comp — Plate 70% respeed',tags:['03/21','03/24','Problem','Trailer','GFX'],status:'crvw',verStatus:'pf',del:'03/05/26',pctBid:477,cg:true,matte:true,
+  {code:'016_BFR_0070',desc:'Andy laptop comp â€” Plate 70% respeed',tags:['03/21','03/24','Problem','Trailer','GFX'],status:'crvw',verStatus:'pf',del:'03/05/26',pctBid:477,cg:true,matte:true,
    tasks:[
     {name:'COMP',status:'crvw',who:'Arslan Naqvi, Ruben Rodas',bid:0.5,used:4.25,verStatus:'pf',verNote:'Laptop screen updated',due:'03/24',
      versions:[{n:'v003',s:'pf',note:'Laptop screen updated',date:'03/24',latest:true},{n:'v002',s:'nts',note:'Respeed timing off',date:'03/21'},{n:'v001',s:'rev',note:'First pass',date:'03/18'}]},
@@ -1601,20 +1601,20 @@ const SHOTS = [
      versions:[{n:'v001',s:'rev',note:'Phone screen tracking',date:'03/18',latest:true}]},
     {name:'PAINT',status:'rdy',who:'Christina Spring',bid:6.0,used:2.5,verStatus:'rev',verNote:'Paint roto needed',due:null,
      versions:[{n:'v001',s:'rev',note:'Paint roto needed',date:'03/17',latest:true}]},
-    {name:'ROTO',status:'rdy',who:'Christina Spring',bid:4.0,used:0,verStatus:'rev',verNote:'—',due:null,
-     versions:[{n:'v001',s:'rev',note:'—',date:'03/17',latest:true}]},
+    {name:'ROTO',status:'rdy',who:'Christina Spring',bid:4.0,used:0,verStatus:'rev',verNote:'â€”',due:null,
+     versions:[{n:'v001',s:'rev',note:'â€”',date:'03/17',latest:true}]},
     {name:'INGEST',status:'cmpt',who:'Coordinators',bid:0,used:0,verStatus:'rev',verNote:'Ingested',due:null,
      versions:[{n:'v001',s:'rev',note:'Ingested',date:'03/05',latest:true}]}
    ],
-   notes:'Phone screen ON comp. Miranda phone screen timing issue from 3/18 client call.\n\nHold pending updated GFX from editorial — do not proceed until file is received.'},
-  {code:'016_BFR_0090',desc:'Andy laptop comp — Plate 70% respeed',tags:['03/21','03/24','Problem','GFX'],status:'crvw',verStatus:'crvw',del:'03/05/26',pctBid:735,cg:true,matte:true,
+   notes:'Phone screen ON comp. Miranda phone screen timing issue from 3/18 client call.\n\nHold pending updated GFX from editorial â€” do not proceed until file is received.'},
+  {code:'016_BFR_0090',desc:'Andy laptop comp â€” Plate 70% respeed',tags:['03/21','03/24','Problem','GFX'],status:'crvw',verStatus:'crvw',del:'03/05/26',pctBid:735,cg:true,matte:true,
    tasks:[
     {name:'COMP',status:'crvw',who:'Arslan Naqvi, Ruben Rodas',bid:0.5,used:6.0,verStatus:'crvw',verNote:'Client review submitted',due:'03/24',
      versions:[{n:'v003',s:'crvw',note:'Client review submitted',date:'03/24',latest:true},{n:'v002',s:'nts',note:'Notes from client',date:'03/21'},{n:'v001',s:'rev',note:'First comp',date:'03/18'}]},
     {name:'INGEST',status:'cmpt',who:'Coordinators',bid:0,used:0,verStatus:'crvw',verNote:'Ingested',due:null,
      versions:[{n:'v001',s:'crvw',note:'Ingested',date:'03/05',latest:true}]}
    ],
-   notes:'Andy laptop comp. High bid overrun — multiple rounds of client notes on respeed timing.'},
+   notes:'Andy laptop comp. High bid overrun â€” multiple rounds of client notes on respeed timing.'},
   {code:'028_FAM_0020',desc:'Elevator numbers on INT elevator screens',tags:['03/21','03/24','Problem','Trailer'],status:'apdi',verStatus:'crvw',del:'03/05/26',pctBid:32,cg:false,matte:false,
    tasks:[
     {name:'COMP',status:'apdi',who:'Arslan Naqvi',bid:0.5,used:0.5,verStatus:'crvw',verNote:'APDI submitted',due:'03/24',
@@ -1624,7 +1624,7 @@ const SHOTS = [
     {name:'INGEST',status:'cmpt',who:'Coordinators',bid:0,used:0,verStatus:'crvw',verNote:'Ingested',due:null,
      versions:[{n:'v001',s:'crvw',note:'Ingested',date:'03/05',latest:true}]}
    ],
-   notes:'Elevator numbers on INT elevator screens — trailer shot.'},
+   notes:'Elevator numbers on INT elevator screens â€” trailer shot.'},
   {code:'044_WRK_0090',desc:'Andy laptop comp',tags:['03/21','03/24','Problem'],status:'crvw',verStatus:'rev',del:'03/12/26',pctBid:73,cg:false,matte:false,
    tasks:[
     {name:'COMP',status:'ip',who:'Ruben Rodas, Victoria Root',bid:6.0,used:8.75,verStatus:'rev',verNote:'Pending review',due:null,
@@ -1632,8 +1632,8 @@ const SHOTS = [
     {name:'INGEST',status:'cmpt',who:'Coordinators',bid:1.0,used:1.0,verStatus:'rev',verNote:'Ingested',due:null,
      versions:[{n:'v001',s:'rev',note:'Ingested',date:'03/12',latest:true}]}
    ],
-   notes:'Andy laptop comp — workspace scene.'},
-  {code:'049_FND_0010',desc:'iPad comp — split to keep hands stable',tags:['03/18','03/24','High','Problem'],status:'ip',verStatus:'fin',del:'03/05/26',pctBid:628,cg:false,matte:false,
+   notes:'Andy laptop comp â€” workspace scene.'},
+  {code:'049_FND_0010',desc:'iPad comp â€” split to keep hands stable',tags:['03/18','03/24','High','Problem'],status:'ip',verStatus:'fin',del:'03/05/26',pctBid:628,cg:false,matte:false,
    tasks:[
     {name:'COMP',status:'cmpt',who:'Arslan Naqvi',bid:0.5,used:5.75,verStatus:'fin',verNote:'Final approved',due:'03/24',
      versions:[{n:'v003',s:'fin',note:'Final approved',date:'03/24',latest:true},{n:'v002',s:'pf',note:'Prop final',date:'03/21'},{n:'v001',s:'rev',note:'First pass',date:'03/18'}]},
@@ -1642,7 +1642,7 @@ const SHOTS = [
     {name:'INGEST',status:'cmpt',who:'Coordinators',bid:0,used:0,verStatus:'fin',verNote:'Ingested',due:null,
      versions:[{n:'v001',s:'fin',note:'Ingested',date:'03/05',latest:true}]}
    ],
-   notes:'iPad comp. High overrun — split required to stabilize hands. Multiple comp passes needed due to plate quality.'},
+   notes:'iPad comp. High overrun â€” split required to stabilize hands. Multiple comp passes needed due to plate quality.'},
   {code:'018_REU_0005',desc:'Respeed',tags:['03/18','Done','Trailer'],status:'crvw',verStatus:'pf',del:'03/12/26',pctBid:0,cg:false,matte:false,
    tasks:[
     {name:'COMP',status:'crvw',who:'Ruben Rodas',bid:24.0,used:0,verStatus:'pf',verNote:'Prop final',due:'03/04',
@@ -1653,7 +1653,7 @@ const SHOTS = [
    notes:'Respeed shot for trailer cut.'},
 ];
 
-// ── NAV STATE ─────────────────────────────────────
+// â”€â”€ NAV STATE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 let currentShow = {code:'CRL',name:'Cerulean',client:'Netflix'};
 let currentShot = null;
 
@@ -1709,7 +1709,7 @@ function goShots(code, name, client) {
 }
 
 function goDetail(shot) {
-  // called from shots list — go right (deeper)
+  // called from shots list â€” go right (deeper)
   currentShot = shot;
   const sc = SC[shot.status] || '#8e8e93';
   document.getElementById('detail-code').textContent = shot.code;
@@ -1726,7 +1726,7 @@ function hexToRgba(hex, a) {
   return `rgba(${r},${g},${b},${a})`;
 }
 
-// ── SHOT LIST RENDER ──────────────────────────────
+// â”€â”€ SHOT LIST RENDER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function renderShotList() {
   const el = document.getElementById('shot-list');
   el.innerHTML = SHOTS.map((s,i) => {
@@ -1745,9 +1745,9 @@ function renderShotList() {
         <div class="task-name">${t.name}</div>
         <div><span class="task-stat-lbl" style="background:${hexToRgba(tc,0.12)};color:${tc}">${t.status}</span></div>
         <div class="task-who">${t.who}</div>
-        <div class="task-bid">${t.bid > 0 ? t.bid+'d' : '—'} <span class="${over?'red':''}">${over?'+'+((t.used-t.bid).toFixed(2)):'ok'}</span></div>
+        <div class="task-bid">${t.bid > 0 ? t.bid+'d' : 'â€”'} <span class="${over?'red':''}">${over?'+'+((t.used-t.bid).toFixed(2)):'ok'}</span></div>
         <div class="task-vpip" style="background:${vc2}"></div>
-        <div class="task-due-lbl">${t.due||'—'}</div>
+        <div class="task-due-lbl">${t.due||'â€”'}</div>
       </div>`;
     }).join('');
     return `<div class="shot-row" style="--sc:${sc}" onclick="goDetail(SHOTS[${i}])">
@@ -1769,7 +1769,7 @@ function renderShotList() {
   }).join('');
 }
 
-// ── SHOT DETAIL RENDER ────────────────────────────
+// â”€â”€ SHOT DETAIL RENDER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function renderDetail(s) {
   const sc = SC[s.status] || '#8e8e93';
   const badges = s.tags.map(t => {
@@ -1849,7 +1849,7 @@ function renderDetail(s) {
   `;
 }
 
-// ── STAT CHIPS ────────────────────────────────────
+// â”€â”€ STAT CHIPS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const CHIPS=[
   {k:'rev',l:'PENDING RV',c:'#ce93d8',i:'<svg viewBox="0 0 16 16" fill="none" stroke="C" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><polyline points="8,5 8,8 10,10"/></svg>'},
   {k:'crvw',l:'CLIENT RV',c:'#9c4aff',i:'<svg viewBox="0 0 16 16" fill="none" stroke="C" stroke-width="1.5"><circle cx="6" cy="5" r="2"/><path d="M2 13c0-3 2-4 4-4s4 1 4 4"/><circle cx="12" cy="5" r="1.5"/><path d="M11 13c0-2 1-3 2-3"/></svg>'},
@@ -1960,11 +1960,11 @@ function renderShowsFull() {
     </div>`;
   }).join('') || `<div class="tasks-empty">
     <svg viewBox="0 0 24 24" width="40" height="40"><rect x="3" y="9" width="18" height="12"/><polyline points="3,9 12,3 21,9"/></svg>
-    <p>No shows registered — tap + REGISTER</p>
+    <p>No shows registered â€” tap + REGISTER</p>
   </div>`;
 }
 
-// ── TASKS DATA ────────────────────────────────────
+// â”€â”€ TASKS DATA â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 let TASKS = [];
 let editingTaskIdx = -1;
 let activeTaskTab = 'all';
@@ -1989,15 +1989,15 @@ function getDemoTasks() {
   const today = new Date();
   const d = (offset) => { const dt = new Date(today); dt.setDate(dt.getDate()+offset); return dt.toISOString().split('T')[0]; };
   return [
-    {title:'Comp review — 016_BFR_0070', due:d(0),  dur:'1h',  show:'CRL', pri:'high', notes:'Client feedback round 3. Address motion blur on BG plate and edge fringe on hero.', done:false, created:Date.now()},
-    {title:'Deliver paint fixes — 018_REU_0215', due:d(0),  dur:'2h',  show:'CRL', pri:'high', notes:'Wire removal + dust busting. Confirm clean plate matches.', done:false, created:Date.now()},
-    {title:'Roto QC pass — seq 044', due:d(1),  dur:'30m', show:'CRL', pri:'med',  notes:'Check edge quality on all roto delivered this week before sending to comp.', done:false, created:Date.now()},
-    {title:'Update ShotGrid status — AIG deliveries', due:d(1),  dur:'15m', show:'AIG', pri:'med',  notes:'Mark 003_BFR_0180 and 028_FAM_0020 as delivered.', done:false, created:Date.now()},
+    {title:'Comp review â€” 016_BFR_0070', due:d(0),  dur:'1h',  show:'CRL', pri:'high', notes:'Client feedback round 3. Address motion blur on BG plate and edge fringe on hero.', done:false, created:Date.now()},
+    {title:'Deliver paint fixes â€” 018_REU_0215', due:d(0),  dur:'2h',  show:'CRL', pri:'high', notes:'Wire removal + dust busting. Confirm clean plate matches.', done:false, created:Date.now()},
+    {title:'Roto QC pass â€” seq 044', due:d(1),  dur:'30m', show:'CRL', pri:'med',  notes:'Check edge quality on all roto delivered this week before sending to comp.', done:false, created:Date.now()},
+    {title:'Update ShotGrid status â€” AIG deliveries', due:d(1),  dur:'15m', show:'AIG', pri:'med',  notes:'Mark 003_BFR_0180 and 028_FAM_0020 as delivered.', done:false, created:Date.now()},
     {title:'Send bid estimate to Katherine', due:d(2),  dur:'30m', show:'CRL', pri:'high', notes:'Remaining comp bid for seqs 044 and 049. Include over-bid breakdown.', done:false, created:Date.now()},
     {title:'Pull Cerulean turnover package', due:d(2),  dur:'1h',  show:'CRL', pri:'med',  notes:'Confirm all EXRs and OCIOs are correct. Check frame handles.', done:false, created:Date.now()},
-    {title:'OCIO config update — Nuke env', due:d(4),  dur:'2h',  show:'',    pri:'low',  notes:'Bump to latest ACES config. Test on CRL shots before rolling to team.', done:false, created:Date.now()},
+    {title:'OCIO config update â€” Nuke env', due:d(4),  dur:'2h',  show:'',    pri:'low',  notes:'Bump to latest ACES config. Test on CRL shots before rolling to team.', done:false, created:Date.now()},
     {title:'Deadline credential renewal', due:d(5),  dur:'15m', show:'',    pri:'low',  notes:'AWS Deadline Cloud creds expire. Renew before render queue goes down.', done:false, created:Date.now()},
-    {title:'Pitch deck — new show inquiry', due:d(7),  dur:'4h',  show:'',    pri:'med',  notes:'Prepare CBFX capabilities deck for potential episodic. Reference Cerulean work.', done:false, created:Date.now()},
+    {title:'Pitch deck â€” new show inquiry', due:d(7),  dur:'4h',  show:'',    pri:'med',  notes:'Prepare CBFX capabilities deck for potential episodic. Reference Cerulean work.', done:false, created:Date.now()},
     {title:'Review AdditiveKeyer gizmo with team', due:d(9),  dur:'1h',  show:'CRL', pri:'low',  notes:'Walk Arslan and Christina through fog/atmospheric presets. Document workflow.', done:false, created:Date.now()},
   ];
 }
@@ -2056,7 +2056,7 @@ function renderTasks() {
   if (activeTaskTab === 'show') {
     const byShow = {};
     TASKS.filter(t => !t.done).forEach(t => {
-      const key = t.show || '— No Show —';
+      const key = t.show || 'â€” No Show â€”';
       if (!byShow[key]) byShow[key] = [];
       byShow[key].push(t);
     });
@@ -2098,7 +2098,7 @@ function taskHTML(t, idx) {
       <div class="ti-title">${t.title}</div>
       <div class="ti-meta">
         ${t.show ? `<span class="ti-show">${t.show}</span>` : ''}
-        ${t.due ? `<span class="ti-due${overdue?' overdue':''}">${todayFlag?'TODAY':overdue?'OVERDUE — ':''} ${formatDate(t.due)}</span>` : ''}
+        ${t.due ? `<span class="ti-due${overdue?' overdue':''}">${todayFlag?'TODAY':overdue?'OVERDUE â€” ':''} ${formatDate(t.due)}</span>` : ''}
         ${t.dur ? `<span class="ti-dur">&#9201; ${t.dur}</span>` : ''}
       </div>
     </div>
@@ -2136,8 +2136,8 @@ function openAddTask(prefill) {
   });
   // populate show dropdown
   const sel = document.getElementById('f-task-show');
-  sel.innerHTML = '<option value="">— No show —</option>' +
-    SHOWS.map(s => `<option value="${s.code}">${s.code} — ${s.name}</option>`).join('');
+  sel.innerHTML = '<option value="">â€” No show â€”</option>' +
+    SHOWS.map(s => `<option value="${s.code}">${s.code} â€” ${s.name}</option>`).join('');
   sel.value = prefill?.show || '';
   openModal('addTaskModal');
   requestAnimationFrame(() => autoExpandAll(document.getElementById('addTaskModal')));
@@ -2157,8 +2157,8 @@ function openEditTask(idx) {
     b.classList.toggle('sel', b.dataset.pri === selectedPri);
   });
   const sel = document.getElementById('f-task-show');
-  sel.innerHTML = '<option value="">— No show —</option>' +
-    SHOWS.map(s => `<option value="${s.code}">${s.code} — ${s.name}</option>`).join('');
+  sel.innerHTML = '<option value="">â€” No show â€”</option>' +
+    SHOWS.map(s => `<option value="${s.code}">${s.code} â€” ${s.name}</option>`).join('');
   sel.value = t.show || '';
   openModal('addTaskModal');
   requestAnimationFrame(() => autoExpandAll(document.getElementById('addTaskModal')));
@@ -2192,11 +2192,11 @@ function deleteTask() {
   closeModal('addTaskModal');
 }
 
-// ── AKIFLOW SYNC ──────────────────────────────────
+// â”€â”€ AKIFLOW SYNC â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function syncToAkiflow() {
   const pending = TASKS.filter(t => !t.done);
   if (!pending.length) { document.getElementById('sync-status').textContent = 'No tasks to sync'; return; }
-  // Build iOS Reminders-compatible format — deep link via URL scheme
+  // Build iOS Reminders-compatible format â€” deep link via URL scheme
   // Akiflow supports calendar/reminders integration
   const btn = document.querySelector('.sync-btn');
   btn.textContent = 'SYNCING...';
@@ -2227,7 +2227,7 @@ function syncToAkiflow() {
   syncNext();
 }
 
-// ── QAM (Quick Action Menu) ───────────────────────
+// â”€â”€ QAM (Quick Action Menu) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 let qamOpen = false;
 function toggleQAM() {
   qamOpen = !qamOpen;
@@ -2249,7 +2249,7 @@ function closeQAM() {
   const bd = document.getElementById('qamBackdrop'); if(bd) bd.classList.remove('open');
 }
 
-// ── PERSISTENCE ───────────────────────────────────
+// â”€â”€ PERSISTENCE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const DATA_KEY = 'vtek_hgr_data';
 function persistData() {
   try {
@@ -2270,7 +2270,7 @@ function loadPersistedData() {
   } catch(e) { console.warn('load failed', e); }
 }
 
-// ── SHOWS DATA ────────────────────────────────────
+// â”€â”€ SHOWS DATA â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const SHOWS = [
   {code:'CRL', name:'Cerulean', client:'Netflix', color:'var(--ac)'},
   {code:'AIG', name:'An Innocent Girl', client:'Netflix', color:'var(--vr-rev)'},
@@ -2298,7 +2298,7 @@ function renderShowGrid() {
   }).join('');
 }
 
-// ── FILTER LOGIC ──────────────────────────────────
+// â”€â”€ FILTER LOGIC â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 let activeTab = 'all';
 let activeStatusFilters = new Set();
 let searchQuery = '';
@@ -2352,9 +2352,9 @@ function renderShotListFiltered(shots) {
         <div class="task-name">${t.name}</div>
         <div><span class="task-stat-lbl" style="background:${hexToRgba(tc,0.12)};color:${tc}">${t.status}</span></div>
         <div class="task-who">${t.who}</div>
-        <div class="task-bid">${t.bid>0?t.bid+'d':'—'} <span class="${over?'red':''}">${over?'+'+((t.used-t.bid).toFixed(2)):'ok'}</span></div>
+        <div class="task-bid">${t.bid>0?t.bid+'d':'â€”'} <span class="${over?'red':''}">${over?'+'+((t.used-t.bid).toFixed(2)):'ok'}</span></div>
         <div class="task-vpip" style="background:${vc2}"></div>
-        <div class="task-due-lbl">${t.due||'—'}</div>
+        <div class="task-due-lbl">${t.due||'â€”'}</div>
       </div>`;
     }).join('');
     return `<div class="shot-row" style="--sc:${sc2}" onclick="goDetail(SHOTS[${idx}])">
@@ -2368,7 +2368,7 @@ function renderShotListFiltered(shots) {
         <div class="shot-right">
           <div class="shot-s-chip" style="background:${hexToRgba(sc2,0.15)};color:${sc2}">${s.status.toUpperCase()}</div>
           <div class="shot-v-pip"><div class="shot-v-dot" style="background:${vc}"></div><span class="shot-v-lbl">${s.verStatus.toUpperCase()}</span></div>
-          <div class="shot-del">${s.del||'—'}</div>
+          <div class="shot-del">${s.del||'â€”'}</div>
         </div>
       </div>
       <div class="task-list">${tasks}</div>
@@ -2376,9 +2376,9 @@ function renderShotListFiltered(shots) {
   }).join('');
 }
 
-// ── SHOW/SHOT MODALS ──────────────────────────────
+// â”€â”€ SHOW/SHOT MODALS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function openModal(id) { openOverlay(id); }
-// ── AUTO-EXPAND TEXTAREA ─────────────────────────
+// â”€â”€ AUTO-EXPAND TEXTAREA â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function autoExpand(el) {
   el.style.height = 'auto';
   el.style.height = el.scrollHeight + 'px';
@@ -2388,7 +2388,7 @@ function autoExpandAll(container) {
   el.querySelectorAll('textarea').forEach(t => autoExpand(t));
 }
 
-// ── DIRTY-CHECK / DISCARD GUARD ──────────────────
+// â”€â”€ DIRTY-CHECK / DISCARD GUARD â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 let _discardCallback = null;
 
 function isOverlayDirty(id) {
@@ -2498,7 +2498,7 @@ function saveShow() {
   closeModal('addShowModal');
 }
 
-// ── INTEL / AI WORKFLOWS ──────────────────────────
+// â”€â”€ INTEL / AI WORKFLOWS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 let chatHistory = [];
 let currentWorkflow = 'ask';
 
@@ -2507,13 +2507,13 @@ const WORKFLOW_PROMPTS = {
     const blockers = SHOTS.filter(s => s.status === 'blkd' || s.status === 'hld');
     const overBid  = SHOTS.filter(s => s.pctBid > 100);
     const pending  = SHOTS.filter(s => s.verStatus === 'rev' || s.verStatus === 'nts');
-    return `You are HANGAR INTEL, a VFX production assistant for CBFX. Be concise and direct — bullet points preferred.
+    return `You are HANGAR INTEL, a VFX production assistant for CBFX. Be concise and direct â€” bullet points preferred.
 
 Current show data:
 - Total shots: ${SHOTS.length}
 - Blocked/On Hold: ${blockers.map(s=>s.code).join(', ')||'None'}
 - Over bid (>100%): ${overBid.map(s=>s.code+' ('+s.pctBid+'%)').join(', ')||'None'}
-- Pending review/notes: ${pending.map(s=>s.code+' — '+s.verStatus).join(', ')||'None'}
+- Pending review/notes: ${pending.map(s=>s.code+' â€” '+s.verStatus).join(', ')||'None'}
 
 Generate a concise daily brief for the VFX supervisor. What needs attention today?`;
   },
@@ -2536,7 +2536,7 @@ Shot summary:
 ${Object.entries(byStatus).map(([st,n]) => `- ${st.toUpperCase()}: ${n} shots`).join('\n')}
 
 Shots in client review / proposed final:
-${crvw.map(s => `- ${s.code}: ${s.desc?.substring(0,60)||'—'}`).join('\n')||'None currently'}
+${crvw.map(s => `- ${s.code}: ${s.desc?.substring(0,60)||'â€”'}`).join('\n')||'None currently'}
 
 Write a concise, professional status update suitable for sending to the client/studio.`;
   },
@@ -2623,7 +2623,7 @@ function sendChat() {
   sendToAI(text);
 }
 
-// ── ROSTER DATA ──────────────────────────────────
+// â”€â”€ ROSTER DATA â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const ARTISTS = [
   {name:'Ruben Rodas', initials:'RR', color:'#9c4aff', role:'Compositor / Supervisor', status:'ip',
    shots:[
@@ -2661,7 +2661,7 @@ const ARTISTS = [
 
 const STATUS_LABELS = {ip:'In Progress',avail:'Available',hld:'On Hold',rdy:'Ready'};
 
-// ── OPS MODULE ──────────────────────────────────
+// â”€â”€ OPS MODULE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const OPS_KEY = 'vtek_ops';
 let OPS = { crew: [], rolodex: [], demand: [] };
 let opsCurrentTab = 'crew';
@@ -2706,7 +2706,7 @@ function renderOps() {
   if (opsCurrentTab === 'rolodex') renderRolodex();
 }
 
-// ── AVAIL COLOR HELPERS
+// â”€â”€ AVAIL COLOR HELPERS
 const AVAIL_META = {
   active:   { label:'ACTIVE',    cls:'avail-active' },
   avail:    { label:'AVAILABLE', cls:'avail-avail' },
@@ -2717,7 +2717,7 @@ const AVAIL_META = {
   wrapping: { label:'WRAPPING',  cls:'avail-penciled' },
 };
 function availBadge(s) {
-  const m = AVAIL_META[s] || {label:s?.toUpperCase()||'–', cls:''};
+  const m = AVAIL_META[s] || {label:s?.toUpperCase()||'â€“', cls:''};
   return `<span class="avail-pill ${m.cls}">${m.label}</span>`;
 }
 
@@ -2728,7 +2728,7 @@ function initials(name) {
   return name.split(' ').filter(Boolean).slice(0,2).map(w=>w[0].toUpperCase()).join('');
 }
 
-// ── CREW RENDER
+// â”€â”€ CREW RENDER
 function renderCrew() {
   const el = document.getElementById('crew-list');
   if (!el) return;
@@ -2746,7 +2746,7 @@ function renderCrew() {
 
   const cards = OPS.crew.map((c,i) => {
     const isPenciled = c.status === 'penciled';
-    const av = AVAIL_META[c.status] || {label:'–',cls:''};
+    const av = AVAIL_META[c.status] || {label:'â€“',cls:''};
     const skills = (c.skills||[]).map(s => `<span class="cc-tag ${s.toLowerCase()}">${s}</span>`).join('');
     const assignments = (c.assignments||[]).map(a => {
       return `<div class="cc-assign-row">
@@ -2764,7 +2764,7 @@ function renderCrew() {
       c.rate ? `<div class="cc-contact-row"><span class="cc-contact-lbl">RATE</span><span class="cc-contact-val">${c.rate.toUpperCase()}</span></div>` : '',
       c.show ? `<div class="cc-contact-row"><span class="cc-contact-lbl">SHOW</span><span class="cc-contact-val">${c.show}</span></div>` : '',
     ].filter(Boolean).join('');
-    const datesRow = (c.start || c.end) ? `<div class="cc-contact-row"><span class="cc-contact-lbl">DATES</span><span class="cc-contact-val">${c.start||'–'} → ${c.end||'ongoing'}</span></div>` : '';
+    const datesRow = (c.start || c.end) ? `<div class="cc-contact-row"><span class="cc-contact-lbl">DATES</span><span class="cc-contact-val">${c.start||'â€“'} â†’ ${c.end||'ongoing'}</span></div>` : '';
     const notesRow = c.notes ? `<div class="cc-contact-row"><span class="cc-contact-lbl">NOTES</span><span class="cc-contact-val" style="white-space:pre-wrap;word-break:break-word">${c.notes}</span></div>` : '';
     const col = c.color || crewColor(i);
     const init = c.initials || initials(c.name||'?');
@@ -2773,7 +2773,7 @@ function renderCrew() {
         <div class="cc-avatar${isPenciled?' penciled-av':''}" style="${isPenciled?'':'background:'+col}">${init}</div>
         <div class="cc-info">
           <div class="cc-name">${c.name||'Unnamed'}${isPenciled?' <span style="font-size:9px;color:var(--t2);font-family:var(--mono)">[PENCILED]</span>':''}</div>
-          <div class="cc-role">${c.role||'–'}</div>
+          <div class="cc-role">${c.role||'â€“'}</div>
         </div>
         <div class="cc-right">
           ${availBadge(c.status)}
@@ -2819,12 +2819,12 @@ function toggleCrewCard(i) {
 function pingCrew(i) {
   const c = OPS.crew[i];
   if (!c) return;
-  if (c.email) window.location.href = `mailto:${c.email}?subject=Availability Check&body=Hey ${c.name.split(' ')[0]},%0A%0AHope all's well! Checking in on your availability — do you have any open dates coming up?%0A%0AThanks`;
+  if (c.email) window.location.href = `mailto:${c.email}?subject=Availability Check&body=Hey ${c.name.split(' ')[0]},%0A%0AHope all's well! Checking in on your availability â€” do you have any open dates coming up?%0A%0AThanks`;
   else if (c.phone) window.location.href = `tel:${c.phone}`;
   else toast('NO CONTACT INFO');
 }
 
-// ── SHOT PICKER ──────────────────────────────────
+// â”€â”€ SHOT PICKER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 let pendingAssignments = []; // working copy during modal edit
 let shotPickerShowFilter = 'ALL';
 
@@ -2924,7 +2924,7 @@ function renderCrewAssignmentsList() {
       <div style="font-family:var(--mono);font-size:9px;color:var(--t0);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${a.shotCode}</div>
       <div style="font-family:var(--mono);font-size:8px;color:var(--t2);width:38px;flex-shrink:0">${a.task}</div>
       <div style="font-family:var(--mono);font-size:8px;padding:2px 5px;border-radius:3px;background:${hexToRgba(liveSc,0.12)};color:${liveSc}">${liveStatus.toUpperCase()}</div>
-      <button onclick="removeCrewAssign(${i})" style="background:none;border:none;color:var(--t2);font-size:14px;cursor:pointer;padding:0;line-height:1;flex-shrink:0">×</button>
+      <button onclick="removeCrewAssign(${i})" style="background:none;border:none;color:var(--t2);font-size:14px;cursor:pointer;padding:0;line-height:1;flex-shrink:0">Ã—</button>
     </div>`;
   }).join('');
 }
@@ -2934,7 +2934,7 @@ function removeCrewAssign(i) {
   renderCrewAssignmentsList();
 }
 
-// ── CREW MODAL
+// â”€â”€ CREW MODAL
 function openCrewAdd() {
   pendingAssignments = [];
   document.getElementById('crew-edit-idx').value = '-1';
@@ -3013,7 +3013,7 @@ function deleteCrew() {
 
 function toggleSkill(btn) { btn.classList.toggle('on'); }
 
-// ── DEMAND RENDER
+// â”€â”€ DEMAND RENDER
 function renderDemand() {
   const el = document.getElementById('demand-list');
   if (!el) return;
@@ -3049,10 +3049,10 @@ function renderDemand() {
     const gapClass   = gap < 0 ? 'need' : gap < bidDays*0.1 ? 'tight' : 'ok';
     const gapText    = gap < 0 ? `${Math.abs(Math.round(gap))}d SHORT` : gap === 0 ? 'EXACT' : 'ON TRACK';
     const alertHtml  = gap < 0
-      ? `<div class="dc-alert"><div class="dc-alert-dot"></div><div class="dc-alert-txt">UNDER-RESOURCED — need ~${Math.ceil(Math.abs(gap)/5/weeksTotal)} more artist${Math.ceil(Math.abs(gap)/5/weeksTotal)>1?'s':''} to hit delivery</div></div>`
+      ? `<div class="dc-alert"><div class="dc-alert-dot"></div><div class="dc-alert-txt">UNDER-RESOURCED â€” need ~${Math.ceil(Math.abs(gap)/5/weeksTotal)} more artist${Math.ceil(Math.abs(gap)/5/weeksTotal)>1?'s':''} to hit delivery</div></div>`
       : '';
 
-    // ── STAFFING TIMELINE ──────────────────────────────
+    // â”€â”€ STAFFING TIMELINE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     // Build role rows: each role has a start offset, duration, headcount
     // Logic: ROTO starts first (needs to precede comp), PAINT overlaps roto,
     // COMP starts after roto lead time (~25% into show), all end at delivery
@@ -3085,7 +3085,7 @@ function renderDemand() {
     }
 
     if (rotoNeed > 0) {
-      // Roto starts earliest — needs to feed comp
+      // Roto starts earliest â€” needs to feed comp
       const startOffset = 0;
       const duration    = Math.round(weeksTotal * 0.65);
       const startBy     = startDate ? new Date(startDate) : new Date(today.getTime() + (weeksLeft - duration)*7*24*60*60*1000);
@@ -3119,7 +3119,7 @@ function renderDemand() {
       partial: false,
     });
 
-    const fmtDate = dt => dt ? dt.toLocaleDateString('en-US',{month:'short',day:'numeric'}) : '—';
+    const fmtDate = dt => dt ? dt.toLocaleDateString('en-US',{month:'short',day:'numeric'}) : 'â€”';
     const totalBars = Math.min(weeksTotal, 12); // cap display at 12 weeks
 
     const ganttRows = roles.map(r => {
@@ -3146,7 +3146,7 @@ function renderDemand() {
       return `<div class="stl-row">
         <div class="stl-role-col">
           <div class="stl-role-lbl">${r.role}</div>
-          <div class="stl-role-meta">${r.headcount}× · ${fmtDate(r.startBy)}</div>
+          <div class="stl-role-meta">${r.headcount}Ã— Â· ${fmtDate(r.startBy)}</div>
         </div>
         <div class="stl-gantt">${cells}</div>
         <div class="stl-status" style="background:${r.covered?'rgba(52,215,153,.12)':r.partial?'rgba(245,166,35,.12)':'rgba(255,92,92,.12)'};color:${statusColor}">${statusLabel}</div>
@@ -3179,7 +3179,7 @@ function renderDemand() {
           <div class="dc-lbl">BID</div>
           <div class="dc-bar-wrap"><div class="dc-bar" style="width:${bidDays>0?Math.min(100,Math.round(bidDays/Math.max(capacity,bidDays)*100)):0}%;background:var(--t2)"></div></div>
           <div class="dc-val">${bidDays}d</div>
-          <div class="dc-gap" style="color:var(--t2)">${weeksTotal}wk · ${d.due||'TBD'}</div>
+          <div class="dc-gap" style="color:var(--t2)">${weeksTotal}wk Â· ${d.due||'TBD'}</div>
         </div>
         ${alertHtml}
 
@@ -3187,7 +3187,7 @@ function renderDemand() {
         <div class="stl-section">
           <div class="stl-hd">
             <span class="stl-hd-lbl">STAFFING TIMELINE</span>
-            <span class="stl-hd-sub">${fmtDate(startDate||today)} → ${fmtDate(dueDate)}</span>
+            <span class="stl-hd-sub">${fmtDate(startDate||today)} â†’ ${fmtDate(dueDate)}</span>
           </div>
           <div class="stl-wk-row">${wkLabels}</div>
           ${ganttRows}
@@ -3241,7 +3241,7 @@ function editDemand(i) {
 }
 function deleteDemand(i) { OPS.demand.splice(i,1); saveOps(); renderDemand(); toast('REMOVED'); }
 
-// ── ROLODEX RENDER
+// â”€â”€ ROLODEX RENDER
 function setRdxFilter(btn) {
   rdxFilter = btn.dataset.rdx;
   document.querySelectorAll('.rdx-filter').forEach(b=>b.classList.remove('on'));
@@ -3258,7 +3258,7 @@ function renderRolodex() {
     return matchQ && matchF;
   });
   if (!data.length) {
-    el.innerHTML = `<div style="padding:30px 0;text-align:center;font-family:var(--mono);font-size:10px;color:var(--t2)">NO CONTACTS${q?' MATCH':''}${!OPS.rolodex.length?' — ADD YOUR FIRST':''}</div>
+    el.innerHTML = `<div style="padding:30px 0;text-align:center;font-family:var(--mono);font-size:10px;color:var(--t2)">NO CONTACTS${q?' MATCH':''}${!OPS.rolodex.length?' â€” ADD YOUR FIRST':''}</div>
     <button class="rdx-add-btn" onclick="openModePickerFor('rolodex', openRdxAdd)">
       <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>ADD TO ROLODEX</button>`;
     return;
@@ -3282,7 +3282,7 @@ function renderRolodex() {
         <div class="rdx-av" style="background:${col}">${init}</div>
         <div class="rdx-info">
           <div class="rdx-name">${r.name||'Unnamed'}</div>
-          <div class="rdx-title">${r.title||'–'}</div>
+          <div class="rdx-title">${r.title||'â€“'}</div>
         </div>
         <div class="rdx-right">
           <span class="avail-pill ${availMeta.cls}" style="font-size:8px">${availMeta.label}</span>
@@ -3321,7 +3321,7 @@ function pingRdx(i) {
   // Update last check date
   OPS.rolodex[i].lastcheck = new Date().toISOString().split('T')[0];
   saveOps();
-  if (r.email) window.location.href = `mailto:${r.email}?subject=Availability&body=Hey ${r.name.split(' ')[0]},%0A%0AHope you're doing well! Wanted to check in on your availability — are you open for work in the coming weeks?%0A%0AThanks`;
+  if (r.email) window.location.href = `mailto:${r.email}?subject=Availability&body=Hey ${r.name.split(' ')[0]},%0A%0AHope you're doing well! Wanted to check in on your availability â€” are you open for work in the coming weeks?%0A%0AThanks`;
   else if (r.phone) window.location.href = `tel:${r.phone}`;
   else toast('NO CONTACT INFO');
 }
@@ -3384,7 +3384,7 @@ function deleteRdx() {
 }
 function toggleSkillRdx(btn) { btn.classList.toggle('on'); }
 
-// ── OPS OVERLAY HELPERS
+// â”€â”€ OPS OVERLAY HELPERS
 function openOpsOverlay(id) {
   document.getElementById(id)?.classList.add('open');
   // After paint, expand any pre-filled textareas
@@ -3471,7 +3471,7 @@ function renderRoster() {
   document.getElementById('r-over').textContent = over;
 }
 
-// ── CSV IMPORT ────────────────────────────────────
+// â”€â”€ CSV IMPORT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 let parsedCSV = null;
 
 function openImport() { openOverlay('importOverlay'); }
@@ -3506,7 +3506,7 @@ function processCSV(file) {
   reader.onload = (e) => {
     const text = e.target.result;
     const lines = text.split('\n').filter(l => l.trim());
-    // Parse CSV rows — handle quoted multiline fields
+    // Parse CSV rows â€” handle quoted multiline fields
     const rows = parseCSVRows(text);
 
     // Skip header rows (ShotGrid exports have 2 header rows)
@@ -3545,7 +3545,7 @@ function processCSV(file) {
         shotMap[code].tasks.push({
           name: taskName.toUpperCase().substring(0,8),
           status: taskSt || 'wtg',
-          who: assignee || '—',
+          who: assignee || 'â€”',
           bid, used: bid + bidpm,
           verStatus: latVer || 'rev',
           verNote: '', due: due || null,
@@ -3620,7 +3620,7 @@ function runImport() {
       // Replace SHOTS array
       SHOTS.length = 0;
       parsedCSV.forEach(s => SHOTS.push(s));
-      lbl.textContent = `Done — ${total} shots loaded`;
+      lbl.textContent = `Done â€” ${total} shots loaded`;
       fill.style.width = '100%';
       log.innerHTML += `<br><span style="color:var(--ac)">&#x2713; HANGAR updated</span>`;
       renderShotList();
@@ -3633,25 +3633,25 @@ function runImport() {
   }, 40);
 }
 
-// ── WIZARD ENGINE ─────────────────────────────────────────────────────
+// â”€â”€ WIZARD ENGINE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 let _wizType = null;       // 'task' | 'crew' | 'show' | 'rolodex'
 let _wizStep = 0;
 let _wizData = {};
 let _wizFormFn = null;     // function to call for full-form mode
 
-// ── WIZARD DEFINITIONS ────────────────────────────────────────────────
+// â”€â”€ WIZARD DEFINITIONS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const WIZARDS = {
   task: {
     title: 'New Task',
     steps: [
-      { key:'title',    type:'text',   question:"What needs to get done?",            hint:"Be specific — this becomes the task title.", placeholder:"e.g. Comp review — 016_BFR_0070", label:'TASK' },
+      { key:'title',    type:'text',   question:"What needs to get done?",            hint:"Be specific â€” this becomes the task title.", placeholder:"e.g. Comp review â€” 016_BFR_0070", label:'TASK' },
       { key:'due',      type:'date',   question:"When does it need to be done by?",   hint:"Pick a due date, or skip if open-ended.", label:'DUE DATE' },
       { key:'dur',      type:'select', question:"How long will it take?",             hint:"Rough estimate is fine.", label:'EST. TIME',
         options:[{val:'15m',lbl:'15 min'},{val:'30m',lbl:'30 min'},{val:'1h',lbl:'1 hour'},{val:'2h',lbl:'2 hours'},{val:'4h',lbl:'Half day'},{val:'1d',lbl:'Full day'}] },
       { key:'pri',      type:'select', question:"How urgent is this?",                hint:"This affects how it shows up in your list.", label:'PRIORITY',
-        options:[{val:'high',lbl:'HIGH — needs to happen now'},{val:'med',lbl:'MED — this week'},{val:'low',lbl:'LOW — when I get to it'},{val:'none',lbl:'No priority'}] },
+        options:[{val:'high',lbl:'HIGH â€” needs to happen now'},{val:'med',lbl:'MED â€” this week'},{val:'low',lbl:'LOW â€” when I get to it'},{val:'none',lbl:'No priority'}] },
       { key:'show',     type:'showpick', question:"Is this for a specific show?",     hint:"Link it to a show for filtering.", label:'SHOW' },
-      { key:'notes',    type:'textarea', question:"Any notes to add?",                hint:"Context, links, reminders — anything useful.", placeholder:"Optional notes…", label:'NOTES' },
+      { key:'notes',    type:'textarea', question:"Any notes to add?",                hint:"Context, links, reminders â€” anything useful.", placeholder:"Optional notesâ€¦", label:'NOTES' },
     ],
   },
   crew: {
@@ -3662,13 +3662,13 @@ const WIZARDS = {
       { key:'skills',   type:'chips',  question:"What are their skills?",             hint:"Select all that apply.", label:'SKILLS',
         options:['COMP','ROTO','PAINT','FX','LEAD','PROD','3D','GRADE','ANIM'] },
       { key:'status',   type:'select', question:"What's their current status?",       hint:"Are they working on something right now?", label:'STATUS',
-        options:[{val:'active',lbl:'ACTIVE — on a show'},{val:'avail',lbl:'AVAILABLE — open for work'},{val:'penciled',lbl:'PENCILED — tentatively planned'},{val:'unavail',lbl:'UNAVAILABLE'}] },
+        options:[{val:'active',lbl:'ACTIVE â€” on a show'},{val:'avail',lbl:'AVAILABLE â€” open for work'},{val:'penciled',lbl:'PENCILED â€” tentatively planned'},{val:'unavail',lbl:'UNAVAILABLE'}] },
       { key:'show',     type:'text',   question:"Which show are they on?",            hint:"Show code, e.g. CRL, AIG. Skip if not applicable.", placeholder:"e.g. CRL", label:'SHOW' },
       { key:'email',    type:'text',   question:"What's their email?",                hint:"Used for the PING button.", placeholder:"name@email.com", label:'EMAIL' },
-      { key:'phone',    type:'text',   question:"Phone number?",                      hint:"Optional — used for quick contact.", placeholder:"+1 555 000 0000", label:'PHONE' },
+      { key:'phone',    type:'text',   question:"Phone number?",                      hint:"Optional â€” used for quick contact.", placeholder:"+1 555 000 0000", label:'PHONE' },
       { key:'rate',     type:'select', question:"What's their rate tier?",            hint:"Approximate seniority level.", label:'RATE TIER',
         options:[{val:'junior',lbl:'JUNIOR'},{val:'mid',lbl:'MID'},{val:'senior',lbl:'SENIOR'},{val:'lead',lbl:'LEAD'},{val:'sup',lbl:'SUPERVISOR'}] },
-      { key:'notes',    type:'textarea', question:"Any notes about them?",            hint:"How you know them, quality of work, preferences…", placeholder:"Notes…", label:'NOTES' },
+      { key:'notes',    type:'textarea', question:"Any notes about them?",            hint:"How you know them, quality of work, preferencesâ€¦", placeholder:"Notesâ€¦", label:'NOTES' },
     ],
   },
   show: {
@@ -3678,13 +3678,13 @@ const WIZARDS = {
       { key:'name',     type:'text',   question:"Full show name?",                    hint:"As it appears in deliverables.", placeholder:"e.g. Cerulean", label:'SHOW NAME' },
       { key:'client',   type:'text',   question:"Who's the client or studio?",        hint:"Production company or direct client.", placeholder:"e.g. Netflix, A24", label:'CLIENT' },
       { key:'type',     type:'select', question:"What's the status of this show?",    hint:"Active = in production now.", label:'TYPE',
-        options:[{val:'active',lbl:'ACTIVE — in production now'},{val:'upcoming',lbl:'UPCOMING — confirmed, not started'},{val:'theoretical',lbl:'THEORETICAL — planning only'}] },
+        options:[{val:'active',lbl:'ACTIVE â€” in production now'},{val:'upcoming',lbl:'UPCOMING â€” confirmed, not started'},{val:'theoretical',lbl:'THEORETICAL â€” planning only'}] },
       { key:'start',    type:'date',   question:"When does work start?",              hint:"Or when did it start.", label:'START DATE' },
       { key:'due',      type:'date',   question:"When is final delivery?",            hint:"Hard deadline.", label:'DELIVERY DATE' },
       { key:'bid',      type:'text',   question:"How many total bid days?",           hint:"Sum of all tasks across all artists.", placeholder:"e.g. 240", label:'TOTAL BID DAYS' },
       { key:'comp',     type:'text',   question:"How many compositors needed?",       hint:"Headcount for comp department.", placeholder:"e.g. 3", label:'COMP HEADCOUNT' },
       { key:'roto',     type:'text',   question:"Roto / paint artists needed?",       hint:"Headcount for roto and paint.", placeholder:"e.g. 2", label:'ROTO/PAINT' },
-      { key:'notes',    type:'textarea', question:"Any special pipeline requirements?", hint:"Delivery format, special tools, client quirks…", placeholder:"Notes…", label:'NOTES' },
+      { key:'notes',    type:'textarea', question:"Any special pipeline requirements?", hint:"Delivery format, special tools, client quirksâ€¦", placeholder:"Notesâ€¦", label:'NOTES' },
     ],
   },
   rolodex: {
@@ -3695,19 +3695,22 @@ const WIZARDS = {
       { key:'skills',    type:'chips',   question:"What are their skills?",           hint:"Select all that apply.", label:'SKILLS',
         options:['COMP','ROTO','PAINT','FX','LEAD','PROD','3D','GRADE','ANIM'] },
       { key:'avail',     type:'select',  question:"Do you know their availability?",  hint:"Last known status.", label:'AVAILABILITY',
-        options:[{val:'avail',lbl:'AVAILABLE — open right now'},{val:'booked',lbl:'BOOKED — on something'},{val:'wrapping',lbl:'WRAPPING SOON'},{val:'unknown',lbl:"DON'T KNOW"}] },
+        options:[{val:'avail',lbl:'AVAILABLE â€” open right now'},{val:'booked',lbl:'BOOKED â€” on something'},{val:'wrapping',lbl:'WRAPPING SOON'},{val:'unknown',lbl:"DON'T KNOW"}] },
       { key:'email',     type:'text',    question:"Email address?",                   hint:"How you'd reach them.", placeholder:"name@email.com", label:'EMAIL' },
       { key:'phone',     type:'text',    question:"Phone number?",                    hint:"Optional.", placeholder:"+1 555 000 0000", label:'PHONE' },
       { key:'company',   type:'text',    question:"What studio or company are they at?", hint:"Or freelance.", placeholder:"e.g. ILM, freelance", label:'COMPANY' },
-      { key:'notes',     type:'textarea',question:"How do you know them? Any notes?", hint:"Quality, rate range, how you met…", placeholder:"Notes…", label:'NOTES' },
+      { key:'notes',     type:'textarea',question:"How do you know them? Any notes?", hint:"Quality, rate range, how you metâ€¦", placeholder:"Notesâ€¦", label:'NOTES' },
     ],
   },
 };
 
-// ── ENTRY POINTS ──────────────────────────────────────────────────────
+// â”€â”€ ENTRY POINTS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function openModePickerFor(type, formFn) {
   _wizType = type;
   _wizFormFn = formFn;
+  // Make sure wizard is hidden if user cancelled mid-flow
+  const wiz = document.getElementById('wizardOverlay');
+  if (wiz) wiz.style.display = 'none';
   const def = WIZARDS[type];
   document.getElementById('mp-title').textContent = def.title;
   document.getElementById('modePickerOverlay').style.display = 'flex';
@@ -3716,21 +3719,28 @@ function closeModePickerOverlay() {
   document.getElementById('modePickerOverlay').style.display = 'none';
 }
 function startForm() {
+  const fn = _wizFormFn;
   closeModePickerOverlay();
-  if (_wizFormFn) _wizFormFn();
+  requestAnimationFrame(() => { if (fn) fn(); });
 }
 function startWizard() {
+  const type = _wizType;
   closeModePickerOverlay();
   _wizStep = 0;
   _wizData = {};
-  document.getElementById('wizardOverlay').style.display = 'flex';
-  wizRender();
+  // rAF ensures mode picker is fully dismissed before wizard renders
+  requestAnimationFrame(() => {
+    _wizType = type; // re-set in case anything cleared it
+    const overlay = document.getElementById('wizardOverlay');
+    if (overlay) { overlay.style.display = 'flex'; wizRender(); }
+  });
 }
 function wizCancel() {
   document.getElementById('wizardOverlay').style.display = 'none';
+  _wizData = {};
 }
 
-// ── RENDER STEP ───────────────────────────────────────────────────────
+// â”€â”€ RENDER STEP â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function wizRender() {
   const def   = WIZARDS[_wizType];
   const steps = def.steps;
@@ -3743,7 +3753,7 @@ function wizRender() {
     `<div class="wiz-prog-dot${i < _wizStep ? ' done' : i === _wizStep ? ' cur' : ''}"></div>`
   ).join('');
 
-  document.getElementById('wiz-step-label').textContent = `STEP ${_wizStep+1} OF ${steps.length} — ${step.label}`;
+  document.getElementById('wiz-step-label').textContent = `STEP ${_wizStep+1} OF ${steps.length} â€” ${step.label}`;
   document.getElementById('wiz-question').textContent = step.question;
   document.getElementById('wiz-hint').textContent = step.hint || '';
   document.getElementById('wiz-next-btn').textContent = isLast ? 'SAVE' : 'NEXT';
@@ -3793,7 +3803,7 @@ function wizRender() {
       </button>
       ${opts.map(s =>
         `<button class="wiz-option${saved===s.code?' sel':''}" onclick="wizSelectOption('${s.code}',this)">
-          <div class="wiz-option-dot"></div><span>${s.code} — ${s.name}</span>
+          <div class="wiz-option-dot"></div><span>${s.code} â€” ${s.name}</span>
         </button>`
       ).join('')}
     </div>`;
@@ -3856,7 +3866,7 @@ function wizBack() {
   if (_wizStep > 0) { _wizStep--; wizRender(); }
 }
 
-// ── COMMIT ────────────────────────────────────────────────────────────
+// â”€â”€ COMMIT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function wizCommit() {
   document.getElementById('wizardOverlay').style.display = 'none';
   const d = _wizData;
@@ -3918,10 +3928,10 @@ function wizCommit() {
 
 
 </script>
-<!-- ═══════════════════════════════════════════════
-     MODE PICKER — Form vs Wizard
-═══════════════════════════════════════════════ -->
-<div id="modePickerOverlay" style="position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:10300;display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)">
+<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+     MODE PICKER â€” Form vs Wizard
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+<div id="modePickerOverlay" style="position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:10300;display:none;align-items:flex-end;justify-content:center">
   <div style="width:100%;max-width:480px;background:#161718;border-radius:24px 24px 0 0;padding:0 0 max(var(--safe-b),28px)">
     <div style="width:32px;height:3px;background:rgba(255,255,255,.15);border-radius:2px;margin:14px auto 0"></div>
     <div style="padding:20px 22px 14px;border-bottom:1px solid rgba(255,255,255,.06)">
@@ -3935,7 +3945,7 @@ function wizCommit() {
         </div>
         <div style="flex:1">
           <div style="font-family:var(--sans);font-size:14px;font-weight:700;color:var(--ac);letter-spacing:.02em">STEP BY STEP</div>
-          <div style="font-family:var(--sans);font-size:12px;color:rgba(255,255,255,.3);margin-top:2px">One question at a time � skip anything</div>
+          <div style="font-family:var(--sans);font-size:12px;color:rgba(255,255,255,.3);margin-top:2px">One question at a time · skip anything</div>
         </div>
         <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="2" stroke-linecap="round" style="flex-shrink:0"><polyline points="6,3 11,8 6,13"/></svg>
       </button>
