@@ -1,4 +1,4 @@
-<!-- VTEK HANGAR BUILD_ID=HGR-029 -->
+<!-- VTEK HANGAR BUILD_ID=HGR-030 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1359,7 +1359,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 <div class="modal-overlay" id="addTaskModal" onclick="closeModalOut(event,'addTaskModal')">
   <div class="modal-sheet">
     <div class="modal-handle"></div>
-    <div class="modal-head"><span class="modal-title" id="taskModalTitle">New Task</span><button class="modal-close" onclick="closeModal('addTaskModal')">&#x2715;</button></div>
+    <div class="modal-head"><span class="modal-title" id="taskModalTitle">New Task</span><button class="modal-close" onclick="guardedClose('addTaskModal', ()=>closeModal('addTaskModal'))">&#x2715;</button></div>
     <div class="modal-body">
       <div class="field-group"><label class="field-label">Task</label><input class="field-input" id="f-task-title" placeholder="What needs to be done?"></div>
       <div class="field-row">
@@ -1389,7 +1389,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
       <div class="field-group"><label class="field-label">Notes</label><input class="field-input" id="f-task-notes" placeholder="Optional notes..."></div>
       <div class="modal-actions">
         <button class="btn-primary" onclick="saveTask()">SAVE TASK</button>
-        <button class="btn-secondary" onclick="closeModal('addTaskModal')">CANCEL</button>
+        <button class="btn-secondary" onclick="guardedClose('addTaskModal', ()=>closeModal('addTaskModal'))">CANCEL</button>
         <button class="btn-danger" id="deleteTaskBtn" onclick="deleteTask()" style="display:none">DELETE</button>
       </div>
     </div>
@@ -1400,7 +1400,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 <div class="modal-overlay" id="addShotModal" onclick="closeModalOut(event,'addShotModal')">
   <div class="modal-sheet">
     <div class="modal-handle"></div>
-    <div class="modal-head"><span class="modal-title" id="addShotTitle">Add Shot</span><button class="modal-close" onclick="closeModal('addShotModal')">&#x2715;</button></div>
+    <div class="modal-head"><span class="modal-title" id="addShotTitle">Add Shot</span><button class="modal-close" onclick="guardedClose('addShotModal', ()=>closeModal('addShotModal'))">&#x2715;</button></div>
     <div class="modal-body">
       <div class="field-group"><label class="field-label">Shot Code</label><input class="field-input" id="f-shot-code" placeholder="e.g. 016_BFR_0070"></div>
       <div class="field-group"><label class="field-label">Description</label><input class="field-input" id="f-shot-desc" placeholder="Brief shot description"></div>
@@ -1427,7 +1427,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
       <div class="field-group"><label class="field-label">Notes</label><input class="field-input" id="f-shot-notes" placeholder="Supervisor notes..."></div>
       <div class="modal-actions">
         <button class="btn-primary" onclick="saveShot()">SAVE SHOT</button>
-        <button class="btn-secondary" onclick="closeModal('addShotModal')">CANCEL</button>
+        <button class="btn-secondary" onclick="guardedClose('addShotModal', ()=>closeModal('addShotModal'))">CANCEL</button>
         <button class="btn-danger" id="deleteShotBtn" onclick="deleteShot()" style="display:none">DELETE</button>
       </div>
     </div>
@@ -1438,7 +1438,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 <div class="modal-overlay" id="addShowModal" onclick="closeModalOut(event,'addShowModal')">
   <div class="modal-sheet">
     <div class="modal-handle"></div>
-    <div class="modal-head"><span class="modal-title">Register Show</span><button class="modal-close" onclick="closeModal('addShowModal')">&#x2715;</button></div>
+    <div class="modal-head"><span class="modal-title">Register Show</span><button class="modal-close" onclick="guardedClose('addShowModal', ()=>closeModal('addShowModal'))">&#x2715;</button></div>
     <div class="modal-body">
       <div class="field-group"><label class="field-label">Show Code</label><input class="field-input" id="f-show-code" placeholder="e.g. CRL" maxlength="6" style="text-transform:uppercase"></div>
       <div class="field-group"><label class="field-label">Show Name</label><input class="field-input" id="f-show-name" placeholder="e.g. Cerulean"></div>
@@ -1449,7 +1449,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
       </div>
       <div class="modal-actions">
         <button class="btn-primary" onclick="saveShow()">ADD SHOW</button>
-        <button class="btn-secondary" onclick="closeModal('addShowModal')">CANCEL</button>
+        <button class="btn-secondary" onclick="guardedClose('addShowModal', ()=>closeModal('addShowModal'))">CANCEL</button>
       </div>
     </div>
   </div>
@@ -1833,7 +1833,7 @@ function renderCfg(){
 function togChip(k){let a=loadChips();if(a.includes(k)){if(a.length<=1)return;a=a.filter(x=>x!==k);}else{if(a.length>=6)return;a.push(k);}saveChips(a);renderCfg();renderChips();}
 function openCfg(){renderCfg();openOverlay('cfgOverlay');}
 function closeCfg(){document.getElementById('cfgOverlay').classList.remove('open');}
-function closeCfgOut(e){if(e.target.id==='cfgOverlay')closeCfg();}
+function closeCfgOut(e){if(e.target.id==='cfgOverlay') guardedClose('cfgOverlay', closeCfg);}
 
 
 // Re-trigger sheet animation on open
@@ -2288,8 +2288,55 @@ function renderShotListFiltered(shots) {
 
 // ── SHOW/SHOT MODALS ──────────────────────────────
 function openModal(id) { openOverlay(id); }
+// ── DIRTY-CHECK / DISCARD GUARD ──────────────────
+let _discardCallback = null;
+
+function isOverlayDirty(id) {
+  const el = document.getElementById(id);
+  if (!el) return false;
+  const inputs = el.querySelectorAll('input:not([type=hidden]), textarea, select');
+  for (const inp of inputs) {
+    if (inp.tagName === 'SELECT') {
+      // dirty if not first option
+      if (inp.selectedIndex > 0) return true;
+    } else if (inp.type === 'checkbox' || inp.type === 'radio') {
+      if (inp.checked !== inp.defaultChecked) return true;
+    } else {
+      if (inp.value.trim() !== '') return true;
+    }
+  }
+  // Also check ops-tag-btn selections and pending assignments
+  const activeTags = el.querySelectorAll('.ops-tag-btn.on');
+  if (activeTags.length > 0) return true;
+  // For crew modal check pendingAssignments
+  if ((id === 'crewAddOverlay' || id === 'rdxAddOverlay') && typeof pendingAssignments !== 'undefined' && pendingAssignments.length > 0) return true;
+  return false;
+}
+
+function guardedClose(id, closeFn) {
+  if (isOverlayDirty(id)) {
+    _discardCallback = closeFn;
+    const overlay = document.getElementById('discardOverlay');
+    const btn = document.getElementById('discardConfirmBtn');
+    if (btn) btn.onclick = confirmDiscard;
+    if (overlay) overlay.style.display = 'flex';
+  } else {
+    closeFn();
+  }
+}
+
+function confirmDiscard() {
+  document.getElementById('discardOverlay').style.display = 'none';
+  if (_discardCallback) { _discardCallback(); _discardCallback = null; }
+}
+
+function cancelDiscard() {
+  document.getElementById('discardOverlay').style.display = 'none';
+  _discardCallback = null;
+}
+
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-function closeModalOut(e, id) { if(e.target.id===id) closeModal(id); }
+function closeModalOut(e, id) { if(e.target.id===id) guardedClose(id, () => closeModal(id)); }
 
 let editingShotIdx = -1;
 function openAddShot() {
@@ -3122,7 +3169,14 @@ function toggleSkillRdx(btn) { btn.classList.toggle('on'); }
 
 // ── OPS OVERLAY HELPERS
 function openOpsOverlay(id) { document.getElementById(id)?.classList.add('open'); }
-function closeOpsOverlay(id) { document.getElementById(id)?.classList.remove('open'); }
+function closeOpsOverlay(id) {
+  // Shot picker and discard overlay itself never need a dirty check
+  if (id === 'shotPickerOverlay' || id === 'discardOverlay') {
+    document.getElementById(id)?.classList.remove('open');
+    return;
+  }
+  guardedClose(id, () => { document.getElementById(id)?.classList.remove('open'); });
+}
 function openOpsAdd() {
   if (opsCurrentTab==='crew') openCrewAdd();
   else if (opsCurrentTab==='demand') openOpsOverlay('demandAddOverlay');
@@ -3196,7 +3250,7 @@ function closeImport() {
   document.getElementById('importOverlay').classList.remove('open');
   resetImport();
 }
-function closeImportOut(e) { if(e.target.id==='importOverlay') closeImport(); }
+function closeImportOut(e) { if(e.target.id==='importOverlay') guardedClose('importOverlay', closeImport); }
 function resetImport() {
   parsedCSV = null;
   document.getElementById('importPreview').classList.remove('show');
@@ -3351,5 +3405,17 @@ function runImport() {
 }
 
 </script>
+<!-- DISCARD CONFIRM OVERLAY -->
+<div id="discardOverlay" style="position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:19999;display:none;align-items:center;justify-content:center;padding:24px;box-sizing:border-box">
+  <div style="background:var(--s1);border-radius:20px;padding:28px 22px;width:100%;max-width:320px;box-sizing:border-box;text-align:center">
+    <div style="font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t2);margin-bottom:10px">UNSAVED CHANGES</div>
+    <div style="font-family:var(--sans);font-size:15px;font-weight:600;color:var(--t0);margin-bottom:6px">Close without saving?</div>
+    <div style="font-family:var(--sans);font-size:12px;color:var(--t2);margin-bottom:24px;line-height:1.5">You have unsaved input in this form. Closing will discard your changes.</div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <button id="discardConfirmBtn" style="height:46px;background:#fff;border:none;border-radius:12px;font-family:var(--sans);font-size:14px;font-weight:700;color:#1c1c1e;cursor:pointer;letter-spacing:.03em">DISCARD CHANGES</button>
+      <button onclick="cancelDiscard()" style="height:46px;background:none;border:1px solid rgba(255,255,255,.1);border-radius:12px;font-family:var(--sans);font-size:14px;font-weight:600;color:var(--t1);cursor:pointer">KEEP EDITING</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
