@@ -1,4 +1,4 @@
-<!-- VTEK HANGAR BUILD_ID=HGR-045 -->
+<!-- VTEK HANGAR BUILD_ID=HGR-046 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -495,10 +495,13 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 .task-item.done{opacity:.45}
 .task-item.done .ti-title{text-decoration:line-through;color:var(--t2)}
 /* PENDING — checked, awaiting confirm */
-.task-item.pending{padding-left:22px;background:rgba(46,184,184,.07);border:1px solid rgba(46,184,184,.18)}
+.task-item.pending{padding-left:94px;background:rgba(46,184,184,.07);border:1px solid rgba(46,184,184,.18)}
 .task-item.pending .ti-title{color:var(--t1)}
 .task-item.pending .ti-chk{background:var(--ac);border-color:var(--ac)}
 .task-item.pending .ti-chk svg{stroke:#1c1c1e}
+/* left actions container — absolutely positioned in the indent gap */
+.ti-left-actions{position:absolute;left:8px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:4px;opacity:0;pointer-events:none;transition:opacity .2s}
+.task-item.pending .ti-left-actions{opacity:1;pointer-events:auto}
 /* COMPLETING — slides out */
 @keyframes taskSlideOut{0%{max-height:100px;opacity:1;margin-bottom:6px;transform:translateX(0) scaleY(1)}70%{opacity:0;transform:translateX(12px) scaleY(1)}100%{max-height:0;opacity:0;margin-bottom:0;padding-top:0;padding-bottom:0;transform:translateX(12px) scaleY(0)}}
 .task-item.completing{animation:taskSlideOut .38s cubic-bezier(0.4,0,1,1) forwards;pointer-events:none;overflow:hidden;transform-origin:top}
@@ -508,8 +511,8 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 .task-item.done .ti-chk{background:var(--ac);border-color:var(--ac)}
 .task-item.done .ti-chk svg{stroke:#1c1c1e}
 .ti-chk svg{stroke:transparent;transition:stroke .15s}
-.ti-confirm-btn{flex-shrink:0;height:28px;padding:0 11px;border-radius:7px;border:none;background:var(--ac);font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.07em;color:#1c1c1e;cursor:pointer;white-space:nowrap;animation:fadeUp .18s ease both}
-.ti-undo-btn{flex-shrink:0;height:26px;padding:0 8px;border-radius:6px;border:1px solid rgba(255,255,255,.1);background:none;font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.05em;color:var(--t2);cursor:pointer;white-space:nowrap;margin-left:2px}
+.ti-confirm-btn{width:72px;height:26px;padding:0;border-radius:6px;border:none;background:var(--ac);font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.06em;color:#1c1c1e;cursor:pointer;white-space:nowrap;text-align:center}
+.ti-undo-btn{width:72px;height:22px;padding:0;border-radius:5px;border:1px solid rgba(255,255,255,.12);background:none;font-family:var(--mono);font-size:7px;font-weight:700;letter-spacing:.06em;color:var(--t2);cursor:pointer;white-space:nowrap;text-align:center}
 .ti-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
 .ti-title{font-family:var(--sans);font-size:13px;font-weight:600;color:var(--t0);line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ti-meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
@@ -2099,49 +2102,45 @@ function taskHTML(t, idx) {
   const priColor = PRI_COLOR[t.pri] || 'transparent';
   const overdue = !t.done && isOverdue(t.due);
   const todayFlag = !t.done && isToday(t.due);
-  return `<div class="task-item${t.done?' done':''}" data-idx="${idx}" style="animation-delay:${Math.min(idx,8)*0.05}s">
-    <div class="ti-pri" style="background:${priColor}"></div>
-    <div class="ti-check" onclick="toggleTask(${idx})">
-      <div class="ti-chk"><svg viewBox="0 0 12 12" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block"><polyline points="2,6 5,9 10,3"/></svg></div>
-    </div>
-    <div class="ti-body">
-      <div class="ti-title">${t.title}</div>
-      <div class="ti-meta">
-        ${t.show ? `<span class="ti-show">${t.show}</span>` : ''}
-        ${t.due ? `<span class="ti-due${overdue?' overdue':''}">${todayFlag?'TODAY':overdue?'OVERDUE  -  ':''} ${formatDate(t.due)}</span>` : ''}
-        ${t.dur ? `<span class="ti-dur">&#9201; ${t.dur}</span>` : ''}
-      </div>
-    </div>
-    <div class="ti-right">
-      <button class="ti-edit" onclick="event.stopPropagation();openEditTask(${idx})">
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;flex-shrink:0"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-      </button>
-    </div>
-  </div>`;
+  return '<div class="task-item' + (t.done?' done':'') + '" data-idx="' + idx + '" style="animation-delay:' + Math.min(idx,8)*0.05 + 's">' +
+    '<div class="ti-left-actions">' +
+      '<button class="ti-confirm-btn" onclick="event.stopPropagation();confirmTask(' + idx + ')">DONE ✓</button>' +
+      '<button class="ti-undo-btn" onclick="event.stopPropagation();undoTask(' + idx + ')">UNDO</button>' +
+    '</div>' +
+    '<div class="ti-pri" style="background:' + priColor + '"></div>' +
+    '<div class="ti-check" onclick="toggleTask(' + idx + ')">' +
+      '<div class="ti-chk"><svg viewBox="0 0 12 12" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block"><polyline points="2,6 5,9 10,3"/></svg></div>' +
+    '</div>' +
+    '<div class="ti-body">' +
+      '<div class="ti-title">' + t.title + '</div>' +
+      '<div class="ti-meta">' +
+        (t.show ? '<span class="ti-show">' + t.show + '</span>' : '') +
+        (t.due ? '<span class="ti-due' + (overdue?' overdue':'') + '">' + (todayFlag?'TODAY':overdue?'OVERDUE  -  ':'') + ' ' + formatDate(t.due) + '</span>' : '') +
+        (t.dur ? '<span class="ti-dur">&#9201; ' + t.dur + '</span>' : '') +
+      '</div>' +
+    '</div>' +
+    '<div class="ti-right">' +
+      '<button class="ti-edit" onclick="event.stopPropagation();openEditTask(' + idx + ')">' +
+        '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;flex-shrink:0"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>' +
+      '</button>' +
+    '</div>' +
+  '</div>';
 }
+
 
 function toggleTask(idx) {
   const el = document.querySelector(`.task-item[data-idx="${idx}"]`);
   if (!el) { TASKS[idx].done = !TASKS[idx].done; saveTasks(); renderTasks(); return; }
 
   if (el.classList.contains('pending')) {
-    // Already pending — checkbox tap cancels it
-    undoTask(idx);
+    el.classList.remove('pending');
     return;
   }
   if (el.classList.contains('completing') || TASKS[idx].done) {
     TASKS[idx].done = !TASKS[idx].done;
     saveTasks(); renderTasks(); return;
   }
-
-  // Enter pending state
   el.classList.add('pending');
-  const right = el.querySelector('.ti-right');
-  if (right) {
-    right.innerHTML = `
-      <button class="ti-confirm-btn" onclick="event.stopPropagation();confirmTask(${idx})">DONE ✓</button>
-      <button class="ti-undo-btn" onclick="event.stopPropagation();undoTask(${idx})">UNDO</button>`;
-  }
 }
 
 function confirmTask(idx) {
@@ -2160,13 +2159,6 @@ function undoTask(idx) {
   const el = document.querySelector(`.task-item[data-idx="${idx}"]`);
   if (!el) return;
   el.classList.remove('pending');
-  // Restore edit button
-  const right = el.querySelector('.ti-right');
-  if (right) {
-    right.innerHTML = `<button class="ti-edit" onclick="event.stopPropagation();openEditTask(${idx})">
-      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;flex-shrink:0"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-    </button>`;
-  }
 }
 
 function selectPri(el) {
