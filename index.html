@@ -1,4 +1,4 @@
-<!-- VTEK HANGAR BUILD_ID=HGR-071 -->
+<!-- VTEK HANGAR BUILD_ID=HGR-072 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -2815,17 +2815,9 @@ function syncToAkiflow() {
     return;
   }
 
-  // Build task payload for Shortcuts
-  const taskLines = pending.map(t => {
-    const parts = [t.title];
-    if (t.due) parts.push('due:' + t.due);
-    if (t.dur) parts.push('dur:' + t.dur);
-    if (t.pri && t.pri !== 'none') parts.push('pri:' + t.pri.toUpperCase());
-    if (t.notes) parts.push('note:' + t.notes.substring(0,80));
-    return parts.join(' | ');
-  }).join('\n');
+  // Send ONLY titles, one per line — clean and simple
+  const taskLines = pending.map(t => t.title).join('\n');
 
-  // Fire Shortcuts — shortcut name must match exactly: VTEK Reminders Sync
   const shortcutURL = 'shortcuts://run-shortcut?name=VTEK%20Reminders%20Sync&input=text&text=' + encodeURIComponent(taskLines);
 
   const btn = document.getElementById('sync-akiflow-btn');
