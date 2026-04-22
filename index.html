@@ -1,4 +1,4 @@
-<!-- VTEK HANGAR BUILD_ID=HGR-064 -->
+<!-- VTEK HANGAR BUILD_ID=HGR-065 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -3028,18 +3028,41 @@ ${risks.map(s => `- ${s.code}: status=${s.status}, ${s.pctBid}% of bid, ver=${s.
 Generate a risk report highlighting what could miss delivery. Flag the top 3 concerns.`;
   },
   status: () => {
-    const byStatus = {};
-    SHOTS.forEach(s => { byStatus[s.status] = (byStatus[s.status]||0)+1; });
-    const crvw = SHOTS.filter(s => s.status === 'crvw' || s.verStatus === 'crvw' || s.verStatus === 'pf');
-    return `You are HANGAR INTEL. Generate a professional, client-ready status update email for the current show.
+    const v = calcVelocity();
+    const shows = SHOWS.map(sh => {
+      const shotsForShow = SHOTS.filter(s => s.show === sh.code);
+      const crvw = shotsForShow.filter(s => ['crvw','pf','apdi','apprvd'].includes(s.status) || ['crvw','pf','apdi'].includes(s.verStatus));
+      const done = shotsForShow.filter(s => ['cmpt','dlvr','apprvd','apdi'].includes(s.status));
+      const active = shotsForShow.filter(s => ['ip','rdy','bid'].includes(s.status));
+      const blocked = shotsForShow.filter(s => ['blkd','hld'].includes(s.status));
+      const atRisk = v.atRisk.filter(r => shotsForShow.find(s => s.code === r.code));
+      return { code: sh.code, name: sh.name, client: sh.client||'', total: shotsForShow.length, done: done.length, active: active.length, blocked: blocked.length, crvw, atRisk };
+    }).filter(s => s.total > 0);
+    const today = new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+    const showBlocks = shows.map(sh =>
+      `SHOW: ${sh.name} (${sh.code})${sh.client?' | CLIENT: '+sh.client:''}\n` +
+      `  Total: ${sh.total} shots | Done: ${sh.done} | Active: ${sh.active} | Blocked: ${sh.blocked}\n` +
+      `  In client review/proposed final: ${sh.crvw.length ? sh.crvw.map(s=>s.code+(s.verStatus?' ['+s.verStatus.toUpperCase()+']':'')).join(', ') : 'None'}\n` +
+      `  At-risk shots: ${sh.atRisk.length ? sh.atRisk.map(r=>r.code+' ('+r.pct+'%)').join(', ') : 'None'}`
+    ).join('\n\n');
+    return `You are a VFX production coordinator writing a professional weekly status update on behalf of CBFX (Chicken Bone FX).
 
-Shot summary:
-${Object.entries(byStatus).map(([st,n]) => `- ${st.toUpperCase()}: ${n} shots`).join('\n')}
+TODAY: ${today}
+OVERALL: ${SHOTS.length} total shots | ${v.totalDone} done | ${v.atRisk.length} at risk | ${v.totalBlocked} blocked
 
-Shots in client review / proposed final:
-${crvw.map(s => `- ${s.code}: ${s.desc?.substring(0,60)||' - '}`).join('\n')||'None currently'}
+${showBlocks}
 
-Write a concise, professional status update suitable for sending to the client/studio.`;
+Write a professional client-ready status update email. Rules:
+- Formal but warm tone — this goes directly to studio/client
+- Start with: Subject: [subject line]
+- Brief opening paragraph on overall show health
+- Per-show section if multiple shows active
+- Highlight what is in review, approved, or delivering soon
+- Flag any blockers briefly without alarming language
+- Close with what client can expect next week
+- Do NOT expose internal codes like bid burn % — client-facing only
+- Keep it under 300 words
+- Format as a real email body, not bullet points`;
   },
   ask: () => `You are HANGAR INTEL, an AI assistant embedded in a VFX production management app called VTEK HANGAR by CBFX. You have access to ${SHOTS.length} shots and ${ARTISTS.length} artists. Answer questions about the production concisely and helpfully. Current show data: ${JSON.stringify(SHOTS.slice(0,5))}`,
   log: () => {
@@ -3088,10 +3111,23 @@ function closeChat() {
 
 function addMsg(role, text) {
   const msgs = document.getElementById('chatMessages');
+  const wrap = document.createElement('div');
+  wrap.style.cssText = 'display:flex;flex-direction:column;align-items:'+(role==='user'?'flex-end':'flex-start')+';gap:4px';
   const div = document.createElement('div');
   div.className = 'intel-msg ' + role;
   div.textContent = text;
-  msgs.appendChild(div);
+  wrap.appendChild(div);
+  // Add copy button for AI responses on copyable workflows
+  if (role === 'ai' && ['status','brief','risk'].includes(currentWorkflow)) {
+    const btn = document.createElement('button');
+    btn.textContent = 'COPY';
+    btn.style.cssText = 'font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.06em;color:var(--ac);background:rgba(29,217,240,.08);border:1px solid rgba(29,217,240,.2);border-radius:6px;padding:3px 10px;cursor:pointer;align-self:flex-start';
+    btn.onclick = () => {
+      navigator.clipboard.writeText(text).then(() => { btn.textContent = 'COPIED ✓'; setTimeout(()=>btn.textContent='COPY', 2000); });
+    };
+    wrap.appendChild(btn);
+  }
+  msgs.appendChild(wrap);
   msgs.scrollTop = msgs.scrollHeight;
   return div;
 }
