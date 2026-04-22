@@ -1,4 +1,4 @@
-<!-- VTEK HANGAR BUILD_ID=HGR-067 -->
+<!-- VTEK HANGAR BUILD_ID=HGR-068 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -562,6 +562,20 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 .ti-due{font-family:var(--mono);font-size:9px;color:var(--t2)}
 .ti-due.overdue{color:#ff5c5c}
 .ti-dur{font-family:var(--mono);font-size:9px;color:var(--t2)}
+.ti-type{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.06em;padding:2px 6px;border-radius:3px}
+.ti-type[data-type="show"]    {color:#1dd9f0;background:rgba(29,217,240,.1)}
+.ti-type[data-type="admin"]   {color:#ce93d8;background:rgba(206,147,216,.1)}
+.ti-type[data-type="tools"]   {color:#f5a623;background:rgba(245,166,35,.1)}
+.ti-type[data-type="followup"]{color:#ff9800;background:rgba(255,152,0,.1)}
+.ti-type[data-type="personal"]{color:#6c9acd;background:rgba(108,154,205,.1)}
+.type-row{display:flex;gap:5px;flex-wrap:wrap}
+.type-opt{height:28px;padding:0 10px;border-radius:6px;border:1px solid rgba(255,255,255,.08);background:var(--s3);font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.06em;color:var(--t2);cursor:pointer;text-transform:uppercase;transition:all .15s;opacity:.4}
+.type-opt.sel{opacity:1;border-color:rgba(255,255,255,.2);color:var(--t0);background:var(--s2)}
+.type-opt[data-type="show"].sel    {color:#1dd9f0;border-color:rgba(29,217,240,.4);background:rgba(29,217,240,.1)}
+.type-opt[data-type="admin"].sel   {color:#ce93d8;border-color:rgba(206,147,216,.4);background:rgba(206,147,216,.1)}
+.type-opt[data-type="tools"].sel   {color:#f5a623;border-color:rgba(245,166,35,.4);background:rgba(245,166,35,.1)}
+.type-opt[data-type="followup"].sel{color:#ff9800;border-color:rgba(255,152,0,.4);background:rgba(255,152,0,.1)}
+.type-opt[data-type="personal"].sel{color:#6c9acd;border-color:rgba(108,154,205,.4);background:rgba(108,154,205,.1)}
 .ti-right{flex-shrink:0;display:flex;align-items:center}
 .ti-edit{width:32px;height:32px;border-radius:8px;border:none;background:none;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--t2)}
 .ti-edit:active{background:var(--s3)}
@@ -1516,6 +1530,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
       <button class="ftab" onclick="setTaskTab('today',this)" style="flex-shrink:0">TODAY</button>
       <button class="ftab" onclick="setTaskTab('high',this)" style="flex-shrink:0">HIGH PRI</button>
       <button class="ftab" onclick="setTaskTab('show',this)" style="flex-shrink:0">BY SHOW</button>
+      <button class="ftab" onclick="setTaskTab('type',this)" style="flex-shrink:0">BY TYPE</button>
       <button class="ftab" onclick="setTaskTab('done',this)" style="flex-shrink:0">DONE</button>
     </div>
 
@@ -1564,6 +1579,15 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
           <button class="pri-opt" data-pri="med" onclick="selectPri(this)">MED</button>
           <button class="pri-opt" data-pri="low" onclick="selectPri(this)">LOW</button>
           <button class="pri-opt sel" data-pri="none" onclick="selectPri(this)">NONE</button>
+        </div>
+      </div>
+      <div class="field-group"><label class="field-label">Type</label>
+        <div class="type-row" id="task-type-row">
+          <button class="type-opt sel" data-type="show" onclick="selectType(this)">SHOW</button>
+          <button class="type-opt" data-type="admin" onclick="selectType(this)">ADMIN</button>
+          <button class="type-opt" data-type="tools" onclick="selectType(this)">TOOLS</button>
+          <button class="type-opt" data-type="followup" onclick="selectType(this)">FOLLOW-UP</button>
+          <button class="type-opt" data-type="personal" onclick="selectType(this)">PERSONAL</button>
         </div>
       </div>
       <div class="field-group"><label class="field-label">Show</label>
@@ -2374,6 +2398,7 @@ function renderTasks() {
   else if (activeTaskTab === 'high') filtered = filtered.filter(t => t.pri === 'high' && !t.done);
   else if (activeTaskTab === 'done') filtered = filtered.filter(t => t.done);
   else if (activeTaskTab === 'show') { /* group by show below */ }
+  else if (activeTaskTab === 'type') { /* group by type below */ }
   else filtered = filtered.filter(t => !t.done); // all = incomplete
 
   if (!filtered.length && activeTaskTab !== 'show') {
@@ -2397,6 +2422,27 @@ function renderTasks() {
       `<div class="task-section-hd"><div class="task-section-lbl">${show}</div><div class="task-section-line"></div><div class="task-section-count">${tasks.length}</div></div>` +
       tasks.map((t,i) => taskHTML(t, TASKS.indexOf(t))).join('')
     ).join('');
+    return;
+  }
+
+  if (activeTaskTab === 'type') {
+    const TYPE_ORDER = ['show','admin','tools','followup','personal'];
+    const TYPE_LABELS = { show:'SHOW', admin:'ADMIN', tools:'TOOLS', followup:'FOLLOW-UP', personal:'PERSONAL' };
+    const TYPE_COLORS = { show:'#1dd9f0', admin:'#ce93d8', tools:'#f5a623', followup:'#ff9800', personal:'#6c9acd' };
+    const byType = {};
+    TASKS.filter(t => !t.done).forEach(t => {
+      const key = t.type || 'show';
+      if (!byType[key]) byType[key] = [];
+      byType[key].push(t);
+    });
+    const html = TYPE_ORDER.filter(k => byType[k]?.length).map(k =>
+      `<div class="task-section-hd">
+        <div class="task-section-lbl" style="color:${TYPE_COLORS[k]}">${TYPE_LABELS[k]}</div>
+        <div class="task-section-line"></div>
+        <div class="task-section-count">${byType[k].length}</div>
+      </div>` + byType[k].map(t => taskHTML(t, TASKS.indexOf(t))).join('')
+    ).join('');
+    wrap.innerHTML = html || '<div class="tasks-empty"><p>No tasks yet</p></div>';
     return;
   }
 
@@ -2433,6 +2479,7 @@ function taskHTML(t, idx) {
     '<div class="ti-body">' +
       '<div class="ti-title">' + t.title + '</div>' +
       '<div class="ti-meta">' +
+        (t.type && t.type !== 'show' ? `<span class="ti-type" data-type="${t.type}">${t.type.toUpperCase()}</span>` : '') +
         (t.show ? '<span class="ti-show">' + t.show + '</span>' : '') +
         (t.due ? '<span class="ti-due' + (overdue?' overdue':'') + '">' + (todayFlag?'TODAY':overdue?'OVERDUE  -  ':'') + ' ' + formatDate(t.due) + '</span>' : '') +
         (t.dur ? '<span class="ti-dur">&#9201; ' + t.dur + '</span>' : '') +
@@ -2466,6 +2513,16 @@ function confirmTask(idx) {
 
 function undoTask(idx) { /* no-op — kept for safety */ }
 
+let selectedType = 'show';
+function selectType(el) {
+  selectedType = el.dataset.type;
+  document.querySelectorAll('.type-opt').forEach(b => b.classList.remove('sel'));
+  el.classList.add('sel');
+  // hide show selector if type is not show
+  const showField = document.getElementById('f-task-show')?.closest('.field-group');
+  if (showField) showField.style.display = selectedType === 'show' ? '' : 'none';
+}
+
 function selectPri(el) {
   selectedPri = el.dataset.pri;
   document.querySelectorAll('.pri-opt').forEach(b => b.classList.remove('sel'));
@@ -2475,16 +2532,18 @@ function selectPri(el) {
 function openAddTask(prefill) {
   editingTaskIdx = -1;
   selectedPri = 'none';
+  selectedType = prefill?.type || 'show';
   document.getElementById('taskModalTitle').textContent = 'New Task';
   document.getElementById('deleteTaskBtn').style.display = 'none';
   document.getElementById('f-task-title').value = prefill?.title || '';
   document.getElementById('f-task-due').value = prefill?.due || '';
   document.getElementById('f-task-dur').value = prefill?.dur || '';
   document.getElementById('f-task-notes').value = prefill?.notes || '';
-  document.querySelectorAll('.pri-opt').forEach(b => {
-    b.classList.toggle('sel', b.dataset.pri === 'none');
-  });
-  // populate show dropdown
+  document.querySelectorAll('.pri-opt').forEach(b => b.classList.toggle('sel', b.dataset.pri === 'none'));
+  document.querySelectorAll('.type-opt').forEach(b => b.classList.toggle('sel', b.dataset.type === selectedType));
+  // show/hide show field based on type
+  const showField = document.getElementById('f-task-show')?.closest('.field-group');
+  if (showField) showField.style.display = selectedType === 'show' ? '' : 'none';
   const sel = document.getElementById('f-task-show');
   sel.innerHTML = '<option value=""> -  No show  - </option>' +
     SHOWS.map(s => `<option value="${s.code}">${s.code}  -  ${s.name}</option>`).join('');
@@ -2497,15 +2556,17 @@ function openEditTask(idx) {
   editingTaskIdx = idx;
   const t = TASKS[idx];
   selectedPri = t.pri || 'none';
+  selectedType = t.type || 'show';
   document.getElementById('taskModalTitle').textContent = 'Edit Task';
   document.getElementById('deleteTaskBtn').style.display = 'block';
   document.getElementById('f-task-title').value = t.title;
   document.getElementById('f-task-due').value = t.due || '';
   document.getElementById('f-task-dur').value = t.dur || '';
   document.getElementById('f-task-notes').value = t.notes || '';
-  document.querySelectorAll('.pri-opt').forEach(b => {
-    b.classList.toggle('sel', b.dataset.pri === selectedPri);
-  });
+  document.querySelectorAll('.pri-opt').forEach(b => b.classList.toggle('sel', b.dataset.pri === selectedPri));
+  document.querySelectorAll('.type-opt').forEach(b => b.classList.toggle('sel', b.dataset.type === selectedType));
+  const showField = document.getElementById('f-task-show')?.closest('.field-group');
+  if (showField) showField.style.display = selectedType === 'show' ? '' : 'none';
   const sel = document.getElementById('f-task-show');
   sel.innerHTML = '<option value=""> -  No show  - </option>' +
     SHOWS.map(s => `<option value="${s.code}">${s.code}  -  ${s.name}</option>`).join('');
@@ -2521,9 +2582,10 @@ function saveTask() {
     title,
     due:   document.getElementById('f-task-due').value,
     dur:   document.getElementById('f-task-dur').value,
-    show:  document.getElementById('f-task-show').value,
+    show:  selectedType === 'show' ? document.getElementById('f-task-show').value : '',
     notes: document.getElementById('f-task-notes').value.trim(),
     pri:   selectedPri,
+    type:  selectedType,
     done:  false,
     created: new Date().toISOString()
   };
