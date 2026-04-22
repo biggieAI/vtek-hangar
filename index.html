@@ -1,4 +1,4 @@
-<!-- VTEK HANGAR BUILD_ID=HGR-063 -->
+<!-- VTEK HANGAR BUILD_ID=HGR-064 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -134,6 +134,26 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 .bk-track{width:80px;height:2px;background:rgba(255,255,255,.05);border-radius:1px;overflow:hidden;flex-shrink:0}
 .bk-fill{height:100%;border-radius:1px}
 .bk-n{font-family:var(--mono);font-size:11px;color:var(--t0);width:18px;text-align:right;flex-shrink:0}
+
+/* ── VELOCITY / RISK ── */
+.vr-card{background:var(--s2);border-radius:14px;padding:14px;box-shadow:var(--nm-card);margin-bottom:4px}
+.vr-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
+.vr-stat{text-align:center}
+.vr-stat-n{font-family:var(--mono);font-size:20px;font-weight:700;line-height:1}
+.vr-stat-l{font-size:9px;color:var(--t2);letter-spacing:.05em;margin-top:3px;font-family:var(--mono)}
+.vr-burn-track{height:4px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden}
+.vr-burn-fill{height:100%;border-radius:2px;transition:width .6s ease}
+.vr-shows{margin-top:12px;display:flex;flex-direction:column;gap:5px}
+.vr-show-row{display:flex;align-items:center;gap:8px}
+.vr-show-code{font-family:var(--mono);font-size:10px;font-weight:700;color:var(--t1);width:36px;flex-shrink:0}
+.vr-show-bar-wrap{flex:1;height:3px;background:rgba(255,255,255,.05);border-radius:2px;overflow:hidden}
+.vr-show-bar{height:100%;border-radius:2px;transition:width .5s ease}
+.vr-show-pct{font-family:var(--mono);font-size:10px;width:32px;text-align:right;flex-shrink:0}
+.vr-risk{margin-top:12px;padding-top:10px;border-top:1px solid rgba(255,255,255,.05)}
+.vr-risk-row{display:flex;justify-content:space-between;align-items:center;padding:4px 0}
+.vr-risk-code{font-family:var(--mono);font-size:10px;color:var(--t1)}
+.vr-risk-pct{font-family:var(--mono);font-size:11px;font-weight:700}
+.vr-burn-wrap{margin-bottom:4px}
 
 /* â”€â”€ SHOT STATUS LEGEND â”€â”€ */
 .st-row{display:flex;align-items:center;gap:10px;padding:6px 10px;border-radius:8px;background:var(--s2);margin-bottom:3px;border:var(--b1)}
@@ -936,6 +956,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
         <div class="bk-row"><div class="bk-icon" style="background:rgba(76,175,80,.15)"><svg viewBox="0 0 14 14" fill="none" stroke="var(--vr-fin)" stroke-width="1.4"><polyline points="2,7 5,10 12,3"/></svg></div><div class="bk-lbl" style="color:var(--vr-fin)">FINAL</div><div class="bk-track"><div class="bk-fill" style="width:55%;background:var(--vr-fin)"></div></div><div class="bk-n">148</div></div>
       </div>
     </div>
+    <div id="velocity-panel"></div>
     <div class="sec" style="margin-top:16px"><div class="sec-l">SHOT STATUS LEGEND</div></div>
     <div>
       <div class="st-row"><div class="st-icon" style="background:rgba(108,154,205,.15)"><svg viewBox="0 0 14 14" fill="none" stroke="var(--sh-wtg)" stroke-width="1.4"><rect x="4" y="1" width="6" height="8" rx="1"/><path d="M4 5H2a1 1 0 00-1 1v5h10V6a1 1 0 00-1-1h-2"/></svg></div><div class="st-key" style="color:var(--sh-wtg)">wtg</div><div class="st-label">Waiting to Start</div><div class="st-dot" style="background:var(--sh-wtg)"></div></div>
@@ -1973,11 +1994,60 @@ const CHIPS=[
   {k:'hld',l:'ON HOLD',c:'#ff5c5c',i:'<svg viewBox="0 0 16 16" fill="none" stroke="C" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><line x1="6" y1="5" x2="6" y2="11"/><line x1="10" y1="5" x2="10" y2="11"/></svg>'},
   {k:'dlvr',l:'DELIVERED',c:'#a0c4ff',i:'<svg viewBox="0 0 16 16" fill="none" stroke="C" stroke-width="1.5"><rect x="2" y="5" width="12" height="9" rx="1"/><path d="M5 5V4a3 3 0 016 0v1"/></svg>'},
 ];
-const COUNTS={rev:8,crvw:5,pf:3,ip:6,nts:4,rdy:12,cbb:1,tech:0,qc:0,vwd:2,temp:0,apdi:18,cmpt:126,blkd:1,hld:2,dlvr:4};
+const COUNTS={rev:0,crvw:0,pf:0,ip:0,nts:0,rdy:0,cbb:0,tech:0,qc:0,vwd:0,temp:0,apdi:0,cmpt:0,blkd:0,hld:0,dlvr:0,wtg:0,bid:0,auto:0,clnt:0,apprvd:0,omt:0};
+
+function recomputeCounts() {
+  // Reset all
+  Object.keys(COUNTS).forEach(k => COUNTS[k] = 0);
+  SHOTS.forEach(s => {
+    // Shot-level status
+    if (s.status && COUNTS[s.status] !== undefined) COUNTS[s.status]++;
+    // Version statuses from all tasks
+    (s.tasks||[]).forEach(t => {
+      (t.versions||[]).forEach(v => {
+        if (v.s && COUNTS[v.s] !== undefined) COUNTS[v.s]++;
+      });
+    });
+  });
+}
+
+function calcVelocity() {
+  // Per-show velocity and risk from bid vs used data
+  const shows = {};
+  SHOTS.forEach(s => {
+    const show = s.show || 'UNK';
+    if (!shows[show]) shows[show] = { bid:0, used:0, shots:0, active:0, done:0, blocked:0, atRisk:[] };
+    const d = shows[show];
+    d.shots++;
+    if (['cmpt','apprvd','dlvr','apdi'].includes(s.status)) d.done++;
+    else if (['blkd','hld'].includes(s.status)) d.blocked++;
+    else if (!['wtg','omt'].includes(s.status)) d.active++;
+    (s.tasks||[]).forEach(t => {
+      d.bid  += (t.bid||0);
+      d.used += (t.used||0);
+      // at-risk: used > 80% of bid with status not done
+      if (t.bid > 0 && t.used/t.bid > 0.8 && !['cmpt','apprvd','apdi','dlvr'].includes(s.status)) {
+        if (!d.atRisk.find(x => x.code === s.code)) d.atRisk.push({ code: s.code, pct: Math.round((t.used/t.bid)*100) });
+      }
+    });
+  });
+  // Global totals
+  let totalBid=0, totalUsed=0, totalShots=0, totalDone=0, totalBlocked=0, atRisk=[];
+  Object.entries(shows).forEach(([,d]) => {
+    totalBid += d.bid; totalUsed += d.used;
+    totalShots += d.shots; totalDone += d.done; totalBlocked += d.blocked;
+    atRisk = atRisk.concat(d.atRisk);
+  });
+  const burnPct = totalBid > 0 ? Math.round((totalUsed/totalBid)*100) : 0;
+  const remaining = totalBid - totalUsed;
+  const health = burnPct > 90 ? 'critical' : burnPct > 75 ? 'warning' : 'good';
+  return { totalBid, totalUsed, remaining, burnPct, totalShots, totalDone, totalBlocked, atRisk, health, shows };
+}
 const SK='vtek_chips_v1';
 function loadChips(){try{const s=localStorage.getItem(SK);if(s)return JSON.parse(s);}catch(e){}return['rev','crvw','pf','ip','nts','rdy'];}
 function saveChips(a){try{localStorage.setItem(SK,JSON.stringify(a));}catch(e){}}
 function renderChips(){
+  recomputeCounts();
   const a=loadChips();const half=Math.ceil(a.length/2);
   [['cr1',a.slice(0,half)],['cr2',a.slice(half)]].forEach(([id,keys])=>{
     const r=document.getElementById(id);if(!r)return;
@@ -1987,6 +2057,113 @@ function renderChips(){
       return'<div class="sc"><div class="sc-icon">'+ch.i.replaceAll('C',ch.c)+'</div><div class="sc-n" style="color:'+ch.c+'">'+(COUNTS[k]??0)+'</div><div class="sc-l">'+ch.l+'</div></div>';
     }).join('');
   });
+  renderBlockerStrip();
+  renderAvailStrip();
+  renderVersionStatus();
+  renderVelocityRisk();
+}
+
+function renderBlockerStrip() {
+  const blocked = SHOTS.filter(s => s.status === 'blkd' || s.status === 'hld');
+  const strip = document.querySelector('.blocker-strip');
+  if (!strip) return;
+  if (!blocked.length) { strip.style.display='none'; return; }
+  strip.style.display='';
+  const items = blocked.map(s => `<div class="blk-item"><div class="blk-dot"></div>${s.show||''} &middot; ${s.code} &mdash; ${s.note||s.status.toUpperCase()}</div>`).join('');
+  strip.innerHTML = `<div class="blk-eye">BLOCKED</div>${items}`;
+}
+
+function renderAvailStrip() {
+  const avail = (ARTISTS||[]).filter(a => a.status === 'avail' || a.avail === true);
+  const strip = document.querySelector('.avail-strip');
+  if (!strip) return;
+  if (!avail.length) { strip.style.display='none'; return; }
+  strip.style.display='';
+  strip.innerHTML = `<div class="avail-lbl">AVAILABLE</div><div class="avail-names">${avail.map(a=>a.name).join(' &middot; ')}</div>`;
+}
+
+function renderVersionStatus() {
+  const dos = document.querySelector('.dossier');
+  if (!dos) return;
+  // Count total versions across all shots/tasks
+  let totalVer = 0;
+  const vCounts = {};
+  SHOTS.forEach(s => (s.tasks||[]).forEach(t => (t.versions||[]).forEach(v => {
+    totalVer++;
+    vCounts[v.s] = (vCounts[v.s]||0) + 1;
+  })));
+  const VER_ROWS = [
+    {k:'rev',l:'PENDING RV',c:'var(--vr-rev)',i:'<svg viewBox="0 0 14 14" fill="none" stroke="var(--vr-rev)" stroke-width="1.4"><circle cx="7" cy="7" r="5"/><polyline points="7,4 7,7 9,9"/></svg>',bg:'rgba(206,147,216,.15)'},
+    {k:'nts',l:'NOTES',c:'var(--vr-nts)',i:'<svg viewBox="0 0 14 14" fill="none" stroke="var(--vr-nts)" stroke-width="1.4"><rect x="2" y="2" width="10" height="10" rx="1"/><line x1="4" y1="5" x2="10" y2="5"/><line x1="4" y1="8" x2="8" y2="8"/></svg>',bg:'rgba(255,152,0,.15)'},
+    {k:'crvw',l:'CLIENT RV',c:'var(--vr-crvw)',i:'<svg viewBox="0 0 14 14" fill="none" stroke="var(--vr-crvw)" stroke-width="1.4"><circle cx="5" cy="4" r="2"/><path d="M1 12c0-2.5 2-4 4-4s4 1.5 4 4"/><circle cx="11" cy="5" r="1.5"/><path d="M10 12c0-2 .8-3 2-3.5"/></svg>',bg:'rgba(156,74,255,.15)'},
+    {k:'pf',l:'PROP FINAL',c:'var(--vr-pf)',i:'<svg viewBox="0 0 14 14" fill="none" stroke="var(--vr-pf)" stroke-width="1.4"><polyline points="2,7 5,10 12,3"/></svg>',bg:'rgba(52,211,153,.15)'},
+    {k:'apdi',l:'APPRVD PDI',c:'var(--vr-apdi,#34c759)',i:'<svg viewBox="0 0 14 14" fill="none" stroke="var(--vr-apdi,#34c759)" stroke-width="1.4"><polyline points="2,7 5,10 12,3"/><polyline points="5,10 8,13"/></svg>',bg:'rgba(52,199,89,.15)'},
+    {k:'cmpt',l:'COMPLETE',c:'#30d158',i:'<svg viewBox="0 0 14 14" fill="none" stroke="#30d158" stroke-width="1.4"><polyline points="2,7 5,10 12,3"/></svg>',bg:'rgba(48,209,88,.15)'},
+  ];
+  const maxN = Math.max(...VER_ROWS.map(r => vCounts[r.k]||0), 1);
+  const rows = VER_ROWS.filter(r => (vCounts[r.k]||0) > 0).map(r => {
+    const n = vCounts[r.k]||0;
+    const pct = Math.round((n/maxN)*100);
+    return `<div class="bk-row"><div class="bk-icon" style="background:${r.bg}">${r.i}</div><div class="bk-lbl" style="color:${r.c}">${r.l}</div><div class="bk-track"><div class="bk-fill" style="width:${pct}%;background:${r.c}"></div></div><div class="bk-n">${n}</div></div>`;
+  }).join('') || '<div style="color:var(--t2);font-size:12px;padding:8px 0">No versions logged yet</div>';
+  dos.innerHTML = `<div class="dos-eye"><div class="dos-eye-bar"></div>ALL VERSIONS</div>
+    <div class="dos-num"><div class="dos-big">${totalVer}</div><div class="dos-unit">TOTAL</div></div>
+    <div class="bk">${rows}</div>`;
+}
+
+function renderVelocityRisk() {
+  const el = document.getElementById('velocity-panel');
+  if (!el) return;
+  if (!SHOTS.length) { el.style.display='none'; return; }
+  el.style.display='';
+  const v = calcVelocity();
+  const HC = { good:'#30d158', warning:'#f5a623', critical:'#ff5c5c' };
+  const hc = HC[v.health];
+  const burnBar = Math.min(v.burnPct, 100);
+  const donePct = v.totalShots > 0 ? Math.round((v.totalDone/v.totalShots)*100) : 0;
+  const atRiskHTML = v.atRisk.length
+    ? v.atRisk.slice(0,5).map(r => `<div class="vr-risk-row"><div class="vr-risk-code">${r.code}</div><div class="vr-risk-pct" style="color:${r.pct>100?'#ff5c5c':'#f5a623'}">${r.pct}%</div></div>`).join('')
+    : '<div style="font-size:11px;color:var(--t2)">No at-risk shots</div>';
+  const showRows = Object.entries(v.shows).filter(([,d])=>d.bid>0).map(([show,d])=>{
+    const sp = Math.round((d.used/d.bid)*100);
+    const sc = sp>90?'#ff5c5c':sp>75?'#f5a623':'#30d158';
+    return `<div class="vr-show-row">
+      <div class="vr-show-code">${show}</div>
+      <div class="vr-show-bar-wrap"><div class="vr-show-bar" style="width:${Math.min(sp,100)}%;background:${sc}"></div></div>
+      <div class="vr-show-pct" style="color:${sc}">${sp}%</div>
+    </div>`;
+  }).join('');
+  el.innerHTML = `
+    <div class="sec" style="margin-top:16px"><div class="sec-l">VELOCITY / RISK</div></div>
+    <div class="vr-card">
+      <div class="vr-stats">
+        <div class="vr-stat">
+          <div class="vr-stat-n" style="color:${hc}">${v.burnPct}%</div>
+          <div class="vr-stat-l">BID BURN</div>
+        </div>
+        <div class="vr-stat">
+          <div class="vr-stat-n" style="color:#1dd9f0">${donePct}%</div>
+          <div class="vr-stat-l">SHOTS DONE</div>
+        </div>
+        <div class="vr-stat">
+          <div class="vr-stat-n" style="color:${v.atRisk.length>0?'#f5a623':'#30d158'}">${v.atRisk.length}</div>
+          <div class="vr-stat-l">AT RISK</div>
+        </div>
+        <div class="vr-stat">
+          <div class="vr-stat-n" style="color:${v.totalBlocked>0?'#ff5c5c':'var(--t1)'}">${v.totalBlocked}</div>
+          <div class="vr-stat-l">BLOCKED</div>
+        </div>
+      </div>
+      <div class="vr-burn-wrap">
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+          <div style="font-family:var(--mono);font-size:9px;color:var(--t2);letter-spacing:.06em">TOTAL BID BURN</div>
+          <div style="font-family:var(--mono);font-size:9px;color:${hc}">${v.totalUsed.toFixed(1)}d / ${v.totalBid.toFixed(1)}d</div>
+        </div>
+        <div class="vr-burn-track"><div class="vr-burn-fill" style="width:${burnBar}%;background:${hc}"></div></div>
+      </div>
+      ${showRows ? `<div class="vr-shows">${showRows}</div>` : ''}
+      ${v.atRisk.length ? `<div class="vr-risk"><div style="font-family:var(--mono);font-size:9px;color:#f5a623;letter-spacing:.06em;margin-bottom:6px">AT-RISK SHOTS</div>${atRiskHTML}</div>` : ''}
+    </div>`;
 }
 function renderCfg(){
   const a=loadChips();
@@ -2472,6 +2649,7 @@ function closeQAM() {
 // â”€â”€ PERSISTENCE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const DATA_KEY = 'vtek_hgr_data';
 function persistData() {
+  recomputeCounts();
   try {
     localStorage.setItem(DATA_KEY, JSON.stringify({
       shots: SHOTS,
