@@ -1,4 +1,4 @@
-<!-- VTEK HANGAR BUILD_ID=HGR-070 -->
+<!-- VTEK HANGAR BUILD_ID=HGR-071 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1534,7 +1534,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
     <div class="sync-banner">
       <div class="sync-icon"><svg viewBox="0 0 24 24" width="16" height="16"><polyline points="23,4 23,11 16,11"/><polyline points="1,20 1,13 8,13"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 11M1 13l4.64 5.36A9 9 0 0020.49 15"/></svg></div>
       <div class="sync-info"><div class="sync-title">Akiflow Sync</div><div class="sync-sub" id="sync-status">Not synced yet</div></div>
-      <button class="sync-btn" onclick="syncToAkiflow()">SYNC</button>
+      <button class="sync-btn" id="sync-akiflow-btn" onclick="syncToAkiflow()">SYNC</button>
     </div>
 
     <!-- SUGGEST AI Schedule -->
@@ -2810,36 +2810,40 @@ function renderSchedule(data) {
 
 function syncToAkiflow() {
   const pending = TASKS.filter(t => !t.done);
-  if (!pending.length) { document.getElementById('sync-status').textContent = 'No tasks to sync'; return; }
-  // Build iOS Reminders-compatible format  -  deep link via URL scheme
-  // Akiflow supports calendar/reminders integration
-  const btn = document.querySelector('.sync-btn');
-  btn.textContent = 'SYNCING...';
-  btn.style.opacity = '.5';
-
-  // Try to open Akiflow deep link for each task
-  // akiflow://create?title=...&due=...&duration=...
-  let i = 0;
-  function syncNext() {
-    if (i >= pending.length) {
-      const now = new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
-      document.getElementById('sync-status').textContent = `${pending.length} tasks synced at ${now}`;
-      btn.textContent = 'SYNC';
-      btn.style.opacity = '1';
-      return;
-    }
-    const t = pending[i++];
-    const params = new URLSearchParams({
-      title: t.title,
-      ...(t.due ? {due: t.due} : {}),
-      ...(t.dur ? {duration: t.dur} : {}),
-      ...(t.notes ? {notes: t.notes} : {})
-    });
-    // Try Akiflow URL scheme
-    window.location.href = `akiflow://create?${params.toString()}`;
-    setTimeout(syncNext, 600);
+  if (!pending.length) {
+    document.getElementById('sync-status').textContent = 'No tasks to sync';
+    return;
   }
-  syncNext();
+
+  // Build task payload for Shortcuts
+  const taskLines = pending.map(t => {
+    const parts = [t.title];
+    if (t.due) parts.push('due:' + t.due);
+    if (t.dur) parts.push('dur:' + t.dur);
+    if (t.pri && t.pri !== 'none') parts.push('pri:' + t.pri.toUpperCase());
+    if (t.notes) parts.push('note:' + t.notes.substring(0,80));
+    return parts.join(' | ');
+  }).join('\n');
+
+  // Fire Shortcuts — shortcut name must match exactly: VTEK Reminders Sync
+  const shortcutURL = 'shortcuts://run-shortcut?name=VTEK%20Reminders%20Sync&input=text&text=' + encodeURIComponent(taskLines);
+
+  const btn = document.getElementById('sync-akiflow-btn');
+  const status = document.getElementById('sync-status');
+  const now = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+
+  btn.textContent = 'OPENING...';
+  btn.style.opacity = '.6';
+  btn.disabled = true;
+  status.textContent = pending.length + ' tasks sent at ' + now;
+
+  window.location.href = shortcutURL;
+
+  setTimeout(() => {
+    btn.textContent = 'SYNC';
+    btn.style.opacity = '1';
+    btn.disabled = false;
+  }, 2000);
 }
 
 // â”€â”€ QAM (Quick Action Menu) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
