@@ -1,4 +1,4 @@
-<!-- VTEK HANGAR BUILD_ID=HGR-065 -->
+<!-- VTEK HANGAR BUILD_ID=HGR-066 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -839,6 +839,34 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 .rdx-ping-btn{width:100%;height:34px;border-radius:8px;border:1px solid rgba(46,184,184,.3);background:rgba(46,184,184,.08);font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.07em;color:var(--ac);cursor:pointer;margin-top:8px}
 .rdx-ping-btn:active{background:rgba(46,184,184,.15)}
 .rdx-add-btn{width:100%;height:44px;border-radius:12px;border:1px dashed rgba(255,255,255,.15);background:none;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.08em;color:var(--t2);cursor:pointer;margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:8px}
+/* BID SHEET tab */
+.bid-show-block{background:var(--s2);border-radius:14px;margin-bottom:12px;overflow:hidden;box-shadow:var(--nm-card)}
+.bid-show-head{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.04)}
+.bid-show-code{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--ac)}
+.bid-show-name{font-size:11px;color:var(--t2);margin-top:1px}
+.bid-show-totals{text-align:right}
+.bid-tot-n{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--t0)}
+.bid-tot-l{font-family:var(--mono);font-size:8px;color:var(--t2);letter-spacing:.05em}
+.bid-summary-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.04)}
+.bid-sum-cell{background:var(--s2);padding:8px 10px;text-align:center}
+.bid-sum-n{font-family:var(--mono);font-size:14px;font-weight:700}
+.bid-sum-l{font-family:var(--mono);font-size:8px;color:var(--t2);letter-spacing:.04em;margin-top:2px}
+.bid-burn-bar{height:3px;background:rgba(255,255,255,.05);margin:0 14px 10px}
+.bid-burn-fill{height:100%;border-radius:1px;transition:width .5s}
+.bid-table-head{display:grid;grid-template-columns:1fr 52px 52px 52px 60px;gap:4px;padding:6px 14px;border-bottom:1px solid rgba(255,255,255,.05)}
+.bid-th{font-family:var(--mono);font-size:8px;font-weight:700;color:var(--t2);letter-spacing:.06em;text-align:right}
+.bid-th:first-child{text-align:left}
+.bid-row{display:grid;grid-template-columns:1fr 52px 52px 52px 60px;gap:4px;padding:7px 14px;border-bottom:1px solid rgba(255,255,255,.03);align-items:center}
+.bid-row:last-child{border-bottom:none}
+.bid-row:active{background:rgba(255,255,255,.02)}
+.bid-cell{font-family:var(--mono);font-size:10px;color:var(--t1);text-align:right}
+.bid-cell.shot{font-size:10px;color:var(--t0);text-align:left;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bid-cell.over{color:#ff5c5c;font-weight:700}
+.bid-cell.warn{color:#f5a623;font-weight:700}
+.bid-cell.ok{color:#30d158}
+.bid-minibar{height:2px;background:rgba(255,255,255,.05);border-radius:1px;margin-top:2px;overflow:hidden}
+.bid-minifill{height:100%;border-radius:1px}
+.bid-empty{padding:32px 14px;text-align:center;font-family:var(--mono);font-size:11px;color:var(--t2)}
 /* OPS Modals */
 .ops-overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:10200;display:none;align-items:flex-end;overflow:hidden}
 .ops-overlay.open{display:flex}
@@ -1109,6 +1137,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
     <button class="ops-tab on" id="ops-tab-crew" onclick="switchOpsTab('crew')">CREW</button>
     <button class="ops-tab" id="ops-tab-demand" onclick="switchOpsTab('demand')">DEMAND</button>
     <button class="ops-tab" id="ops-tab-rolodex" onclick="switchOpsTab('rolodex')">ROLODEX</button>
+    <button class="ops-tab" id="ops-tab-bid" onclick="switchOpsTab('bid')">BID</button>
   </div>
 
   <!-- CREW PANEL -->
@@ -1155,6 +1184,11 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
   </div>
 
   
+  <!-- BID SHEET PANEL -->
+  <div class="ops-panel" id="ops-panel-bid">
+    <div class="page no-pad" id="bid-page" style="height:100%;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:12px 14px 100px"></div>
+  </div>
+
 </div>
 
 <!-- OPS MODALS (outside views) -->
@@ -3296,6 +3330,7 @@ function switchOpsTab(tab) {
   if (tab === 'crew') renderCrew();
   if (tab === 'demand') renderDemand();
   if (tab === 'rolodex') renderRolodex();
+  if (tab === 'bid') renderBidSheet();
 }
 
 function renderOps() {
@@ -3303,6 +3338,89 @@ function renderOps() {
   if (opsCurrentTab === 'crew') renderCrew();
   if (opsCurrentTab === 'demand') renderDemand();
   if (opsCurrentTab === 'rolodex') renderRolodex();
+  if (opsCurrentTab === 'bid') renderBidSheet();
+}
+
+function renderBidSheet() {
+  const el = document.getElementById('bid-page');
+  if (!el) return;
+  if (!SHOTS.length) {
+    el.innerHTML = '<div class="bid-empty">No shots loaded — import a show to see bid data</div>';
+    return;
+  }
+
+  // Group shots by show
+  const byShow = {};
+  SHOTS.forEach(s => {
+    const k = s.show || 'UNASSIGNED';
+    if (!byShow[k]) byShow[k] = [];
+    byShow[k].push(s);
+  });
+
+  const html = Object.entries(byShow).map(([showCode, shots]) => {
+    const showMeta = SHOWS.find(sh => sh.code === showCode) || { name: showCode, client: '' };
+
+    // Aggregate totals
+    let totalBid = 0, totalUsed = 0, totalOver = 0;
+    shots.forEach(s => {
+      (s.tasks||[]).forEach(t => {
+        totalBid  += (t.bid||0);
+        totalUsed += (t.used||0);
+        if ((t.used||0) > (t.bid||0) && (t.bid||0) > 0) totalOver += ((t.used||0) - (t.bid||0));
+      });
+    });
+    const burnPct = totalBid > 0 ? Math.min((totalUsed/totalBid)*100, 100) : 0;
+    const burnColor = burnPct > 90 ? '#ff5c5c' : burnPct > 75 ? '#f5a623' : '#30d158';
+    const remaining = Math.max(totalBid - totalUsed, 0);
+
+    // Per-shot rows — aggregate across all tasks per shot
+    const rows = shots.map(s => {
+      let sBid=0, sUsed=0;
+      (s.tasks||[]).forEach(t => { sBid+=(t.bid||0); sUsed+=(t.used||0); });
+      const pct = sBid > 0 ? Math.round((sUsed/sBid)*100) : 0;
+      const over = sUsed > sBid && sBid > 0;
+      const warn = !over && pct > 80;
+      const cellCls = over ? 'over' : warn ? 'warn' : pct > 0 ? 'ok' : '';
+      const barColor = over ? '#ff5c5c' : warn ? '#f5a623' : '#1dd9f0';
+      const sc = SC[s.status] || '#8e8e93';
+      return `<div class="bid-row">
+        <div class="bid-cell shot" title="${s.code}">
+          <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:${sc};margin-right:5px;flex-shrink:0"></span>${s.code}
+          <div class="bid-minibar"><div class="bid-minifill" style="width:${Math.min(pct,100)}%;background:${barColor}"></div></div>
+        </div>
+        <div class="bid-cell">${sBid > 0 ? sBid+'d' : '—'}</div>
+        <div class="bid-cell ${cellCls}">${sUsed > 0 ? sUsed+'d' : '—'}</div>
+        <div class="bid-cell ${cellCls}">${sBid > 0 ? pct+'%' : '—'}</div>
+        <div class="bid-cell" style="color:${sc}">${s.status.toUpperCase()}</div>
+      </div>`;
+    }).join('');
+
+    return `<div class="bid-show-block">
+      <div class="bid-show-head">
+        <div><div class="bid-show-code">${showCode}</div><div class="bid-show-name">${showMeta.name||showCode}${showMeta.client?' · '+showMeta.client:''}</div></div>
+        <div class="bid-show-totals">
+          <div class="bid-tot-n" style="color:${burnColor}">${totalBid>0?Math.round((totalUsed/totalBid)*100)+'%':'—'}</div>
+          <div class="bid-tot-l">BURN</div>
+        </div>
+      </div>
+      <div class="bid-summary-row">
+        <div class="bid-sum-cell"><div class="bid-sum-n">${totalBid>0?totalBid+'d':'—'}</div><div class="bid-sum-l">TOTAL BID</div></div>
+        <div class="bid-sum-cell"><div class="bid-sum-n" style="color:${burnColor}">${totalUsed>0?totalUsed+'d':'—'}</div><div class="bid-sum-l">USED</div></div>
+        <div class="bid-sum-cell"><div class="bid-sum-n" style="color:${totalOver>0?'#ff5c5c':'#30d158'}">${totalOver>0?'+'+totalOver.toFixed(1)+'d':remaining.toFixed(1)+'d'}</div><div class="bid-sum-l">${totalOver>0?'OVER':'LEFT'}</div></div>
+      </div>
+      <div class="bid-burn-bar"><div class="bid-burn-fill" style="width:${burnPct}%;background:${burnColor}"></div></div>
+      <div class="bid-table-head">
+        <div class="bid-th">SHOT</div>
+        <div class="bid-th">BID</div>
+        <div class="bid-th">USED</div>
+        <div class="bid-th">%</div>
+        <div class="bid-th">STATUS</div>
+      </div>
+      ${rows || '<div class="bid-empty">No shot data</div>'}
+    </div>`;
+  }).join('');
+
+  el.innerHTML = html || '<div class="bid-empty">No bid data available</div>';
 }
 
 // â”€â”€ AVAIL COLOR HELPERS
