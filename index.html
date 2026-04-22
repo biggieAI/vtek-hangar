@@ -1,4 +1,4 @@
-<!-- VTEK HANGAR BUILD_ID=HGR-073 -->
+<!-- VTEK HANGAR BUILD_ID=HGR-074 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -2815,9 +2815,15 @@ function syncToAkiflow() {
     return;
   }
 
-  const taskLines = pending.map(t => t.title).join('\n');
+  // Sanitize titles — replace em dash and other special chars with safe equivalents
+  const clean = t => t.title
+    .replace(/—/g, '-')   // em dash
+    .replace(/–/g, '-')   // en dash
+    .replace(/’/g, "'")  // smart apostrophe
+    .replace(/“|”/g, '"'); // smart quotes
 
-  // Copy to clipboard so you can inspect/paste
+  const taskLines = pending.map(clean).join('\n');
+
   navigator.clipboard.writeText(taskLines).catch(() => {});
 
   const shortcutURL = 'shortcuts://run-shortcut?name=VTEK%20Reminders%20Sync&input=text&text=' + encodeURIComponent(taskLines);
