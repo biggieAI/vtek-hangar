@@ -1,4 +1,4 @@
-<!-- VTEK HANGAR BUILD_ID=HGR-066 -->
+<!-- VTEK HANGAR BUILD_ID=HGR-067 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -411,6 +411,9 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 
 /* SEARCH BAR */
 .search-bar{padding:8px 12px;flex-shrink:0;background:rgba(26,31,46,.4);border-bottom:1px solid rgba(255,255,255,.04)}
+.shots-toolbar{display:flex;align-items:center;padding:5px 12px;flex-shrink:0;gap:8px;border-bottom:1px solid rgba(255,255,255,.03)}
+.sort-btn{flex-shrink:0;font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.06em;color:var(--t2);background:none;border:1px solid rgba(255,255,255,.08);border-radius:6px;padding:3px 8px;cursor:pointer;white-space:nowrap}
+.sort-btn:active{background:var(--s2)}
 .search-input{width:100%;background:var(--s2);border:var(--b1);border-radius:10px;padding:9px 12px 9px 36px;font-family:var(--sans);font-size:16px;color:var(--t0);outline:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%238e8e93' stroke-width='1.5' viewBox='0 0 24 24'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:10px center}
 .search-input::placeholder{color:var(--t2)}
 
@@ -1050,15 +1053,26 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
       <button class="tb-btn" onclick="openAddShot()">+ SHOT</button>
     </div>
   </div>
-  <div class="fbar">
+  <div class="fbar" id="shots-fbar">
     <button class="ftab on" onclick="setTab('all',this)">ALL</button>
     <button class="ftab" onclick="setTab('mine',this)">MINE</button>
     <button class="ftab" onclick="setTab('today',this)">TODAY</button>
+    <button class="ftab" onclick="setTab('risk',this)">AT RISK</button>
     <div class="fsep"></div>
-    <button class="fchip" onclick="toggleStatusFilter('crvw',this)"><div class="fchip-dot" style="background:var(--sh-crvw)"></div><span>CRVW</span></button>
-    <button class="fchip" onclick="toggleStatusFilter('apdi',this)"><div class="fchip-dot" style="background:var(--sh-apdi)"></div><span>APDI</span></button>
     <button class="fchip" onclick="toggleStatusFilter('ip',this)"><div class="fchip-dot" style="background:var(--sh-ip)"></div><span>IP</span></button>
-    <button class="fchip" onclick="toggleStatusFilter('hld',this)"><div class="fchip-dot" style="background:var(--sh-hld)"></div><span>HLD</span></button>
+    <button class="fchip" onclick="toggleStatusFilter('crvw',this)"><div class="fchip-dot" style="background:var(--sh-crvw)"></div><span>CRVW</span></button>
+    <button class="fchip" onclick="toggleStatusFilter('pf',this)"><div class="fchip-dot" style="background:#34d399"></div><span>PF</span></button>
+    <button class="fchip" onclick="toggleStatusFilter('apdi',this)"><div class="fchip-dot" style="background:var(--sh-apdi)"></div><span>APDI</span></button>
+    <button class="fchip" onclick="toggleStatusFilter('blkd',this)"><div class="fchip-dot" style="background:#ff5c5c"></div><span>BLKD</span></button>
+    <button class="fchip" onclick="toggleStatusFilter('hld',this)"><div class="fchip-dot" style="background:#ff5c5c"></div><span>HLD</span></button>
+    <button class="fchip" onclick="toggleStatusFilter('wtg',this)"><div class="fchip-dot" style="background:var(--sh-wtg)"></div><span>WTG</span></button>
+    <button class="fchip" onclick="toggleStatusFilter('rdy',this)"><div class="fchip-dot" style="background:var(--sh-rdy)"></div><span>RDY</span></button>
+    <div class="fsep"></div>
+    <div id="show-filter-chips"></div>
+  </div>
+  <div class="shots-toolbar">
+    <div id="filter-summary" style="font-family:var(--mono);font-size:9px;color:var(--t2);flex:1"></div>
+    <button class="sort-btn" id="sort-btn" onclick="cycleShotSort()">SORT: <span id="sort-label">CODE</span></button>
   </div>
   <div class="search-bar"><input class="search-input" placeholder="Search shots..." oninput="setSearch(this.value)"></div>
   <div class="page-area"><div class="page" style="padding-left:0;padding-right:0;padding-top:0">
@@ -1847,7 +1861,7 @@ function navTo(view, dir) {
   if (nav) nav.querySelectorAll('.nb,.nb-action').forEach((b,i) => b.classList.toggle('on', i === (NAV_IDX[view]??2)));
   if (view === 'hangar') { renderChips(); renderShowGrid(); }
   if (view === 'roster') renderRoster();
-  if (view === 'shots')  { renderShotListFiltered([...SHOTS]); }
+  if (view === 'shots')  { renderShotListFiltered([...SHOTS]); buildShowFilterChips(); }
   if (view === 'ops')    { renderOps(); }
 }
 
@@ -2733,7 +2747,10 @@ function renderShowGrid() {
 // â”€â”€ FILTER LOGIC â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 let activeTab = 'all';
 let activeStatusFilters = new Set();
+let activeShowFilter = null;
 let searchQuery = '';
+let shotSortMode = 'code';
+const SHOT_SORTS = ['code','status','due','burn'];
 
 function setTab(tab, el) {
   activeTab = tab;
@@ -2746,20 +2763,80 @@ function toggleStatusFilter(key, el) {
   else { activeStatusFilters.add(key); el.classList.add('on'); }
   applyFilters();
 }
+function setShowFilter(show, el) {
+  if (activeShowFilter === show) { activeShowFilter = null; el.classList.remove('on'); }
+  else { activeShowFilter = show; document.querySelectorAll('.show-fchip').forEach(b=>b.classList.remove('on')); el.classList.add('on'); }
+  applyFilters();
+}
+function cycleShotSort() {
+  const idx = SHOT_SORTS.indexOf(shotSortMode);
+  shotSortMode = SHOT_SORTS[(idx+1) % SHOT_SORTS.length];
+  document.getElementById('sort-label').textContent = shotSortMode.toUpperCase();
+  applyFilters();
+}
+function buildShowFilterChips() {
+  const el = document.getElementById('show-filter-chips');
+  if (!el) return;
+  if (SHOWS.length <= 1) { el.innerHTML=''; return; }
+  el.innerHTML = SHOWS.map(sh =>
+    `<button class="fchip show-fchip" onclick="setShowFilter('${sh.code}',this)" style="margin-left:2px"><span>${sh.code}</span></button>`
+  ).join('');
+}
 function setSearch(q) { searchQuery = q.toLowerCase(); applyFilters(); }
 function applyFilters() {
+  buildShowFilterChips();
   let filtered = [...SHOTS];
-  if (activeTab === 'mine') filtered = filtered.filter(s =>
-    s.tasks.some(t => t.who && t.who.toLowerCase().includes('ruben'))
-  );
-  if (activeTab === 'today') {
-    const today = new Date().toISOString().split('T')[0];
-    filtered = filtered.filter(s => s.tasks.some(t => t.due && t.due.replace(/\//g,'-') === today));
+  // Tab filters
+  if (activeTab === 'mine') {
+    const me = (ARTISTS.find(a=>a.me)||{name:''}).name.toLowerCase() || 'ruben';
+    filtered = filtered.filter(s => s.tasks.some(t => t.who && t.who.toLowerCase().includes(me)));
   }
+  if (activeTab === 'today') {
+    const today = new Date().toLocaleDateString('en-US',{month:'2-digit',day:'2-digit',year:'2-digit'});
+    filtered = filtered.filter(s => s.tasks.some(t => t.due && t.due === today));
+  }
+  if (activeTab === 'risk') {
+    const v = calcVelocity();
+    const riskCodes = new Set(v.atRisk.map(r=>r.code));
+    filtered = filtered.filter(s => riskCodes.has(s.code));
+  }
+  // Show filter
+  if (activeShowFilter) filtered = filtered.filter(s => s.show === activeShowFilter);
+  // Status chips
   if (activeStatusFilters.size > 0) filtered = filtered.filter(s => activeStatusFilters.has(s.status));
+  // Search
   if (searchQuery) filtered = filtered.filter(s =>
-    s.code.toLowerCase().includes(searchQuery) || s.desc.toLowerCase().includes(searchQuery)
+    s.code.toLowerCase().includes(searchQuery) ||
+    (s.desc||'').toLowerCase().includes(searchQuery) ||
+    (s.show||'').toLowerCase().includes(searchQuery) ||
+    s.tasks.some(t => (t.who||'').toLowerCase().includes(searchQuery) || (t.name||'').toLowerCase().includes(searchQuery))
   );
+  // Sort
+  filtered.sort((a,b) => {
+    if (shotSortMode === 'code') return a.code.localeCompare(b.code);
+    if (shotSortMode === 'status') return a.status.localeCompare(b.status);
+    if (shotSortMode === 'due') {
+      const ad = a.tasks.map(t=>t.due).filter(Boolean).sort()[0]||'99';
+      const bd = b.tasks.map(t=>t.due).filter(Boolean).sort()[0]||'99';
+      return ad.localeCompare(bd);
+    }
+    if (shotSortMode === 'burn') {
+      const burn = s => { let bid=0,used=0; (s.tasks||[]).forEach(t=>{bid+=t.bid||0;used+=t.used||0;}); return bid>0?used/bid:0; };
+      return burn(b) - burn(a);
+    }
+    return 0;
+  });
+  // Summary
+  const summary = document.getElementById('filter-summary');
+  if (summary) {
+    const active = activeStatusFilters.size + (activeShowFilter?1:0) + (searchQuery?1:0) + (activeTab!=='all'?1:0);
+    summary.textContent = active > 0
+      ? `${filtered.length} of ${SHOTS.length} shots${activeShowFilter?' · '+activeShowFilter:''}`
+      : `${SHOTS.length} shots`;
+  }
+  // Update topbar count
+  const cnt = document.getElementById('shots-count');
+  if (cnt) cnt.textContent = filtered.length + ' SHOTS';
   renderShotListFiltered(filtered);
 }
 
