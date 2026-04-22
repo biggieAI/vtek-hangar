@@ -1,4 +1,4 @@
-<!-- VTEK HANGAR BUILD_ID=HGR-068 -->
+<!-- VTEK HANGAR BUILD_ID=HGR-069 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -272,6 +272,30 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 .notes-card{margin:0 12px 8px;background:var(--s2);border:none;border-radius:14px;padding:14px;box-shadow:var(--nm-card)}
 .notes-lbl{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--t2);margin-bottom:8px}
 .notes-body{font-size:12px;color:var(--t1);line-height:1.6;white-space:pre-wrap}
+/* Activity log */
+.act-card{margin:0 12px 8px;background:var(--s2);border-radius:14px;overflow:hidden;box-shadow:var(--nm-card)}
+.act-header{display:flex;align-items:center;justify-content:space-between;padding:12px 14px 8px}
+.act-title{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.10em;color:var(--t2)}
+.act-add-btn{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.06em;color:var(--ac);background:rgba(29,217,240,.08);border:1px solid rgba(29,217,240,.2);border-radius:6px;padding:3px 10px;cursor:pointer}
+.act-compose{padding:0 14px 10px;display:none}
+.act-compose.open{display:block}
+.act-textarea{width:100%;background:var(--s1);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:9px 12px;font-size:14px;font-family:var(--sans);color:var(--t0);outline:none;resize:none;box-sizing:border-box;line-height:1.5;-webkit-appearance:none}
+.act-textarea::placeholder{color:var(--t2)}
+.act-compose-footer{display:flex;align-items:center;gap:6px;margin-top:6px;flex-wrap:wrap}
+.act-type-btn{height:24px;padding:0 8px;border-radius:5px;border:1px solid rgba(255,255,255,.08);background:var(--s3);font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.05em;color:var(--t2);cursor:pointer;opacity:.5;transition:all .15s}
+.act-type-btn.sel{opacity:1}
+.act-type-btn[data-atype="note"].sel    {color:#94a3b8;border-color:rgba(148,163,184,.4);background:rgba(148,163,184,.1)}
+.act-type-btn[data-atype="client"].sel  {color:#9c4aff;border-color:rgba(156,74,255,.4);background:rgba(156,74,255,.1)}
+.act-type-btn[data-atype="internal"].sel{color:#f5a623;border-color:rgba(245,166,35,.4);background:rgba(245,166,35,.1)}
+.act-type-btn[data-atype="delivery"].sel{color:#34d399;border-color:rgba(52,211,153,.4);background:rgba(52,211,153,.1)}
+.act-post-btn{margin-left:auto;height:28px;padding:0 12px;border-radius:7px;border:none;background:var(--ac);color:#0d1117;font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.06em;cursor:pointer}
+.act-list{padding:0 14px 10px;display:flex;flex-direction:column;gap:8px}
+.act-entry{border-left:2px solid var(--ae-c,rgba(255,255,255,.1));padding-left:10px}
+.act-entry-head{display:flex;align-items:center;gap:6px;margin-bottom:3px}
+.act-entry-type{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.06em}
+.act-entry-ts{font-family:var(--mono);font-size:8px;color:var(--t2)}
+.act-entry-body{font-size:12px;color:var(--t1);line-height:1.55;white-space:pre-wrap}
+.act-empty{font-family:var(--mono);font-size:10px;color:var(--t2);padding:4px 14px 12px;text-align:center}
 
 /* â”€â”€ CONFIG PANEL â”€â”€ */
 .cfg-overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:200;display:none;align-items:flex-end}
@@ -1961,6 +1985,74 @@ function renderShotList() {
 }
 
 // â”€â”€ SHOT DETAIL RENDER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── ACTIVITY LOG ──────────────────────────────────────────
+const ACT_META = {
+  note:     { label:'NOTE',     color:'#94a3b8' },
+  client:   { label:'CLIENT',   color:'#9c4aff' },
+  internal: { label:'INTERNAL', color:'#f5a623' },
+  delivery: { label:'DELIVERY', color:'#34d399' },
+};
+let actTypeSelected = 'note';
+
+function renderActEntries(s) {
+  const entries = (s.activity||[]);
+  if (!entries.length) return '<div class="act-empty">No activity yet</div>';
+  return entries.map((e, i) => {
+    const m = ACT_META[e.type] || ACT_META.note;
+    const ts = e.ts ? new Date(e.ts).toLocaleDateString('en-US',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}) : '';
+    return `<div class="act-entry" style="--ae-c:${m.color}">
+      <div class="act-entry-head">
+        <span class="act-entry-type" style="color:${m.color}">${m.label}</span>
+        <span class="act-entry-ts">${ts}</span>
+        <button onclick="deleteActEntry('${s.code}',${i})" style="margin-left:auto;background:none;border:none;color:var(--t2);font-size:10px;cursor:pointer;padding:0;line-height:1">✕</button>
+      </div>
+      <div class="act-entry-body">${e.text}</div>
+    </div>`;
+  }).join('');
+}
+
+function toggleActCompose(code) {
+  const el = document.getElementById('act-compose-'+code);
+  if (!el) return;
+  el.classList.toggle('open');
+  if (el.classList.contains('open')) document.getElementById('act-input-'+code)?.focus();
+}
+
+function selectActType(btn, code) {
+  actTypeSelected = btn.dataset.atype;
+  const compose = document.getElementById('act-compose-'+code);
+  if (compose) compose.querySelectorAll('.act-type-btn').forEach(b => b.classList.toggle('sel', b === btn));
+}
+
+function postActivity(code) {
+  const input = document.getElementById('act-input-'+code);
+  const text = input?.value.trim();
+  if (!text) return;
+  const idx = SHOTS.findIndex(s => s.code === code);
+  if (idx < 0) return;
+  if (!SHOTS[idx].activity) SHOTS[idx].activity = [];
+  SHOTS[idx].activity.unshift({ type: actTypeSelected, text, ts: new Date().toISOString() });
+  currentShot = SHOTS[idx];
+  persistData();
+  // Re-render just the list — no full renderDetail to preserve compose state
+  const list = document.getElementById('act-list-'+code);
+  if (list) list.innerHTML = renderActEntries(SHOTS[idx]);
+  input.value = '';
+  toggleActCompose(code);
+  toast('LOGGED');
+}
+
+function deleteActEntry(code, entryIdx) {
+  const idx = SHOTS.findIndex(s => s.code === code);
+  if (idx < 0) return;
+  if (!confirm('Delete this entry?')) return;
+  SHOTS[idx].activity.splice(entryIdx, 1);
+  currentShot = SHOTS[idx];
+  persistData();
+  const list = document.getElementById('act-list-'+code);
+  if (list) list.innerHTML = renderActEntries(SHOTS[idx]);
+}
+
 function renderDetail(s) {
   const sc = SC[s.status] || '#8e8e93';
   const badges = s.tags.map(t => {
@@ -2038,11 +2130,27 @@ function renderDetail(s) {
     </div>
     <div class="sec" style="padding:14px 14px 8px"><div class="sec-l">TASKS</div><div class="sec-count">${s.tasks.length}</div></div>
     ${tasks}
-    <div class="sec" style="padding:14px 14px 8px"><div class="sec-l">NOTES</div></div>
-    <div class="notes-card">
-      <div class="notes-lbl">SUPERVISOR NOTES</div>
-      <div class="notes-body">${s.notes}</div>
+    <div class="sec" style="padding:14px 14px 8px"><div class="sec-l">ACTIVITY LOG</div></div>
+    <div class="act-card">
+      <div class="act-header">
+        <div class="act-title">SHOT NOTES &amp; ACTIVITY</div>
+        <button class="act-add-btn" onclick="toggleActCompose('${s.code}')">+ ADD</button>
+      </div>
+      <div class="act-compose" id="act-compose-${s.code}">
+        <textarea class="act-textarea" id="act-input-${s.code}" placeholder="Add a note, client feedback, decision..." rows="3"></textarea>
+        <div class="act-compose-footer">
+          <button class="act-type-btn sel" data-atype="note" onclick="selectActType(this,'${s.code}')">NOTE</button>
+          <button class="act-type-btn" data-atype="client" onclick="selectActType(this,'${s.code}')">CLIENT</button>
+          <button class="act-type-btn" data-atype="internal" onclick="selectActType(this,'${s.code}')">INTERNAL</button>
+          <button class="act-type-btn" data-atype="delivery" onclick="selectActType(this,'${s.code}')">DELIVERY</button>
+          <button class="act-post-btn" onclick="postActivity('${s.code}')">POST</button>
+        </div>
+      </div>
+      <div class="act-list" id="act-list-${s.code}">
+        ${renderActEntries(s)}
+      </div>
     </div>
+    ${s.notes ? `<div class="notes-card"><div class="notes-lbl">SUPERVISOR NOTES</div><div class="notes-body">${s.notes}</div></div>` : ''}
     <div style="height:16px"></div>
   `;
 }
