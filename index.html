@@ -1,4 +1,4 @@
-<!-- VTEK HANGAR BUILD_ID=HGR-069 -->
+<!-- VTEK HANGAR BUILD_ID=HGR-070 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -3286,27 +3286,65 @@ let currentWorkflow = 'ask';
 
 const WORKFLOW_PROMPTS = {
   brief: () => {
-    const blockers = SHOTS.filter(s => s.status === 'blkd' || s.status === 'hld');
-    const overBid  = SHOTS.filter(s => s.pctBid > 100);
-    const pending  = SHOTS.filter(s => s.verStatus === 'rev' || s.verStatus === 'nts');
-    return `You are HANGAR INTEL, a VFX production assistant for CBFX. Be concise and direct  -  bullet points preferred.
+    const today = new Date();
+    const todayStr = today.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+    const todayShort = today.toLocaleDateString('en-US',{month:'2-digit',day:'2-digit',year:'2-digit'});
+    const v = calcVelocity();
+    const yesterday = new Date(today); yesterday.setDate(today.getDate()-1);
+    const recentActivity = [];
+    SHOTS.forEach(s => {
+      (s.activity||[]).forEach(e => { const d=new Date(e.ts); if(d>=yesterday) recentActivity.push({code:s.code,type:e.type,text:e.text}); });
+      (s.tasks||[]).forEach(t => { const lv=(t.versions||[]).find(v2=>v2.latest); if(lv) recentActivity.push({code:s.code,type:'version',text:t.name+' — '+lv.n+' ['+lv.s.toUpperCase()+'] '+(lv.note!=='—'?'| '+lv.note:'')}); });
+    });
+    const delivering = SHOTS.filter(s => s.tasks?.some(t => t.due===todayShort));
+    const overdue = SHOTS.filter(s => !['cmpt','dlvr','apprvd','apdi','omt'].includes(s.status) && s.tasks?.some(t => t.due && t.due<todayShort));
+    const blockers = SHOTS.filter(s => ['blkd','hld'].includes(s.status));
+    const inReview = SHOTS.filter(s => ['crvw','pf','apdi'].includes(s.status)||['crvw','pf'].includes(s.verStatus));
+    const pendingRev = SHOTS.filter(s => s.tasks?.some(t => t.versions?.some(v2=>['rev','nts'].includes(v2.s)&&v2.latest)));
+    const tasksDueToday = TASKS.filter(t => !t.done && t.due===todayShort);
+    const tasksHighPri = TASKS.filter(t => !t.done && t.pri==='high').slice(0,5);
+    return `You are HANGAR INTEL — sharp, direct VFX production assistant for Biggie (VFX Supervisor at CBFX).
 
-Current show data:
-- Total shots: ${SHOTS.length}
-- Blocked/On Hold: ${blockers.map(s=>s.code).join(', ')||'None'}
-- Over bid (>100%): ${overBid.map(s=>s.code+' ('+s.pctBid+'%)').join(', ')||'None'}
-- Pending review/notes: ${pending.map(s=>s.code+'  -  '+s.verStatus).join(', ')||'None'}
+TODAY: ${todayStr}
+SHOW: ${SHOWS.map(s=>s.name+' ('+s.code+')').join(', ')||'No active shows'}
+OVERALL: ${SHOTS.length} shots | ${v.totalDone} done (${Math.round(v.totalDone/Math.max(SHOTS.length,1)*100)}%) | Bid burn: ${v.burnPct}% | ${v.atRisk.length} at risk
 
-Generate a concise daily brief for the VFX supervisor. What needs attention today?`;
+RECENT ACTIVITY (24h):
+${recentActivity.length?recentActivity.slice(0,8).map(e=>'- ['+e.type.toUpperCase()+'] '+e.code+': '+e.text).join('\n'):'- None logged'}
+
+DELIVERING TODAY: ${delivering.length?delivering.map(s=>s.code).join(', '):'None'}
+OVERDUE: ${overdue.length?overdue.slice(0,5).map(s=>s.code).join(', '):'None'}
+IN CLIENT REVIEW: ${inReview.length?inReview.map(s=>s.code+' ['+((s.verStatus||s.status).toUpperCase())+']').join(', '):'None'}
+PENDING INTERNAL REVIEW: ${pendingRev.length?pendingRev.map(s=>s.code).join(', '):'None'}
+BLOCKED: ${blockers.length?blockers.map(s=>s.code+(s.note?' — '+s.note:'')).join(', '):'None'}
+TASKS DUE TODAY: ${tasksDueToday.length?tasksDueToday.map(t=>'['+((t.type||'show').toUpperCase())+'] '+t.title).join(' | '):'None'}
+HIGH PRI TASKS: ${tasksHighPri.length?tasksHighPri.map(t=>t.title).join(' | '):'None'}
+
+Write a concise morning standup brief. Groups: DELIVER TODAY → NEEDS ATTENTION → IN REVIEW → PERSONAL TASKS. End with one sharp sentence on show health. Under 250 words, bullet points, no fluff.`;
   },
   risk: () => {
-    const risks = SHOTS.filter(s => s.pctBid > 80 || s.status === 'blkd' || s.status === 'hld');
-    return `You are HANGAR INTEL, a VFX production risk analyst. Be blunt and specific.
+    const v = calcVelocity();
+    const today = new Date().toLocaleDateString('en-US',{month:'2-digit',day:'2-digit',year:'2-digit'});
+    const overBid = SHOTS.filter(s => {
+      let bid=0,used=0; (s.tasks||[]).forEach(t=>{bid+=t.bid||0;used+=t.used||0;});
+      return bid>0&&used/bid>0.8&&!['cmpt','dlvr','apprvd','apdi','omt'].includes(s.status);
+    }).map(s => { let bid=0,used=0; (s.tasks||[]).forEach(t=>{bid+=t.bid||0;used+=t.used||0;}); return {code:s.code,status:s.status,pct:Math.round((used/bid)*100),bid,used}; }).sort((a,b)=>b.pct-a.pct);
+    const blockers = SHOTS.filter(s => ['blkd','hld'].includes(s.status));
+    const overdue = SHOTS.filter(s => !['cmpt','dlvr','apprvd','apdi','omt'].includes(s.status)&&s.tasks?.some(t=>t.due&&t.due<today));
+    const noActivity = SHOTS.filter(s => ['ip','rdy'].includes(s.status)&&!(s.activity||[]).length&&!(s.tasks||[]).some(t=>(t.versions||[]).length));
+    return `You are HANGAR INTEL — VFX production risk analyst. Blunt, specific, prioritized.
 
-Risk shots:
-${risks.map(s => `- ${s.code}: status=${s.status}, ${s.pctBid}% of bid, ver=${s.verStatus}${s.notes?' | '+s.notes.substring(0,80):''}`).join('\n')||'No high-risk shots found.'}
+TODAY: ${new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})}
+OVERALL BURN: ${v.burnPct}% | ${v.totalDone}/${SHOTS.length} shots done
 
-Generate a risk report highlighting what could miss delivery. Flag the top 3 concerns.`;
+OVER-BID (>80%, not complete):
+${overBid.length?overBid.slice(0,10).map(s=>'- '+s.code+': '+s.pct+'% burn ('+s.used+'d/'+s.bid+'d) ['+s.status.toUpperCase()+']').join('\n'):'- None'}
+
+BLOCKED/HOLD: ${blockers.length?blockers.map(s=>s.code+(s.note?' — '+s.note:'')).join(', '):'None'}
+OVERDUE: ${overdue.length?overdue.slice(0,8).map(s=>s.code+' ['+s.status.toUpperCase()+']').join(', '):'None'}
+ACTIVE NO ACTIVITY: ${noActivity.length?noActivity.slice(0,5).map(s=>s.code).join(', '):'None'}
+
+Format: TOP 3 CONCERNS → WATCH LIST → RECOMMENDED ACTIONS. Under 200 words, bullet points, direct.`;
   },
   status: () => {
     const v = calcVelocity();
