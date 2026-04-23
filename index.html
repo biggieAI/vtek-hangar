@@ -1,4 +1,4 @@
-<!-- VTEK HANGAR BUILD_ID=HGR-080 -->
+<!-- VTEK HANGAR BUILD_ID=HGR-081 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -77,8 +77,8 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 .nb{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;background:none;border:none;cursor:pointer;color:var(--t2);position:relative;padding-top:2px}
 .nb svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 .nb .nl{font-family:var(--sans);font-size:8px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
-.nb.on{color:var(--ac)}
-.nb.on::after{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:26px;height:2px;background:var(--g-ac)}
+.nb.on{color:var(--t0);background:var(--s2);border-radius:14px;box-shadow:var(--nm-out-sm)}
+.nb.on::after{content:'';position:absolute;top:4px;left:50%;transform:translateX(-50%);width:20px;height:2px;background:var(--t0);border-radius:1px;opacity:.7}
 
 /* â”€â”€ STAT CHIPS â”€â”€ */
 .chip-wrap{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
@@ -175,7 +175,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 
 /* â”€â”€ SHOT ROWS â”€â”€ */
 .shot-list{display:flex;flex-direction:column}
-.shot-row{border-bottom:none;cursor:pointer;position:relative;padding-left:3px;margin:0 10px 6px;background:var(--s2);border-radius:12px;overflow:hidden;box-shadow:var(--nm-card)}
+.shot-row{border-bottom:none;cursor:pointer;position:relative;padding-left:3px;margin:0 10px 6px;background:var(--s2);border-radius:12px;overflow:hidden;box-shadow:var(--nm-card);border-top:1px solid rgba(255,255,255,.04)}
 .shot-row::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--sc,var(--s3));border-radius:12px 0 0 12px}
 .shot-header{display:flex;align-items:center;gap:10px;padding:10px 12px}
 .shot-thumb{width:72px;height:46px;border-radius:6px;overflow:hidden;flex-shrink:0;background:var(--s3);display:flex;align-items:center;justify-content:center}
@@ -447,7 +447,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 .nb{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;background:none;border:none;cursor:pointer;color:var(--t2);position:relative;padding:8px 0;border-radius:20px;transition:color .18s;min-width:0}
 .nb svg{width:20px;height:20px;min-width:20px;min-height:20px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s cubic-bezier(0.34,1.56,0.64,1)}
 .nb .nl{font-family:var(--sans);font-size:7.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;transition:color .18s;white-space:nowrap}
-.nb.on{color:var(--ac)}
+.nb.on{color:var(--t0);background:var(--s2);border-radius:14px;box-shadow:var(--nm-out-sm)}
 .nb.on svg{transform:scale(1.18)}
 .nb:active svg{transform:scale(0.85)!important}
 .nb.on::after{content:'';position:absolute;bottom:6px;left:50%;transform:translateX(-50%);width:5px;height:5px;min-width:5px;min-height:5px;border-radius:50%;background:var(--ac);box-shadow:0 0 8px var(--ac),0 0 14px rgba(255,255,255,0.048);animation:dotAppear .22s cubic-bezier(0.34,1.56,0.64,1) both,acDotGlow 2.4s ease-in-out infinite .5s}
@@ -559,7 +559,7 @@ body{font-family:var(--sans);font-size:15px;color:var(--t0);background:var(--bg)
 .roster-stats .rs:nth-child(4){animation-delay:0.23s}
 
 /* Task items */
-.task-item{opacity:0;animation:fadeUp 0.36s cubic-bezier(0.22,1,0.36,1) both;display:flex;align-items:center;gap:10px;padding:12px 14px 12px 10px;background:var(--s2);border-radius:12px;margin:0 12px 6px;position:relative;overflow:hidden;cursor:pointer;transition:padding-left .25s cubic-bezier(0.22,1,0.36,1),background .2s,border-color .2s,opacity .2s;box-shadow:var(--nm-out-sm)}
+.task-item{opacity:0;animation:fadeUp 0.36s cubic-bezier(0.22,1,0.36,1) both;display:flex;align-items:center;gap:10px;padding:12px 14px 12px 10px;background:var(--s2);border-radius:12px;margin:0 12px 6px;position:relative;overflow:hidden;cursor:pointer;transition:padding-left .25s cubic-bezier(0.22,1,0.36,1),background .2s,border-color .2s,opacity .2s;box-shadow:var(--nm-out-sm);border-top:1px solid rgba(255,255,255,.04)}
 .task-item.done{opacity:.45}
 .task-item.done .ti-title{text-decoration:line-through;color:var(--t2)}
 /* PENDING — checked, awaiting confirm */
@@ -5004,14 +5004,14 @@ function wizCommit() {
      MODE PICKER  -  Form vs Wizard
 â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
 <div id="modePickerOverlay" style="position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:10300;display:none;align-items:flex-end;justify-content:center">
-  <div style="width:100%;max-width:480px;background:#1a2035;border-radius:28px 28px 0 0;padding:0 0 max(var(--safe-b),28px)">
+  <div style="width:100%;max-width:480px;background:#222222;border-radius:28px 28px 0 0;padding:0 0 max(var(--safe-b),28px)">
     <div style="width:32px;height:3px;background:rgba(255,255,255,.15);border-radius:2px;margin:14px auto 0"></div>
     <div style="padding:20px 22px 14px;border-bottom:1px solid rgba(255,255,255,.06)">
       <div id="mp-title" style="font-family:var(--sans);font-size:17px;font-weight:700;color:#fff;letter-spacing:-.2px">Add Task</div>
       <div style="font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.3);margin-top:4px;letter-spacing:.1em">CHOOSE HOW TO ADD</div>
     </div>
     <div style="padding:16px 16px;display:flex;flex-direction:column;gap:10px">
-      <button id="mp-wizard-btn" onclick="startWizard()" style="height:64px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;display:flex;align-items:center;gap:16px;padding:0 20px;cursor:pointer;text-align:left;width:100%;box-sizing:border-box">
+      <button id="mp-wizard-btn" onclick="startWizard()" style="height:64px;background:#282828;border:1px solid rgba(255,255,255,.06);border-top:1px solid rgba(255,255,255,.06);border-radius:14px;display:flex;align-items:center;gap:16px;padding:0 20px;cursor:pointer;text-align:left;width:100%;box-sizing:border-box;box-shadow:4px 4px 12px rgba(0,0,0,.65),-2px -2px 7px rgba(255,255,255,.028)">
         <div style="width:36px;height:36px;background:rgba(255,255,255,.12);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--ac)" stroke-width="1.8" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
         </div>
