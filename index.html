@@ -1,4 +1,4 @@
-<!-- VTEK HANGAR BUILD_ID=HGR-085 -->
+<!-- VTEK HANGAR BUILD_ID=HGR-086 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -984,6 +984,40 @@ STAT CHIPS â”€â”€ */
 .wiz-prog-dot.cur{background:#fff;width:20px;border-radius:3px}
 .wiz-date-input{width:100%;background:rgba(255,255,255,.04);border:none;border-radius:14px;padding:16px 18px;font-family:var(--sans);font-size:17px;color:var(--t0);outline:none;box-sizing:border-box;-webkit-appearance:none;box-shadow:var(--nm-in)}
 .wiz-date-input:focus{border-color:rgba(255,255,255,.12)}
+
+/* FOCUS MODE */
+#focusMode{position:fixed;inset:0;z-index:99000;background:var(--bg);display:none;flex-direction:column;align-items:center;justify-content:center;padding:32px 28px}
+#focusMode.active{display:flex}
+.fm-header{position:absolute;top:0;left:0;right:0;height:calc(52px + var(--safe-t));padding-top:var(--safe-t);display:flex;align-items:center;justify-content:space-between;padding-left:18px;padding-right:18px;background:rgba(20,20,20,.6);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+.fm-label{font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.22em;color:var(--t2);text-transform:uppercase}
+.fm-exit{background:var(--s2);border:none;border-radius:10px;padding:7px 14px;font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.12em;color:var(--t1);cursor:pointer;box-shadow:var(--nm-out-sm)}
+.fm-task-card{width:100%;background:var(--s2);border-radius:20px;padding:28px 24px;box-shadow:var(--nm-card);border-top:1px solid rgba(255,255,255,.05);margin-bottom:28px;position:relative;overflow:hidden}
+.fm-task-card::before{content:'';position:absolute;top:0;left:12%;right:12%;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent)}
+.fm-pri-bar{width:3px;position:absolute;left:0;top:0;bottom:0;border-radius:20px 0 0 20px}
+.fm-task-title{font-family:var(--sans);font-size:20px;font-weight:700;color:var(--t0);line-height:1.3;margin-bottom:12px;padding-left:4px}
+.fm-task-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding-left:4px}
+.fm-meta-chip{font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:.10em;color:var(--t2);background:var(--s3);padding:3px 8px;border-radius:6px}
+.fm-timer-ring{position:relative;width:170px;height:170px;margin:0 auto 28px;flex-shrink:0}
+.fm-timer-svg{width:170px;height:170px;transform:rotate(-90deg)}
+.fm-timer-track{fill:none;stroke:var(--s3);stroke-width:10}
+.fm-timer-arc{fill:none;stroke:rgba(232,232,232,.65);stroke-width:10;stroke-linecap:round;stroke-dasharray:471;stroke-dashoffset:471;transition:stroke-dashoffset .5s linear}
+.fm-timer-val{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.fm-timer-num{font-family:var(--mono);font-size:36px;font-weight:300;color:var(--t0);letter-spacing:-0.02em;line-height:1}
+.fm-timer-st{font-family:var(--mono);font-size:8px;font-weight:500;letter-spacing:.18em;color:var(--t2);margin-top:5px;text-transform:uppercase}
+.fm-controls{display:flex;gap:10px;width:100%}
+.fm-btn{flex:1;height:50px;border:none;border-radius:14px;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.10em;cursor:pointer;transition:transform .12s,box-shadow .12s;box-shadow:var(--nm-out-sm)}
+.fm-btn:active{transform:scale(0.94)}
+.fm-btn-go{background:var(--s3);color:var(--t0);border-top:1px solid rgba(255,255,255,.06)}
+.fm-btn-done{background:rgba(42,184,122,.1);border:1px solid rgba(42,184,122,.22);color:#2ab87a}
+.fm-btn-skip{background:var(--s2);color:var(--t2);border:1px solid rgba(255,255,255,.04)}
+.fm-queue{position:absolute;bottom:calc(28px + var(--safe-b));left:28px;right:28px}
+.fm-qlbl{font-family:var(--mono);font-size:8px;letter-spacing:.16em;color:var(--t2);text-transform:uppercase;margin-bottom:6px}
+.fm-qitem{font-family:var(--sans);font-size:11px;color:var(--t2);padding:8px 12px;background:var(--s2);border-radius:10px;box-shadow:var(--nm-out-sm);display:flex;align-items:center;gap:8px;border-top:1px solid rgba(255,255,255,.03);margin-bottom:4px}
+.fm-qdot{width:5px;height:5px;border-radius:50%;flex-shrink:0;background:var(--t3)}
+@keyframes fmSlideUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+#focusMode.active .fm-task-card{animation:fmSlideUp .3s cubic-bezier(0.22,1,0.36,1) both}
+#focusMode.active .fm-timer-ring{animation:fmSlideUp .3s cubic-bezier(0.22,1,0.36,1) .07s both}
+#focusMode.active .fm-controls{animation:fmSlideUp .3s cubic-bezier(0.22,1,0.36,1) .13s both}
 </style>
 </head>
 <body>
@@ -1532,6 +1566,7 @@ STAT CHIPS â”€â”€ */
     <div class="wm"><span class="wm-logo">VTEK</span><span class="wm-div">//</span><span class="wm-page" style="color:var(--vr-pf)">TASKS</span></div>
     <div class="tb-r">
       <button class="tb-btn" onclick="openModePickerFor('task', openAddTask)">+ TASK</button>
+      <button class="tb-btn" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09)" onclick="openFocusMode()">FOCUS</button>
     </div>
   </div>
   <div class="page-area"><div class="page">
@@ -2279,7 +2314,7 @@ function renderTodayPriorities() {
     rows += '<div class="pri-row"><div class="pri-dot" style="background:#8870cc"></div><div class="pri-txt"><span class="pri-title">' + s.code + '</span><span class="pri-meta">AT RISK &middot; ' + pct + '% BID BURNED</span></div></div>';
   });
   if (!rows) rows = '<div class="pri-row"><div class="pri-txt"><span class="pri-title" style="color:var(--t2)">All clear &mdash; nothing urgent</span></div></div>';
-  wrap.innerHTML = '<div class="sec" style="margin-top:4px"><div class="sec-l">PRIORITIES TODAY</div></div><div class="priorities-card">' + rows + '</div>';
+  wrap.innerHTML = '<div class="sec" style="margin-top:4px"><div class="sec-l">PRIORITIES TODAY <span onclick="openFocusMode()" style="float:right;font-family:var(--mono);font-size:8px;color:var(--t2);cursor:pointer;letter-spacing:.1em;border:1px solid rgba(255,255,255,.08);padding:2px 8px;border-radius:5px">FOCUS &gt;</span></div></div><div class="priorities-card">' + rows + '</div>';
 }
 function renderBlockerStrip() {
   const blocked = SHOTS.filter(s => s.status === 'blkd' || s.status === 'hld');
@@ -5039,6 +5074,84 @@ function wizCommit() {
 }
 
 
+
+var _fmTasks=[],_fmIdx=0,_fmTimer=null,_fmSec=0,_fmRunning=false,_fmDur=1500;
+var PRI_COL_FM={high:'#cc4444',med:'#c88822',low:'#5a7fa8',none:'var(--t2)'};
+function openFocusMode(list){
+  if(!list||!list.length){
+    var now=new Date();now.setHours(0,0,0,0);
+    list=(TASKS||[]).filter(function(t){
+      if(t.done)return false;
+      if(!t.due)return t.pri==='high';
+      var d=new Date(t.due);d.setHours(0,0,0,0);return d<=now;
+    }).sort(function(a,b){var p={high:0,med:1,low:2,none:3};return(p[a.pri]||3)-(p[b.pri]||3);});
+  }
+  if(!list.length){alert('No tasks to focus on.');return;}
+  _fmTasks=list;_fmIdx=0;
+  fmLoad();
+  document.getElementById('focusMode').classList.add('active');
+}
+function closeFocusMode(){
+  fmPause();
+  document.getElementById('focusMode').classList.remove('active');
+}
+function fmLoad(){
+  var t=_fmTasks[_fmIdx];if(!t){closeFocusMode();renderTasks();return;}
+  var col=PRI_COL_FM[t.pri]||'var(--t2)';
+  document.getElementById('fm-title').textContent=t.title;
+  document.getElementById('fm-pribar').style.background=col;
+  document.getElementById('fm-show').textContent=t.show||t.type||'TASK';
+  document.getElementById('fm-est').textContent=t.dur?t.dur+' MIN':'--';
+  document.getElementById('fm-prichip').textContent=(t.pri||'NONE').toUpperCase();
+  document.getElementById('fm-prichip').style.color=col;
+  _fmDur=t.dur?Math.min(parseInt(t.dur)*60,7200):1500;
+  fmReset();fmQueue();
+}
+function fmQueue(){
+  var el=document.getElementById('fm-qlist');
+  var next=_fmTasks.slice(_fmIdx+1,_fmIdx+3);
+  if(!next.length){el.innerHTML='<div class="fm-qitem"><div class="fm-qdot"></div>Nothing else queued</div>';return;}
+  el.innerHTML=next.map(function(t){
+    var c=PRI_COL_FM[t.pri]||'var(--t2)';
+    return '<div class="fm-qitem"><div class="fm-qdot" style="background:'+c+'"></div>'+t.title+'</div>';
+  }).join('');
+}
+function fmReset(){
+  fmPause();_fmSec=_fmDur;_fmRunning=false;
+  fmDraw();
+  document.getElementById('fm-gobtn').textContent='START';
+  document.getElementById('fm-st').textContent='READY';
+}
+function fmToggle(){if(_fmRunning)fmPause();else fmStart();}
+function fmStart(){
+  _fmRunning=true;
+  document.getElementById('fm-gobtn').textContent='PAUSE';
+  document.getElementById('fm-st').textContent='FOCUSING';
+  _fmTimer=setInterval(function(){
+    if(_fmSec<=0){fmPause();document.getElementById('fm-st').textContent='DONE!';document.getElementById('fm-gobtn').textContent='START';return;}
+    _fmSec--;fmDraw();
+  },1000);
+}
+function fmPause(){
+  _fmRunning=false;
+  if(_fmTimer){clearInterval(_fmTimer);_fmTimer=null;}
+  var btn=document.getElementById('fm-gobtn');
+  if(btn&&btn.textContent==='PAUSE')btn.textContent='RESUME';
+}
+function fmDraw(){
+  var m=Math.floor(_fmSec/60),s=_fmSec%60;
+  document.getElementById('fm-time').textContent=(m<10?'0':'')+m+':'+(s<10?'0':'')+s;
+  var circ=2*Math.PI*75;
+  var pct=(_fmDur-_fmSec)/_fmDur;if(pct<0)pct=0;
+  document.getElementById('fm-arc').style.strokeDashoffset=circ*(1-pct);
+}
+function fmDone(){
+  var t=_fmTasks[_fmIdx];
+  if(t){var i=TASKS.indexOf(t);if(i>=0){TASKS[i].done=true;TASKS[i].completedAt=new Date().toISOString();saveTasks();}}
+  _fmIdx++;fmReset();fmLoad();
+}
+function fmSkip(){_fmIdx++;fmReset();fmLoad();}
+
 </script>
 <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
      MODE PICKER  -  Form vs Wizard
@@ -5122,6 +5235,40 @@ function wizCommit() {
       <button id="discardConfirmBtn" style="height:46px;background:var(--ac);border:none;border-radius:12px;font-family:var(--sans);font-size:14px;font-weight:700;color:#0d1117;cursor:pointer;letter-spacing:.03em;box-shadow:0 0 16px rgba(255,255,255,0.03)">DISCARD CHANGES</button>
       <button onclick="cancelDiscard()" style="height:46px;background:none;border:1px solid rgba(255,255,255,.1);border-radius:12px;font-family:var(--sans);font-size:14px;font-weight:600;color:var(--t1);cursor:pointer">KEEP EDITING</button>
     </div>
+  </div>
+</div>
+<div id="focusMode">
+  <div class="fm-header">
+    <div class="fm-label">FOCUS MODE</div>
+    <button class="fm-exit" onclick="closeFocusMode()">EXIT</button>
+  </div>
+  <div class="fm-task-card" id="fm-card">
+    <div class="fm-pri-bar" id="fm-pribar"></div>
+    <div class="fm-task-title" id="fm-title">-</div>
+    <div class="fm-task-meta">
+      <span class="fm-meta-chip" id="fm-show"></span>
+      <span class="fm-meta-chip" id="fm-est"></span>
+      <span class="fm-meta-chip" id="fm-prichip"></span>
+    </div>
+  </div>
+  <div class="fm-timer-ring">
+    <svg class="fm-timer-svg" viewBox="0 0 170 170">
+      <circle class="fm-timer-track" cx="85" cy="85" r="75"/>
+      <circle class="fm-timer-arc" id="fm-arc" cx="85" cy="85" r="75"/>
+    </svg>
+    <div class="fm-timer-val">
+      <div class="fm-timer-num" id="fm-time">25:00</div>
+      <div class="fm-timer-st" id="fm-st">READY</div>
+    </div>
+  </div>
+  <div class="fm-controls">
+    <button class="fm-btn fm-btn-skip" onclick="fmSkip()">SKIP</button>
+    <button class="fm-btn fm-btn-go" id="fm-gobtn" onclick="fmToggle()">START</button>
+    <button class="fm-btn fm-btn-done" onclick="fmDone()">DONE</button>
+  </div>
+  <div class="fm-queue">
+    <div class="fm-qlbl">UP NEXT</div>
+    <div id="fm-qlist"></div>
   </div>
 </div>
 </body>
