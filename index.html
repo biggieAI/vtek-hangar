@@ -13,6 +13,19 @@
     *{box-sizing:border-box;margin:0;padding:0}
     html,body,#root{width:100%;height:100%;background:#121418}
 
+      /* iOS SCROLL LOCK — body never moves, only main scrolls */
+      html {
+        height: 100%; overflow: hidden;
+        position: fixed; width: 100%;
+      }
+      body {
+        height: 100%; overflow: hidden;
+        position: fixed; width: 100%;
+        overscroll-behavior: none;
+        -webkit-overflow-scrolling: auto;
+        touch-action: none;
+      }
+
       @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;400;700;900&display=swap');
 
       *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -21,7 +34,7 @@
         width: 100%; max-width: 430px; height: 100dvh;
         margin: 0 auto; background-color: #121418;
         display: flex; flex-direction: column;
-        position: relative; overflow: visible;
+        position: relative; overflow: hidden;
         font-family: 'Inter', sans-serif;
         color: #e2e8f0; font-weight: 900; text-transform: uppercase;
       }
@@ -54,6 +67,8 @@
         flex-grow: 1; overflow-y: auto; overflow-x: hidden;
         padding: 20px 16px 120px; min-height: 0;
         -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+        overscroll-behavior-y: contain;
       }
       main::-webkit-scrollbar { width: 0; }
 
@@ -1122,7 +1137,7 @@ function App() {
       </header>
 
       {/* MAIN */}
-      <main>
+      <main className="main-scroll">
         {activePage === 'hub'   && <HangarPage   tasks={tasks} shows={shows} openWizard={handlePlus} />}
         {activePage === 'shows' && <ShowsPage     shows={shows} shots={shots} selectedShow={selectedShow} setSelectedShow={setSelectedShow} matrixFilter={matrixFilter} setMatrixFilter={setMatrixFilter} openWizard={handlePlus} />}
         {activePage === 'tasks' && <TasksPage     tasks={tasks} setTasks={setTasks} openWizard={handlePlus} />}
@@ -1166,6 +1181,17 @@ function App() {
     </div>
   );
 }
+
+// iOS scroll lock — prevent body drag, allow only .main-scroll touchmove
+document.addEventListener('touchmove', function(e) {
+  // Walk up from target to see if we're inside the scrollable main
+  let el = e.target;
+  while (el && el !== document.body) {
+    if (el.classList && el.classList.contains('main-scroll')) return;
+    el = el.parentElement;
+  }
+  e.preventDefault();
+}, { passive: false });
 
 ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App));
   </script>
