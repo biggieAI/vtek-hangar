@@ -96,7 +96,7 @@
       /* NAV WRAPPER */
       .bnav-wrap {
         flex-shrink: 0; display: flex; justify-content: center; align-items: flex-end;
-        padding: 16px 18px; padding-bottom: max(env(safe-area-inset-bottom), 46px);
+        padding: 8px 18px; padding-bottom: max(env(safe-area-inset-bottom), 8px);
         background: #121418;
         position: relative; overflow: visible; border-top: none;
       }
@@ -403,34 +403,30 @@ Input: "${transcript}"`);
 
 // ─── ICON SVGs (no lucide dependency) ────────────────────────────────────────
 // ─── SCULPTED ICON PRIMITIVES ────────────────────────────────────────────────
-// Full 3-layer: shadow + highlight + body
-// Rendered at 2x (48px) then CSS-scaled to display size for crispness
-const S3 = ({ size=16, color='rgba(255,255,255,0.55)', blur=0.8, children }) => {
-  const id = `s3_${Math.random().toString(36).slice(2,7)}`;
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none"
-      strokeLinecap="round" strokeLinejoin="round"
-      style={{ overflow:'visible', imageRendering:'crisp-edges' }}>
-      <defs><filter id={id} x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation={blur}/></filter></defs>
-      <g transform="translate(1.5,2.5)" opacity="0.95" filter={`url(#${id})`} stroke="#000" strokeWidth={2.8}>{children}</g>
-      <g transform="translate(-0.5,-0.5)" stroke="rgba(255,255,255,0.2)" strokeWidth={2.6}>{children}</g>
-      <g stroke={color} strokeWidth={2.4}>{children}</g>
-    </svg>
-  );
-};
-// Light 2-layer: shadow + body (small/utility icons)
-const S2 = ({ size=16, color='rgba(255,255,255,0.45)', blur=0.7, children }) => {
-  const id = `s2_${Math.random().toString(36).slice(2,7)}`;
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none"
-      strokeLinecap="round" strokeLinejoin="round"
-      style={{ overflow:'visible', imageRendering:'crisp-edges' }}>
-      <defs><filter id={id} x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation={blur}/></filter></defs>
-      <g transform="translate(1,2)" opacity="0.9" filter={`url(#${id})`} stroke="#000" strokeWidth={2.4}>{children}</g>
-      <g stroke={color} strokeWidth={2}>{children}</g>
-    </svg>
-  );
-};
+// Full 3-layer: crisp offset shadow + highlight + body (no blur = sharp)
+const S3 = ({ size=16, color='rgba(255,255,255,0.55)', children }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none"
+    strokeLinecap="round" strokeLinejoin="round"
+    style={{ overflow:'visible' }}>
+    {/* Shadow — pure offset, no blur */}
+    <g transform="translate(1,2)" opacity="0.7" stroke="#000" strokeWidth={2.8}>{children}</g>
+    {/* Highlight */}
+    <g transform="translate(-0.5,-0.5)" stroke="rgba(255,255,255,0.18)" strokeWidth={2.6}>{children}</g>
+    {/* Body */}
+    <g stroke={color} strokeWidth={2.4}>{children}</g>
+  </svg>
+);
+// Light 2-layer: crisp offset shadow + body
+const S2 = ({ size=16, color='rgba(255,255,255,0.45)', children }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none"
+    strokeLinecap="round" strokeLinejoin="round"
+    style={{ overflow:'visible' }}>
+    {/* Shadow */}
+    <g transform="translate(1,1.5)" opacity="0.65" stroke="#000" strokeWidth={2.4}>{children}</g>
+    {/* Body */}
+    <g stroke={color} strokeWidth={2}>{children}</g>
+  </svg>
+);
 
 const Icons = {
   // ── HEADER BUTTONS (full 3-layer, prominent)
@@ -1113,20 +1109,15 @@ function VoiceModal({ onClose, onResult, shows }) {
 const BLUR_ID = (() => { let n=0; return () => `nb${++n}`; })();
 
 const sculpt = (paths, active, size=20) => {
-  const body  = active ? '#FFFFFF' : '#2a2a2a';
-  const hi    = active ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,0.15)';
-  const glow  = active ? 'drop-shadow(0 0 7px rgba(255,255,255,0.5))' : 'none';
-  const id    = `sb${Math.random().toString(36).slice(2,6)}`;
+  const body = active ? '#FFFFFF' : '#2a2a2a';
+  const hi   = active ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,0.12)';
+  const glow = active ? 'drop-shadow(0 0 6px rgba(255,255,255,0.45))' : 'none';
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none"
       strokeLinecap="round" strokeLinejoin="round"
-      style={{ filter: glow, overflow: 'visible', imageRendering:'crisp-edges' }}>
-      <defs><filter id={id} x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="0.8"/></filter></defs>
-      {/* Shadow layer */}
-      <g transform="translate(1.5,2.5)" opacity="0.95" filter={`url(#${id})`}>{paths('#000000', 2.8)}</g>
-      {/* Highlight layer */}
+      style={{ filter: glow, overflow: 'visible' }}>
+      <g transform="translate(1,2)" opacity="0.7">{paths('#000000', 2.8)}</g>
       <g transform="translate(-0.5,-0.5)">{paths(hi, 2.6)}</g>
-      {/* Body layer */}
       <g>{paths(body, 2.4)}</g>
     </svg>
   );
@@ -1167,15 +1158,14 @@ const HomeIcon = ({ active }) => {
   return (
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
       strokeLinecap="round" strokeLinejoin="round"
-      style={{ filter: glow, overflow: 'visible', imageRendering:'crisp-edges' }}>
-      <defs><filter id={id} x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="0.8"/></filter></defs>
-      {/* Shadow */}
-      <g transform="translate(1.5,2.5)" opacity="0.95" filter={`url(#${id})`}>
+      style={{ filter: glow, overflow: 'visible' }}>
+      {/* Shadow — crisp offset */}
+      <g transform="translate(1,2)" opacity="0.7">
         <path d="M4 4L12 20L20 4" stroke="#000" strokeWidth={2.8} fill="none"/>
       </g>
       {/* Highlight */}
       <g transform="translate(-0.5,-0.5)">
-        <path d="M4 4L12 20L20 4" stroke={active ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,0.15)'} strokeWidth={2.6} fill="none"/>
+        <path d="M4 4L12 20L20 4" stroke={active ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,0.12)'} strokeWidth={2.6} fill="none"/>
       </g>
       {/* Body */}
       <path d="M4 4L12 20L20 4" stroke={active ? '#FFFFFF' : '#7c3aed'} strokeWidth={2.4} fill="none"/>
@@ -1280,7 +1270,7 @@ function App() {
               boxShadow: voiceOpen ? '0 0 16px rgba(255,59,59,0.35), 10px 10px 20px rgba(0,0,0,0.65), -4px -4px 12px rgba(255,255,255,0.03)' : undefined,
               transition:'all .2s',
             }}>
-            <Icons.Mic size={20} active={voiceOpen} />
+            <Icons.Mic size={18} active={voiceOpen} />
           </button>
           <button
             onClick={() => {
@@ -1294,7 +1284,7 @@ function App() {
               transition:'all .2s',
             }}>
             <span className={reloading ? 'spin' : ''} style={{ display:'flex' }}>
-              <Icons.Refresh size={18} color={reloading ? 'rgba(124,58,237,0.9)' : 'rgba(255,255,255,0.28)'} />
+              <Icons.Refresh size={16} color={reloading ? 'rgba(124,58,237,0.9)' : 'rgba(255,255,255,0.28)'} />
             </span>
           </button>
           <button
@@ -1309,7 +1299,7 @@ function App() {
               cursor: canAdd ? 'pointer' : 'default',
               transition:'all .3s',
             }}>
-            <Icons.Plus size={20} active={canAdd} />
+            <Icons.Plus size={18} active={canAdd} />
           </button>
         </div>
       </header>
