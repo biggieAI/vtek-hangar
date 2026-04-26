@@ -96,7 +96,7 @@
       /* NAV WRAPPER */
       .bnav-wrap {
         flex-shrink: 0; display: flex; justify-content: center; align-items: flex-end;
-        padding: 16px 18px; padding-bottom: max(env(safe-area-inset-bottom), 16px);
+        padding: 16px 18px; padding-bottom: max(env(safe-area-inset-bottom), 46px);
         background: #121418;
         position: relative; overflow: visible; border-top: none;
       }
@@ -1280,7 +1280,7 @@ function App() {
               boxShadow: voiceOpen ? '0 0 16px rgba(255,59,59,0.35), 10px 10px 20px rgba(0,0,0,0.65), -4px -4px 12px rgba(255,255,255,0.03)' : undefined,
               transition:'all .2s',
             }}>
-            <Icons.Mic size={22} active={voiceOpen} />
+            <Icons.Mic size={20} active={voiceOpen} />
           </button>
           <button
             onClick={() => {
@@ -1294,7 +1294,7 @@ function App() {
               transition:'all .2s',
             }}>
             <span className={reloading ? 'spin' : ''} style={{ display:'flex' }}>
-              <Icons.Refresh size={20} color={reloading ? 'rgba(124,58,237,0.9)' : 'rgba(255,255,255,0.28)'} />
+              <Icons.Refresh size={18} color={reloading ? 'rgba(124,58,237,0.9)' : 'rgba(255,255,255,0.28)'} />
             </span>
           </button>
           <button
@@ -1309,7 +1309,7 @@ function App() {
               cursor: canAdd ? 'pointer' : 'default',
               transition:'all .3s',
             }}>
-            <Icons.Plus size={22} active={canAdd} />
+            <Icons.Plus size={20} active={canAdd} />
           </button>
         </div>
       </header>
