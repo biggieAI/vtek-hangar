@@ -48,7 +48,7 @@
       /* HEADER */
       header {
         flex-shrink: 0;
-        padding-top: max(env(safe-area-inset-top), 28px);
+        padding-top: max(env(safe-area-inset-top), 44px);
         padding-left: 24px; padding-right: 24px; padding-bottom: 28px;
         background: #121418; z-index: 100;
         position: relative; display: flex;
@@ -236,7 +236,8 @@
       .scan-line { position: absolute; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, #7c3aed, transparent); box-shadow: 0 0 12px #7c3aed; animation: scan 1.8s infinite linear; top: 0; }
       @keyframes scan { 0% { top: -2px; opacity: 1; } 95% { opacity: 1; } 100% { top: 100%; opacity: 0; } }
 
-      @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+      @keyframes vtek-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+      .spin { animation: vtek-spin 0.5s cubic-bezier(0.4,0,0.2,1) forwards; }
 
       /* MISC */
       input  { background: transparent; border: none; outline: none; color: #e2e8f0; font-family: 'Inter', sans-serif; font-weight: 900; text-transform: uppercase; }
@@ -1200,6 +1201,7 @@ function App() {
   const [isListening, setIsListening]   = useState(false);
   const [notification, setNotification] = useState(null);
   const [voiceOpen, setVoiceOpen]       = useState(false);
+  const [reloading, setReloading]       = useState(false);
 
   const [tasks, setTasks] = useState(() => load(LS.tasks, SEED_TASKS));
   const [shows, setShows] = useState(() => load(LS.shows, SEED_SHOWS));
@@ -1281,14 +1283,19 @@ function App() {
             <Icons.Mic size={22} active={voiceOpen} />
           </button>
           <button
-            onClick={() => window.location.reload()}
+            onClick={() => {
+              setReloading(true);
+              setTimeout(() => window.location.reload(), 500);
+            }}
             className="nm-raised"
             style={{
               width:44, height:44, borderRadius:'50%', background:'#1c1f24',
               display:'flex', alignItems:'center', justifyContent:'center',
               transition:'all .2s',
             }}>
-            <Icons.Refresh size={20} color="rgba(255,255,255,0.28)" />
+            <span className={reloading ? 'spin' : ''} style={{ display:'flex' }}>
+              <Icons.Refresh size={20} color={reloading ? 'rgba(124,58,237,0.9)' : 'rgba(255,255,255,0.28)'} />
+            </span>
           </button>
           <button
             onClick={canAdd ? handlePlus : undefined}
