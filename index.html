@@ -47,7 +47,9 @@
 
       /* HEADER */
       header {
-        flex-shrink: 0; padding: 36px 24px 18px;
+        flex-shrink: 0;
+        padding-top: max(env(safe-area-inset-top), 16px);
+        padding-left: 24px; padding-right: 24px; padding-bottom: 18px;
         background: #121418; z-index: 100;
         position: relative; display: flex;
         justify-content: space-between; align-items: center;
@@ -401,26 +403,29 @@ Input: "${transcript}"`);
 // ─── ICON SVGs (no lucide dependency) ────────────────────────────────────────
 // ─── SCULPTED ICON PRIMITIVES ────────────────────────────────────────────────
 // Full 3-layer: shadow + highlight + body
-const S3 = ({ size=16, color='rgba(255,255,255,0.55)', blur=1.4, children }) => {
+// Rendered at 2x (48px) then CSS-scaled to display size for crispness
+const S3 = ({ size=16, color='rgba(255,255,255,0.55)', blur=0.8, children }) => {
   const id = `s3_${Math.random().toString(36).slice(2,7)}`;
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none"
-      strokeLinecap="round" strokeLinejoin="round" style={{ overflow:'visible' }}>
-      <defs><filter id={id}><feGaussianBlur stdDeviation={blur}/></filter></defs>
-      <g transform="translate(2,3)" opacity="0.9" filter={`url(#${id})`} stroke="#000" strokeWidth={3}>{children}</g>
-      <g transform="translate(-1,-1)" stroke="rgba(255,255,255,0.18)" strokeWidth={2.8}>{children}</g>
-      <g stroke={color} strokeWidth={2.5}>{children}</g>
+      strokeLinecap="round" strokeLinejoin="round"
+      style={{ overflow:'visible', imageRendering:'crisp-edges' }}>
+      <defs><filter id={id} x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation={blur}/></filter></defs>
+      <g transform="translate(1.5,2.5)" opacity="0.95" filter={`url(#${id})`} stroke="#000" strokeWidth={2.8}>{children}</g>
+      <g transform="translate(-0.5,-0.5)" stroke="rgba(255,255,255,0.2)" strokeWidth={2.6}>{children}</g>
+      <g stroke={color} strokeWidth={2.4}>{children}</g>
     </svg>
   );
 };
-// Light 2-layer: shadow + body only (small/utility icons)
-const S2 = ({ size=16, color='rgba(255,255,255,0.45)', blur=1.2, children }) => {
+// Light 2-layer: shadow + body (small/utility icons)
+const S2 = ({ size=16, color='rgba(255,255,255,0.45)', blur=0.7, children }) => {
   const id = `s2_${Math.random().toString(36).slice(2,7)}`;
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none"
-      strokeLinecap="round" strokeLinejoin="round" style={{ overflow:'visible' }}>
-      <defs><filter id={id}><feGaussianBlur stdDeviation={blur}/></filter></defs>
-      <g transform="translate(1.5,2.5)" opacity="0.85" filter={`url(#${id})`} stroke="#000" strokeWidth={2.5}>{children}</g>
+      strokeLinecap="round" strokeLinejoin="round"
+      style={{ overflow:'visible', imageRendering:'crisp-edges' }}>
+      <defs><filter id={id} x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation={blur}/></filter></defs>
+      <g transform="translate(1,2)" opacity="0.9" filter={`url(#${id})`} stroke="#000" strokeWidth={2.4}>{children}</g>
       <g stroke={color} strokeWidth={2}>{children}</g>
     </svg>
   );
@@ -927,7 +932,7 @@ function Wizard({ wizard, setWizard, shows, team, onCommit }) {
       <div style={{ position:'absolute', inset:0, opacity:0.25, pointerEvents:'none', boxShadow:'inset 0 0 120px rgba(124,58,237,0.15)' }} />
 
       {/* X — fixed to top of screen, always reachable regardless of keyboard */}
-      <div style={{ position:'fixed', top:0, left:0, right:0, zIndex:1010, display:'flex', justifyContent:'space-between', alignItems:'center', padding:'36px 24px 16px', background:'#121418' }}>
+      <div style={{ position:'fixed', top:0, left:0, right:0, zIndex:1010, display:'flex', justifyContent:'space-between', alignItems:'center', paddingTop:'max(env(safe-area-inset-top), 16px)', paddingLeft:24, paddingRight:24, paddingBottom:16, background:'#121418' }}>
         <span style={{ fontWeight:100, letterSpacing:'1.2em', fontSize:'0.75rem', color:'rgba(255,255,255,0.12)' }}>VTEK</span>
         <button onClick={() => setWizard(w => ({ ...w, isOpen: false }))} style={{ color:'rgba(255,255,255,0.4)', padding:8, margin:-8 }}>
           <Icons.X size={24} />
@@ -1114,14 +1119,14 @@ const sculpt = (paths, active, size=20) => {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none"
       strokeLinecap="round" strokeLinejoin="round"
-      style={{ filter: glow, overflow: 'visible' }}>
-      <defs><filter id={id}><feGaussianBlur stdDeviation="1.4"/></filter></defs>
+      style={{ filter: glow, overflow: 'visible', imageRendering:'crisp-edges' }}>
+      <defs><filter id={id} x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="0.8"/></filter></defs>
       {/* Shadow layer */}
-      <g transform="translate(2,3)" opacity="0.9" filter={`url(#${id})`}>{paths('#000000', 3)}</g>
+      <g transform="translate(1.5,2.5)" opacity="0.95" filter={`url(#${id})`}>{paths('#000000', 2.8)}</g>
       {/* Highlight layer */}
-      <g transform="translate(-1,-1)">{paths(hi, 2.8)}</g>
+      <g transform="translate(-0.5,-0.5)">{paths(hi, 2.6)}</g>
       {/* Body layer */}
-      <g>{paths(body, 2.5)}</g>
+      <g>{paths(body, 2.4)}</g>
     </svg>
   );
 };
@@ -1161,18 +1166,18 @@ const HomeIcon = ({ active }) => {
   return (
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
       strokeLinecap="round" strokeLinejoin="round"
-      style={{ filter: glow, overflow: 'visible' }}>
-      <defs><filter id={id}><feGaussianBlur stdDeviation="1.4"/></filter></defs>
+      style={{ filter: glow, overflow: 'visible', imageRendering:'crisp-edges' }}>
+      <defs><filter id={id} x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="0.8"/></filter></defs>
       {/* Shadow */}
-      <g transform="translate(2,3)" opacity="0.9" filter={`url(#${id})`}>
-        <path d="M4 4L12 20L20 4" stroke="#000" strokeWidth={3} fill="none"/>
+      <g transform="translate(1.5,2.5)" opacity="0.95" filter={`url(#${id})`}>
+        <path d="M4 4L12 20L20 4" stroke="#000" strokeWidth={2.8} fill="none"/>
       </g>
       {/* Highlight */}
-      <g transform="translate(-1,-1)">
-        <path d="M4 4L12 20L20 4" stroke={active ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,0.15)'} strokeWidth={2.8} fill="none"/>
+      <g transform="translate(-0.5,-0.5)">
+        <path d="M4 4L12 20L20 4" stroke={active ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,0.15)'} strokeWidth={2.6} fill="none"/>
       </g>
       {/* Body */}
-      <path d="M4 4L12 20L20 4" stroke={active ? '#FFFFFF' : '#7c3aed'} strokeWidth={2.5} fill="none"/>
+      <path d="M4 4L12 20L20 4" stroke={active ? '#FFFFFF' : '#7c3aed'} strokeWidth={2.4} fill="none"/>
     </svg>
   );
 };
