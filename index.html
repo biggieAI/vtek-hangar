@@ -95,27 +95,25 @@
       .bnav-wrap {
         flex-shrink: 0; display: flex; justify-content: center; align-items: flex-end;
         padding: 20px 18px; padding-bottom: max(env(safe-area-inset-bottom), 12px);
-        background: rgba(14,14,18,.82); backdrop-filter: blur(24px);
-        -webkit-backdrop-filter: blur(24px); position: relative;
-        overflow: visible; border-top: none;
+        background: #121418;
+        position: relative; overflow: visible; border-top: none;
       }
       /* PILL */
       .bnav {
         display: flex; align-items: center;
-        background: #1a1a20; border-radius: 32px;
+        background: #121418; border-radius: 32px;
         padding: 0 8px; height: 64px; gap: 0;
         box-shadow: 8px 8px 24px rgba(0,0,0,.8), -3px -3px 10px rgba(255,255,255,.025);
-        border: 1px solid rgba(255,255,255,.04);
+        border: 1px solid rgba(255,255,255,.06);
         position: relative; width: 100%; max-width: 400px;
         overflow: visible;
       }
-      /* Background fill that extends below the pill to the screen edge — prevents scroll content peaking through */
+      /* Background fill below pill to screen edge */
       .bnav-wrap::before {
         content: ''; position: absolute;
         bottom: 0; left: 0; right: 0;
         height: calc(100% - 8px);
-        background: rgba(14,14,18,.82);
-        backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+        background: #121418;
         z-index: -1;
       }
       /* NAV BUTTONS */
@@ -228,7 +226,7 @@
       @keyframes pageIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
       /* WIZARD */
-      .wizard-shell { position: fixed; inset: 0; z-index: 1000; background: #121418; padding: 32px 28px; display: flex; flex-direction: column; overflow: hidden; font-weight: 900; text-transform: uppercase; animation: wizIn 0.4s cubic-bezier(0.16,1,0.3,1) forwards; }
+      .wizard-shell { position: fixed; inset: 0; z-index: 1000; background: #121418; padding: 0; display: flex; flex-direction: column; overflow: visible; font-weight: 900; text-transform: uppercase; animation: wizIn 0.4s cubic-bezier(0.16,1,0.3,1) forwards; }
       @keyframes wizIn { from { transform: translateY(100%); } to { transform: translateY(0); } }
 
       /* INTEL STREAM */
@@ -928,54 +926,56 @@ function Wizard({ wizard, setWizard, shows, team, onCommit }) {
       {/* Purple ambient */}
       <div style={{ position:'absolute', inset:0, opacity:0.25, pointerEvents:'none', boxShadow:'inset 0 0 120px rgba(124,58,237,0.15)' }} />
 
-      <div style={{ position:'relative', zIndex:10, display:'flex', flexDirection:'column', height:'100%' }}>
-        {/* Top bar */}
-        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:48, fontSize:'0.75rem', letterSpacing:'0.25em' }}>
-          <span style={{ fontWeight:100, letterSpacing:'1.2em', color:'rgba(255,255,255,0.12)' }}>VTEK</span>
-          <button onClick={() => setWizard(w => ({ ...w, isOpen: false }))} style={{ color:'rgba(255,255,255,0.4)' }}>
-            <Icons.X size={24} />
-          </button>
-        </div>
+      {/* X — fixed to top of screen, always reachable regardless of keyboard */}
+      <div style={{ position:'fixed', top:0, left:0, right:0, zIndex:1010, display:'flex', justifyContent:'space-between', alignItems:'center', padding:'52px 24px 16px', background:'#121418' }}>
+        <span style={{ fontWeight:100, letterSpacing:'1.2em', fontSize:'0.75rem', color:'rgba(255,255,255,0.12)' }}>VTEK</span>
+        <button onClick={() => setWizard(w => ({ ...w, isOpen: false }))} style={{ color:'rgba(255,255,255,0.4)', padding:8, margin:-8 }}>
+          <Icons.X size={24} />
+        </button>
+      </div>
 
-        {/* Question */}
-        <div style={{ flexGrow:1, display:'flex', flexDirection:'column', justifyContent:'center', gap:36 }}>
+      {/* Content — sits in bottom 60% so keyboard pushes don't bury the question */}
+      <div style={{ position:'relative', zIndex:10, display:'flex', flexDirection:'column', flex:1, padding:'0 28px 0', justifyContent:'flex-end', paddingBottom: curStep.type === 'chips' ? 48 : 32 }}>
+
+        {/* Question block */}
+        <div style={{ marginBottom: curStep.type === 'chips' ? 28 : 24 }}>
           <h2 style={{ fontSize:24, fontWeight:900, textDecoration:'underline', textDecorationColor:'rgba(124,58,237,0.4)', textUnderlineOffset:12, letterSpacing:'0.02em' }}>
             {curStep.q}
           </h2>
-
-          {curStep.type === 'text' ? (
-            <>
-              <input
-                autoFocus
-                key={`${wizard.type}-${wizard.step}`}
-                className="bg-transparent"
-                style={{ borderBottom:'2px solid rgba(255,255,255,0.1)', paddingBottom:16, fontSize:20, width:'100%', letterSpacing:'0.04em', caretColor:'#7c3aed' }}
-                value={wizInput}
-                onChange={e => setWizInput(e.target.value)}
-                onKeyDown={e => e.key === 'Enter' && wizInput && handleNext()}
-                placeholder={curStep.placeholder}
-              />
-              <button
-                onClick={() => handleNext()}
-                disabled={!wizInput}
-                style={{ background:'#1c1f24', boxShadow:'10px 10px 20px rgba(0,0,0,0.65), -4px -4px 12px rgba(124,58,237,0.08)', border:'1px solid rgba(124,58,237,0.5)', width:'100%', padding:'20px 0', borderRadius:10, fontSize:11, letterSpacing:'0.3em', transition:'all .15s', opacity: wizInput ? 1 : 0.4 }}>
-                CONTINUE
-              </button>
-            </>
-          ) : (
-            <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:12 }}>
-              {curStep.options.map(opt => (
-                <button key={opt} onClick={() => handleNext(opt)}
-                  style={{ background:'#1c1f24', boxShadow:'10px 10px 20px rgba(0,0,0,0.65), -4px -4px 12px rgba(124,58,237,0.08)', border:'1px solid rgba(255,255,255,0.05)', padding:'16px 12px', borderRadius:6, fontSize:9, letterSpacing:'0.2em', color:'rgba(255,255,255,0.7)', transition:'all .15s' }}>
-                  {opt}
-                </button>
-              ))}
-            </div>
-          )}
         </div>
 
+        {curStep.type === 'text' ? (
+          <div style={{ display:'flex', flexDirection:'column', gap:20 }}>
+            <input
+              autoFocus
+              key={`${wizard.type}-${wizard.step}`}
+              className="bg-transparent"
+              style={{ borderBottom:'2px solid rgba(255,255,255,0.1)', paddingBottom:16, fontSize:20, width:'100%', letterSpacing:'0.04em', caretColor:'#7c3aed' }}
+              value={wizInput}
+              onChange={e => setWizInput(e.target.value)}
+              onKeyDown={e => e.key === 'Enter' && wizInput && handleNext()}
+              placeholder={curStep.placeholder}
+            />
+            <button
+              onClick={() => handleNext()}
+              disabled={!wizInput}
+              style={{ background:'#1c1f24', boxShadow:'10px 10px 20px rgba(0,0,0,0.65), -4px -4px 12px rgba(124,58,237,0.08)', border:'1px solid rgba(124,58,237,0.5)', width:'100%', padding:'20px 0', borderRadius:10, fontSize:11, letterSpacing:'0.3em', transition:'all .15s', opacity: wizInput ? 1 : 0.4 }}>
+              CONTINUE
+            </button>
+          </div>
+        ) : (
+          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:12 }}>
+            {curStep.options.map(opt => (
+              <button key={opt} onClick={() => handleNext(opt)}
+                style={{ background:'#1c1f24', boxShadow:'10px 10px 20px rgba(0,0,0,0.65), -4px -4px 12px rgba(124,58,237,0.08)', border:'1px solid rgba(255,255,255,0.05)', padding:'16px 12px', borderRadius:6, fontSize:9, letterSpacing:'0.2em', color:'rgba(255,255,255,0.7)', transition:'all .15s' }}>
+                {opt}
+              </button>
+            ))}
+          </div>
+        )}
+
         {/* Step counter */}
-        <div style={{ marginTop:'auto', textAlign:'center', fontSize:7, color:'rgba(255,255,255,0.1)', letterSpacing:'0.5em', paddingBottom:16 }}>
+        <div style={{ marginTop:28, textAlign:'center', fontSize:7, color:'rgba(255,255,255,0.1)', letterSpacing:'0.5em' }}>
           STEP {wizard.step + 1} OF {config.steps.length}
         </div>
       </div>
