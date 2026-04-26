@@ -11,165 +11,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
   <style>
     *{box-sizing:border-box;margin:0;padding:0}
-    html,body,#root{width:100%;height:100%;background:#121418;overflow:hidden}
-  </style>
-</head>
-<body>
-  <div id="root"></div>
-  <script type="text/babel" data-presets="react">
-const { useState, useEffect, useMemo, useRef, useCallback } = React;
+    html,body,#root{width:100%;height:100%;background:#121418}
 
-/**
- * VTEK HANGAR PROTOCOL V9.0 — REBUILT
- * SOURCE: Hanger_042626.txt (FINAL_MASTER_DEPLOYMENT_APR_26)
- * STACK: REACT + LOCALSTORAGE + CLAUDE INTEL
- * TERMINOLOGY: HANGAR | SHOWS | TASKS | TEAM | INTEL
- */
-
-// ─── CONSTANTS ────────────────────────────────────────────────────────────────
-const APP_VERSION = 'HGR-086';
-const LS = {
-  tasks: 'vtek_tasks_v4',
-  shows: 'vtek_shows_v4',
-  team:  'vtek_team_v4',
-  shots: 'vtek_shots_v4',
-};
-
-// ─── SEED DATA — CBFX HEAVY MOCK ─────────────────────────────────────────────
-const SEED_SHOWS = [
-  { id:'sh1', code:'CRL', name:'CERULEAN',       client:'NEXUS FILMS',    progress:62, status:'PROD' },
-  { id:'sh2', code:'MVK', name:'MAVERICK',        client:'WARNER BROS',   progress:91, status:'DLV'  },
-  { id:'sh3', code:'INT', name:'INTERLOCK',       client:'APPLE TV+',     progress:18, status:'PROD' },
-  { id:'sh4', code:'DNE', name:'DONE DEAL',       client:'NETFLIX',       progress:100,status:'WRAP' },
-  { id:'sh5', code:'SLR', name:'SOLAR WINDS',     client:'PARAMOUNT',     progress:44, status:'PROD' },
-];
-
-const SEED_SHOTS = [
-  // CRL SHOTS
-  { id:'sq01', code:'CRL_0010', status:'COMP',  health:100, type:'SHOT',  projectRef:'CRL' },
-  { id:'sq02', code:'CRL_0020', status:'COMP',  health:98,  type:'SHOT',  projectRef:'CRL' },
-  { id:'sq03', code:'CRL_0030', status:'COMP',  health:95,  type:'SHOT',  projectRef:'CRL' },
-  { id:'sq04', code:'CRL_0040', status:'COMP',  health:100, type:'SHOT',  projectRef:'CRL' },
-  { id:'sq05', code:'CRL_0050', status:'COMP',  health:87,  type:'SHOT',  projectRef:'CRL' },
-  { id:'sq06', code:'CRL_0060', status:'FX',    health:55,  type:'SHOT',  projectRef:'CRL' },
-  { id:'sq07', code:'CRL_0070', status:'LIGHT', health:40,  type:'SHOT',  projectRef:'CRL' },
-  { id:'sq08', code:'CRL_0080', status:'ANIM',  health:22,  type:'SHOT',  projectRef:'CRL' },
-  { id:'sq09', code:'CRL_0090', status:'COMP',  health:78,  type:'SHOT',  projectRef:'CRL' },
-  { id:'sq10', code:'CRL_0100', status:'COMP',  health:100, type:'SHOT',  projectRef:'CRL' },
-  { id:'sq11', code:'CRL_0110', status:'COMP',  health:100, type:'SHOT',  projectRef:'CRL' },
-  { id:'sq12', code:'CRL_0120', status:'FX',    health:33,  type:'SHOT',  projectRef:'CRL' },
-  { id:'sq13', code:'CRL_0130', status:'LIGHT', health:60,  type:'SHOT',  projectRef:'CRL' },
-  { id:'sq14', code:'CRL_0140', status:'COMP',  health:91,  type:'SHOT',  projectRef:'CRL' },
-  { id:'sq15', code:'CRL_0150', status:'ANIM',  health:15,  type:'SHOT',  projectRef:'CRL' },
-  // CRL ASSETS
-  { id:'sq16', code:'HERO_SUIT',  status:'COMP',  health:100, type:'ASSET', projectRef:'CRL' },
-  { id:'sq17', code:'ENV_CITY',   status:'COMP',  health:88,  type:'ASSET', projectRef:'CRL' },
-  { id:'sq18', code:'VEH_TRUCK',  status:'LIGHT', health:62,  type:'ASSET', projectRef:'CRL' },
-  { id:'sq19', code:'CHAR_RIG',   status:'RIG',   health:74,  type:'ASSET', projectRef:'CRL' },
-  { id:'sq20', code:'FX_DUST',    status:'FX',    health:45,  type:'ASSET', projectRef:'CRL' },
-  // MVK SHOTS (mostly done)
-  { id:'sq21', code:'MVK_0010', status:'COMP',  health:100, type:'SHOT',  projectRef:'MVK' },
-  { id:'sq22', code:'MVK_0020', status:'COMP',  health:100, type:'SHOT',  projectRef:'MVK' },
-  { id:'sq23', code:'MVK_0030', status:'COMP',  health:100, type:'SHOT',  projectRef:'MVK' },
-  { id:'sq24', code:'MVK_0040', status:'COMP',  health:100, type:'SHOT',  projectRef:'MVK' },
-  { id:'sq25', code:'MVK_0050', status:'COMP',  health:100, type:'SHOT',  projectRef:'MVK' },
-  { id:'sq26', code:'MVK_0060', status:'COMP',  health:98,  type:'SHOT',  projectRef:'MVK' },
-  { id:'sq27', code:'MVK_0070', status:'COMP',  health:95,  type:'SHOT',  projectRef:'MVK' },
-  { id:'sq28', code:'ENV_BASE', status:'COMP',  health:100, type:'ASSET', projectRef:'MVK' },
-  { id:'sq29', code:'CHAR_A',   status:'COMP',  health:100, type:'ASSET', projectRef:'MVK' },
-  // INT SHOTS (early)
-  { id:'sq30', code:'INT_0010', status:'ANIM',  health:18,  type:'SHOT',  projectRef:'INT' },
-  { id:'sq31', code:'INT_0020', status:'LIGHT', health:10,  type:'SHOT',  projectRef:'INT' },
-  { id:'sq32', code:'INT_0030', status:'FX',    health:5,   type:'SHOT',  projectRef:'INT' },
-  { id:'sq33', code:'INT_0040', status:'ANIM',  health:30,  type:'SHOT',  projectRef:'INT' },
-  { id:'sq34', code:'INT_0050', status:'COMP',  health:72,  type:'SHOT',  projectRef:'INT' },
-  { id:'sq35', code:'ENV_ARCH', status:'MODEL', health:12,  type:'ASSET', projectRef:'INT' },
-  { id:'sq36', code:'CHAR_RIG', status:'RIG',   health:40,  type:'ASSET', projectRef:'INT' },
-  // SLR
-  { id:'sq37', code:'SLR_0010', status:'COMP',  health:88,  type:'SHOT',  projectRef:'SLR' },
-  { id:'sq38', code:'SLR_0020', status:'FX',    health:50,  type:'SHOT',  projectRef:'SLR' },
-  { id:'sq39', code:'SLR_0030', status:'LIGHT', health:35,  type:'SHOT',  projectRef:'SLR' },
-  { id:'sq40', code:'SLR_0040', status:'ANIM',  health:20,  type:'SHOT',  projectRef:'SLR' },
-  { id:'sq41', code:'SLR_0050', status:'COMP',  health:95,  type:'SHOT',  projectRef:'SLR' },
-  { id:'sq42', code:'FX_SOLAR', status:'FX',    health:42,  type:'ASSET', projectRef:'SLR' },
-];
-
-const SEED_TEAM = [
-  { id:'tm1', name:'KATHERINE SOARES', role:'COMP',  status:'ONLINE',  signal:97 },
-  { id:'tm2', name:'RUBEN RODAS',      role:'COMP',  status:'ONLINE',  signal:91 },
-  { id:'tm3', name:'JAKE MORROW',      role:'LIGHT', status:'ONLINE',  signal:88 },
-  { id:'tm4', name:'ANA LIMA',         role:'FX',    status:'DND',     signal:76 },
-  { id:'tm5', name:'TOM KWAN',         role:'TD',    status:'ONLINE',  signal:82 },
-  { id:'tm6', name:'DANA CHEN',        role:'TD',    status:'OFFLINE', signal:0  },
-  { id:'tm7', name:'MARCUS BELL',      role:'COMP',  status:'ONLINE',  signal:94 },
-  { id:'tm8', name:'PRIYA NAIR',       role:'ROTO',  status:'ONLINE',  signal:85 },
-  { id:'tm9', name:'LEO VARGAS',       role:'COMP',  status:'DND',     signal:71 },
-  { id:'tma', name:'SAM PARK',         role:'FX',    status:'ONLINE',  signal:89 },
-];
-
-const SEED_TASKS = [
-  // TODAY
-  { id:'tk01', title:'CRL_0142 — COMP V4 REVIEW',         desc:'BLOOM + EDGE MATTING FIX',       project:'CRL', assignedTo:'RUBEN RODAS',      pri:'CRITICAL', date:'TODAY',     done:false },
-  { id:'tk02', title:'INT TURNOVER PACKAGE TO CLIENT',     desc:'FINAL ASSET LIST + PLATES ZIP',  project:'INT', assignedTo:'KATHERINE SOARES', pri:'HIGH',     date:'TODAY',     done:false },
-  { id:'tk03', title:'CRL FX PASS — DUST SIMS',            desc:'SH_0060 + SH_0120',              project:'CRL', assignedTo:'ANA LIMA',         pri:'HIGH',     date:'TODAY',     done:false },
-  { id:'tk04', title:'NUKE GIZMO: ADDITIVE KEYER QC',      desc:'TEST ON HIGH-EXPOSURE BG PLATES',project:'CRL', assignedTo:'RUBEN RODAS',      pri:'MED',      date:'TODAY',     done:true  },
-  { id:'tk05', title:'MVK FINAL DELIVERY SIGN-OFF',         desc:'CLIENT APPROVAL NEEDED',         project:'MVK', assignedTo:'KATHERINE SOARES', pri:'CRITICAL', date:'TODAY',     done:true  },
-  { id:'tk06', title:'SLR LIGHTING REVIEW — SC01',          desc:'RIM LIGHT TOO HOT ON FACES',    project:'SLR', assignedTo:'JAKE MORROW',      pri:'MED',      date:'TODAY',     done:false },
-  { id:'tk07', title:'PIPELINE: NUKE WRITE NODE AUDIT',    desc:'CHECK RENDER PATHS ON ALL JOBS', project:'ADMIN',assignedTo:'DANA CHEN',       pri:'MED',      date:'TODAY',     done:false },
-  // TOMORROW
-  { id:'tk08', title:'SHOTGRID CSV EXPORT — INT',           desc:'MANUAL PULL WORKAROUND',         project:'INT', assignedTo:'DANA CHEN',        pri:'LOW',      date:'TOMORROW',  done:false },
-  { id:'tk09', title:'INT_0034 ROTO PASS',                  desc:'HAIR + SHOULDER SEPARATION',     project:'INT', assignedTo:'TOM KWAN',         pri:'HIGH',     date:'TOMORROW',  done:false },
-  { id:'tk10', title:'CRL_0080 ANIM SIGN-OFF',              desc:'HERO WALK CYCLE FINAL',          project:'CRL', assignedTo:'MARCUS BELL',      pri:'MED',      date:'TOMORROW',  done:false },
-  { id:'tk11', title:'SLR ASSET REVIEW — FX_SOLAR',        desc:'CLIENT WANTS SOFTER BLOOM',      project:'SLR', assignedTo:'ANA LIMA',         pri:'HIGH',     date:'TOMORROW',  done:false },
-  { id:'tk12', title:'ONBOARD PRIYA: ROTO BRIEF FOR INT',  desc:'SEND PLATE PACKAGE',             project:'INT', assignedTo:'RUBEN RODAS',      pri:'LOW',      date:'TOMORROW',  done:false },
-  // THIS WEEK
-  { id:'tk13', title:'MAKE.COM: CIRCLEBACK→LINEAR AUTO',   desc:'TIER 1 AUTOMATION BUILDOUT',     project:'ADMIN',assignedTo:'UNASSIGNED',      pri:'HIGH',     date:'THIS WEEK', done:false },
-  { id:'tk14', title:'CRL COMP PASS — SH_0150 ANIM LOCK',  desc:'WAIT FOR ANIM SIGN-OFF FIRST',   project:'CRL', assignedTo:'LEO VARGAS',       pri:'MED',      date:'THIS WEEK', done:false },
-  { id:'tk15', title:'INT_0010–0030 FULL COMP PUSH',        desc:'3 SHOTS DUE END OF WEEK',        project:'INT', assignedTo:'MARCUS BELL',      pri:'HIGH',     date:'THIS WEEK', done:false },
-  { id:'tk16', title:'SLR FULL SEQUENCE REVIEW PREP',       desc:'ASSEMBLE ALL WIP SHOTS',         project:'SLR', assignedTo:'PRIYA NAIR',       pri:'MED',      date:'THIS WEEK', done:false },
-  { id:'tk17', title:'PIPELINE: PYTHON CACHE TOOL REDESIGN',desc:'PYSIDE6 UI OVERHAUL',            project:'ADMIN',assignedTo:'DANA CHEN',       pri:'MED',      date:'THIS WEEK', done:false },
-  { id:'tk18', title:'SAM: FX BRIEFING FOR CRL SC03',       desc:'CROWD SIM SCOPE DISCUSSION',    project:'CRL', assignedTo:'SAM PARK',         pri:'LOW',      date:'THIS WEEK', done:false },
-];
-
-// ─── PERSISTENCE ──────────────────────────────────────────────────────────────
-const load = (key, seed) => { try { return JSON.parse(localStorage.getItem(key)) || seed; } catch { return seed; } };
-const save = (key, val)  => localStorage.setItem(key, JSON.stringify(val));
-const uid  = () => Math.random().toString(36).slice(2);
-
-// ─── UTILS ────────────────────────────────────────────────────────────────────
-const triggerHaptic = () => { try { if (window.Capacitor?.Plugins?.Haptics) window.Capacitor.Plugins.Haptics.impact({ style: 'HEAVY' }); } catch {} };
-
-const notify = (setter, msg) => { setter(msg); setTimeout(() => setter(null), 3000); };
-
-// ─── CLAUDE API ───────────────────────────────────────────────────────────────
-async function callClaude(prompt) {
-  const res = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 1000,
-      messages: [{ role: 'user', content: prompt }],
-    }),
-  });
-  if (!res.ok) throw new Error(`API ${res.status}`);
-  const data = await res.json();
-  return data.content?.find(b => b.type === 'text')?.text || 'SIGNAL LOST.';
-}
-
-async function parseVoiceIntent(transcript, shows) {
-  const raw = await callClaude(`Parse this VFX voice command into JSON only. No markdown, no backticks.
-Schema: {"action":"ADD_TASK|NAV","page":"hub|tasks|shows|ops|intel","title":"","project":"","assignedTo":"UNASSIGNED","pri":"LOW|MED|HIGH|CRITICAL","date":"TODAY|TOMORROW|THIS WEEK"}
-Defaults: action=ADD_TASK, pri=MED, date=TODAY, assignedTo=UNASSIGNED
-Active shows: ${shows.map(s => s.code).join(', ')}
-Input: "${transcript}"`);
-  return JSON.parse(raw.trim());
-}
-
-// ─── GLOBAL CSS ───────────────────────────────────────────────────────────────
-function GlobalCSS() {
-  return (
-    <style>{`
       @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;400;700;900&display=swap');
 
       *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -384,9 +227,163 @@ function GlobalCSS() {
       input  { background: transparent; border: none; outline: none; color: #e2e8f0; font-family: 'Inter', sans-serif; font-weight: 900; text-transform: uppercase; }
       button { cursor: pointer; border: none; font-family: 'Inter', sans-serif; font-weight: 900; text-transform: uppercase; background: none; }
       ::-webkit-scrollbar { width: 0; }
-    `}</style>
-  );
+    
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel" data-presets="react">
+const { useState, useEffect, useMemo, useRef, useCallback } = React;
+
+/**
+ * VTEK HANGAR PROTOCOL V9.0 — REBUILT
+ * SOURCE: Hanger_042626.txt (FINAL_MASTER_DEPLOYMENT_APR_26)
+ * STACK: REACT + LOCALSTORAGE + CLAUDE INTEL
+ * TERMINOLOGY: HANGAR | SHOWS | TASKS | TEAM | INTEL
+ */
+
+// ─── CONSTANTS ────────────────────────────────────────────────────────────────
+const APP_VERSION = 'HGR-086';
+const LS = {
+  tasks: 'vtek_tasks_v4',
+  shows: 'vtek_shows_v4',
+  team:  'vtek_team_v4',
+  shots: 'vtek_shots_v4',
+};
+
+// ─── SEED DATA — CBFX HEAVY MOCK ─────────────────────────────────────────────
+const SEED_SHOWS = [
+  { id:'sh1', code:'CRL', name:'CERULEAN',       client:'NEXUS FILMS',    progress:62, status:'PROD' },
+  { id:'sh2', code:'MVK', name:'MAVERICK',        client:'WARNER BROS',   progress:91, status:'DLV'  },
+  { id:'sh3', code:'INT', name:'INTERLOCK',       client:'APPLE TV+',     progress:18, status:'PROD' },
+  { id:'sh4', code:'DNE', name:'DONE DEAL',       client:'NETFLIX',       progress:100,status:'WRAP' },
+  { id:'sh5', code:'SLR', name:'SOLAR WINDS',     client:'PARAMOUNT',     progress:44, status:'PROD' },
+];
+
+const SEED_SHOTS = [
+  // CRL SHOTS
+  { id:'sq01', code:'CRL_0010', status:'COMP',  health:100, type:'SHOT',  projectRef:'CRL' },
+  { id:'sq02', code:'CRL_0020', status:'COMP',  health:98,  type:'SHOT',  projectRef:'CRL' },
+  { id:'sq03', code:'CRL_0030', status:'COMP',  health:95,  type:'SHOT',  projectRef:'CRL' },
+  { id:'sq04', code:'CRL_0040', status:'COMP',  health:100, type:'SHOT',  projectRef:'CRL' },
+  { id:'sq05', code:'CRL_0050', status:'COMP',  health:87,  type:'SHOT',  projectRef:'CRL' },
+  { id:'sq06', code:'CRL_0060', status:'FX',    health:55,  type:'SHOT',  projectRef:'CRL' },
+  { id:'sq07', code:'CRL_0070', status:'LIGHT', health:40,  type:'SHOT',  projectRef:'CRL' },
+  { id:'sq08', code:'CRL_0080', status:'ANIM',  health:22,  type:'SHOT',  projectRef:'CRL' },
+  { id:'sq09', code:'CRL_0090', status:'COMP',  health:78,  type:'SHOT',  projectRef:'CRL' },
+  { id:'sq10', code:'CRL_0100', status:'COMP',  health:100, type:'SHOT',  projectRef:'CRL' },
+  { id:'sq11', code:'CRL_0110', status:'COMP',  health:100, type:'SHOT',  projectRef:'CRL' },
+  { id:'sq12', code:'CRL_0120', status:'FX',    health:33,  type:'SHOT',  projectRef:'CRL' },
+  { id:'sq13', code:'CRL_0130', status:'LIGHT', health:60,  type:'SHOT',  projectRef:'CRL' },
+  { id:'sq14', code:'CRL_0140', status:'COMP',  health:91,  type:'SHOT',  projectRef:'CRL' },
+  { id:'sq15', code:'CRL_0150', status:'ANIM',  health:15,  type:'SHOT',  projectRef:'CRL' },
+  // CRL ASSETS
+  { id:'sq16', code:'HERO_SUIT',  status:'COMP',  health:100, type:'ASSET', projectRef:'CRL' },
+  { id:'sq17', code:'ENV_CITY',   status:'COMP',  health:88,  type:'ASSET', projectRef:'CRL' },
+  { id:'sq18', code:'VEH_TRUCK',  status:'LIGHT', health:62,  type:'ASSET', projectRef:'CRL' },
+  { id:'sq19', code:'CHAR_RIG',   status:'RIG',   health:74,  type:'ASSET', projectRef:'CRL' },
+  { id:'sq20', code:'FX_DUST',    status:'FX',    health:45,  type:'ASSET', projectRef:'CRL' },
+  // MVK SHOTS (mostly done)
+  { id:'sq21', code:'MVK_0010', status:'COMP',  health:100, type:'SHOT',  projectRef:'MVK' },
+  { id:'sq22', code:'MVK_0020', status:'COMP',  health:100, type:'SHOT',  projectRef:'MVK' },
+  { id:'sq23', code:'MVK_0030', status:'COMP',  health:100, type:'SHOT',  projectRef:'MVK' },
+  { id:'sq24', code:'MVK_0040', status:'COMP',  health:100, type:'SHOT',  projectRef:'MVK' },
+  { id:'sq25', code:'MVK_0050', status:'COMP',  health:100, type:'SHOT',  projectRef:'MVK' },
+  { id:'sq26', code:'MVK_0060', status:'COMP',  health:98,  type:'SHOT',  projectRef:'MVK' },
+  { id:'sq27', code:'MVK_0070', status:'COMP',  health:95,  type:'SHOT',  projectRef:'MVK' },
+  { id:'sq28', code:'ENV_BASE', status:'COMP',  health:100, type:'ASSET', projectRef:'MVK' },
+  { id:'sq29', code:'CHAR_A',   status:'COMP',  health:100, type:'ASSET', projectRef:'MVK' },
+  // INT SHOTS (early)
+  { id:'sq30', code:'INT_0010', status:'ANIM',  health:18,  type:'SHOT',  projectRef:'INT' },
+  { id:'sq31', code:'INT_0020', status:'LIGHT', health:10,  type:'SHOT',  projectRef:'INT' },
+  { id:'sq32', code:'INT_0030', status:'FX',    health:5,   type:'SHOT',  projectRef:'INT' },
+  { id:'sq33', code:'INT_0040', status:'ANIM',  health:30,  type:'SHOT',  projectRef:'INT' },
+  { id:'sq34', code:'INT_0050', status:'COMP',  health:72,  type:'SHOT',  projectRef:'INT' },
+  { id:'sq35', code:'ENV_ARCH', status:'MODEL', health:12,  type:'ASSET', projectRef:'INT' },
+  { id:'sq36', code:'CHAR_RIG', status:'RIG',   health:40,  type:'ASSET', projectRef:'INT' },
+  // SLR
+  { id:'sq37', code:'SLR_0010', status:'COMP',  health:88,  type:'SHOT',  projectRef:'SLR' },
+  { id:'sq38', code:'SLR_0020', status:'FX',    health:50,  type:'SHOT',  projectRef:'SLR' },
+  { id:'sq39', code:'SLR_0030', status:'LIGHT', health:35,  type:'SHOT',  projectRef:'SLR' },
+  { id:'sq40', code:'SLR_0040', status:'ANIM',  health:20,  type:'SHOT',  projectRef:'SLR' },
+  { id:'sq41', code:'SLR_0050', status:'COMP',  health:95,  type:'SHOT',  projectRef:'SLR' },
+  { id:'sq42', code:'FX_SOLAR', status:'FX',    health:42,  type:'ASSET', projectRef:'SLR' },
+];
+
+const SEED_TEAM = [
+  { id:'tm1', name:'KATHERINE SOARES', role:'COMP',  status:'ONLINE',  signal:97 },
+  { id:'tm2', name:'RUBEN RODAS',      role:'COMP',  status:'ONLINE',  signal:91 },
+  { id:'tm3', name:'JAKE MORROW',      role:'LIGHT', status:'ONLINE',  signal:88 },
+  { id:'tm4', name:'ANA LIMA',         role:'FX',    status:'DND',     signal:76 },
+  { id:'tm5', name:'TOM KWAN',         role:'TD',    status:'ONLINE',  signal:82 },
+  { id:'tm6', name:'DANA CHEN',        role:'TD',    status:'OFFLINE', signal:0  },
+  { id:'tm7', name:'MARCUS BELL',      role:'COMP',  status:'ONLINE',  signal:94 },
+  { id:'tm8', name:'PRIYA NAIR',       role:'ROTO',  status:'ONLINE',  signal:85 },
+  { id:'tm9', name:'LEO VARGAS',       role:'COMP',  status:'DND',     signal:71 },
+  { id:'tma', name:'SAM PARK',         role:'FX',    status:'ONLINE',  signal:89 },
+];
+
+const SEED_TASKS = [
+  // TODAY
+  { id:'tk01', title:'CRL_0142 — COMP V4 REVIEW',         desc:'BLOOM + EDGE MATTING FIX',       project:'CRL', assignedTo:'RUBEN RODAS',      pri:'CRITICAL', date:'TODAY',     done:false },
+  { id:'tk02', title:'INT TURNOVER PACKAGE TO CLIENT',     desc:'FINAL ASSET LIST + PLATES ZIP',  project:'INT', assignedTo:'KATHERINE SOARES', pri:'HIGH',     date:'TODAY',     done:false },
+  { id:'tk03', title:'CRL FX PASS — DUST SIMS',            desc:'SH_0060 + SH_0120',              project:'CRL', assignedTo:'ANA LIMA',         pri:'HIGH',     date:'TODAY',     done:false },
+  { id:'tk04', title:'NUKE GIZMO: ADDITIVE KEYER QC',      desc:'TEST ON HIGH-EXPOSURE BG PLATES',project:'CRL', assignedTo:'RUBEN RODAS',      pri:'MED',      date:'TODAY',     done:true  },
+  { id:'tk05', title:'MVK FINAL DELIVERY SIGN-OFF',         desc:'CLIENT APPROVAL NEEDED',         project:'MVK', assignedTo:'KATHERINE SOARES', pri:'CRITICAL', date:'TODAY',     done:true  },
+  { id:'tk06', title:'SLR LIGHTING REVIEW — SC01',          desc:'RIM LIGHT TOO HOT ON FACES',    project:'SLR', assignedTo:'JAKE MORROW',      pri:'MED',      date:'TODAY',     done:false },
+  { id:'tk07', title:'PIPELINE: NUKE WRITE NODE AUDIT',    desc:'CHECK RENDER PATHS ON ALL JOBS', project:'ADMIN',assignedTo:'DANA CHEN',       pri:'MED',      date:'TODAY',     done:false },
+  // TOMORROW
+  { id:'tk08', title:'SHOTGRID CSV EXPORT — INT',           desc:'MANUAL PULL WORKAROUND',         project:'INT', assignedTo:'DANA CHEN',        pri:'LOW',      date:'TOMORROW',  done:false },
+  { id:'tk09', title:'INT_0034 ROTO PASS',                  desc:'HAIR + SHOULDER SEPARATION',     project:'INT', assignedTo:'TOM KWAN',         pri:'HIGH',     date:'TOMORROW',  done:false },
+  { id:'tk10', title:'CRL_0080 ANIM SIGN-OFF',              desc:'HERO WALK CYCLE FINAL',          project:'CRL', assignedTo:'MARCUS BELL',      pri:'MED',      date:'TOMORROW',  done:false },
+  { id:'tk11', title:'SLR ASSET REVIEW — FX_SOLAR',        desc:'CLIENT WANTS SOFTER BLOOM',      project:'SLR', assignedTo:'ANA LIMA',         pri:'HIGH',     date:'TOMORROW',  done:false },
+  { id:'tk12', title:'ONBOARD PRIYA: ROTO BRIEF FOR INT',  desc:'SEND PLATE PACKAGE',             project:'INT', assignedTo:'RUBEN RODAS',      pri:'LOW',      date:'TOMORROW',  done:false },
+  // THIS WEEK
+  { id:'tk13', title:'MAKE.COM: CIRCLEBACK→LINEAR AUTO',   desc:'TIER 1 AUTOMATION BUILDOUT',     project:'ADMIN',assignedTo:'UNASSIGNED',      pri:'HIGH',     date:'THIS WEEK', done:false },
+  { id:'tk14', title:'CRL COMP PASS — SH_0150 ANIM LOCK',  desc:'WAIT FOR ANIM SIGN-OFF FIRST',   project:'CRL', assignedTo:'LEO VARGAS',       pri:'MED',      date:'THIS WEEK', done:false },
+  { id:'tk15', title:'INT_0010–0030 FULL COMP PUSH',        desc:'3 SHOTS DUE END OF WEEK',        project:'INT', assignedTo:'MARCUS BELL',      pri:'HIGH',     date:'THIS WEEK', done:false },
+  { id:'tk16', title:'SLR FULL SEQUENCE REVIEW PREP',       desc:'ASSEMBLE ALL WIP SHOTS',         project:'SLR', assignedTo:'PRIYA NAIR',       pri:'MED',      date:'THIS WEEK', done:false },
+  { id:'tk17', title:'PIPELINE: PYTHON CACHE TOOL REDESIGN',desc:'PYSIDE6 UI OVERHAUL',            project:'ADMIN',assignedTo:'DANA CHEN',       pri:'MED',      date:'THIS WEEK', done:false },
+  { id:'tk18', title:'SAM: FX BRIEFING FOR CRL SC03',       desc:'CROWD SIM SCOPE DISCUSSION',    project:'CRL', assignedTo:'SAM PARK',         pri:'LOW',      date:'THIS WEEK', done:false },
+];
+
+// ─── PERSISTENCE ──────────────────────────────────────────────────────────────
+const load = (key, seed) => { try { return JSON.parse(localStorage.getItem(key)) || seed; } catch { return seed; } };
+const save = (key, val)  => localStorage.setItem(key, JSON.stringify(val));
+const uid  = () => Math.random().toString(36).slice(2);
+
+// ─── UTILS ────────────────────────────────────────────────────────────────────
+const triggerHaptic = () => { try { if (window.Capacitor?.Plugins?.Haptics) window.Capacitor.Plugins.Haptics.impact({ style: 'HEAVY' }); } catch {} };
+
+const notify = (setter, msg) => { setter(msg); setTimeout(() => setter(null), 3000); };
+
+// ─── CLAUDE API ───────────────────────────────────────────────────────────────
+async function callClaude(prompt) {
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 1000,
+      messages: [{ role: 'user', content: prompt }],
+    }),
+  });
+  if (!res.ok) throw new Error(`API ${res.status}`);
+  const data = await res.json();
+  return data.content?.find(b => b.type === 'text')?.text || 'SIGNAL LOST.';
 }
+
+async function parseVoiceIntent(transcript, shows) {
+  const raw = await callClaude(`Parse this VFX voice command into JSON only. No markdown, no backticks.
+Schema: {"action":"ADD_TASK|NAV","page":"hub|tasks|shows|ops|intel","title":"","project":"","assignedTo":"UNASSIGNED","pri":"LOW|MED|HIGH|CRITICAL","date":"TODAY|TOMORROW|THIS WEEK"}
+Defaults: action=ADD_TASK, pri=MED, date=TODAY, assignedTo=UNASSIGNED
+Active shows: ${shows.map(s => s.code).join(', ')}
+Input: "${transcript}"`);
+  return JSON.parse(raw.trim());
+}
+
+// ─── GLOBAL CSS ───────────────────────────────────────────────────────────────
+
 
 // ─── ICON SVGs (no lucide dependency) ────────────────────────────────────────
 const Icon = ({ d, d2, size = 16, stroke = 'currentColor' }) => (
@@ -679,21 +676,10 @@ function TeamPage({ team, setTeam, tasks, selectedOp, setSelectedOp }) {
 
 // ─── PAGE: INTEL ───────────────────────────────────────────────────────
 const INTEL_WF = [
-  { id:'brief',    label:'Tactical Brief',  Icon: Icons.Zap,     buildPrompt:(t,s) => `You are VTEK INTEL, tactical AI for CBFX VFX production. Terse, ALL CAPS key terms, no markdown, max 200 words.
-
-SHOWS: ${JSON.stringify(s.map(x=>({code:x.code,pct:x.progress+'%'})))}
-TODAY PENDING: ${JSON.stringify(t.filter(x=>!x.done&&x.date==='TODAY').map(x=>({title:x.title,pri:x.pri})))}` },
-  { id:'risk',     label:'Risks & Bloat',   Icon: Icons.Shield,  buildPrompt:(t,s) => `You are VTEK INTEL. Identify production risks and blockers. Surgical. ALL CAPS. Max 200 words.
-
-CRITICAL: ${JSON.stringify(t.filter(x=>!x.done&&x.pri==='CRITICAL').map(x=>x.title))}
-HIGH: ${JSON.stringify(t.filter(x=>!x.done&&x.pri==='HIGH').map(x=>x.title))}` },
-  { id:'draft',    label:'Status Report',   Icon: Icons.File,    buildPrompt:(t,s) => `You are VTEK INTEL. Write a concise client-facing VFX production status report. Professional. Max 250 words.
-
-SHOWS: ${JSON.stringify(s)}
-PENDING: ${t.filter(x=>!x.done).length} tasks` },
-  { id:'schedule', label:'Priority Engine', Icon: Icons.TrendUp, buildPrompt:(t)   => `You are VTEK INTEL. Recommend optimal task execution order for today. Specific. ALL CAPS key terms. Max 200 words.
-
-PENDING: ${JSON.stringify(t.filter(x=>!x.done).map(x=>({title:x.title,pri:x.pri,dur:x.dur,date:x.date})))}` },
+  { id:'brief',    label:'Tactical Brief',  Icon: Icons.Zap,     buildPrompt:(t,s) => `You are VTEK INTEL, tactical AI for CBFX VFX production. Terse, ALL CAPS key terms, no markdown, max 200 words.\n\nSHOWS: ${JSON.stringify(s.map(x=>({code:x.code,pct:x.progress+'%'})))}\nTODAY PENDING: ${JSON.stringify(t.filter(x=>!x.done&&x.date==='TODAY').map(x=>({title:x.title,pri:x.pri})))}` },
+  { id:'risk',     label:'Risks & Bloat',   Icon: Icons.Shield,  buildPrompt:(t,s) => `You are VTEK INTEL. Identify production risks and blockers. Surgical. ALL CAPS. Max 200 words.\n\nCRITICAL: ${JSON.stringify(t.filter(x=>!x.done&&x.pri==='CRITICAL').map(x=>x.title))}\nHIGH: ${JSON.stringify(t.filter(x=>!x.done&&x.pri==='HIGH').map(x=>x.title))}` },
+  { id:'draft',    label:'Status Report',   Icon: Icons.File,    buildPrompt:(t,s) => `You are VTEK INTEL. Write a concise client-facing VFX production status report. Professional. Max 250 words.\n\nSHOWS: ${JSON.stringify(s)}\nPENDING: ${t.filter(x=>!x.done).length} tasks` },
+  { id:'schedule', label:'Priority Engine', Icon: Icons.TrendUp, buildPrompt:(t)   => `You are VTEK INTEL. Recommend optimal task execution order for today. Specific. ALL CAPS key terms. Max 200 words.\n\nPENDING: ${JSON.stringify(t.filter(x=>!x.done).map(x=>({title:x.title,pri:x.pri,dur:x.dur,date:x.date})))}` },
 ];
 
 function IntelPage({ shows, tasks }) {
@@ -711,9 +697,7 @@ function IntelPage({ shows, tasks }) {
   const runQuery = async () => {
     if (!query.trim()) return;
     setProcessing(true); setStream('');
-    try { setStream(await callClaude(`VTEK INTEL — tactical AI for CBFX VFX production. Terse, ALL CAPS key terms, no markdown.
-
-QUERY: ${query}`)); }
+    try { setStream(await callClaude(`VTEK INTEL — tactical AI for CBFX VFX production. Terse, ALL CAPS key terms, no markdown.\n\nQUERY: ${query}`)); }
     catch { setStream('SIGNAL LOST.'); }
     setProcessing(false);
     setQuery('');
@@ -1096,8 +1080,6 @@ export default function App() {
 
   return (
     <div className="vtek-app-shell">
-      <GlobalCSS />
-
       {notification && <div className="toast-popup">{notification}</div>}
 
       {/* HEADER */}
@@ -1184,6 +1166,7 @@ export default function App() {
     </div>
   );
 }
+
 ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App));
   </script>
 </body>
