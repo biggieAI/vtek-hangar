@@ -265,7 +265,7 @@ const APP_VERSION = 'HGR-086';
 const LS = {
   tasks: 'vtek_tasks_v4',
   shows: 'vtek_shows_v4',
-  team:  'vtek_team_v4',
+  team:  'vtek_team_v5',
   shots: 'vtek_shots_v4',
 };
 
@@ -328,17 +328,20 @@ const SEED_SHOTS = [
   { id:'sq42', code:'FX_SOLAR', status:'FX',    health:42,  type:'ASSET', projectRef:'SLR' },
 ];
 
+const INITIAL_COLORS = ['#7c3aed','#e85d4a','#d4a017','#2a9d8f','#4a90d9','#c45ab3','#3d9970','#e76f51'];
+const memberColor = (id) => INITIAL_COLORS[parseInt(id.replace(/\D/g,''),36) % INITIAL_COLORS.length];
+
 const SEED_TEAM = [
-  { id:'tm1', name:'KATHERINE SOARES', role:'COMP',  status:'ONLINE',  signal:97 },
-  { id:'tm2', name:'RUBEN RODAS',      role:'COMP',  status:'ONLINE',  signal:91 },
-  { id:'tm3', name:'JAKE MORROW',      role:'LIGHT', status:'ONLINE',  signal:88 },
-  { id:'tm4', name:'ANA LIMA',         role:'FX',    status:'DND',     signal:76 },
-  { id:'tm5', name:'TOM KWAN',         role:'TD',    status:'ONLINE',  signal:82 },
-  { id:'tm6', name:'DANA CHEN',        role:'TD',    status:'OFFLINE', signal:0  },
-  { id:'tm7', name:'MARCUS BELL',      role:'COMP',  status:'ONLINE',  signal:94 },
-  { id:'tm8', name:'PRIYA NAIR',       role:'ROTO',  status:'ONLINE',  signal:85 },
-  { id:'tm9', name:'LEO VARGAS',       role:'COMP',  status:'DND',     signal:71 },
-  { id:'tma', name:'SAM PARK',         role:'FX',    status:'ONLINE',  signal:89 },
+  { id:'tm1', group:'STAFF',     name:'KATHERINE SOARES', role:'COMP',  status:'ONLINE',  signal:97, email:'k.soares@cbfx.com',   phone:'+1 310 555 0101', rate:'', rateType:'salary',  timezone:'PST', avail:'', strengths:'COMP LEAD, COLOR, STEREO', weaknesses:'FX SIMS',     nda:true,  credit:'Katherine Soares', linkedin:'linkedin.com/in/ksoares', notes:'Senior sup. First call for client reviews.' },
+  { id:'tm2', group:'STAFF',     name:'RUBEN RODAS',      role:'COMP',  status:'ONLINE',  signal:91, email:'r.rodas@cbfx.com',     phone:'+1 213 555 0184', rate:'', rateType:'salary',  timezone:'PST', avail:'', strengths:'NUKE, PIPELINE, KEYING',   weaknesses:'3D ANIM',     nda:true,  credit:'Ruben Rodas',      linkedin:'',                        notes:'Pipeline tools dev. Go-to for Nuke gizmos.' },
+  { id:'tm3', group:'STAFF',     name:'JAKE MORROW',      role:'LIGHT', status:'ONLINE',  signal:88, email:'j.morrow@cbfx.com',    phone:'+1 310 555 0172', rate:'', rateType:'salary',  timezone:'PST', avail:'', strengths:'LIGHTING, LOOK DEV',       weaknesses:'ROTO',        nda:true,  credit:'Jake Morrow',      linkedin:'',                        notes:'Strong eye for naturalistic lighting.' },
+  { id:'tm4', group:'STAFF',     name:'DANA CHEN',        role:'TD',    status:'OFFLINE', signal:0,  email:'d.chen@cbfx.com',      phone:'+1 323 555 0199', rate:'', rateType:'salary',  timezone:'PST', avail:'', strengths:'PYTHON, PIPELINE',         weaknesses:'COMP',        nda:true,  credit:'Dana Chen',        linkedin:'',                        notes:'On leave until May 12.' },
+  { id:'tm5', group:'FREELANCE', name:'ANA LIMA',         role:'FX',    status:'DND',     signal:76, email:'ana.lima.fx@gmail.com', phone:'+1 424 555 0133', rate:'850', rateType:'day',  timezone:'EST', avail:'AVAILABLE NOW', strengths:'HOUDINI, PYRO, FLIP',   weaknesses:'COMP',        nda:true,  credit:'Ana Lima',         linkedin:'linkedin.com/in/analimafx', notes:'Best Houdini FX freelancer in rotation. Book early.' },
+  { id:'tm6', group:'FREELANCE', name:'TOM KWAN',         role:'TD',    status:'ONLINE',  signal:82, email:'tomkwan.td@icloud.com', phone:'+1 310 555 0156', rate:'750', rateType:'day',  timezone:'PST', avail:'AVAILABLE NOW', strengths:'ROTO, PAINT, TRACKING',  weaknesses:'LIGHTING',    nda:false, credit:'Tom Kwan',         linkedin:'',                        notes:'Reliable roto. Needs clear briefs.' },
+  { id:'tm7', group:'FREELANCE', name:'MARCUS BELL',      role:'COMP',  status:'ONLINE',  signal:94, email:'mbell.comp@me.com',    phone:'+44 7700 900456', rate:'900', rateType:'day',  timezone:'GMT', avail:'FROM MAY 20',   strengths:'COMP, BEAUTY, CG INTEG', weaknesses:'STEREO',      nda:true,  credit:'Marcus Bell',      linkedin:'linkedin.com/in/marcusbell', notes:'UK-based. Great for overnight turnarounds.' },
+  { id:'tm8', group:'FREELANCE', name:'PRIYA NAIR',       role:'ROTO',  status:'ONLINE',  signal:85, email:'priya.nair.vfx@gmail.com',phone:'+91 98765 43210','rate':'400', rateType:'day', timezone:'IST', avail:'AVAILABLE NOW', strengths:'ROTO, PAINT',            weaknesses:'COMP, FX',    nda:false, credit:'Priya Nair',       linkedin:'',                        notes:'Remote. Fast turnaround. Good for high volume roto.' },
+  { id:'tm9', group:'FREELANCE', name:'LEO VARGAS',       role:'COMP',  status:'DND',     signal:71, email:'leo.v.comp@gmail.com', phone:'+1 747 555 0188', rate:'800', rateType:'day',  timezone:'PST', avail:'FROM JUN 1',    strengths:'COMP, MOTION GFX',       weaknesses:'HEAVY CG',    nda:false, credit:'Leo Vargas',       linkedin:'linkedin.com/in/leovargas', notes:'Currently on another show. Check in June.' },
+  { id:'tma', group:'FREELANCE', name:'SAM PARK',         role:'FX',    status:'ONLINE',  signal:89, email:'sam.park.fx@proton.me',phone:'+1 626 555 0177', rate:'875', rateType:'day',  timezone:'PST', avail:'AVAILABLE NOW', strengths:'FX, CROWDS, DESTRUCTION','weaknesses':'PAINT',     nda:true,  credit:'Sam Park',         linkedin:'',                        notes:'Crowd sims are exceptional. Good culture fit.' },
 ];
 
 const SEED_TASKS = [
@@ -718,7 +721,111 @@ function TasksPage({ tasks, setTasks, openWizard }) {
 }
 
 // ─── PAGE: TEAM ───────────────────────────────────────────────────────
-function TeamPage({ team, setTeam, tasks, selectedOp, setSelectedOp }) {
+// ─── TEAM PROFILE HELPERS ────────────────────────────────────────────────────
+const ProfileRow = ({ label, value, accent }) => value ? (
+  <div style={{ display:'flex', flexDirection:'column', gap:3, paddingBottom:12, borderBottom:'1px solid rgba(255,255,255,0.04)' }}>
+    <div style={{ fontSize:7, fontWeight:900, letterSpacing:'0.35em', color:'rgba(255,255,255,0.2)', textTransform:'uppercase' }}>{label}</div>
+    <div style={{ fontSize:11, color: accent || 'rgba(255,255,255,0.75)', fontWeight:400, textTransform:'none', wordBreak:'break-all' }}>{value}</div>
+  </div>
+) : null;
+
+function MemberProfile({ member, tasks, onBack, onEdit, onRemove }) {
+  const assigned = tasks.filter(t => t.assignedTo === member.name && !t.done);
+  const color = memberColor(member.id);
+  const initials = member.name.split(' ').map(w=>w[0]).join('').substring(0,2);
+
+  return (
+    <div className="page-in" style={{ display:'flex', flexDirection:'column', gap:0 }}>
+      {/* Back + actions bar */}
+      <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:20 }}>
+        <button onClick={onBack} style={{ display:'flex', alignItems:'center', gap:8, color:'rgba(255,255,255,0.3)', fontSize:10, letterSpacing:'0.15em' }}>
+          <Icons.Back size={16} /> BACK
+        </button>
+        <div style={{ display:'flex', gap:10 }}>
+          <button onClick={onEdit} style={{ fontSize:8, fontWeight:900, letterSpacing:'0.25em', padding:'6px 14px', borderRadius:6, background:'rgba(124,58,237,0.15)', border:'1px solid rgba(124,58,237,0.4)', color:'#7c3aed' }}>EDIT</button>
+          <button onClick={onRemove} style={{ fontSize:8, fontWeight:900, letterSpacing:'0.25em', padding:'6px 14px', borderRadius:6, background:'rgba(255,59,59,0.08)', border:'1px solid rgba(255,59,59,0.3)', color:'#ff3b3b' }}>REMOVE</button>
+        </div>
+      </div>
+
+      {/* Avatar + headline */}
+      <div className="vtek-card nm-raised" style={{ padding:20, display:'flex', alignItems:'center', gap:18, marginBottom:16 }}>
+        <div style={{ width:64, height:64, borderRadius:12, background:`${color}22`, border:`2px solid ${color}66`, display:'flex', alignItems:'center', justifyContent:'center', fontSize:20, fontWeight:900, color, flexShrink:0 }}>
+          {initials}
+        </div>
+        <div style={{ flex:1, minWidth:0 }}>
+          <div style={{ fontSize:16, fontWeight:900, color:'#fff', marginBottom:4 }}>{member.name}</div>
+          <div style={{ display:'flex', gap:8, flexWrap:'wrap', alignItems:'center' }}>
+            <span style={{ fontSize:8, fontWeight:900, padding:'2px 8px', borderRadius:4, background:`${color}22`, border:`1px solid ${color}44`, color, letterSpacing:'0.2em' }}>{member.role}</span>
+            <span style={{ fontSize:8, fontWeight:900, padding:'2px 8px', borderRadius:4, background:'rgba(255,255,255,0.05)', border:'1px solid rgba(255,255,255,0.1)', color:'rgba(255,255,255,0.4)', letterSpacing:'0.2em' }}>{member.group}</span>
+            {member.nda && <span style={{ fontSize:7, padding:'2px 6px', borderRadius:4, background:'rgba(52,211,153,0.1)', border:'1px solid rgba(52,211,153,0.3)', color:'#34d399', letterSpacing:'0.15em' }}>NDA ✓</span>}
+          </div>
+        </div>
+        <StatusDot status={member.status} size={10} />
+      </div>
+
+      {/* Contact */}
+      <div className="vtek-card no-border nm-raised" style={{ padding:'16px 18px', marginBottom:12, display:'flex', flexDirection:'column', gap:12 }}>
+        <div style={{ fontSize:8, fontWeight:900, letterSpacing:'0.35em', color:'rgba(255,255,255,0.2)', textTransform:'uppercase', marginBottom:4 }}>Contact</div>
+        {member.email && (
+          <a href={`mailto:${member.email}`} style={{ display:'flex', gap:12, alignItems:'center', textDecoration:'none' }}>
+            <span style={{ fontSize:9, color:'rgba(255,255,255,0.2)', letterSpacing:'0.2em' }}>EMAIL</span>
+            <span style={{ fontSize:11, color:'#7c3aed', fontWeight:400, textTransform:'none' }}>{member.email}</span>
+          </a>
+        )}
+        {member.phone && (
+          <a href={`tel:${member.phone}`} style={{ display:'flex', gap:12, alignItems:'center', textDecoration:'none' }}>
+            <span style={{ fontSize:9, color:'rgba(255,255,255,0.2)', letterSpacing:'0.2em' }}>PHONE</span>
+            <span style={{ fontSize:11, color:'#7c3aed', fontWeight:400, textTransform:'none' }}>{member.phone}</span>
+          </a>
+        )}
+        {member.linkedin && (
+          <a href={`https://${member.linkedin}`} target="_blank" rel="noreferrer" style={{ display:'flex', gap:12, alignItems:'center', textDecoration:'none' }}>
+            <span style={{ fontSize:9, color:'rgba(255,255,255,0.2)', letterSpacing:'0.2em' }}>WEB</span>
+            <span style={{ fontSize:11, color:'#7c3aed', fontWeight:400, textTransform:'none' }}>{member.linkedin}</span>
+          </a>
+        )}
+      </div>
+
+      {/* Details grid */}
+      <div className="vtek-card no-border nm-raised" style={{ padding:'16px 18px', marginBottom:12, display:'flex', flexDirection:'column', gap:12 }}>
+        <div style={{ fontSize:8, fontWeight:900, letterSpacing:'0.35em', color:'rgba(255,255,255,0.2)', textTransform:'uppercase', marginBottom:4 }}>Details</div>
+        <ProfileRow label="Timezone" value={member.timezone} />
+        <ProfileRow label="Availability" value={member.avail} accent="#34d399" />
+        {member.group === 'FREELANCE' && member.rate && (
+          <ProfileRow label={`Rate (${member.rateType === 'day' ? 'Day Rate' : 'Project Rate'})`} value={`$${member.rate} / ${member.rateType === 'day' ? 'day' : 'project'}`} accent="#ff9d00" />
+        )}
+        <ProfileRow label="Credit As" value={member.credit} />
+        <ProfileRow label="Strengths" value={member.strengths} accent="#34d399" />
+        <ProfileRow label="Weaknesses" value={member.weaknesses} accent="#ff9d00" />
+        {member.notes && (
+          <div style={{ display:'flex', flexDirection:'column', gap:3 }}>
+            <div style={{ fontSize:7, fontWeight:900, letterSpacing:'0.35em', color:'rgba(255,255,255,0.2)', textTransform:'uppercase' }}>Notes</div>
+            <div style={{ fontSize:11, color:'rgba(255,255,255,0.6)', fontWeight:400, textTransform:'none', lineHeight:1.6 }}>{member.notes}</div>
+          </div>
+        )}
+      </div>
+
+      {/* Assigned tasks */}
+      {assigned.length > 0 && (
+        <>
+          <div style={{ fontSize:8, fontWeight:900, letterSpacing:'0.35em', color:'rgba(255,255,255,0.2)', textTransform:'uppercase', marginBottom:10 }}>Active Tasks ({assigned.length})</div>
+          <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+            {assigned.map(t => (
+              <div key={t.id} className="vtek-card red-border nm-raised" style={{ padding:'12px 14px' }}>
+                <div style={{ fontSize:11, color:'#fff', fontWeight:900 }}>{t.title}</div>
+                <div style={{ fontSize:7, color:'rgba(255,255,255,0.35)', marginTop:4 }}>{t.project} // {t.pri}</div>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+      <div style={{ height:16 }} />
+    </div>
+  );
+}
+
+// ─── PAGE: TEAM ───────────────────────────────────────────────────────────────
+function TeamPage({ team, setTeam, tasks, selectedOp, setSelectedOp, openEditWizard }) {
   const removeTeamMember = (id) => {
     setTeam(prev => prev.filter(m => m.id !== id));
     setSelectedOp(null);
@@ -726,63 +833,70 @@ function TeamPage({ team, setTeam, tasks, selectedOp, setSelectedOp }) {
   };
 
   if (selectedOp) {
-    const assigned = tasks.filter(t => t.assignedTo === selectedOp.name && !t.done);
     return (
-      <div className="page-in" style={{ display:'flex', flexDirection:'column', gap:20 }}>
-        <button onClick={() => setSelectedOp(null)} style={{ display:'flex', alignItems:'center', gap:8, color:'rgba(255,255,255,0.3)', fontSize:10, letterSpacing:'0.15em', alignSelf:'flex-start' }}>
-          <Icons.Back size={16} /> BACK TO TEAM
-        </button>
-
-        {/* Team member card */}
-        <div className="vtek-card nm-raised" style={{ padding:24, display:'flex', alignItems:'center', gap:20 }}>
-          <div className="nm-inset-tight" style={{ width:64, height:64, borderRadius:8, background:'#1c1f24', display:'flex', alignItems:'center', justifyContent:'center', color:'#7c3aed', fontSize:22, fontWeight:900, flexShrink:0 }}>
-            {selectedOp.name.substring(0,2)}
-          </div>
-          <div style={{ flexGrow:1 }}>
-            <h3 style={{ fontSize:18, color:'#fff', fontWeight:900 }}>{selectedOp.name}</h3>
-            <p style={{ fontSize:8, color:'#7c3aed', letterSpacing:'0.2em', marginTop:4 }}>{selectedOp.role} // {selectedOp.signal}% SIGNAL</p>
-          </div>
-          <StatusDot status={selectedOp.status} size={12} />
-        </div>
-
-        <PageHeader title="Assigned Tasks" tag="Active Queue" />
-
-        <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
-          {assigned.map(t => (
-            <div key={t.id} className="vtek-card red-border nm-raised" style={{ padding:16 }}>
-              <div style={{ fontSize:11, color:'#fff', fontWeight:900 }}>{t.title}</div>
-              <div style={{ fontSize:7, color:'rgba(255,255,255,0.4)', marginTop:4 }}>{t.desc}</div>
-            </div>
-          ))}
-          {assigned.length === 0 && <div style={{ padding:40, textAlign:'center', fontSize:8, opacity:0.2, letterSpacing:'0.3em' }}>NO OPERATIONS ASSIGNED</div>}
-        </div>
-
-        <div style={{ paddingTop:24, display:'flex', justifyContent:'center' }}>
-          <button onClick={() => removeTeamMember(selectedOp.id)} style={{ border:'1px solid #ff3b3b', color:'#ff3b3b', fontSize:8, padding:'8px 24px', borderRadius:6, letterSpacing:'0.2em', transition:'all .2s' }}>
-            REMOVE FROM TEAM
-          </button>
-        </div>
+      <div className="page-in">
+        <MemberProfile
+          member={selectedOp}
+          tasks={tasks}
+          onBack={() => setSelectedOp(null)}
+          onEdit={() => openEditWizard(selectedOp)}
+          onRemove={() => removeTeamMember(selectedOp.id)}
+        />
       </div>
     );
   }
 
+  const staff     = team.filter(m => m.group === 'STAFF');
+  const freelance = team.filter(m => m.group === 'FREELANCE');
+
+  const MemberCard = ({ m }) => {
+    const color = memberColor(m.id);
+    const initials = m.name.split(' ').map(w=>w[0]).join('').substring(0,2);
+    return (
+      <button onClick={() => { setSelectedOp(m); triggerHaptic(); }} className="vtek-card nm-raised"
+        style={{ padding:'14px 16px', display:'flex', alignItems:'center', gap:14, width:'100%', textAlign:'left' }}>
+        <div style={{ width:40, height:40, borderRadius:8, background:`${color}22`, border:`1px solid ${color}44`, display:'flex', alignItems:'center', justifyContent:'center', fontSize:12, fontWeight:900, color, flexShrink:0 }}>
+          {initials}
+        </div>
+        <div style={{ flex:1, minWidth:0 }}>
+          <div style={{ fontSize:11, color:'#fff', fontWeight:900, marginBottom:3 }}>{m.name}</div>
+          <div style={{ fontSize:7, color:'rgba(255,255,255,0.28)', letterSpacing:'0.15em' }}>{m.role}{m.group==='FREELANCE'&&m.rate ? ` // $${m.rate}/day` : ''}</div>
+        </div>
+        {m.group === 'FREELANCE' && m.avail && (
+          <div style={{ fontSize:6, padding:'2px 6px', borderRadius:4, background:'rgba(52,211,153,0.1)', border:'1px solid rgba(52,211,153,0.25)', color:'#34d399', letterSpacing:'0.15em', textTransform:'uppercase', flexShrink:0, maxWidth:70, textAlign:'center' }}>
+            {m.avail.replace('AVAILABLE NOW','AVAIL').replace('FROM ','FROM\n')}
+          </div>
+        )}
+        <StatusDot status={m.status} />
+      </button>
+    );
+  };
+
   return (
     <div className="page-in" style={{ display:'flex', flexDirection:'column', gap:20 }}>
-      <PageHeader title="Team" tag="Team Members" />
-      <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
-        {team.map(m => (
-          <button key={m.id} onClick={() => { setSelectedOp(m); triggerHaptic(); }} className="vtek-card nm-raised" style={{ padding:16, display:'flex', alignItems:'center', gap:16, width:'100%', textAlign:'left' }}>
-            <div className="nm-inset-tight" style={{ width:40, height:40, borderRadius:8, background:'#1c1f24', display:'flex', alignItems:'center', justifyContent:'center', color:'#7c3aed', fontSize:11, fontWeight:900, flexShrink:0 }}>
-              {m.name.substring(0,2)}
-            </div>
-            <div style={{ flexGrow:1 }}>
-              <div style={{ fontSize:11, color:'#fff', fontWeight:900 }}>{m.name}</div>
-              <div style={{ fontSize:7, color:'rgba(255,255,255,0.3)', marginTop:4, letterSpacing:'0.1em' }}>{m.role}</div>
-            </div>
-            <StatusDot status={m.status} />
-          </button>
-        ))}
-      </div>
+      <PageHeader title="Team" tag={`${team.length} Members`} />
+
+      {staff.length > 0 && (
+        <div>
+          <div style={{ fontSize:8, fontWeight:900, letterSpacing:'0.4em', color:'rgba(255,255,255,0.2)', textTransform:'uppercase', marginBottom:10, paddingBottom:6, borderBottom:'1px solid rgba(255,255,255,0.05)' }}>
+            Staff — {staff.length}
+          </div>
+          <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+            {staff.map(m => <MemberCard key={m.id} m={m} />)}
+          </div>
+        </div>
+      )}
+
+      {freelance.length > 0 && (
+        <div>
+          <div style={{ fontSize:8, fontWeight:900, letterSpacing:'0.4em', color:'rgba(255,255,255,0.2)', textTransform:'uppercase', marginBottom:10, paddingBottom:6, borderBottom:'1px solid rgba(255,255,255,0.05)' }}>
+            Freelance — {freelance.length}
+          </div>
+          <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+            {freelance.map(m => <MemberCard key={m.id} m={m} />)}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -902,9 +1016,32 @@ function Wizard({ wizard, setWizard, shows, team, onCommit }) {
     member: {
       title: 'Add Team Member',
       steps: [
-        { key:'name',   q:'Full Name',   type:'text',  placeholder:'E.G. ALEX REED' },
-        { key:'role',   q:'Discipline',  type:'chips', options:['COMP','FX','TD','DIR','LIGHT'] },
-        { key:'status', q:'Status',   type:'chips', options:['ONLINE','OFFLINE','DND'] },
+        { key:'group',     q:'Personnel Type',  type:'chips', options:['STAFF','FREELANCE'] },
+        { key:'name',      q:'Full Name',        type:'text',  placeholder:'E.G. ALEX REED' },
+        { key:'role',      q:'Discipline',       type:'chips', options:['COMP','FX','TD','DIR','LIGHT','ROTO','ANIM','3D'] },
+        { key:'status',    q:'Status',           type:'chips', options:['ONLINE','OFFLINE','DND'] },
+        { key:'email',     q:'Email',            type:'text',  placeholder:'NAME@STUDIO.COM' },
+        { key:'phone',     q:'Phone',            type:'text',  placeholder:'+1 310 555 0000' },
+        { key:'timezone',  q:'Timezone',         type:'chips', options:['PST','EST','GMT','CET','IST','JST','AEST'] },
+        { key:'rate',      q:'Day Rate (USD)',   type:'text',  placeholder:'E.G. 800' },
+        { key:'avail',     q:'Availability',     type:'chips', options:['AVAILABLE NOW','FROM NEXT WEEK','BUSY — CHECK BACK','ON HOLD'] },
+        { key:'strengths', q:'Strengths',        type:'text',  placeholder:'E.G. NUKE, KEYING, COMP' },
+        { key:'weaknesses',q:'Growth Areas',     type:'text',  placeholder:'E.G. FX SIMS' },
+        { key:'linkedin',  q:'LinkedIn / Web',   type:'text',  placeholder:'LINKEDIN.COM/IN/...' },
+        { key:'notes',     q:'Notes',            type:'text',  placeholder:'ANYTHING WORTH KNOWING...' },
+      ],
+    },
+    editMember: {
+      title: 'Edit Profile',
+      steps: [
+        { key:'status',    q:'Status',           type:'chips', options:['ONLINE','OFFLINE','DND'] },
+        { key:'avail',     q:'Availability',     type:'chips', options:['AVAILABLE NOW','FROM NEXT WEEK','BUSY — CHECK BACK','ON HOLD'] },
+        { key:'rate',      q:'Day Rate (USD)',   type:'text',  placeholder:'E.G. 800' },
+        { key:'email',     q:'Email',            type:'text',  placeholder:'NAME@STUDIO.COM' },
+        { key:'phone',     q:'Phone',            type:'text',  placeholder:'+1 310 555 0000' },
+        { key:'strengths', q:'Strengths',        type:'text',  placeholder:'E.G. NUKE, KEYING, COMP' },
+        { key:'weaknesses',q:'Growth Areas',     type:'text',  placeholder:'E.G. FX SIMS' },
+        { key:'notes',     q:'Notes',            type:'text',  placeholder:'ANYTHING WORTH KNOWING...' },
       ],
     },
   }), [shows, team]);
@@ -1230,7 +1367,10 @@ function App() {
     } else if (type === 'shot') {
       setShots(prev => [...prev, { id:uid(), ...data, health:50, projectRef: selectedShow?.code || 'GENERAL' }]);
     } else if (type === 'member') {
-      setTeam(prev => [...prev, { id:uid(), ...data, signal: Math.floor(Math.random()*40)+60 }]);
+      setTeam(prev => [...prev, { id:uid(), signal:85, rateType:'day', nda:false, credit:'', ...data }]);
+    } else if (type === 'editMember') {
+      setTeam(prev => prev.map(m => m.id === data._editId ? { ...m, ...data } : m));
+      setSelectedOp(prev => prev ? { ...prev, ...data } : prev);
     }
     notify(setNotification, `${type.toUpperCase()} COMMITTED`);
     triggerHaptic();
@@ -1246,7 +1386,10 @@ function App() {
     }
   };
 
-  const navigateTo = (id) => {
+  const openEditWizard = (member) => {
+    setWizard({ isOpen:true, type:'editMember', step:0, data:{ _editId: member.id, ...member } });
+    triggerHaptic();
+  };
     setActivePage(id);
     setSelectedShow(null);
     setSelectedOp(null);
@@ -1311,7 +1454,7 @@ function App() {
         {activePage === 'hub'   && <HangarPage   tasks={tasks} shows={shows} openWizard={handlePlus} />}
         {activePage === 'shows' && <ShowsPage     shows={shows} shots={shots} selectedShow={selectedShow} setSelectedShow={setSelectedShow} matrixFilter={matrixFilter} setMatrixFilter={setMatrixFilter} openWizard={handlePlus} />}
         {activePage === 'tasks' && <TasksPage     tasks={tasks} setTasks={setTasks} openWizard={handlePlus} />}
-        {activePage === 'ops'   && <TeamPage      team={team} setTeam={setTeam} tasks={tasks} selectedOp={selectedOp} setSelectedOp={setSelectedOp} />}
+        {activePage === 'ops'   && <TeamPage      team={team} setTeam={setTeam} tasks={tasks} selectedOp={selectedOp} setSelectedOp={setSelectedOp} openEditWizard={openEditWizard} />}
         {activePage === 'intel' && <IntelPage     shows={shows} tasks={tasks} />}
       </main>
 
