@@ -1390,6 +1390,8 @@ function App() {
     setWizard({ isOpen:true, type:'editMember', step:0, data:{ _editId: member.id, ...member } });
     triggerHaptic();
   };
+
+  const navigateTo = (id) => {
     setActivePage(id);
     setSelectedShow(null);
     setSelectedOp(null);
