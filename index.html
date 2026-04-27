@@ -240,7 +240,18 @@
 
       @keyframes vtek-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
       .spin { animation: vtek-spin 0.5s cubic-bezier(0.4,0,0.2,1) forwards; }
-      @keyframes wiz-enter { from { opacity:0; transform:translateX(28px) scale(0.97); } to { opacity:1; transform:translateX(0) scale(1); } }
+      @keyframes vtek-breath {
+        0%,100% { opacity: 0.3; transform: scale(0.92); }
+        50%      { opacity: 0.9; transform: scale(1.08); }
+      }
+      /* Focus mode full-screen escape */
+      .focus-shell {
+        position: fixed; inset: 0; z-index: 3000;
+        background: #080a0f;
+        display: flex; flex-direction: column;
+        align-items: center; justify-content: center;
+        padding: 40px 32px;
+      }
       @keyframes float-up  { 0% { opacity:1; transform:translateY(0) translateX(-50%); } 100% { opacity:0; transform:translateY(-24px) translateX(-50%); } }
       @keyframes pulse-ring { 0%,100% { box-shadow:0 0 0 2px rgba(124,58,237,0.25),10px 10px 20px rgba(0,0,0,.8); } 50% { box-shadow:0 0 0 6px rgba(124,58,237,0.0),10px 10px 20px rgba(0,0,0,.8); } }
       @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0; } }
@@ -746,10 +757,10 @@ function FocusMode({ task, onClose, onLogTime }) {
   const priColor = { CRITICAL:'#ff3b3b', HIGH:'#ff9d00', MED:'#7c3aed', LOW:'rgba(255,255,255,0.3)' };
 
   return (
-    <div style={{ position:'fixed', inset:0, zIndex:2000, background:'#080a0f', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', padding:32 }}>
+    <div className="focus-shell">
       {/* Ambient pulse when running */}
       {running && (
-        <div style={{ position:'absolute', inset:0, background:`radial-gradient(circle at center, ${priColor[task.pri]||'#7c3aed'}08 0%, transparent 65%)`, animation:'vtek-breath 3s ease-in-out infinite', pointerEvents:'none' }} />
+        <div style={{ position:'absolute', inset:0, background:`radial-gradient(circle at center, ${priColor[task.pri]||'#7c3aed'}12 0%, transparent 60%)`, animation:'vtek-breath 3s ease-in-out infinite', pointerEvents:'none' }} />
       )}
 
       {/* Close */}
@@ -811,11 +822,10 @@ function FocusMode({ task, onClose, onLogTime }) {
 const PRI_COLOR = { CRITICAL:'#ff3b3b', HIGH:'#ff9d00', MED:'#7c3aed', LOW:'rgba(255,255,255,0.3)' };
 const ALL_TAGS = ['comp','fx','roto','light','anim','nuke','review','delivery','pipeline','client','admin','sim','dev','ops'];
 
-function TasksPage({ tasks, setTasks, openWizard }) {
+function TasksPage({ tasks, setTasks, openWizard, onFocus }) {
   const [copied,        setCopied]       = useState(false);
   const [activeTag,     setActiveTag]    = useState(null);
   const [completedOpen, setCompletedOpen]= useState(false);
-  const [focusTask,     setFocusTask]    = useState(null);
 
   const syncToAkiflow = () => {
     const active = tasks.filter(t => !t.done);
@@ -852,7 +862,7 @@ function TasksPage({ tasks, setTasks, openWizard }) {
         <Icons.CheckCircle size={14} />
       </button>
       {/* Content */}
-      <div style={{ flex:1, minWidth:0 }} onClick={() => setFocusTask(t)} >
+      <div style={{ flex:1, minWidth:0 }} onClick={() => onFocus(t)} >
         <div style={{ fontSize:11, color:'#fff', fontWeight:900, lineHeight:1.3 }}>{t.title}</div>
         <div style={{ fontSize:8, color:'rgba(255,255,255,0.4)', marginTop:4, fontWeight:400, textTransform:'none' }}>{t.assignedTo} · {t.project}</div>
         {/* Tags */}
@@ -872,7 +882,7 @@ function TasksPage({ tasks, setTasks, openWizard }) {
         )}
       </div>
       {/* Focus button */}
-      <button onClick={() => setFocusTask(t)} style={{ flexShrink:0, width:32, height:32, borderRadius:8, background:'rgba(124,58,237,0.1)', border:'1px solid rgba(124,58,237,0.25)', display:'flex', alignItems:'center', justifyContent:'center', color:'rgba(124,58,237,0.7)' }} title="Focus mode">
+      <button onClick={() => onFocus(t)} style={{ flexShrink:0, width:32, height:32, borderRadius:8, background:'rgba(124,58,237,0.1)', border:'1px solid rgba(124,58,237,0.25)', display:'flex', alignItems:'center', justifyContent:'center', color:'rgba(124,58,237,0.7)' }} title="Focus mode">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="3"/><path d="M3 12h3M18 12h3M12 3v3M12 18v3"/></svg>
       </button>
     </div>
@@ -956,15 +966,6 @@ function TasksPage({ tasks, setTasks, openWizard }) {
             </div>
           )}
         </div>
-      )}
-
-      {/* Focus Mode overlay */}
-      {focusTask && (
-        <FocusMode
-          task={focusTask}
-          onClose={() => setFocusTask(null)}
-          onLogTime={(secs) => logTime(focusTask.id, secs)}
-        />
       )}
     </div>
   );
@@ -1788,6 +1789,7 @@ function App() {
   const [notification, setNotification] = useState(null);
   const [voiceOpen, setVoiceOpen]       = useState(false);
   const [reloading, setReloading]       = useState(false);
+  const [focusTask, setFocusTask]       = useState(null);
 
   const [tasks, setTasks] = useState(() => load(LS.tasks, SEED_TASKS));
   const [shows, setShows] = useState(() => load(LS.shows, SEED_SHOWS));
@@ -1843,7 +1845,7 @@ function App() {
     }
   };
 
-  const navigateTo = (id) => {
+  const logTime = (id, secs) => setTasks(prev => prev.map(t => t.id===id ? {...t, timeLogged:(t.timeLogged||0)+secs} : t));
     setActivePage(id);
     setSelectedShow(null);
     setSelectedOp(null);
@@ -1907,7 +1909,7 @@ function App() {
       <main className="main-scroll">
         {activePage === 'hub'   && <HangarPage   tasks={tasks} shows={shows} openWizard={handlePlus} />}
         {activePage === 'shows' && <ShowsPage     shows={shows} shots={shots} selectedShow={selectedShow} setSelectedShow={setSelectedShow} matrixFilter={matrixFilter} setMatrixFilter={setMatrixFilter} openWizard={handlePlus} />}
-        {activePage === 'tasks' && <TasksPage     tasks={tasks} setTasks={setTasks} openWizard={handlePlus} />}
+        {activePage === 'tasks' && <TasksPage     tasks={tasks} setTasks={setTasks} openWizard={handlePlus} onFocus={setFocusTask} />}
         {activePage === 'ops'   && <TeamPage      team={team} setTeam={setTeam} tasks={tasks} selectedOp={selectedOp} setSelectedOp={setSelectedOp} openWizard={(type) => setWizard({ isOpen:true, type, step:0, data:{} })} />}
         {activePage === 'intel' && <IntelPage     shows={shows} tasks={tasks} />}
       </main>
@@ -1941,6 +1943,15 @@ function App() {
       {/* VOICE */}
       {voiceOpen && (
         <VoiceModal onClose={() => setVoiceOpen(false)} onResult={handleVoiceResult} shows={shows} />
+      )}
+
+      {/* FOCUS MODE — rendered at root to escape stacking context */}
+      {focusTask && (
+        <FocusMode
+          task={focusTask}
+          onClose={() => setFocusTask(null)}
+          onLogTime={(secs) => logTime(focusTask.id, secs)}
+        />
       )}
     </div>
   );
