@@ -230,7 +230,7 @@
       @keyframes pageIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
       /* WIZARD */
-      .wizard-shell { position: fixed; inset: 0; z-index: 1000; background: #121418; padding: 0; display: flex; flex-direction: column; overflow: visible; font-weight: 900; text-transform: uppercase; animation: wizIn 0.4s cubic-bezier(0.16,1,0.3,1) forwards; }
+      .wizard-shell { position: fixed; inset: 0; z-index: 1000; background: #121418; overflow-y: auto; -webkit-overflow-scrolling: touch; font-weight: 900; text-transform: uppercase; animation: wizIn 0.4s cubic-bezier(0.16,1,0.3,1) forwards; }
       @keyframes wizIn { from { transform: translateY(100%); } to { transform: translateY(0); } }
 
       /* INTEL STREAM */
@@ -1271,71 +1271,80 @@ function Wizard({ wizard, setWizard, shows, team, onCommit }) {
       {/* Purple ambient */}
       <div style={{ position:'absolute', inset:0, opacity:0.25, pointerEvents:'none', boxShadow:'inset 0 0 120px rgba(124,58,237,0.15)' }} />
 
-      {/* X — fixed to top of screen, always reachable regardless of keyboard */}
-      <div style={{ position:'fixed', top:0, left:0, right:0, zIndex:1010, display:'flex', justifyContent:'space-between', alignItems:'center', paddingTop:'calc(env(safe-area-inset-top) + 20px)', paddingLeft:24, paddingRight:24, paddingBottom:16, background:'#121418' }}>
-        <span style={{ fontWeight:100, letterSpacing:'1.2em', fontSize:'0.75rem', color:'rgba(255,255,255,0.12)' }}>VTEK</span>
+      {/* Fixed top bar — always visible above keyboard */}
+      <div style={{ position:'fixed', top:0, left:0, right:0, maxWidth:430, margin:'0 auto', zIndex:1010, display:'flex', justifyContent:'space-between', alignItems:'center', paddingTop:'calc(env(safe-area-inset-top) + 16px)', paddingLeft:24, paddingRight:24, paddingBottom:14, background:'#121418' }}>
+        <div>
+          <span style={{ fontWeight:100, letterSpacing:'1.2em', fontSize:'0.75rem', color:'rgba(255,255,255,0.12)' }}>VTEK</span>
+          {/* Step progress dots */}
+          <div style={{ display:'flex', gap:4, marginTop:8 }}>
+            {config.steps.map((_,i) => (
+              <div key={i} style={{ width: i===wizard.step?18:5, height:3, borderRadius:2, background: i<=wizard.step ? '#7c3aed' : 'rgba(255,255,255,0.1)', transition:'all .3s', boxShadow: i===wizard.step ? '0 0 6px #7c3aed' : 'none' }} />
+            ))}
+          </div>
+        </div>
         <button onClick={() => setWizard(w => ({ ...w, isOpen: false }))} style={{ color:'rgba(255,255,255,0.4)', padding:8, margin:-8 }}>
           <Icons.X size={24} />
         </button>
       </div>
 
-      {/* Content — sits in bottom 60% so keyboard pushes don't bury the question */}
-      <div style={{ position:'relative', zIndex:10, display:'flex', flexDirection:'column', flex:1, padding:'0 28px 0', justifyContent:'flex-end', paddingBottom: curStep.type === 'chips' ? 48 : 32 }}>
+      {/* Question block — anchored from top, scrolls with content */}
+      <div style={{ position:'relative', zIndex:10, paddingTop:'calc(env(safe-area-inset-top) + 90px)', padding:'calc(env(safe-area-inset-top) + 90px) 28px 28px' }}>
+        <div key={`q-${wizard.step}`} className="wiz-step">
+          {/* Step label */}
+          <div style={{ fontSize:8, fontWeight:900, letterSpacing:'0.4em', color:'rgba(255,255,255,0.35)', textTransform:'uppercase', marginBottom:14 }}>
+            {config.title} &nbsp;·&nbsp; Step {wizard.step+1} of {config.steps.length}
+          </div>
 
-        {/* Question block */}
-        <div style={{ marginBottom: curStep.type === 'chips' ? 28 : 24 }}>
-          <h2 style={{ fontSize:24, fontWeight:900, textDecoration:'underline', textDecorationColor:'rgba(124,58,237,0.4)', textUnderlineOffset:12, letterSpacing:'0.02em' }}>
+          {/* Question */}
+          <h2 style={{ fontSize:26, fontWeight:900, color:'#fff', lineHeight:1.15, marginBottom:10, letterSpacing:'-0.01em' }}>
             {curStep.q}
           </h2>
-        </div>
+          {/* Purple underline */}
+          <div style={{ width:40, height:3, background:'#7c3aed', borderRadius:2, marginBottom:32, boxShadow:'0 0 10px rgba(124,58,237,0.7)' }} />
 
-        {curStep.type === 'text' ? (
-          <div key={wizard.step} className="wiz-step" style={{ display:'flex', flexDirection:'column', gap:20 }}>
-            <input
-              autoFocus
-              key={`${wizard.type}-${wizard.step}`}
-              style={{
-                borderBottom:'2px solid rgba(255,255,255,0.1)', paddingBottom:16,
-                fontSize:20, width:'100%', caretColor:'#7c3aed',
-                color:'#e2e8f0', fontFamily:'Inter,sans-serif',
-                textTransform:'none', fontWeight:300, letterSpacing:'0.02em',
-                background:'transparent', border:'none', outline:'none',
-                borderBottom:'2px solid rgba(255,255,255,0.12)',
-              }}
-              value={wizInput}
-              onChange={e => setWizInput(e.target.value)}
-              onKeyDown={e => e.key === 'Enter' && wizInput && handleNext()}
-              placeholder={curStep.placeholder}
-            />
-            <button
-              onClick={() => handleNext()}
-              disabled={!wizInput}
-              style={{ background:'#1c1f24', boxShadow:'10px 10px 20px rgba(0,0,0,0.65), -4px -4px 12px rgba(124,58,237,0.08)', border:'1px solid rgba(124,58,237,0.5)', width:'100%', padding:'20px 0', borderRadius:10, fontSize:11, letterSpacing:'0.3em', transition:'all .15s', opacity: wizInput ? 1 : 0.4 }}>
-              {wizard.step === config.steps.length-1 ? 'COMMIT' : 'CONTINUE →'}
-            </button>
-            {wizard.step > 0 && (
-              <button onClick={() => handleNext('')} style={{ background:'none', color:'rgba(255,255,255,0.2)', fontSize:9, letterSpacing:'0.3em', textTransform:'uppercase', fontWeight:900 }}>SKIP</button>
-            )}
-          </div>
-        ) : (
-          <div key={wizard.step} className="wiz-step" style={{ display:'flex', flexDirection:'column', gap:10 }}>
-            <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10 }}>
-              {curStep.options.map(opt => (
-                <button key={opt} onClick={() => handleNext(opt)}
-                  style={{ padding:'18px 12px', borderRadius:10, background:'#1c1f24', boxShadow:'10px 10px 20px rgba(0,0,0,0.65), -4px -4px 12px rgba(124,58,237,0.08)', border:'1px solid rgba(255,255,255,0.05)', fontSize:10, letterSpacing:'0.15em', color:'rgba(255,255,255,0.7)', textTransform:'uppercase', fontWeight:900, transition:'all .15s', fontFamily:'Inter,sans-serif' }}>
-                  {opt}
-                </button>
-              ))}
+          {curStep.type === 'text' ? (
+            <div style={{ display:'flex', flexDirection:'column', gap:20 }}>
+              <input
+                autoFocus
+                key={`${wizard.type}-${wizard.step}`}
+                style={{
+                  fontSize:22, width:'100%', caretColor:'#7c3aed',
+                  color:'#e2e8f0', fontFamily:'Inter,sans-serif',
+                  textTransform:'none', fontWeight:300, letterSpacing:'0.01em',
+                  background:'transparent', border:'none', outline:'none',
+                  borderBottom:'2px solid rgba(124,58,237,0.35)',
+                  paddingBottom:14, paddingTop:4,
+                }}
+                value={wizInput}
+                onChange={e => setWizInput(e.target.value)}
+                onKeyDown={e => e.key === 'Enter' && wizInput && handleNext()}
+                placeholder={curStep.placeholder}
+              />
+              <button
+                onClick={() => handleNext()}
+                disabled={!wizInput}
+                style={{ background:'rgba(124,58,237,0.15)', border:'1px solid rgba(124,58,237,0.5)', width:'100%', padding:'18px 0', borderRadius:10, fontSize:11, letterSpacing:'0.3em', color:'#7c3aed', transition:'all .2s', opacity: wizInput ? 1 : 0.35 }}>
+                {wizard.step === config.steps.length-1 ? 'COMMIT ✓' : 'CONTINUE →'}
+              </button>
+              {wizard.step > 0 && (
+                <button onClick={() => handleNext('')} style={{ background:'none', color:'rgba(255,255,255,0.2)', fontSize:9, letterSpacing:'0.3em', textTransform:'uppercase', fontWeight:900 }}>SKIP</button>
+              )}
             </div>
-            {wizard.step > 0 && (
-              <button onClick={() => handleNext('')} style={{ background:'none', color:'rgba(255,255,255,0.2)', fontSize:9, letterSpacing:'0.3em', textTransform:'uppercase', fontWeight:900, marginTop:4 }}>SKIP</button>
-            )}
-          </div>
-        )}
-
-        {/* Step counter */}
-        <div style={{ marginTop:28, textAlign:'center', fontSize:7, color:'rgba(255,255,255,0.1)', letterSpacing:'0.5em' }}>
-          STEP {wizard.step + 1} OF {config.steps.length}
+          ) : (
+            <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
+              <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10 }}>
+                {curStep.options.map(opt => (
+                  <button key={opt} onClick={() => handleNext(opt)}
+                    style={{ padding:'18px 12px', borderRadius:10, background:'#1c1f24', boxShadow:'8px 8px 16px rgba(0,0,0,0.6)', border:'1px solid rgba(255,255,255,0.07)', fontSize:10, letterSpacing:'0.12em', color:'rgba(255,255,255,0.75)', textTransform:'uppercase', fontWeight:900, transition:'all .15s' }}>
+                    {opt}
+                  </button>
+                ))}
+              </div>
+              {wizard.step > 0 && (
+                <button onClick={() => handleNext('')} style={{ background:'none', color:'rgba(255,255,255,0.2)', fontSize:9, letterSpacing:'0.3em', textTransform:'uppercase', fontWeight:900, marginTop:4 }}>SKIP</button>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>
