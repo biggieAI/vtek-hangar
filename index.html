@@ -6,6 +6,21 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <title>VTEK // HANGAR</title>
+  <script>
+    // Force fresh load — clear stale Babel cache and reload once if needed
+    (function() {
+      var key = 'vtek_ver';
+      var ver = '086';
+      if (sessionStorage.getItem(key) !== ver) {
+        sessionStorage.setItem(key, ver);
+        // Only reload once per session to avoid infinite loop
+        if (!sessionStorage.getItem('vtek_reloaded')) {
+          sessionStorage.setItem('vtek_reloaded', '1');
+          window.location.reload(true);
+        }
+      }
+    })();
+  </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
@@ -1846,6 +1861,8 @@ function App() {
   };
 
   const logTime = (id, secs) => setTasks(prev => prev.map(t => t.id===id ? {...t, timeLogged:(t.timeLogged||0)+secs} : t));
+
+  const navigateTo = (id) => {
     setActivePage(id);
     setSelectedShow(null);
     setSelectedOp(null);
