@@ -283,7 +283,7 @@ const { useState, useEffect, useMemo, useRef, useCallback } = React;
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
 const APP_VERSION = 'HGR-086';
 const LS = {
-  tasks: 'vtek_tasks_v4',
+  tasks: 'vtek_tasks_v5',
   shows: 'vtek_shows_v4',
   team:  'vtek_team_v5',
   shots: 'vtek_shots_v4',
@@ -366,26 +366,24 @@ const SEED_TEAM = [
 
 const SEED_TASKS = [
   // TODAY
-  { id:'tk01', title:'CRL_0142 — COMP V4 REVIEW',         desc:'BLOOM + EDGE MATTING FIX',       project:'CRL', assignedTo:'RUBEN RODAS',      pri:'CRITICAL', date:'TODAY',     done:false },
-  { id:'tk02', title:'INT TURNOVER PACKAGE TO CLIENT',     desc:'FINAL ASSET LIST + PLATES ZIP',  project:'INT', assignedTo:'KATHERINE SOARES', pri:'HIGH',     date:'TODAY',     done:false },
-  { id:'tk03', title:'CRL FX PASS — DUST SIMS',            desc:'SH_0060 + SH_0120',              project:'CRL', assignedTo:'ANA LIMA',         pri:'HIGH',     date:'TODAY',     done:false },
-  { id:'tk04', title:'NUKE GIZMO: ADDITIVE KEYER QC',      desc:'TEST ON HIGH-EXPOSURE BG PLATES',project:'CRL', assignedTo:'RUBEN RODAS',      pri:'MED',      date:'TODAY',     done:true  },
-  { id:'tk05', title:'MVK FINAL DELIVERY SIGN-OFF',         desc:'CLIENT APPROVAL NEEDED',         project:'MVK', assignedTo:'KATHERINE SOARES', pri:'CRITICAL', date:'TODAY',     done:true  },
-  { id:'tk06', title:'SLR LIGHTING REVIEW — SC01',          desc:'RIM LIGHT TOO HOT ON FACES',    project:'SLR', assignedTo:'JAKE MORROW',      pri:'MED',      date:'TODAY',     done:false },
-  { id:'tk07', title:'PIPELINE: NUKE WRITE NODE AUDIT',    desc:'CHECK RENDER PATHS ON ALL JOBS', project:'ADMIN',assignedTo:'DANA CHEN',       pri:'MED',      date:'TODAY',     done:false },
-  // TOMORROW
-  { id:'tk08', title:'SHOTGRID CSV EXPORT — INT',           desc:'MANUAL PULL WORKAROUND',         project:'INT', assignedTo:'DANA CHEN',        pri:'LOW',      date:'TOMORROW',  done:false },
-  { id:'tk09', title:'INT_0034 ROTO PASS',                  desc:'HAIR + SHOULDER SEPARATION',     project:'INT', assignedTo:'TOM KWAN',         pri:'HIGH',     date:'TOMORROW',  done:false },
-  { id:'tk10', title:'CRL_0080 ANIM SIGN-OFF',              desc:'HERO WALK CYCLE FINAL',          project:'CRL', assignedTo:'MARCUS BELL',      pri:'MED',      date:'TOMORROW',  done:false },
-  { id:'tk11', title:'SLR ASSET REVIEW — FX_SOLAR',        desc:'CLIENT WANTS SOFTER BLOOM',      project:'SLR', assignedTo:'ANA LIMA',         pri:'HIGH',     date:'TOMORROW',  done:false },
-  { id:'tk12', title:'ONBOARD PRIYA: ROTO BRIEF FOR INT',  desc:'SEND PLATE PACKAGE',             project:'INT', assignedTo:'RUBEN RODAS',      pri:'LOW',      date:'TOMORROW',  done:false },
-  // THIS WEEK
-  { id:'tk13', title:'MAKE.COM: CIRCLEBACK→LINEAR AUTO',   desc:'TIER 1 AUTOMATION BUILDOUT',     project:'ADMIN',assignedTo:'UNASSIGNED',      pri:'HIGH',     date:'THIS WEEK', done:false },
-  { id:'tk14', title:'CRL COMP PASS — SH_0150 ANIM LOCK',  desc:'WAIT FOR ANIM SIGN-OFF FIRST',   project:'CRL', assignedTo:'LEO VARGAS',       pri:'MED',      date:'THIS WEEK', done:false },
-  { id:'tk15', title:'INT_0010–0030 FULL COMP PUSH',        desc:'3 SHOTS DUE END OF WEEK',        project:'INT', assignedTo:'MARCUS BELL',      pri:'HIGH',     date:'THIS WEEK', done:false },
-  { id:'tk16', title:'SLR FULL SEQUENCE REVIEW PREP',       desc:'ASSEMBLE ALL WIP SHOTS',         project:'SLR', assignedTo:'PRIYA NAIR',       pri:'MED',      date:'THIS WEEK', done:false },
-  { id:'tk17', title:'PIPELINE: PYTHON CACHE TOOL REDESIGN',desc:'PYSIDE6 UI OVERHAUL',            project:'ADMIN',assignedTo:'DANA CHEN',       pri:'MED',      date:'THIS WEEK', done:false },
-  { id:'tk18', title:'SAM: FX BRIEFING FOR CRL SC03',       desc:'CROWD SIM SCOPE DISCUSSION',    project:'CRL', assignedTo:'SAM PARK',         pri:'LOW',      date:'THIS WEEK', done:false },
+  { id:'tk01', title:'CRL_0142 — COMP V4 REVIEW',         desc:'BLOOM + EDGE MATTING FIX',       project:'CRL', assignedTo:'RUBEN RODAS',      pri:'CRITICAL', date:'TODAY',     done:false, tags:['comp','review'],    timeLogged:0 },
+  { id:'tk02', title:'INT TURNOVER PACKAGE TO CLIENT',     desc:'FINAL ASSET LIST + PLATES ZIP',  project:'INT', assignedTo:'KATHERINE SOARES', pri:'HIGH',     date:'TODAY',     done:false, tags:['delivery'],         timeLogged:0 },
+  { id:'tk03', title:'CRL FX PASS — DUST SIMS',            desc:'SH_0060 + SH_0120',              project:'CRL', assignedTo:'ANA LIMA',         pri:'HIGH',     date:'TODAY',     done:false, tags:['fx','sim'],          timeLogged:0 },
+  { id:'tk04', title:'NUKE GIZMO: ADDITIVE KEYER QC',      desc:'TEST ON HIGH-EXPOSURE BG PLATES',project:'CRL', assignedTo:'RUBEN RODAS',      pri:'MED',      date:'TODAY',     done:true,  tags:['nuke','qc'],        timeLogged:2700 },
+  { id:'tk05', title:'MVK FINAL DELIVERY SIGN-OFF',         desc:'CLIENT APPROVAL NEEDED',         project:'MVK', assignedTo:'KATHERINE SOARES', pri:'CRITICAL', date:'TODAY',     done:true,  tags:['delivery','client'], timeLogged:1800 },
+  { id:'tk06', title:'SLR LIGHTING REVIEW — SC01',          desc:'RIM LIGHT TOO HOT ON FACES',    project:'SLR', assignedTo:'JAKE MORROW',      pri:'MED',      date:'TODAY',     done:false, tags:['light','review'],   timeLogged:0 },
+  { id:'tk07', title:'PIPELINE: NUKE WRITE NODE AUDIT',    desc:'CHECK RENDER PATHS ON ALL JOBS', project:'ADMIN',assignedTo:'DANA CHEN',       pri:'MED',      date:'TODAY',     done:false, tags:['pipeline','nuke'],  timeLogged:0 },
+  { id:'tk08', title:'SHOTGRID CSV EXPORT — INT',           desc:'MANUAL PULL WORKAROUND',         project:'INT', assignedTo:'DANA CHEN',        pri:'LOW',      date:'TOMORROW',  done:false, tags:['pipeline'],         timeLogged:0 },
+  { id:'tk09', title:'INT_0034 ROTO PASS',                  desc:'HAIR + SHOULDER SEPARATION',     project:'INT', assignedTo:'TOM KWAN',         pri:'HIGH',     date:'TOMORROW',  done:false, tags:['roto'],             timeLogged:0 },
+  { id:'tk10', title:'CRL_0080 ANIM SIGN-OFF',              desc:'HERO WALK CYCLE FINAL',          project:'CRL', assignedTo:'MARCUS BELL',      pri:'MED',      date:'TOMORROW',  done:false, tags:['anim','review'],    timeLogged:0 },
+  { id:'tk11', title:'SLR ASSET REVIEW — FX_SOLAR',        desc:'CLIENT WANTS SOFTER BLOOM',      project:'SLR', assignedTo:'ANA LIMA',         pri:'HIGH',     date:'TOMORROW',  done:false, tags:['fx','review'],      timeLogged:0 },
+  { id:'tk12', title:'ONBOARD PRIYA: ROTO BRIEF FOR INT',  desc:'SEND PLATE PACKAGE',             project:'INT', assignedTo:'RUBEN RODAS',      pri:'LOW',      date:'TOMORROW',  done:false, tags:['admin'],            timeLogged:0 },
+  { id:'tk13', title:'MAKE.COM: CIRCLEBACK→LINEAR AUTO',   desc:'TIER 1 AUTOMATION BUILDOUT',     project:'ADMIN',assignedTo:'UNASSIGNED',      pri:'HIGH',     date:'THIS WEEK', done:false, tags:['automation','ops'], timeLogged:0 },
+  { id:'tk14', title:'CRL COMP PASS — SH_0150 ANIM LOCK',  desc:'WAIT FOR ANIM SIGN-OFF FIRST',   project:'CRL', assignedTo:'LEO VARGAS',       pri:'MED',      date:'THIS WEEK', done:false, tags:['comp'],             timeLogged:0 },
+  { id:'tk15', title:'INT_0010–0030 FULL COMP PUSH',        desc:'3 SHOTS DUE END OF WEEK',        project:'INT', assignedTo:'MARCUS BELL',      pri:'HIGH',     date:'THIS WEEK', done:false, tags:['comp','delivery'],  timeLogged:0 },
+  { id:'tk16', title:'SLR FULL SEQUENCE REVIEW PREP',       desc:'ASSEMBLE ALL WIP SHOTS',         project:'SLR', assignedTo:'PRIYA NAIR',       pri:'MED',      date:'THIS WEEK', done:false, tags:['review'],           timeLogged:0 },
+  { id:'tk17', title:'PIPELINE: PYTHON CACHE TOOL REDESIGN',desc:'PYSIDE6 UI OVERHAUL',            project:'ADMIN',assignedTo:'DANA CHEN',       pri:'MED',      date:'THIS WEEK', done:false, tags:['pipeline','dev'],   timeLogged:0 },
+  { id:'tk18', title:'SAM: FX BRIEFING FOR CRL SC03',       desc:'CROWD SIM SCOPE DISCUSSION',    project:'CRL', assignedTo:'SAM PARK',         pri:'LOW',      date:'THIS WEEK', done:false, tags:['fx','admin'],       timeLogged:0 },
 ];
 
 // ─── PERSISTENCE ──────────────────────────────────────────────────────────────
@@ -707,27 +705,182 @@ function ShowsPage({ shows, shots, selectedShow, setSelectedShow, matrixFilter, 
 }
 
 // ─── PAGE: TASKS ────────────────────────────────────────────────
+// ─── FOCUS MODE ──────────────────────────────────────────────────────────────
+function FocusMode({ task, onClose, onLogTime }) {
+  const [running, setRunning]   = useState(false);
+  const [elapsed, setElapsed]   = useState(0); // ms
+  const [finished, setFinished] = useState(false);
+  const intervalRef = useRef(null);
+  const startRef    = useRef(null);
+
+  const start = () => {
+    startRef.current = Date.now() - elapsed;
+    intervalRef.current = setInterval(() => {
+      setElapsed(Date.now() - startRef.current);
+    }, 87); // ~11fps, smooth enough
+    setRunning(true);
+  };
+
+  const pause = () => {
+    clearInterval(intervalRef.current);
+    setRunning(false);
+  };
+
+  const stop = () => {
+    clearInterval(intervalRef.current);
+    setRunning(false);
+    setFinished(true);
+  };
+
+  useEffect(() => () => clearInterval(intervalRef.current), []);
+
+  const fmt = (ms) => {
+    const h = Math.floor(ms / 3600000);
+    const m = Math.floor((ms % 3600000) / 60000);
+    const s = Math.floor((ms % 60000) / 1000);
+    const cs = Math.floor((ms % 1000) / 10);
+    if (h > 0) return `${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}.${String(cs).padStart(2,'0')}`;
+  };
+
+  const priColor = { CRITICAL:'#ff3b3b', HIGH:'#ff9d00', MED:'#7c3aed', LOW:'rgba(255,255,255,0.3)' };
+
+  return (
+    <div style={{ position:'fixed', inset:0, zIndex:2000, background:'#080a0f', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', padding:32 }}>
+      {/* Ambient pulse when running */}
+      {running && (
+        <div style={{ position:'absolute', inset:0, background:`radial-gradient(circle at center, ${priColor[task.pri]||'#7c3aed'}08 0%, transparent 65%)`, animation:'vtek-breath 3s ease-in-out infinite', pointerEvents:'none' }} />
+      )}
+
+      {/* Close */}
+      <button onClick={onClose} style={{ position:'fixed', top:'calc(env(safe-area-inset-top) + 16px)', right:24, color:'rgba(255,255,255,0.25)', zIndex:10, padding:8 }}>
+        <Icons.X size={22} />
+      </button>
+
+      {/* Task info */}
+      <div style={{ textAlign:'center', marginBottom:48, maxWidth:300 }}>
+        <div style={{ fontSize:8, fontWeight:900, letterSpacing:'0.5em', color:'rgba(255,255,255,0.2)', textTransform:'uppercase', marginBottom:16 }}>FOCUS MODE</div>
+        <div style={{ fontSize:16, fontWeight:900, color:'#fff', lineHeight:1.3, letterSpacing:'0.02em' }}>{task.title}</div>
+        <div style={{ display:'flex', gap:8, justifyContent:'center', marginTop:12, flexWrap:'wrap' }}>
+          <span style={{ fontSize:8, padding:'3px 10px', borderRadius:4, background:`${priColor[task.pri]||'#7c3aed'}22`, border:`1px solid ${priColor[task.pri]||'#7c3aed'}44`, color:priColor[task.pri]||'#7c3aed', letterSpacing:'0.2em', fontWeight:900 }}>{task.pri}</span>
+          <span style={{ fontSize:8, padding:'3px 10px', borderRadius:4, background:'rgba(124,58,237,0.1)', border:'1px solid rgba(124,58,237,0.3)', color:'rgba(124,58,237,0.8)', letterSpacing:'0.2em', fontWeight:900 }}>{task.project}</span>
+        </div>
+      </div>
+
+      {/* Stopwatch */}
+      <div style={{ textAlign:'center', marginBottom:56 }}>
+        <div style={{ fontSize:finished ? 56 : 64, fontWeight:100, color: running ? '#fff' : 'rgba(255,255,255,0.5)', letterSpacing:'-0.04em', lineHeight:1, fontFamily:'Inter,sans-serif', transition:'color .3s', fontVariantNumeric:'tabular-nums' }}>
+          {fmt(elapsed)}
+        </div>
+        {task.timeLogged > 0 && (
+          <div style={{ fontSize:9, color:'rgba(255,255,255,0.2)', letterSpacing:'0.3em', marginTop:12 }}>
+            PREV: {fmt(task.timeLogged * 1000)}
+          </div>
+        )}
+      </div>
+
+      {/* Controls */}
+      {!finished ? (
+        <div style={{ display:'flex', gap:20, alignItems:'center' }}>
+          {elapsed > 0 && !running && (
+            <button onClick={() => { setElapsed(0); setRunning(false); }} style={{ width:52, height:52, borderRadius:'50%', background:'rgba(255,255,255,0.06)', border:'1px solid rgba(255,255,255,0.1)', color:'rgba(255,255,255,0.4)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:9, letterSpacing:'0.2em', fontWeight:900 }}>RESET</button>
+          )}
+          <button onClick={running ? pause : start}
+            style={{ width:80, height:80, borderRadius:'50%', background: running ? 'rgba(255,157,0,0.15)' : 'rgba(52,211,153,0.15)', border:`2px solid ${running ? '#ff9d00' : '#34d399'}`, color: running ? '#ff9d00' : '#34d399', display:'flex', alignItems:'center', justifyContent:'center', fontSize:26, boxShadow:`0 0 30px ${running ? '#ff9d0044' : '#34d39944'}`, transition:'all .25s' }}>
+            {running ? '⏸' : '▶'}
+          </button>
+          {elapsed > 0 && (
+            <button onClick={stop} style={{ width:52, height:52, borderRadius:'50%', background:'rgba(255,59,59,0.1)', border:'1px solid rgba(255,59,59,0.4)', color:'#ff3b3b', display:'flex', alignItems:'center', justifyContent:'center', fontSize:18 }}>■</button>
+          )}
+        </div>
+      ) : (
+        <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:16 }}>
+          <div style={{ fontSize:11, color:'#34d399', letterSpacing:'0.3em', fontWeight:900 }}>SESSION COMPLETE</div>
+          <div style={{ fontSize:9, color:'rgba(255,255,255,0.3)', letterSpacing:'0.2em' }}>Log {fmt(elapsed)} to this task?</div>
+          <div style={{ display:'flex', gap:12 }}>
+            <button onClick={onClose} style={{ padding:'12px 20px', borderRadius:8, background:'rgba(255,255,255,0.06)', border:'1px solid rgba(255,255,255,0.1)', color:'rgba(255,255,255,0.4)', fontSize:9, fontWeight:900, letterSpacing:'0.25em' }}>DISCARD</button>
+            <button onClick={() => { onLogTime(Math.round(elapsed/1000)); onClose(); }} style={{ padding:'12px 24px', borderRadius:8, background:'rgba(52,211,153,0.15)', border:'1px solid rgba(52,211,153,0.5)', color:'#34d399', fontSize:9, fontWeight:900, letterSpacing:'0.25em' }}>LOG TIME ✓</button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── TASKS PAGE ───────────────────────────────────────────────────────────────
+const PRI_COLOR = { CRITICAL:'#ff3b3b', HIGH:'#ff9d00', MED:'#7c3aed', LOW:'rgba(255,255,255,0.3)' };
+const ALL_TAGS = ['comp','fx','roto','light','anim','nuke','review','delivery','pipeline','client','admin','sim','dev','ops'];
+
 function TasksPage({ tasks, setTasks, openWizard }) {
-  const [copied, setCopied] = useState(false);
+  const [copied,        setCopied]       = useState(false);
+  const [activeTag,     setActiveTag]    = useState(null);
+  const [completedOpen, setCompletedOpen]= useState(false);
+  const [focusTask,     setFocusTask]    = useState(null);
 
   const syncToAkiflow = () => {
     const active = tasks.filter(t => !t.done);
     if (!active.length) return;
-    const payload = active.map(t => `${t.title}||${t.desc || ''}||${t.pri}||${t.assignedTo}`).join('&&');
+    const payload = active.map(t => `${t.title}||${t.desc||''}||${t.pri}||${t.assignedTo}`).join('&&');
     navigator.clipboard.writeText(payload).catch(() => {
       const el = document.createElement('textarea');
       el.value = payload; document.body.appendChild(el); el.select(); document.execCommand('copy'); document.body.removeChild(el);
     });
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2500);
-    triggerHaptic();
+    setCopied(true); setTimeout(() => setCopied(false), 2500); triggerHaptic();
   };
 
-  const toggleDone = (id) => setTasks(prev => prev.map(t => t.id === id ? { ...t, done: !t.done } : t));
+  const completeDone  = (id) => setTasks(prev => prev.map(t => t.id===id ? {...t, done:true}  : t));
+  const restoreTask   = (id) => setTasks(prev => prev.map(t => t.id===id ? {...t, done:false} : t));
+  const deleteForever = (id) => setTasks(prev => prev.filter(t => t.id !== id));
+  const logTime       = (id, secs) => setTasks(prev => prev.map(t => t.id===id ? {...t, timeLogged:(t.timeLogged||0)+secs} : t));
+
+  const fmtTime = (secs) => {
+    if (!secs) return null;
+    const h = Math.floor(secs/3600), m = Math.floor((secs%3600)/60);
+    return h > 0 ? `${h}h ${m}m` : `${m}m`;
+  };
+
+  const pending   = tasks.filter(t => !t.done && (!activeTag || (t.tags||[]).includes(activeTag)));
+  const completed = tasks.filter(t =>  t.done);
+
+  // Collect all tags actually used
+  const usedTags = [...new Set(tasks.flatMap(t => t.tags||[]))].filter(Boolean);
+
+  const TaskCard = ({ t }) => (
+    <div className="vtek-card nm-raised" style={{ padding:'14px 16px', display:'flex', alignItems:'center', gap:14, borderLeft:`3px solid ${PRI_COLOR[t.pri]||'#7c3aed'}` }}>
+      {/* Complete toggle */}
+      <button onClick={() => completeDone(t.id)} style={{ width:30, height:30, borderRadius:'50%', flexShrink:0, display:'flex', alignItems:'center', justifyContent:'center', background:'rgba(52,211,153,0.08)', border:'1px solid rgba(52,211,153,0.2)', color:'rgba(52,211,153,0.5)', transition:'all .2s' }} title="Mark complete">
+        <Icons.CheckCircle size={14} />
+      </button>
+      {/* Content */}
+      <div style={{ flex:1, minWidth:0 }} onClick={() => setFocusTask(t)} >
+        <div style={{ fontSize:11, color:'#fff', fontWeight:900, lineHeight:1.3 }}>{t.title}</div>
+        <div style={{ fontSize:8, color:'rgba(255,255,255,0.4)', marginTop:4, fontWeight:400, textTransform:'none' }}>{t.assignedTo} · {t.project}</div>
+        {/* Tags */}
+        {(t.tags||[]).length > 0 && (
+          <div style={{ display:'flex', gap:4, flexWrap:'wrap', marginTop:6 }}>
+            {(t.tags||[]).map(tag => (
+              <span key={tag} onClick={e => { e.stopPropagation(); setActiveTag(activeTag===tag?null:tag); }}
+                style={{ fontSize:7, padding:'2px 6px', borderRadius:3, background: activeTag===tag ? 'rgba(124,58,237,0.3)' : 'rgba(255,255,255,0.06)', border:`1px solid ${activeTag===tag ? 'rgba(124,58,237,0.5)' : 'rgba(255,255,255,0.08)'}`, color: activeTag===tag ? '#7c3aed' : 'rgba(255,255,255,0.35)', letterSpacing:'0.15em', cursor:'pointer', fontWeight:900, textTransform:'uppercase' }}>
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
+        {/* Time logged */}
+        {t.timeLogged > 0 && (
+          <div style={{ fontSize:7, color:'rgba(124,58,237,0.6)', marginTop:5, letterSpacing:'0.2em', fontWeight:900 }}>⏱ {fmtTime(t.timeLogged)} LOGGED</div>
+        )}
+      </div>
+      {/* Focus button */}
+      <button onClick={() => setFocusTask(t)} style={{ flexShrink:0, width:32, height:32, borderRadius:8, background:'rgba(124,58,237,0.1)', border:'1px solid rgba(124,58,237,0.25)', display:'flex', alignItems:'center', justifyContent:'center', color:'rgba(124,58,237,0.7)' }} title="Focus mode">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="3"/><path d="M3 12h3M18 12h3M12 3v3M12 18v3"/></svg>
+      </button>
+    </div>
+  );
 
   return (
     <div className="page-in" style={{ display:'flex', flexDirection:'column', gap:20 }}>
-      <PageHeader title="Tasks" tag="Active Queue" tagUnderline />
+      <PageHeader title="Tasks" tag={`${pending.length} Active`} tagUnderline />
 
       {/* Akiflow Sync */}
       <div className="sync-block nm-inset">
@@ -735,7 +888,7 @@ function TasksPage({ tasks, setTasks, openWizard }) {
           <span style={{ color:'#ff3b3b' }}><Icons.Refresh size={18} /></span>
           <div>
             <div style={{ fontSize:10, color:'#fff', letterSpacing:'0.15em', lineHeight:1 }}>AKIFLOW SYNC</div>
-            <div style={{ fontSize:7, color:'rgba(255,255,255,0.3)', marginTop:4 }}>READY FOR EXPORT</div>
+            <div style={{ fontSize:7, color:'rgba(255,255,255,0.35)', marginTop:4 }}>READY FOR EXPORT</div>
           </div>
         </div>
         <button onClick={syncToAkiflow} style={{ background: copied ? 'rgba(52,211,153,0.1)' : 'rgba(255,59,59,0.1)', border:`1px solid ${copied ? '#34d399' : 'rgba(255,59,59,0.3)'}`, padding:'8px 16px', borderRadius:6, fontSize:9, color: copied ? '#34d399' : '#ff3b3b', letterSpacing:'0.2em', transition:'all .2s' }}>
@@ -743,28 +896,76 @@ function TasksPage({ tasks, setTasks, openWizard }) {
         </button>
       </div>
 
-      {/* Task sections */}
+      {/* Tag filter pills */}
+      {usedTags.length > 0 && (
+        <div style={{ display:'flex', gap:6, flexWrap:'wrap' }}>
+          {activeTag && (
+            <button onClick={() => setActiveTag(null)} style={{ fontSize:8, padding:'4px 10px', borderRadius:20, background:'rgba(255,59,59,0.1)', border:'1px solid rgba(255,59,59,0.3)', color:'#ff3b3b', fontWeight:900, letterSpacing:'0.15em' }}>✕ CLEAR</button>
+          )}
+          {usedTags.map(tag => (
+            <button key={tag} onClick={() => setActiveTag(activeTag===tag?null:tag)}
+              style={{ fontSize:8, padding:'4px 10px', borderRadius:20, fontWeight:900, letterSpacing:'0.15em', textTransform:'uppercase', background: activeTag===tag ? 'rgba(124,58,237,0.2)' : 'rgba(255,255,255,0.05)', border:`1px solid ${activeTag===tag ? 'rgba(124,58,237,0.5)' : 'rgba(255,255,255,0.08)'}`, color: activeTag===tag ? '#7c3aed' : 'rgba(255,255,255,0.35)', transition:'all .15s' }}>
+              {tag}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* Active task sections */}
       {['TODAY','TOMORROW','THIS WEEK'].map(time => {
-        const items = tasks.filter(t => t.date === time);
+        const items = pending.filter(t => t.date === time && !t.done);
         if (!items.length) return null;
         return (
-          <div key={time} style={{ display:'flex', flexDirection:'column', gap:10 }}>
-            <div style={{ fontSize:9, color:'rgba(255,255,255,0.2)', letterSpacing:'0.3em', borderBottom:'1px solid rgba(255,255,255,0.05)', paddingBottom:8 }}>{time}</div>
-            {items.map(t => (
-              <div key={t.id} className="vtek-card nm-raised" style={{ padding:16, display:'flex', alignItems:'center', gap:16, opacity: t.done ? 0.3 : 1, transition:'opacity .2s', filter: t.done ? 'grayscale(1)' : 'none' }}>
-                <button onClick={() => toggleDone(t.id)} style={{ width:32, height:32, borderRadius:'50%', display:'flex', alignItems:'center', justifyContent:'center', color: t.done ? '#10b981' : 'rgba(255,255,255,0.1)', flexShrink:0 }} className="nm-inset-tight">
-                  <Icons.CheckCircle size={16} active={t.done} />
-                </button>
-                <div style={{ flexGrow:1, minWidth:0 }}>
-                  <div style={{ fontSize:11, color:'#fff', fontWeight:900 }}>{t.title}</div>
-                  <div style={{ fontSize:7, color:'rgba(255,255,255,0.4)', marginTop:4, letterSpacing:'0.1em' }}>{t.assignedTo} // {t.project}</div>
-                </div>
-                <div style={{ fontSize:6, padding:'2px 6px', border:`1px solid ${t.pri === 'CRITICAL' ? '#ff3b3b' : 'rgba(255,255,255,0.1)'}`, borderRadius:4, color: t.pri === 'CRITICAL' ? '#ff3b3b' : 'rgba(255,255,255,0.2)', flexShrink:0 }}>{t.pri}</div>
-              </div>
-            ))}
+          <div key={time} style={{ display:'flex', flexDirection:'column', gap:8 }}>
+            <div style={{ fontSize:8, fontWeight:900, color:'rgba(255,255,255,0.3)', letterSpacing:'0.35em', borderBottom:'1px solid rgba(255,255,255,0.05)', paddingBottom:7 }}>{time}</div>
+            {items.map(t => <TaskCard key={t.id} t={t} />)}
           </div>
         );
       })}
+
+      {pending.filter(t=>!t.done).length === 0 && (
+        <div style={{ padding:'40px 0', textAlign:'center', fontSize:9, color:'rgba(255,255,255,0.15)', letterSpacing:'0.3em' }}>
+          {activeTag ? `NO TASKS TAGGED '${activeTag.toUpperCase()}'` : 'ALL CLEAR'}
+        </div>
+      )}
+
+      {/* Completed section */}
+      {completed.length > 0 && (
+        <div>
+          <button onClick={() => setCompletedOpen(o=>!o)} style={{ display:'flex', justifyContent:'space-between', alignItems:'center', width:'100%', padding:'10px 0', background:'none', color:'rgba(255,255,255,0.3)', fontSize:8, letterSpacing:'0.35em', fontWeight:900, borderTop:'1px solid rgba(255,255,255,0.05)' }}>
+            <span>COMPLETED — {completed.length}</span>
+            <span style={{ fontSize:12, transition:'transform .2s', transform: completedOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}>⌄</span>
+          </button>
+          {completedOpen && (
+            <div style={{ display:'flex', flexDirection:'column', gap:8, marginTop:8 }}>
+              {completed.map(t => (
+                <div key={t.id} className="vtek-card no-border" style={{ padding:'12px 16px', display:'flex', alignItems:'center', gap:12, opacity:0.45, filter:'grayscale(0.6)', borderLeft:'3px solid rgba(52,211,153,0.3)' }}>
+                  <div style={{ width:22, height:22, borderRadius:'50%', background:'rgba(52,211,153,0.15)', border:'1px solid rgba(52,211,153,0.3)', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#34d399" strokeWidth="3" strokeLinecap="round"><polyline points="20,6 9,17 4,12"/></svg>
+                  </div>
+                  <div style={{ flex:1, minWidth:0 }}>
+                    <div style={{ fontSize:10, color:'rgba(255,255,255,0.6)', fontWeight:900, textDecoration:'line-through', textDecorationColor:'rgba(255,255,255,0.2)' }}>{t.title}</div>
+                    {t.timeLogged > 0 && <div style={{ fontSize:7, color:'rgba(124,58,237,0.5)', marginTop:3, letterSpacing:'0.2em', fontWeight:900 }}>⏱ {fmtTime(t.timeLogged)}</div>}
+                  </div>
+                  <div style={{ display:'flex', gap:6 }}>
+                    <button onClick={() => restoreTask(t.id)} style={{ fontSize:7, padding:'4px 8px', borderRadius:4, background:'rgba(255,255,255,0.06)', border:'1px solid rgba(255,255,255,0.1)', color:'rgba(255,255,255,0.4)', fontWeight:900, letterSpacing:'0.15em' }}>RESTORE</button>
+                    <button onClick={() => deleteForever(t.id)} style={{ fontSize:7, padding:'4px 8px', borderRadius:4, background:'rgba(255,59,59,0.06)', border:'1px solid rgba(255,59,59,0.2)', color:'rgba(255,59,59,0.5)', fontWeight:900, letterSpacing:'0.15em' }}>DELETE</button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Focus Mode overlay */}
+      {focusTask && (
+        <FocusMode
+          task={focusTask}
+          onClose={() => setFocusTask(null)}
+          onLogTime={(secs) => logTime(focusTask.id, secs)}
+        />
+      )}
     </div>
   );
 }
@@ -1195,10 +1396,11 @@ function Wizard({ wizard, setWizard, shows, team, onCommit }) {
     task: {
       title: 'New Task',
       steps: [
-        { key:'title',      q:'Task Name',    type:'text',  placeholder:'E.G. RENDER FINAL...' },
+        { key:'title',      q:'Task Name',    type:'text',  placeholder:'E.G. Render final comp...' },
         { key:'project',    q:'Project',      type:'chips', options: shows.length > 0 ? shows.map(s => s.code) : ['GENERAL'] },
         { key:'assignedTo', q:'Assign To',    type:'chips', options: team.length > 0 ? ['UNASSIGNED', ...team.map(m => m.name)] : ['UNASSIGNED'] },
         { key:'pri',        q:'Priority',     type:'chips', options: ['LOW','MED','HIGH','CRITICAL'] },
+        { key:'tags', q:'Tags', type:'chips', multi:true, options: ['comp','fx','roto','light','anim','nuke','review','delivery','pipeline','client','admin','sim','dev','ops'] },
       ],
     },
     show: {
@@ -1254,9 +1456,30 @@ function Wizard({ wizard, setWizard, shows, team, onCommit }) {
   const curStep = config.steps[wizard.step];
 
   const handleNext = (val) => {
+    const cur = config.steps[wizard.step];
     const actualVal = val !== undefined ? val : wizInput;
-    if (!actualVal && curStep.type === 'text') return;
-    const newData = { ...wizard.data, [curStep.key]: actualVal };
+    // For multi-select, toggle array
+    if (cur.multi) {
+      const existing = wizard.data[cur.key] || [];
+      const toggled = existing.includes(val) ? existing.filter(v => v !== val) : [...existing, val];
+      setWizard(w => ({ ...w, data: { ...w.data, [cur.key]: toggled } }));
+      return;
+    }
+    if (!actualVal && cur.type === 'text') return;
+    const newData = { ...wizard.data, [cur.key]: actualVal };
+    setWizInput('');
+    if (wizard.step < config.steps.length - 1) {
+      setWizard(w => ({ ...w, step: w.step + 1, data: newData }));
+    } else {
+      onCommit(wizard.type, newData);
+      setWizard(w => ({ ...w, isOpen: false }));
+    }
+  };
+
+  const commitMulti = () => {
+    const cur = config.steps[wizard.step];
+    const newData = { ...wizard.data };
+    if (!newData[cur.key]) newData[cur.key] = [];
     setWizInput('');
     if (wizard.step < config.steps.length - 1) {
       setWizard(w => ({ ...w, step: w.step + 1, data: newData }));
@@ -1333,14 +1556,21 @@ function Wizard({ wizard, setWizard, shows, team, onCommit }) {
           ) : (
             <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
               <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10 }}>
-                {curStep.options.map(opt => (
-                  <button key={opt} onClick={() => handleNext(opt)}
-                    style={{ padding:'18px 12px', borderRadius:10, background:'#1c1f24', boxShadow:'8px 8px 16px rgba(0,0,0,0.6)', border:'1px solid rgba(255,255,255,0.07)', fontSize:10, letterSpacing:'0.12em', color:'rgba(255,255,255,0.75)', textTransform:'uppercase', fontWeight:900, transition:'all .15s' }}>
-                    {opt}
-                  </button>
-                ))}
+                {curStep.options.map(opt => {
+                  const sel = curStep.multi ? (wizard.data[curStep.key]||[]).includes(opt) : false;
+                  return (
+                    <button key={opt} onClick={() => handleNext(opt)}
+                      style={{ padding:'18px 12px', borderRadius:10, background: sel ? 'rgba(124,58,237,0.2)' : '#1c1f24', boxShadow:'8px 8px 16px rgba(0,0,0,0.6)', border:`1px solid ${sel ? 'rgba(124,58,237,0.6)' : 'rgba(255,255,255,0.07)'}`, fontSize:10, letterSpacing:'0.12em', color: sel ? '#7c3aed' : 'rgba(255,255,255,0.75)', textTransform:'uppercase', fontWeight:900, transition:'all .15s' }}>
+                      {opt}
+                    </button>
+                  );
+                })}
               </div>
-              {wizard.step > 0 && (
+              {curStep.multi ? (
+                <button onClick={commitMulti} style={{ background:'rgba(124,58,237,0.15)', border:'1px solid rgba(124,58,237,0.5)', borderRadius:10, padding:'16px 0', color:'#7c3aed', fontSize:11, letterSpacing:'0.3em', marginTop:8 }}>
+                  {(wizard.data[curStep.key]||[]).length > 0 ? `DONE · ${(wizard.data[curStep.key]||[]).length} SELECTED` : 'SKIP'}
+                </button>
+              ) : wizard.step > 0 && (
                 <button onClick={() => handleNext('')} style={{ background:'none', color:'rgba(255,255,255,0.2)', fontSize:9, letterSpacing:'0.3em', textTransform:'uppercase', fontWeight:900, marginTop:4 }}>SKIP</button>
               )}
             </div>
@@ -1588,7 +1818,7 @@ function App() {
   // Wizard commit
   const handleCommit = (type, data) => {
     if (type === 'task') {
-      setTasks(prev => [...prev, { id:uid(), ...data, desc:'', date:'TODAY', done:false }]);
+      setTasks(prev => [...prev, { id:uid(), ...data, desc:'', date:'TODAY', done:false, timeLogged:0, tags: data.tags||[] }]);
     } else if (type === 'show') {
       setShows(prev => [...prev, { id:uid(), ...data, progress:0, status:'PROD' }]);
     } else if (type === 'shot') {
