@@ -240,9 +240,29 @@
 
       @keyframes vtek-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
       .spin { animation: vtek-spin 0.5s cubic-bezier(0.4,0,0.2,1) forwards; }
+      @keyframes wiz-enter { from { opacity:0; transform:translateX(28px) scale(0.97); } to { opacity:1; transform:translateX(0) scale(1); } }
+      @keyframes float-up  { 0% { opacity:1; transform:translateY(0) translateX(-50%); } 100% { opacity:0; transform:translateY(-24px) translateX(-50%); } }
+      @keyframes pulse-ring { 0%,100% { box-shadow:0 0 0 2px rgba(124,58,237,0.25),10px 10px 20px rgba(0,0,0,.8); } 50% { box-shadow:0 0 0 6px rgba(124,58,237,0.0),10px 10px 20px rgba(0,0,0,.8); } }
+      @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0; } }
+      .wiz-step { animation: wiz-enter 0.22s cubic-bezier(0.34,1.56,0.64,1) both; }
+      .copy-toast { position:absolute; bottom:calc(100% + 8px); left:50%; white-space:nowrap; font-size:9px; font-weight:900; letter-spacing:0.2em; color:#34d399; pointer-events:none; animation: float-up 1s ease forwards; }
+      /* Edit form */
+      .edit-field { display:flex; flex-direction:column; gap:5px; padding-bottom:14px; border-bottom:1px solid rgba(255,255,255,0.05); }
+      .edit-field label { font-size:7px; font-weight:900; letter-spacing:0.35em; color:rgba(255,255,255,0.3); text-transform:uppercase; }
+      .edit-field input, .edit-field textarea { font-size:13px; font-weight:400; color:#e2e8f0; background:transparent; border:none; outline:none; font-family:'Inter',sans-serif; text-transform:none; padding:2px 0; width:100%; }
+      .edit-field input:focus { border-bottom:1px solid rgba(124,58,237,0.5); }
+      .edit-field textarea { resize:none; line-height:1.55; }
+      /* Entry mode sheet */
+      .entry-sheet { width:100%; max-width:430px; background:#161820; border-radius:20px 20px 0 0; padding:32px 24px 52px; animation:wizIn 0.3s cubic-bezier(0.16,1,0.3,1) forwards; }
+      /* Improve subtext contrast */
+      .sub-pill { color:rgba(255,255,255,0.4) !important; }
 
       /* MISC */
-      input  { background: transparent; border: none; outline: none; color: #e2e8f0; font-family: 'Inter', sans-serif; font-weight: 900; text-transform: uppercase; }
+      input, textarea, select {
+        background: transparent; border: none; outline: none;
+        color: #e2e8f0; font-family: 'Inter', sans-serif;
+        text-transform: none;
+      }
       button { cursor: pointer; border: none; font-family: 'Inter', sans-serif; font-weight: 900; text-transform: uppercase; background: none; }
       ::-webkit-scrollbar { width: 0; }
     
@@ -543,6 +563,35 @@ const StatusDot = ({ status, size = 6 }) => {
   return <div style={{ width:size, height:size, borderRadius:'50%', background:color, boxShadow:glow, flexShrink:0 }} />;
 };
 
+// Copy-to-clipboard button with float toast
+function CopyBtn({ value, label }) {
+  const [copied, setCopied] = useState(false);
+  const copy = () => {
+    navigator.clipboard.writeText(value).catch(() => {
+      const el = document.createElement('textarea');
+      el.value = value; document.body.appendChild(el); el.select(); document.execCommand('copy'); document.body.removeChild(el);
+    });
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1200);
+  };
+  return (
+    <div style={{ position:'relative', display:'inline-flex' }}>
+      {copied && <span className="copy-toast">✓ COPIED</span>}
+      <button onClick={copy} title={`Copy ${label||value}`} style={{
+        background:'none', padding:'2px 4px', borderRadius:4,
+        color: copied ? '#34d399' : 'rgba(255,255,255,0.2)',
+        fontSize:10, display:'flex', alignItems:'center', transition:'color .2s',
+      }}>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          {copied
+            ? <polyline points="20,6 9,17 4,12"/>
+            : <><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></>}
+        </svg>
+      </button>
+    </div>
+  );
+}
+
 // ─── PAGE: HANGAR ────────────────────────────────────────────────────
 function HangarPage({ tasks, shows, openWizard }) {
   const openOps = tasks.filter(t => !t.done).length;
@@ -722,113 +771,239 @@ function TasksPage({ tasks, setTasks, openWizard }) {
 
 // ─── PAGE: TEAM ───────────────────────────────────────────────────────
 // ─── TEAM PROFILE HELPERS ────────────────────────────────────────────────────
-const ProfileRow = ({ label, value, accent }) => value ? (
-  <div style={{ display:'flex', flexDirection:'column', gap:3, paddingBottom:12, borderBottom:'1px solid rgba(255,255,255,0.04)' }}>
-    <div style={{ fontSize:7, fontWeight:900, letterSpacing:'0.35em', color:'rgba(255,255,255,0.2)', textTransform:'uppercase' }}>{label}</div>
-    <div style={{ fontSize:11, color: accent || 'rgba(255,255,255,0.75)', fontWeight:400, textTransform:'none', wordBreak:'break-all' }}>{value}</div>
+const ProfileRow = ({ label, value, accent, copyable=true }) => value ? (
+  <div style={{ display:'flex', flexDirection:'column', gap:4, paddingBottom:12, borderBottom:'1px solid rgba(255,255,255,0.05)' }}>
+    <div style={{ fontSize:7, fontWeight:900, letterSpacing:'0.35em', color:'rgba(255,255,255,0.38)', textTransform:'uppercase' }}>{label}</div>
+    <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', gap:8 }}>
+      <div style={{ fontSize:12, color: accent || 'rgba(255,255,255,0.82)', fontWeight:400, textTransform:'none', wordBreak:'break-all', lineHeight:1.5, flex:1 }}>{value}</div>
+      {copyable && <CopyBtn value={value} label={label} />}
+    </div>
   </div>
 ) : null;
 
-function MemberProfile({ member, tasks, onBack, onEdit, onRemove }) {
+function MemberProfile({ member, tasks, onBack, onRemove, onSave }) {
+  const [editing, setEditing] = useState(false);
+  const [draft, setDraft]     = useState({...member});
   const assigned = tasks.filter(t => t.assignedTo === member.name && !t.done);
-  const color = memberColor(member.id);
+  const color    = memberColor(member.id);
   const initials = member.name.split(' ').map(w=>w[0]).join('').substring(0,2);
+
+  const set = (k,v) => setDraft(d => ({...d, [k]:v}));
+  const save = () => { onSave(draft); setEditing(false); };
+
+  // Editable text field
+  const EF = ({ label, k, multi, placeholder }) => (
+    <div className="edit-field">
+      <label>{label}</label>
+      {multi
+        ? <textarea rows={3} value={draft[k]||''} onChange={e=>set(k,e.target.value)} placeholder={placeholder||''} style={{ fontFamily:'Inter,sans-serif' }} />
+        : <input   type="text"  value={draft[k]||''} onChange={e=>set(k,e.target.value)} placeholder={placeholder||''} />}
+    </div>
+  );
+  // Chip selector field
+  const CF = ({ label, k, options }) => (
+    <div style={{ display:'flex', flexDirection:'column', gap:6, paddingBottom:12, borderBottom:'1px solid rgba(255,255,255,0.05)' }}>
+      <label style={{ fontSize:7, fontWeight:900, letterSpacing:'0.35em', color:'rgba(255,255,255,0.38)', textTransform:'uppercase' }}>{label}</label>
+      <div style={{ display:'flex', gap:6, flexWrap:'wrap' }}>
+        {options.map(o => (
+          <button key={o} onClick={()=>set(k,o)} style={{ fontSize:9, padding:'4px 10px', borderRadius:6, fontWeight:900, letterSpacing:'0.15em', textTransform:'uppercase', background: draft[k]===o ? 'rgba(124,58,237,0.25)' : 'rgba(255,255,255,0.05)', border:`1px solid ${draft[k]===o ? '#7c3aed' : 'rgba(255,255,255,0.08)'}`, color: draft[k]===o ? '#7c3aed' : 'rgba(255,255,255,0.45)', transition:'all .15s' }}>
+            {o}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
 
   return (
     <div className="page-in" style={{ display:'flex', flexDirection:'column', gap:0 }}>
-      {/* Back + actions bar */}
+      {/* Top bar */}
       <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:20 }}>
-        <button onClick={onBack} style={{ display:'flex', alignItems:'center', gap:8, color:'rgba(255,255,255,0.3)', fontSize:10, letterSpacing:'0.15em' }}>
+        <button onClick={onBack} style={{ display:'flex', alignItems:'center', gap:8, color:'rgba(255,255,255,0.35)', fontSize:10, letterSpacing:'0.15em' }}>
           <Icons.Back size={16} /> BACK
         </button>
         <div style={{ display:'flex', gap:10 }}>
-          <button onClick={onEdit} style={{ fontSize:8, fontWeight:900, letterSpacing:'0.25em', padding:'6px 14px', borderRadius:6, background:'rgba(124,58,237,0.15)', border:'1px solid rgba(124,58,237,0.4)', color:'#7c3aed' }}>EDIT</button>
-          <button onClick={onRemove} style={{ fontSize:8, fontWeight:900, letterSpacing:'0.25em', padding:'6px 14px', borderRadius:6, background:'rgba(255,59,59,0.08)', border:'1px solid rgba(255,59,59,0.3)', color:'#ff3b3b' }}>REMOVE</button>
+          {editing
+            ? <>
+                <button onClick={()=>{setEditing(false);setDraft({...member});}} style={{ fontSize:8, fontWeight:900, letterSpacing:'0.25em', padding:'6px 14px', borderRadius:6, background:'rgba(255,255,255,0.06)', border:'1px solid rgba(255,255,255,0.1)', color:'rgba(255,255,255,0.4)' }}>CANCEL</button>
+                <button onClick={save} style={{ fontSize:8, fontWeight:900, letterSpacing:'0.25em', padding:'6px 14px', borderRadius:6, background:'rgba(124,58,237,0.2)', border:'1px solid rgba(124,58,237,0.5)', color:'#7c3aed' }}>SAVE</button>
+              </>
+            : <>
+                <button onClick={()=>setEditing(true)} style={{ fontSize:8, fontWeight:900, letterSpacing:'0.25em', padding:'6px 14px', borderRadius:6, background:'rgba(124,58,237,0.15)', border:'1px solid rgba(124,58,237,0.4)', color:'#7c3aed' }}>EDIT</button>
+                <button onClick={onRemove} style={{ fontSize:8, fontWeight:900, letterSpacing:'0.25em', padding:'6px 14px', borderRadius:6, background:'rgba(255,59,59,0.08)', border:'1px solid rgba(255,59,59,0.3)', color:'#ff3b3b' }}>REMOVE</button>
+              </>
+          }
         </div>
       </div>
 
-      {/* Avatar + headline */}
+      {/* Avatar headline */}
       <div className="vtek-card nm-raised" style={{ padding:20, display:'flex', alignItems:'center', gap:18, marginBottom:16 }}>
-        <div style={{ width:64, height:64, borderRadius:12, background:`${color}22`, border:`2px solid ${color}66`, display:'flex', alignItems:'center', justifyContent:'center', fontSize:20, fontWeight:900, color, flexShrink:0 }}>
-          {initials}
-        </div>
+        <div style={{ width:60, height:60, borderRadius:12, background:`${color}22`, border:`2px solid ${color}66`, display:'flex', alignItems:'center', justifyContent:'center', fontSize:19, fontWeight:900, color, flexShrink:0 }}>{initials}</div>
         <div style={{ flex:1, minWidth:0 }}>
-          <div style={{ fontSize:16, fontWeight:900, color:'#fff', marginBottom:4 }}>{member.name}</div>
-          <div style={{ display:'flex', gap:8, flexWrap:'wrap', alignItems:'center' }}>
-            <span style={{ fontSize:8, fontWeight:900, padding:'2px 8px', borderRadius:4, background:`${color}22`, border:`1px solid ${color}44`, color, letterSpacing:'0.2em' }}>{member.role}</span>
-            <span style={{ fontSize:8, fontWeight:900, padding:'2px 8px', borderRadius:4, background:'rgba(255,255,255,0.05)', border:'1px solid rgba(255,255,255,0.1)', color:'rgba(255,255,255,0.4)', letterSpacing:'0.2em' }}>{member.group}</span>
-            {member.nda && <span style={{ fontSize:7, padding:'2px 6px', borderRadius:4, background:'rgba(52,211,153,0.1)', border:'1px solid rgba(52,211,153,0.3)', color:'#34d399', letterSpacing:'0.15em' }}>NDA ✓</span>}
+          {editing
+            ? <input value={draft.name||''} onChange={e=>set('name',e.target.value)} style={{ fontSize:15, fontWeight:900, color:'#fff', background:'transparent', border:'none', outline:'none', borderBottom:'1px solid rgba(124,58,237,0.4)', width:'100%', paddingBottom:4, fontFamily:'Inter,sans-serif', textTransform:'none' }} />
+            : <div style={{ fontSize:15, fontWeight:900, color:'#fff', marginBottom:6 }}>{member.name}</div>}
+          <div style={{ display:'flex', gap:8, flexWrap:'wrap', alignItems:'center', marginTop:6 }}>
+            <span style={{ fontSize:8, fontWeight:900, padding:'2px 8px', borderRadius:4, background:`${color}22`, border:`1px solid ${color}44`, color, letterSpacing:'0.2em' }}>{editing ? draft.role : member.role}</span>
+            <span style={{ fontSize:8, fontWeight:900, padding:'2px 8px', borderRadius:4, background:'rgba(255,255,255,0.05)', border:'1px solid rgba(255,255,255,0.1)', color:'rgba(255,255,255,0.5)', letterSpacing:'0.2em' }}>{member.group}</span>
+            {(editing ? draft.nda : member.nda) && <span style={{ fontSize:7, padding:'2px 6px', borderRadius:4, background:'rgba(52,211,153,0.1)', border:'1px solid rgba(52,211,153,0.3)', color:'#34d399', letterSpacing:'0.15em' }}>NDA ✓</span>}
           </div>
         </div>
-        <StatusDot status={member.status} size={10} />
+        {!editing && <StatusDot status={member.status} size={10} />}
       </div>
 
-      {/* Contact */}
-      <div className="vtek-card no-border nm-raised" style={{ padding:'16px 18px', marginBottom:12, display:'flex', flexDirection:'column', gap:12 }}>
-        <div style={{ fontSize:8, fontWeight:900, letterSpacing:'0.35em', color:'rgba(255,255,255,0.2)', textTransform:'uppercase', marginBottom:4 }}>Contact</div>
-        {member.email && (
-          <a href={`mailto:${member.email}`} style={{ display:'flex', gap:12, alignItems:'center', textDecoration:'none' }}>
-            <span style={{ fontSize:9, color:'rgba(255,255,255,0.2)', letterSpacing:'0.2em' }}>EMAIL</span>
-            <span style={{ fontSize:11, color:'#7c3aed', fontWeight:400, textTransform:'none' }}>{member.email}</span>
-          </a>
-        )}
-        {member.phone && (
-          <a href={`tel:${member.phone}`} style={{ display:'flex', gap:12, alignItems:'center', textDecoration:'none' }}>
-            <span style={{ fontSize:9, color:'rgba(255,255,255,0.2)', letterSpacing:'0.2em' }}>PHONE</span>
-            <span style={{ fontSize:11, color:'#7c3aed', fontWeight:400, textTransform:'none' }}>{member.phone}</span>
-          </a>
-        )}
-        {member.linkedin && (
-          <a href={`https://${member.linkedin}`} target="_blank" rel="noreferrer" style={{ display:'flex', gap:12, alignItems:'center', textDecoration:'none' }}>
-            <span style={{ fontSize:9, color:'rgba(255,255,255,0.2)', letterSpacing:'0.2em' }}>WEB</span>
-            <span style={{ fontSize:11, color:'#7c3aed', fontWeight:400, textTransform:'none' }}>{member.linkedin}</span>
-          </a>
-        )}
-      </div>
-
-      {/* Details grid */}
-      <div className="vtek-card no-border nm-raised" style={{ padding:'16px 18px', marginBottom:12, display:'flex', flexDirection:'column', gap:12 }}>
-        <div style={{ fontSize:8, fontWeight:900, letterSpacing:'0.35em', color:'rgba(255,255,255,0.2)', textTransform:'uppercase', marginBottom:4 }}>Details</div>
-        <ProfileRow label="Timezone" value={member.timezone} />
-        <ProfileRow label="Availability" value={member.avail} accent="#34d399" />
-        {member.group === 'FREELANCE' && member.rate && (
-          <ProfileRow label={`Rate (${member.rateType === 'day' ? 'Day Rate' : 'Project Rate'})`} value={`$${member.rate} / ${member.rateType === 'day' ? 'day' : 'project'}`} accent="#ff9d00" />
-        )}
-        <ProfileRow label="Credit As" value={member.credit} />
-        <ProfileRow label="Strengths" value={member.strengths} accent="#34d399" />
-        <ProfileRow label="Weaknesses" value={member.weaknesses} accent="#ff9d00" />
-        {member.notes && (
-          <div style={{ display:'flex', flexDirection:'column', gap:3 }}>
-            <div style={{ fontSize:7, fontWeight:900, letterSpacing:'0.35em', color:'rgba(255,255,255,0.2)', textTransform:'uppercase' }}>Notes</div>
-            <div style={{ fontSize:11, color:'rgba(255,255,255,0.6)', fontWeight:400, textTransform:'none', lineHeight:1.6 }}>{member.notes}</div>
+      {editing ? (
+        /* ── EDIT FORM ─────────────────────────────────── */
+        <div style={{ display:'flex', flexDirection:'column', gap:12 }}>
+          <CF label="Status"       k="status"   options={['ONLINE','OFFLINE','DND']} />
+          <CF label="Availability" k="avail"    options={['AVAILABLE NOW','FROM NEXT WEEK','BUSY — CHECK BACK','ON HOLD']} />
+          <CF label="Discipline"   k="role"     options={['COMP','FX','TD','DIR','LIGHT','ROTO','ANIM','3D']} />
+          <CF label="Timezone"     k="timezone" options={['PST','EST','GMT','CET','IST','JST','AEST']} />
+          <EF label="Email"        k="email"    placeholder="name@studio.com" />
+          <EF label="Phone"        k="phone"    placeholder="+1 310 555 0000" />
+          <EF label="Day Rate ($)" k="rate"     placeholder="800" />
+          <EF label="Strengths"    k="strengths" placeholder="Nuke, keying, comp..." />
+          <EF label="Growth Areas" k="weaknesses" placeholder="FX sims, 3D..." />
+          <EF label="Credit As"   k="credit"   placeholder="Full name as credited" />
+          <EF label="LinkedIn / Web" k="linkedin" placeholder="linkedin.com/in/..." />
+          <EF label="Notes"        k="notes"    multi placeholder="Anything worth knowing..." />
+          <div style={{ display:'flex', gap:10, paddingTop:8 }}>
+            <button onClick={()=>{setEditing(false);setDraft({...member});}} style={{ flex:1, padding:'14px 0', borderRadius:10, background:'rgba(255,255,255,0.05)', border:'1px solid rgba(255,255,255,0.1)', color:'rgba(255,255,255,0.4)', fontSize:10, fontWeight:900, letterSpacing:'0.25em' }}>CANCEL</button>
+            <button onClick={save} style={{ flex:2, padding:'14px 0', borderRadius:10, background:'rgba(124,58,237,0.2)', border:'1px solid rgba(124,58,237,0.5)', color:'#7c3aed', fontSize:10, fontWeight:900, letterSpacing:'0.25em' }}>SAVE CHANGES</button>
           </div>
-        )}
-      </div>
-
-      {/* Assigned tasks */}
-      {assigned.length > 0 && (
+        </div>
+      ) : (
+        /* ── READ VIEW ─────────────────────────────────── */
         <>
-          <div style={{ fontSize:8, fontWeight:900, letterSpacing:'0.35em', color:'rgba(255,255,255,0.2)', textTransform:'uppercase', marginBottom:10 }}>Active Tasks ({assigned.length})</div>
-          <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
-            {assigned.map(t => (
-              <div key={t.id} className="vtek-card red-border nm-raised" style={{ padding:'12px 14px' }}>
-                <div style={{ fontSize:11, color:'#fff', fontWeight:900 }}>{t.title}</div>
-                <div style={{ fontSize:7, color:'rgba(255,255,255,0.35)', marginTop:4 }}>{t.project} // {t.pri}</div>
+          <div className="vtek-card no-border nm-raised" style={{ padding:'16px 18px', marginBottom:12, display:'flex', flexDirection:'column', gap:12 }}>
+            <div style={{ fontSize:8, fontWeight:900, letterSpacing:'0.35em', color:'rgba(255,255,255,0.35)', textTransform:'uppercase', marginBottom:2 }}>Contact</div>
+            {member.email && (
+              <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+                <a href={`mailto:${member.email}`} style={{ fontSize:12, color:'#7c3aed', fontWeight:400, textTransform:'none', textDecoration:'none' }}>{member.email}</a>
+                <CopyBtn value={member.email} label="email" />
               </div>
-            ))}
+            )}
+            {member.phone && (
+              <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+                <a href={`tel:${member.phone}`} style={{ fontSize:12, color:'#7c3aed', fontWeight:400, textTransform:'none', textDecoration:'none' }}>{member.phone}</a>
+                <CopyBtn value={member.phone} label="phone" />
+              </div>
+            )}
+            {member.linkedin && (
+              <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+                <a href={`https://${member.linkedin}`} target="_blank" rel="noreferrer" style={{ fontSize:12, color:'#7c3aed', fontWeight:400, textTransform:'none', textDecoration:'none' }}>{member.linkedin}</a>
+                <CopyBtn value={member.linkedin} label="web" />
+              </div>
+            )}
           </div>
+
+          <div className="vtek-card no-border nm-raised" style={{ padding:'16px 18px', marginBottom:12, display:'flex', flexDirection:'column', gap:12 }}>
+            <div style={{ fontSize:8, fontWeight:900, letterSpacing:'0.35em', color:'rgba(255,255,255,0.35)', textTransform:'uppercase', marginBottom:2 }}>Details</div>
+            <ProfileRow label="Timezone"     value={member.timezone} />
+            <ProfileRow label="Availability" value={member.avail}    accent="#34d399" />
+            {member.group==='FREELANCE' && member.rate && (
+              <ProfileRow label="Day Rate" value={`$${member.rate} / day`} accent="#ff9d00" />
+            )}
+            <ProfileRow label="Credit As"    value={member.credit} />
+            <ProfileRow label="Strengths"    value={member.strengths}   accent="#34d399" />
+            <ProfileRow label="Growth Areas" value={member.weaknesses}  accent="#ff9d00" />
+            {member.notes && (
+              <div style={{ display:'flex', flexDirection:'column', gap:4 }}>
+                <div style={{ fontSize:7, fontWeight:900, letterSpacing:'0.35em', color:'rgba(255,255,255,0.38)', textTransform:'uppercase' }}>Notes</div>
+                <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', gap:8 }}>
+                  <div style={{ fontSize:12, color:'rgba(255,255,255,0.75)', fontWeight:400, textTransform:'none', lineHeight:1.6, flex:1 }}>{member.notes}</div>
+                  <CopyBtn value={member.notes} label="notes" />
+                </div>
+              </div>
+            )}
+          </div>
+
+          {assigned.length > 0 && (
+            <>
+              <div style={{ fontSize:8, fontWeight:900, letterSpacing:'0.35em', color:'rgba(255,255,255,0.35)', textTransform:'uppercase', marginBottom:10 }}>Active Tasks ({assigned.length})</div>
+              <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+                {assigned.map(t => (
+                  <div key={t.id} className="vtek-card red-border nm-raised" style={{ padding:'12px 14px' }}>
+                    <div style={{ fontSize:11, color:'#fff', fontWeight:900 }}>{t.title}</div>
+                    <div style={{ fontSize:7, color:'rgba(255,255,255,0.45)', marginTop:4 }}>{t.project} // {t.pri}</div>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+          <div style={{ height:16 }} />
         </>
       )}
-      <div style={{ height:16 }} />
     </div>
   );
 }
 
-// ─── PAGE: TEAM ───────────────────────────────────────────────────────────────
-function TeamPage({ team, setTeam, tasks, selectedOp, setSelectedOp, openEditWizard }) {
+// ─── MANUAL MEMBER FORM ──────────────────────────────────────────────────────
+function ManualMemberForm({ onClose, onSave }) {
+  const [data, setData] = useState({ group:'STAFF', status:'ONLINE' });
+  const set = (k,v) => setData(d => ({...d, [k]:v}));
+  const F = ({ label, k, placeholder, multi }) => (
+    <div className="edit-field">
+      <label>{label}</label>
+      {multi
+        ? <textarea rows={3} value={data[k]||''} onChange={e=>set(k,e.target.value)} placeholder={placeholder||''} />
+        : <input type="text" value={data[k]||''} onChange={e=>set(k,e.target.value)} placeholder={placeholder||''} />}
+    </div>
+  );
+  const C = ({ label, k, options }) => (
+    <div style={{ display:'flex', flexDirection:'column', gap:6, paddingBottom:12, borderBottom:'1px solid rgba(255,255,255,0.05)' }}>
+      <label style={{ fontSize:7, fontWeight:900, letterSpacing:'0.35em', color:'rgba(255,255,255,0.35)', textTransform:'uppercase' }}>{label}</label>
+      <div style={{ display:'flex', gap:6, flexWrap:'wrap' }}>
+        {options.map(o => (
+          <button key={o} onClick={()=>set(k,o)} style={{ fontSize:9, padding:'4px 10px', borderRadius:6, fontWeight:900, letterSpacing:'0.15em', textTransform:'uppercase', background: data[k]===o ? 'rgba(124,58,237,0.25)' : 'rgba(255,255,255,0.05)', border:`1px solid ${data[k]===o ? '#7c3aed' : 'rgba(255,255,255,0.08)'}`, color: data[k]===o ? '#7c3aed' : 'rgba(255,255,255,0.45)' }}>{o}</button>
+        ))}
+      </div>
+    </div>
+  );
+  return (
+    <div style={{ position:'fixed', inset:0, zIndex:1000, background:'#121418', overflowY:'auto', WebkitOverflowScrolling:'touch' }}>
+      <div style={{ padding:'calc(env(safe-area-inset-top) + 20px) 24px 100px' }}>
+        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:28 }}>
+          <div style={{ fontSize:14, fontWeight:900, color:'#fff' }}>New Team Member</div>
+          <button onClick={onClose} style={{ color:'rgba(255,255,255,0.4)', padding:8 }}><Icons.X size={22} /></button>
+        </div>
+        <div style={{ display:'flex', flexDirection:'column', gap:14 }}>
+          <C label="Personnel Type" k="group"     options={['STAFF','FREELANCE']} />
+          <C label="Status"         k="status"    options={['ONLINE','OFFLINE','DND']} />
+          <C label="Discipline"     k="role"      options={['COMP','FX','TD','DIR','LIGHT','ROTO','ANIM','3D']} />
+          <C label="Timezone"       k="timezone"  options={['PST','EST','GMT','CET','IST','JST','AEST']} />
+          <F label="Full Name"      k="name"      placeholder="Alex Reed" />
+          <F label="Email"          k="email"     placeholder="name@studio.com" />
+          <F label="Phone"          k="phone"     placeholder="+1 310 555 0000" />
+          <F label="Day Rate ($)"   k="rate"      placeholder="800" />
+          <C label="Availability"   k="avail"     options={['AVAILABLE NOW','FROM NEXT WEEK','BUSY — CHECK BACK','ON HOLD']} />
+          <F label="Strengths"      k="strengths" placeholder="Nuke, keying, comp..." />
+          <F label="Growth Areas"   k="weaknesses" placeholder="FX sims, 3D..." />
+          <F label="Credit As"      k="credit"    placeholder="Full name as credited" />
+          <F label="LinkedIn / Web" k="linkedin"  placeholder="linkedin.com/in/..." />
+          <F label="Notes"          k="notes"     multi placeholder="Anything worth knowing..." />
+          <div style={{ display:'flex', gap:10, paddingTop:8 }}>
+            <button onClick={onClose} style={{ flex:1, padding:'16px 0', borderRadius:10, background:'rgba(255,255,255,0.05)', border:'1px solid rgba(255,255,255,0.1)', color:'rgba(255,255,255,0.4)', fontSize:10, fontWeight:900, letterSpacing:'0.25em' }}>CANCEL</button>
+            <button onClick={()=>data.name && onSave(data)} disabled={!data.name} style={{ flex:2, padding:'16px 0', borderRadius:10, background:'rgba(124,58,237,0.2)', border:'1px solid rgba(124,58,237,0.5)', color:'#7c3aed', fontSize:10, fontWeight:900, letterSpacing:'0.25em', opacity:data.name?1:0.4 }}>ADD MEMBER</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function TeamPage({ team, setTeam, tasks, selectedOp, setSelectedOp, openWizard }) {
+  const [entryMode, setEntryMode] = useState(null);
+  const [showManual, setShowManual] = useState(false);
+
   const removeTeamMember = (id) => {
     setTeam(prev => prev.filter(m => m.id !== id));
     setSelectedOp(null);
+    triggerHaptic();
+  };
+
+  const saveMember = (updated) => {
+    setTeam(prev => prev.map(m => m.id === updated.id ? updated : m));
+    setSelectedOp(updated);
     triggerHaptic();
   };
 
@@ -839,7 +1014,7 @@ function TeamPage({ team, setTeam, tasks, selectedOp, setSelectedOp, openEditWiz
           member={selectedOp}
           tasks={tasks}
           onBack={() => setSelectedOp(null)}
-          onEdit={() => openEditWizard(selectedOp)}
+          onSave={saveMember}
           onRemove={() => removeTeamMember(selectedOp.id)}
         />
       </div>
@@ -860,11 +1035,13 @@ function TeamPage({ team, setTeam, tasks, selectedOp, setSelectedOp, openEditWiz
         </div>
         <div style={{ flex:1, minWidth:0 }}>
           <div style={{ fontSize:11, color:'#fff', fontWeight:900, marginBottom:3 }}>{m.name}</div>
-          <div style={{ fontSize:7, color:'rgba(255,255,255,0.28)', letterSpacing:'0.15em' }}>{m.role}{m.group==='FREELANCE'&&m.rate ? ` // $${m.rate}/day` : ''}</div>
+          <div style={{ fontSize:8, color:'rgba(255,255,255,0.45)', letterSpacing:'0.12em', textTransform:'none', fontWeight:400 }}>
+            {m.role}{m.group==='FREELANCE' && m.rate ? ` · $${m.rate}/day` : ''}{m.timezone ? ` · ${m.timezone}` : ''}
+          </div>
         </div>
-        {m.group === 'FREELANCE' && m.avail && (
-          <div style={{ fontSize:6, padding:'2px 6px', borderRadius:4, background:'rgba(52,211,153,0.1)', border:'1px solid rgba(52,211,153,0.25)', color:'#34d399', letterSpacing:'0.15em', textTransform:'uppercase', flexShrink:0, maxWidth:70, textAlign:'center' }}>
-            {m.avail.replace('AVAILABLE NOW','AVAIL').replace('FROM ','FROM\n')}
+        {m.group==='FREELANCE' && m.avail && (
+          <div style={{ fontSize:6, padding:'2px 7px', borderRadius:4, background:'rgba(52,211,153,0.1)', border:'1px solid rgba(52,211,153,0.25)', color:'#34d399', letterSpacing:'0.1em', textTransform:'uppercase', flexShrink:0 }}>
+            {m.avail==='AVAILABLE NOW' ? 'AVAIL' : m.avail.replace('FROM ','↗')}
           </div>
         )}
         <StatusDot status={m.status} />
@@ -876,26 +1053,53 @@ function TeamPage({ team, setTeam, tasks, selectedOp, setSelectedOp, openEditWiz
     <div className="page-in" style={{ display:'flex', flexDirection:'column', gap:20 }}>
       <PageHeader title="Team" tag={`${team.length} Members`} />
 
+      {/* Add member — entry mode chooser */}
+      <button onClick={() => setEntryMode('choose')} style={{ background:'rgba(124,58,237,0.1)', border:'1px dashed rgba(124,58,237,0.4)', borderRadius:10, padding:'14px 0', color:'#7c3aed', fontSize:10, fontWeight:900, letterSpacing:'0.35em', textTransform:'uppercase' }}>
+        + ADD MEMBER
+      </button>
+
       {staff.length > 0 && (
         <div>
-          <div style={{ fontSize:8, fontWeight:900, letterSpacing:'0.4em', color:'rgba(255,255,255,0.2)', textTransform:'uppercase', marginBottom:10, paddingBottom:6, borderBottom:'1px solid rgba(255,255,255,0.05)' }}>
-            Staff — {staff.length}
-          </div>
-          <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
-            {staff.map(m => <MemberCard key={m.id} m={m} />)}
-          </div>
+          <div style={{ fontSize:8, fontWeight:900, letterSpacing:'0.4em', color:'rgba(255,255,255,0.3)', textTransform:'uppercase', marginBottom:10, paddingBottom:6, borderBottom:'1px solid rgba(255,255,255,0.05)' }}>Staff — {staff.length}</div>
+          <div style={{ display:'flex', flexDirection:'column', gap:8 }}>{staff.map(m => <MemberCard key={m.id} m={m} />)}</div>
         </div>
       )}
 
       {freelance.length > 0 && (
         <div>
-          <div style={{ fontSize:8, fontWeight:900, letterSpacing:'0.4em', color:'rgba(255,255,255,0.2)', textTransform:'uppercase', marginBottom:10, paddingBottom:6, borderBottom:'1px solid rgba(255,255,255,0.05)' }}>
-            Freelance — {freelance.length}
-          </div>
-          <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
-            {freelance.map(m => <MemberCard key={m.id} m={m} />)}
+          <div style={{ fontSize:8, fontWeight:900, letterSpacing:'0.4em', color:'rgba(255,255,255,0.3)', textTransform:'uppercase', marginBottom:10, paddingBottom:6, borderBottom:'1px solid rgba(255,255,255,0.05)' }}>Freelance — {freelance.length}</div>
+          <div style={{ display:'flex', flexDirection:'column', gap:8 }}>{freelance.map(m => <MemberCard key={m.id} m={m} />)}</div>
+        </div>
+      )}
+
+      {/* Entry mode chooser overlay */}
+      {entryMode === 'choose' && (
+        <div style={{ position:'fixed', inset:0, zIndex:900, background:'rgba(0,0,0,0.75)', backdropFilter:'blur(12px)', display:'flex', alignItems:'flex-end', justifyContent:'center' }} onClick={()=>setEntryMode(null)}>
+          <div className="entry-sheet" onClick={e=>e.stopPropagation()}>
+            <div style={{ fontSize:9, fontWeight:900, letterSpacing:'0.4em', color:'rgba(255,255,255,0.3)', textTransform:'uppercase', marginBottom:24 }}>Add Team Member</div>
+            <div style={{ display:'flex', flexDirection:'column', gap:12 }}>
+              <button onClick={()=>{ setEntryMode(null); openWizard('member'); }} style={{ padding:'20px 24px', borderRadius:12, background:'rgba(124,58,237,0.12)', border:'1px solid rgba(124,58,237,0.4)', textAlign:'left', display:'flex', flexDirection:'column', gap:6 }}>
+                <div style={{ fontSize:13, fontWeight:900, color:'#7c3aed', letterSpacing:'0.05em' }}>Guided Wizard</div>
+                <div style={{ fontSize:11, color:'rgba(255,255,255,0.45)', fontWeight:400, textTransform:'none' }}>Step-by-step profile setup with prompts</div>
+              </button>
+              <button onClick={()=>{ setEntryMode(null); setShowManual(true); }} style={{ padding:'20px 24px', borderRadius:12, background:'rgba(255,255,255,0.04)', border:'1px solid rgba(255,255,255,0.1)', textAlign:'left', display:'flex', flexDirection:'column', gap:6 }}>
+                <div style={{ fontSize:13, fontWeight:900, color:'rgba(255,255,255,0.8)', letterSpacing:'0.05em' }}>Manual Entry</div>
+                <div style={{ fontSize:11, color:'rgba(255,255,255,0.45)', fontWeight:400, textTransform:'none' }}>Fill all fields at once in a single form</div>
+              </button>
+            </div>
           </div>
         </div>
+      )}
+
+      {/* Manual entry form */}
+      {showManual && (
+        <ManualMemberForm
+          onClose={() => setShowManual(false)}
+          onSave={(data) => {
+            setTeam(prev => [...prev, { id:uid(), signal:85, rateType:'day', nda:false, credit:'', ...data }]);
+            setShowManual(false);
+          }}
+        />
       )}
     </div>
   );
@@ -1086,12 +1290,18 @@ function Wizard({ wizard, setWizard, shows, team, onCommit }) {
         </div>
 
         {curStep.type === 'text' ? (
-          <div style={{ display:'flex', flexDirection:'column', gap:20 }}>
+          <div key={wizard.step} className="wiz-step" style={{ display:'flex', flexDirection:'column', gap:20 }}>
             <input
               autoFocus
               key={`${wizard.type}-${wizard.step}`}
-              className="bg-transparent"
-              style={{ borderBottom:'2px solid rgba(255,255,255,0.1)', paddingBottom:16, fontSize:20, width:'100%', letterSpacing:'0.04em', caretColor:'#7c3aed' }}
+              style={{
+                borderBottom:'2px solid rgba(255,255,255,0.1)', paddingBottom:16,
+                fontSize:20, width:'100%', caretColor:'#7c3aed',
+                color:'#e2e8f0', fontFamily:'Inter,sans-serif',
+                textTransform:'none', fontWeight:300, letterSpacing:'0.02em',
+                background:'transparent', border:'none', outline:'none',
+                borderBottom:'2px solid rgba(255,255,255,0.12)',
+              }}
               value={wizInput}
               onChange={e => setWizInput(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && wizInput && handleNext()}
@@ -1101,17 +1311,25 @@ function Wizard({ wizard, setWizard, shows, team, onCommit }) {
               onClick={() => handleNext()}
               disabled={!wizInput}
               style={{ background:'#1c1f24', boxShadow:'10px 10px 20px rgba(0,0,0,0.65), -4px -4px 12px rgba(124,58,237,0.08)', border:'1px solid rgba(124,58,237,0.5)', width:'100%', padding:'20px 0', borderRadius:10, fontSize:11, letterSpacing:'0.3em', transition:'all .15s', opacity: wizInput ? 1 : 0.4 }}>
-              CONTINUE
+              {wizard.step === config.steps.length-1 ? 'COMMIT' : 'CONTINUE →'}
             </button>
+            {wizard.step > 0 && (
+              <button onClick={() => handleNext('')} style={{ background:'none', color:'rgba(255,255,255,0.2)', fontSize:9, letterSpacing:'0.3em', textTransform:'uppercase', fontWeight:900 }}>SKIP</button>
+            )}
           </div>
         ) : (
-          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:12 }}>
-            {curStep.options.map(opt => (
-              <button key={opt} onClick={() => handleNext(opt)}
-                style={{ background:'#1c1f24', boxShadow:'10px 10px 20px rgba(0,0,0,0.65), -4px -4px 12px rgba(124,58,237,0.08)', border:'1px solid rgba(255,255,255,0.05)', padding:'16px 12px', borderRadius:6, fontSize:9, letterSpacing:'0.2em', color:'rgba(255,255,255,0.7)', transition:'all .15s' }}>
-                {opt}
-              </button>
-            ))}
+          <div key={wizard.step} className="wiz-step" style={{ display:'flex', flexDirection:'column', gap:10 }}>
+            <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10 }}>
+              {curStep.options.map(opt => (
+                <button key={opt} onClick={() => handleNext(opt)}
+                  style={{ padding:'18px 12px', borderRadius:10, background:'#1c1f24', boxShadow:'10px 10px 20px rgba(0,0,0,0.65), -4px -4px 12px rgba(124,58,237,0.08)', border:'1px solid rgba(255,255,255,0.05)', fontSize:10, letterSpacing:'0.15em', color:'rgba(255,255,255,0.7)', textTransform:'uppercase', fontWeight:900, transition:'all .15s', fontFamily:'Inter,sans-serif' }}>
+                  {opt}
+                </button>
+              ))}
+            </div>
+            {wizard.step > 0 && (
+              <button onClick={() => handleNext('')} style={{ background:'none', color:'rgba(255,255,255,0.2)', fontSize:9, letterSpacing:'0.3em', textTransform:'uppercase', fontWeight:900, marginTop:4 }}>SKIP</button>
+            )}
           </div>
         )}
 
@@ -1386,11 +1604,6 @@ function App() {
     }
   };
 
-  const openEditWizard = (member) => {
-    setWizard({ isOpen:true, type:'editMember', step:0, data:{ _editId: member.id, ...member } });
-    triggerHaptic();
-  };
-
   const navigateTo = (id) => {
     setActivePage(id);
     setSelectedShow(null);
@@ -1456,7 +1669,7 @@ function App() {
         {activePage === 'hub'   && <HangarPage   tasks={tasks} shows={shows} openWizard={handlePlus} />}
         {activePage === 'shows' && <ShowsPage     shows={shows} shots={shots} selectedShow={selectedShow} setSelectedShow={setSelectedShow} matrixFilter={matrixFilter} setMatrixFilter={setMatrixFilter} openWizard={handlePlus} />}
         {activePage === 'tasks' && <TasksPage     tasks={tasks} setTasks={setTasks} openWizard={handlePlus} />}
-        {activePage === 'ops'   && <TeamPage      team={team} setTeam={setTeam} tasks={tasks} selectedOp={selectedOp} setSelectedOp={setSelectedOp} openEditWizard={openEditWizard} />}
+        {activePage === 'ops'   && <TeamPage      team={team} setTeam={setTeam} tasks={tasks} selectedOp={selectedOp} setSelectedOp={setSelectedOp} openWizard={(type) => setWizard({ isOpen:true, type, step:0, data:{} })} />}
         {activePage === 'intel' && <IntelPage     shows={shows} tasks={tasks} />}
       </main>
 
