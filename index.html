@@ -10,7 +10,7 @@
   <title>VTEK // HANGAR</title>
   <script>
     (function() {
-      var v = '087b';
+      var v = '087c';
       if (sessionStorage.getItem('vtek_ver') !== v) {
         sessionStorage.setItem('vtek_ver', v);
         if (!sessionStorage.getItem('vtek_reloaded')) {
@@ -1473,14 +1473,15 @@ function Wizard({ wizard, setWizard, shows, team, onCommit }) {
   const handleNext = (val) => {
     const cur = config.steps[wizard.step];
     const actualVal = val !== undefined ? val : wizInput;
-    // For multi-select, toggle array
+    // Multi-select: toggle value in array
     if (cur.multi) {
       const existing = wizard.data[cur.key] || [];
       const toggled = existing.includes(val) ? existing.filter(v => v !== val) : [...existing, val];
       setWizard(w => ({ ...w, data: { ...w.data, [cur.key]: toggled } }));
       return;
     }
-    if (!actualVal && cur.type === 'text') return;
+    // Text step with no value AND not a skip — block
+    if (!actualVal && cur.type === 'text' && val !== '') return;
     const newData = { ...wizard.data, [cur.key]: actualVal };
     setWizInput('');
     if (wizard.step < config.steps.length - 1) {
