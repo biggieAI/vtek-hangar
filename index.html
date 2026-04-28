@@ -10,7 +10,7 @@
   <title>VTEK // HANGAR</title>
   <script>
     (function() {
-      var v = '087c';
+      var v = '087d';
       if (sessionStorage.getItem('vtek_ver') !== v) {
         sessionStorage.setItem('vtek_ver', v);
         if (!sessionStorage.getItem('vtek_reloaded')) {
@@ -1526,8 +1526,16 @@ function Wizard({ wizard, setWizard, shows, team, onCommit }) {
         </button>
       </div>
 
-      {/* Question block — anchored from top, scrolls with content */}
-      <div style={{ position:'relative', zIndex:10, paddingTop:'calc(env(safe-area-inset-top) + 90px)', padding:'calc(env(safe-area-inset-top) + 90px) 28px 28px' }}>
+      {/* Content — fixed position so keyboard never pushes it off screen */}
+      <div style={{
+        position:'fixed',
+        top:'calc(env(safe-area-inset-top) + 80px)',
+        left:0, right:0, bottom:0,
+        padding:'28px 28px 0',
+        overflowY:'auto',
+        WebkitOverflowScrolling:'touch',
+        zIndex:10,
+      }}>
         <div key={`q-${wizard.step}`} className="wiz-step">
           {/* Step label */}
           <div style={{ fontSize:8, fontWeight:900, letterSpacing:'0.4em', color:'rgba(255,255,255,0.35)', textTransform:'uppercase', marginBottom:14 }}>
